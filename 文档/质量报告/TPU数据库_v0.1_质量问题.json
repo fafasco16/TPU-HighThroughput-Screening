@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "primary_key",
+    "provenance",
+    "finite_values",
+    "lineage_split",
+    "curve_point_count",
+    "derived_coverage",
+    "public_release_license"
+  ],
+  "issue_counts": {},
+  "issues": [],
+  "snapshot_id": "snapshot_4addf1652d789615"
+}

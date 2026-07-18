@@ -2,6 +2,8 @@
 
 本仓库维护 TPU 高通量筛选的数据结构、抽取管道、质量控制、许可证门控、数据库快照构建方法和研究文档。主研究路线是线性分段 TPU 的“时序耗散—延迟有序化”设计，同时约束韧性、滞后、循环恢复和加工窗口。
 
+**GitHub 私人仓库：** [fafasco16/TPU-HighThroughput-Screening](https://github.com/fafasco16/TPU-HighThroughput-Screening)（`PRIVATE`，默认分支 `main`）。仓库只维护代码、结构定义、配置、清单和文档；原始数据及受限附件留在本地分层目录中。
+
 ## 目录
 
 - `01_原始数据/`：不可变原始文件，本地保存，不推送 GitHub。
@@ -28,10 +30,10 @@
 uv venv .venv --python 3.11
 uv sync --extra dev
 .\.venv\Scripts\python.exe 代码\run_pipeline.py manifest
-.\.venv\Scripts\python.exe 代码\run_pipeline.py build --version v0.1.0
-.\.venv\Scripts\python.exe 代码\run_pipeline.py qc --version v0.1.0
+.\.venv\Scripts\python.exe 代码\run_pipeline.py build --version v0.1
+.\.venv\Scripts\python.exe 代码\run_pipeline.py qc --version v0.1
 ```
 
 ## 证据与引用
 
-数据规模、许可证、哈希、适用边界及正式参考文献见 [`文档/TPU_数据来源与研究路线台账.md`](文档/TPU_数据来源与研究路线台账.md)。
+数据规模、许可证、哈希、适用边界及正式参考文献见[数据来源与研究路线台账](文档/TPU_数据来源与研究路线台账.md)。数据库边界与执行顺序分别见[设计规范](文档/设计规范/2026-07-18-TPU数据库v0.1设计规范.md)和[实施计划](文档/实施计划/2026-07-18-TPU数据库v0.1实施计划.md)。

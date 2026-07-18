@@ -16,6 +16,7 @@ node_modules/
 !02_暂存数据/README.md
 03_规范数据/**/*.parquet
 04_派生数据/**/*.parquet
+05_数据库快照/**/*.parquet
 05_数据库快照/**/*.duckdb
 06_审核导出/*.xlsx
 06_审核导出/*.png
@@ -24,4 +25,3 @@ node_modules/
 *.zip
 *.pdf
 *.docx
-
