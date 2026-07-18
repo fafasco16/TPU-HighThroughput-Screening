@@ -1,0 +1,73 @@
+schema_version: v0.1
+enums:
+  source_status:
+    - available
+    - review_required
+    - unavailable
+    - withdrawn
+    - metadata_only
+  access_restriction:
+    - open
+    - registration_required
+    - author_request
+    - reference_only
+    - restricted
+    - unknown
+  evidence_grade:
+    - measured_raw
+    - measured_summary
+    - digitized
+    - derived
+    - computed_dft
+    - computed_md
+    - predicted
+    - candidate_structure
+  material_scope:
+    - linear_tpu
+    - crosslinked_pue
+    - waterborne_polyurethane
+    - polyurethane_prepolymer
+    - commercial_tpu
+    - composite
+    - photo_cured_elastomer
+    - virtual_candidate
+    - generic_polymer
+    - unknown
+  role_status:
+    - polyol
+    - diisocyanate
+    - chain_extender
+    - catalyst
+    - additive
+    - solvent
+    - unclassified
+  extraction_method:
+    - direct_table
+    - direct_curve
+    - author_export
+    - digitized_figure
+    - computed
+    - manual_transcription
+  curve_type:
+    - tensile_monotonic
+    - tensile_cyclic
+    - compression
+    - dma_temperature_sweep
+    - dma_frequency_sweep
+    - rheology
+    - viscosity_temperature
+    - stress_relaxation
+    - creep
+    - other
+  unit_status:
+    - canonical
+    - converted
+    - unresolved
+  computation_type:
+    - dft
+    - md
+    - coarse_grained_md
+  prediction_status:
+    - in_domain
+    - extrapolative
+    - rejected
