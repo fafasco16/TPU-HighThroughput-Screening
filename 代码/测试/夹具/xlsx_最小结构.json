@@ -1,0 +1,20 @@
+{
+  "hbond": {
+    "Figure 1b": [
+      ["Figure 1b", null, null, null, null, "C-IP-SS", null, null, null, null, null, null, null, null, null],
+      [null, "E-IP-SS", null, "Es-MD", null, "Virgin", null, "1 h", null, "6 h", null, "24 h", null, "48 h", null],
+      [null, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      [null, 100.0, 5.0, 100.0, 6.0, 100.0, 7.0, 100.0, 6.5, 100.0, 6.6, 100.0, 6.7, 100.0, 6.8]
+    ],
+    "Mystery": [["synthetic unknown sheet"]]
+  },
+  "viscosity": {
+    "P_44M_4": [
+      ["Viscosity", "Temperature"],
+      ["Pa.s", "\u00b0C"],
+      [10.0, 40.0],
+      [5.0, 80.0]
+    ],
+    "Mystery": [["x", "y"], [1, 2]]
+  }
+}
