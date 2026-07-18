@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
@@ -32,7 +34,9 @@ from qc import (
     check_provenance,
     check_public_release,
     issues_frame,
+    check_unresolved_units,
 )
+from schema import load_enums
 from snapshot import (
     build_duckdb,
     sha256_file,
@@ -42,7 +46,7 @@ from snapshot import (
 
 
 SCHEMA_VERSION = "v0.1"
-PIPELINE_VERSION = "tpu-db/0.1.0"
+PIPELINE_VERSION = "tpu-db/0.1.1"
 SOURCE_SMIPOLY = "ds_smipoly_monomers"
 SOURCE_PUE = "ds_pue326_dq"
 SOURCE_HBOND = "ds_eom_hbond_2021"
@@ -62,10 +66,27 @@ _MANIFEST_REQUIRED = (
     "license_spdx",
     "derivatives_allowed",
     "redistribution_allowed",
+    "access_restriction",
     "material_scope",
     "status",
 )
-_RESTRICTED_SCOPES = frozenset({"reference_only", "restricted"})
+_PUBLIC_SOURCE_STATUSES = frozenset({"available"})
+_PUBLIC_ACCESS_RESTRICTIONS = frozenset({"open"})
+_SHA256_PATTERN = re.compile(r"^[0-9A-Fa-f]{64}$")
+_POLICY_FIELDS = (
+    "license_spdx",
+    "derivatives_allowed",
+    "redistribution_allowed",
+    "access_restriction",
+    "material_scope",
+    "status",
+)
+_ALLOWED_ADAPTER_OPTIONS = {
+    SOURCE_SMIPOLY: frozenset(),
+    SOURCE_PUE: frozenset(),
+    SOURCE_HBOND: frozenset({"expected_sheets"}),
+    SOURCE_VISCOSITY: frozenset({"expected_sheets"}),
+}
 _SNAPSHOT_SIGNATURE_FIELDS = (
     "source_id",
     "source_file_id",
@@ -77,6 +98,7 @@ _SNAPSHOT_SIGNATURE_FIELDS = (
     "license_spdx",
     "derivatives_allowed",
     "redistribution_allowed",
+    "access_restriction",
     "evidence_grade",
     "material_scope",
     "status",
@@ -92,6 +114,7 @@ _PIPELINE_CODE_FILES = (
     "ids.py",
     "licensing.py",
     "qc.py",
+    "schema.py",
     "snapshot.py",
     "units.py",
 )
@@ -141,8 +164,22 @@ def _manifest_frame(
         raise ValueError(f"manifest 缺少必需字段: {missing_columns}")
     if frame.empty:
         raise ValueError("manifest 不得为空")
-    if frame["source_file_id"].isna().any() or frame["source_file_id"].duplicated().any():
+    source_file_ids = frame["source_file_id"].astype("string")
+    if (
+        source_file_ids.isna().any()
+        or source_file_ids.str.strip().eq("").any()
+        or source_file_ids.duplicated().any()
+    ):
         raise ValueError("manifest source_file_id 必须非空且唯一")
+    for column in ("source_id", "raw_path"):
+        values = frame[column].astype("string")
+        if values.isna().any() or values.str.strip().eq("").any():
+            raise ValueError(f"manifest {column} 必须是非空字符串")
+    invalid_hash = ~frame["sha256"].astype("string").str.fullmatch(
+        _SHA256_PATTERN.pattern, na=False
+    )
+    if invalid_hash.any():
+        raise ValueError("manifest sha256 必须是64位十六进制字符串")
     return frame.sort_values(
         ["source_id", "raw_path", "source_file_id"], kind="mergesort"
     ).reset_index(drop=True)
@@ -169,7 +206,7 @@ def _resolve_raw_file(root: Path, row: Mapping[str, Any]) -> Path:
         raise ValueError(f"原始来源不是文件: {raw_path}")
     expected_hash = str(row["sha256"]).strip().casefold()
     actual_hash = sha256_file(candidate).casefold()
-    if expected_hash and expected_hash != actual_hash:
+    if expected_hash != actual_hash:
         raise ValueError(f"原始文件哈希不匹配: {raw_path}")
     return candidate
 
@@ -190,6 +227,82 @@ def _signature_value(value: Any) -> Any:
     if hasattr(value, "isoformat"):
         return value.isoformat()
     return str(value)
+
+
+def _canonical_build_value(value: Any, *, path: str) -> Any:
+    """Convert build parameters to deterministic JSON or reject ambiguity."""
+
+    if value is None or isinstance(value, (bool, int, str)):
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError(f"{path} 不得包含非有限数值")
+        return value
+    if isinstance(value, Mapping):
+        output: dict[str, Any] = {}
+        for key in sorted(value, key=lambda item: str(item)):
+            if not isinstance(key, str) or not key.strip():
+                raise ValueError(f"{path} 的键必须是非空字符串")
+            output[key] = _canonical_build_value(
+                value[key], path=f"{path}.{key}"
+            )
+        return output
+    if isinstance(value, (list, tuple)):
+        return [
+            _canonical_build_value(item, path=f"{path}[{index}]")
+            for index, item in enumerate(value)
+        ]
+    raise ValueError(f"{path} 包含不支持的构建参数类型: {type(value).__name__}")
+
+
+def _normalize_adapter_options(
+    adapter_options: Mapping[str, Mapping[str, Any]] | None,
+) -> dict[str, dict[str, Any]]:
+    if adapter_options is None:
+        return {}
+    if not isinstance(adapter_options, Mapping):
+        raise ValueError("adapter_options 必须是来源到参数的映射")
+    unknown_sources = sorted(set(adapter_options) - set(_ALLOWED_ADAPTER_OPTIONS))
+    if unknown_sources:
+        raise ValueError(f"adapter_options 包含未知来源: {unknown_sources}")
+    normalized: dict[str, dict[str, Any]] = {}
+    for source_id in sorted(adapter_options):
+        values = adapter_options[source_id]
+        if not isinstance(values, Mapping):
+            raise ValueError(f"adapter_options.{source_id} 必须是映射")
+        unknown_options = sorted(
+            set(values) - set(_ALLOWED_ADAPTER_OPTIONS[source_id])
+        )
+        if unknown_options:
+            raise ValueError(
+                f"adapter_options.{source_id} 包含未知参数: {unknown_options}"
+            )
+        normalized[source_id] = _canonical_build_value(
+            values, path=f"adapter_options.{source_id}"
+        )
+    return normalized
+
+
+def _validate_manifest_enums(root: Path, selected: pd.DataFrame) -> None:
+    enums = load_enums(root / "结构定义" / "v0.1枚举.yaml")["enums"]
+    for column, enum_name in (
+        ("status", "source_status"),
+        ("access_restriction", "access_restriction"),
+        ("material_scope", "material_scope"),
+        ("evidence_grade", "evidence_grade"),
+    ):
+        allowed = set(enums[enum_name])
+        invalid = sorted(
+            {
+                str(value)
+                for value in selected[column]
+                if pd.isna(value) or str(value) not in allowed
+            }
+        )
+        if invalid:
+            raise ValueError(
+                f"manifest {column} 包含未声明的 {enum_name} 值: {invalid}"
+            )
 
 
 def _normalized_text_sha256(path: Path) -> str:
@@ -247,7 +360,8 @@ def extract_staging_tables(
     if not root.is_dir():
         raise ValueError("project_root 必须是目录")
     selected = _selected_manifest(_manifest_frame(manifest_rows))
-    options = adapter_options or {}
+    _validate_manifest_enums(root, selected)
+    options = _normalize_adapter_options(adapter_options)
     collected: dict[str, list[pd.DataFrame]] = {}
 
     def append(table_name: str, frame: pd.DataFrame) -> None:
@@ -310,18 +424,26 @@ def _policy_columns(selected: pd.DataFrame) -> pd.DataFrame:
             "license_spdx",
             "derivatives_allowed",
             "redistribution_allowed",
+            "access_restriction",
             "material_scope",
             "status",
         ]
     ].copy()
+    for source_id, group in policy.groupby("source_id", sort=True, dropna=False):
+        if len(group[list(_POLICY_FIELDS)].drop_duplicates()) != 1:
+            raise ValueError(
+                f"同一 source_id 的许可策略必须一致；请拆分来源: {source_id}"
+            )
     policy["may_publish"] = [
         may_publish(license_id, derivatives, redistribution)
-        and str(scope) not in _RESTRICTED_SCOPES
-        for license_id, derivatives, redistribution, scope in zip(
+        and str(access).strip().casefold() in _PUBLIC_ACCESS_RESTRICTIONS
+        and str(status).strip().casefold() in _PUBLIC_SOURCE_STATUSES
+        for license_id, derivatives, redistribution, access, status in zip(
             policy["license_spdx"],
             policy["derivatives_allowed"],
             policy["redistribution_allowed"],
-            policy["material_scope"],
+            policy["access_restriction"],
+            policy["status"],
             strict=True,
         )
     ]
@@ -336,6 +458,7 @@ def _attach_policy(frame: pd.DataFrame, policy: pd.DataFrame) -> pd.DataFrame:
         "license_spdx",
         "derivatives_allowed",
         "redistribution_allowed",
+        "access_restriction",
         "material_scope",
         "source_status",
         "may_publish",
@@ -375,14 +498,6 @@ def _source_tables(selected: pd.DataFrame, policy: pd.DataFrame) -> tuple[pd.Dat
     )
     source_file["schema_version"] = SCHEMA_VERSION
     source_file["status"] = source_file["source_status"]
-    source_file["access_restriction"] = source_file.apply(
-        lambda row: (
-            "restricted"
-            if str(row["material_scope"]) in _RESTRICTED_SCOPES
-            else ("open" if bool(row["may_publish"]) else "unknown")
-        ),
-        axis=1,
-    )
     source_columns = [
         column
         for column in (
@@ -408,11 +523,12 @@ def _source_tables(selected: pd.DataFrame, policy: pd.DataFrame) -> tuple[pd.Dat
 
 
 def _normalize_chemical_candidates(frame: pd.DataFrame) -> pd.DataFrame:
-    """Collapse identical raw structure keys without choosing conflicting names."""
+    """Collapse structures while conservatively inheriting every contributor policy."""
 
     rows: list[dict[str, Any]] = []
     for chemical_id, group in frame.sort_values(
-        ["chemical_id", "source_record_id"], kind="mergesort"
+        ["chemical_id", "source_id", "source_file_id", "source_record_id"],
+        kind="mergesort",
     ).groupby("chemical_id", sort=True, dropna=False):
         row = group.iloc[0].to_dict()
         names = sorted(
@@ -433,7 +549,60 @@ def _normalize_chemical_candidates(frame: pd.DataFrame) -> pd.DataFrame:
             ensure_ascii=False,
             separators=(",", ":"),
         )
+        row["source_ids_json"] = json.dumps(
+            sorted(set(group["source_id"].astype(str))),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        row["source_file_ids_json"] = json.dumps(
+            sorted(set(group["source_file_id"].astype(str))),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        row["source_locators_json"] = json.dumps(
+            sorted(set(group["source_locator"].astype(str))),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
         row["source_record_count"] = len(group)
+        aggregate_policy_fields = (
+            "license_spdx",
+            "derivatives_allowed",
+            "redistribution_allowed",
+            "access_restriction",
+            "material_scope",
+            "source_status",
+        )
+        policy_values = {
+            json.dumps(
+                [_signature_value(value) for value in values],
+                ensure_ascii=False,
+                separators=(",", ":"),
+            )
+            for values in group[list(aggregate_policy_fields)].itertuples(
+                index=False, name=None
+            )
+        }
+        uniform_policy = len(policy_values) == 1
+        all_publishable = bool(group["may_publish"].eq(True).all())  # noqa: E712
+        if uniform_policy:
+            row["license_resolution_status"] = (
+                "uniform_publishable" if all_publishable else "uniform_blocked"
+            )
+            row["may_publish"] = all_publishable
+        else:
+            row.update(
+                {
+                    "license_spdx": "NOASSERTION",
+                    "derivatives_allowed": False,
+                    "redistribution_allowed": False,
+                    "access_restriction": "restricted",
+                    "material_scope": "unknown",
+                    "source_status": "review_required",
+                    "may_publish": False,
+                    "license_resolution_status": "mixed_or_blocked",
+                }
+            )
         row["table_role"] = "virtual_candidate_structure"
         row["extraction_method_raw"] = row["extraction_method"]
         row["extraction_method"] = "direct_table"
@@ -452,8 +621,8 @@ def normalize_staging_tables(
     policy = _policy_columns(selected)
     source, source_file = _source_tables(selected, policy)
 
-    chemical = _normalize_chemical_candidates(staging["smipoly_chemical"])
-    chemical = _attach_policy(chemical, policy)
+    chemical = _attach_policy(staging["smipoly_chemical"], policy)
+    chemical = _normalize_chemical_candidates(chemical)
 
     pue = staging["pue_transformed"].copy()
     pue["table_role"] = "transformed_feature_auxiliary"
@@ -612,6 +781,7 @@ def derive_curve_metrics(
         "license_spdx",
         "derivatives_allowed",
         "redistribution_allowed",
+        "access_restriction",
         "material_scope",
         "source_status",
         "may_publish",
@@ -693,6 +863,7 @@ def derive_curve_metrics(
                     "license_spdx": curve_row["license_spdx"],
                     "derivatives_allowed": curve_row["derivatives_allowed"],
                     "redistribution_allowed": curve_row["redistribution_allowed"],
+                    "access_restriction": curve_row["access_restriction"],
                     "material_scope": curve_row["material_scope"],
                     "source_status": curve_row["source_status"],
                     "may_publish": bool(curve_row["may_publish"]),
@@ -702,10 +873,44 @@ def derive_curve_metrics(
 
 
 def _public_view(frame: pd.DataFrame) -> pd.DataFrame:
-    if "may_publish" not in frame.columns or "material_scope" not in frame.columns:
-        raise ValueError("公开视图要求 may_publish 和 material_scope 字段")
-    allowed = frame["may_publish"].eq(True) & ~frame["material_scope"].isin(  # noqa: E712
-        _RESTRICTED_SCOPES
+    required = {
+        "license_spdx",
+        "derivatives_allowed",
+        "redistribution_allowed",
+        "access_restriction",
+        "source_status",
+        "material_scope",
+        "may_publish",
+    }
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"公开视图缺少许可门控字段: {missing}")
+    license_gate = pd.Series(
+        [
+            may_publish(license_id, derivatives, redistribution)
+            for license_id, derivatives, redistribution in zip(
+                frame["license_spdx"],
+                frame["derivatives_allowed"],
+                frame["redistribution_allowed"],
+                strict=True,
+            )
+        ],
+        index=frame.index,
+        dtype=bool,
+    )
+    allowed = (
+        frame["may_publish"].eq(True)  # noqa: E712
+        & license_gate
+        & frame["source_status"].astype(str).str.strip().str.casefold().isin(
+            _PUBLIC_SOURCE_STATUSES
+        )
+        & frame["access_restriction"]
+        .astype(str)
+        .str.strip()
+        .str.casefold()
+        .isin(_PUBLIC_ACCESS_RESTRICTIONS)
+        & frame["material_scope"].notna()
+        & frame["material_scope"].astype(str).str.strip().ne("")
     )
     return frame.loc[allowed].reset_index(drop=True)
 
@@ -809,6 +1014,24 @@ def run_quality_checks(
     issues.extend(
         _curve_count_issues(normalized["curve"], normalized["curve_point"])
     )
+    issues.extend(check_unresolved_units(normalized["curve"], "curve"))
+    issues.extend(
+        check_unresolved_units(normalized["curve_point"], "curve_point")
+    )
+    chemical = normalized["chemical_candidate"]
+    if "license_resolution_status" in chemical.columns:
+        for row in chemical.loc[
+            chemical["license_resolution_status"].eq("mixed_or_blocked")
+        ].to_dict(orient="records"):
+            issues.append(
+                QualityIssue(
+                    "license.mixed_provenance_requires_review",
+                    "warning",
+                    "chemical_candidate",
+                    str(row.get("chemical_id", "")),
+                    "同一候选结构汇集了不一致的来源许可策略，已从公开视图阻断",
+                )
+            )
     issues.extend(check_primary_key(derived, "derived_property", ["derived_id"]))
 
     eligible_ids = set(
@@ -884,6 +1107,7 @@ def _write_qc(
             "finite_values",
             "lineage_split",
             "curve_point_count",
+            "unit_status",
             "derived_coverage",
             "public_release_license",
         ],
@@ -966,8 +1190,9 @@ def build_database(
     """构建四源分层数据库并返回行数、输出元数据和结构化问题。"""
 
     root = Path(project_root).resolve(strict=True)
+    normalized_adapter_options = _normalize_adapter_options(adapter_options)
     staging, selected = extract_staging_tables(
-        root, manifest_rows, adapter_options=adapter_options
+        root, manifest_rows, adapter_options=normalized_adapter_options
     )
     normalized = normalize_staging_tables(staging, selected)
     derived, derivation_issues = derive_curve_metrics(
@@ -999,10 +1224,12 @@ def build_database(
         signature_row["sha256"] = str(signature_row["sha256"]).upper()
         input_signature.append(signature_row)
     transformation_signature = pipeline_signature(root)
+    build_parameters = {"adapter_options": normalized_adapter_options}
     snapshot_id = stable_id(
         "snapshot",
         SCHEMA_VERSION,
         transformation_signature,
+        build_parameters,
         input_signature,
     )
 
@@ -1091,6 +1318,7 @@ def build_database(
         "snapshot_id": snapshot_id,
         "schema_version": SCHEMA_VERSION,
         "pipeline": transformation_signature,
+        "build_parameters": build_parameters,
         "input_hashes": input_signature,
         "row_counts": dict(sorted(row_counts.items())),
         "outputs": {name: outputs[name] for name in sorted(outputs)},

@@ -7,6 +7,7 @@ from qc import (
     check_primary_key,
     check_provenance,
     check_public_release,
+    check_unresolved_units,
     has_errors,
     issues_frame,
 )
@@ -78,8 +79,13 @@ def test_same_lineage_may_not_cross_split():
 def test_public_release_blocks_restricted_records():
     frame = pd.DataFrame(
         {
-            "may_publish": [True, False, True],
-            "material_scope": ["linear_tpu", "linear_tpu", "reference_only"],
+            "license_spdx": ["CC-BY-4.0", "UNKNOWN", "CC-BY-4.0"],
+            "derivatives_allowed": [True, True, True],
+            "redistribution_allowed": [True, True, True],
+            "access_restriction": ["open", "open", "author_request"],
+            "source_status": ["available", "available", "available"],
+            "may_publish": [True, True, True],
+            "material_scope": ["linear_tpu", "linear_tpu", "linear_tpu"],
         }
     )
     issues = check_public_release(frame, "public")
@@ -94,3 +100,34 @@ def test_public_release_requires_gate_columns_and_empty_issue_frame_is_stable():
         "rule_id", "severity", "table_name", "record_id", "message"
     ]
     assert not has_errors([])
+
+
+def test_public_release_recomputes_status_access_and_license_gate():
+    base = {
+        "license_spdx": "CC-BY-4.0",
+        "derivatives_allowed": True,
+        "redistribution_allowed": True,
+        "access_restriction": "open",
+        "source_status": "available",
+        "material_scope": "linear_tpu",
+        "may_publish": True,
+    }
+    assert check_public_release(pd.DataFrame([base]), "public") == []
+    for mutation in (
+        {"source_status": "withdrawn"},
+        {"source_status": "review_required"},
+        {"access_restriction": "reference_only"},
+        {"license_spdx": "UNKNOWN"},
+        {"redistribution_allowed": False},
+    ):
+        row = {**base, **mutation}
+        assert check_public_release(pd.DataFrame([row]), "public")
+
+
+def test_unresolved_units_emit_one_aggregate_warning():
+    frame = pd.DataFrame({"unit_status": ["converted", "unresolved", "unresolved"]})
+    issues = check_unresolved_units(frame, "curve")
+    assert len(issues) == 1
+    assert issues[0].severity == "warning"
+    assert issues[0].record_id == "count=2"
+    assert check_unresolved_units(pd.DataFrame({"unit_status": ["converted"]}), "curve") == []

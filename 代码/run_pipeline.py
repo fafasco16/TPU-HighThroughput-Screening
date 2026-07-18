@@ -38,6 +38,7 @@ def build_full_manifest(
             "license_spdx": "UNKNOWN",
             "derivatives_allowed": None,
             "redistribution_allowed": None,
+            "access_restriction": "unknown",
             "evidence_grade": "metadata_only",
             "material_scope": "unknown",
             "status": "review_required",

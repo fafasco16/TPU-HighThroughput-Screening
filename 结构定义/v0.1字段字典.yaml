@@ -56,6 +56,9 @@ tables:
       source_id: {type: string, required: true}
       source_file_id: {type: string, required: true}
       source_locator: {type: string, required: true}
+      source_ids_json: {type: string, required: true, description: 全部贡献来源ID的JSON数组}
+      source_file_ids_json: {type: string, required: true, description: 全部贡献文件ID的JSON数组}
+      source_locators_json: {type: string, required: true, description: 全部贡献源定位的JSON数组}
       preferred_name: {type: string, required: false}
       cas_number: {type: string, required: false}
       smiles_raw: {type: string, required: false}
@@ -63,6 +66,13 @@ tables:
       inchikey: {type: string, required: false}
       role_status: {type: string, required: true, enum: role_status}
       functionality: {type: number, required: false}
+      license_spdx: {type: string, required: true}
+      derivatives_allowed: {type: boolean, required: false}
+      redistribution_allowed: {type: boolean, required: false}
+      access_restriction: {type: string, required: true, enum: access_restriction}
+      source_status: {type: string, required: true, enum: source_status}
+      may_publish: {type: boolean, required: true}
+      license_resolution_status: {type: string, required: true, enum: license_resolution_status}
       extraction_method: {type: string, required: true, enum: extraction_method}
       fidelity: {type: string, required: true, enum: evidence_grade}
       schema_version: {type: string, required: true}

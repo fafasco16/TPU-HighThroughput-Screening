@@ -284,6 +284,7 @@ function normalizeManifest(rows) {
       license_spdx: textValue(row.license_spdx) || "UNKNOWN",
       derivatives_allowed: booleanOrBlank(row.derivatives_allowed),
       redistribution_allowed: booleanOrBlank(row.redistribution_allowed),
+      access_restriction: textValue(row.access_restriction) || "unknown",
       evidence_grade: textValue(row.evidence_grade),
       material_scope: textValue(row.material_scope),
       status: textValue(row.status),
@@ -331,6 +332,7 @@ function registeredSourceRows(sourceDocument) {
       textValue(source.license_spdx) || "UNKNOWN",
       booleanOrBlank(source.derivatives_allowed),
       booleanOrBlank(source.redistribution_allowed),
+      textValue(source.access_restriction) || "unknown",
       textValue(source.evidence_grade),
       textValue(source.material_scope),
       textValue(source.status),
@@ -361,7 +363,11 @@ function normalizeIssue(issue, sourcePath) {
 
 async function loadQualityIssues() {
   const reportFiles = await listFiles(INPUTS.qualityDir, new Set([".csv", ".json"]));
-  const qualityFiles = reportFiles.filter((filePath) => path.basename(filePath).includes("质量问题"));
+  const issueCandidates = reportFiles.filter((filePath) => path.basename(filePath).includes("质量问题"));
+  const jsonIssueFiles = issueCandidates.filter((filePath) => path.extname(filePath).toLowerCase() === ".json");
+  const qualityFiles = jsonIssueFiles.length > 0
+    ? jsonIssueFiles
+    : issueCandidates.filter((filePath) => path.extname(filePath).toLowerCase() === ".csv");
   const issues = [];
   for (const filePath of qualityFiles) {
     if (path.extname(filePath).toLowerCase() === ".csv") {
@@ -412,11 +418,12 @@ function coverageDescriptors(manifestRows) {
   const dataEnd = Math.max(dataStart, dataStart + manifestRows.length - 1);
   const dataRange = {
     bytes: `'数据来源'!$E$${dataStart}:$E$${dataEnd}`,
-    evidence: `'数据来源'!$M$${dataStart}:$M$${dataEnd}`,
-    scope: `'数据来源'!$N$${dataStart}:$N$${dataEnd}`,
-    status: `'数据来源'!$O$${dataStart}:$O$${dataEnd}`,
-    layer: `'数据来源'!$Q$${dataStart}:$Q$${dataEnd}`,
-    extension: `'数据来源'!$R$${dataStart}:$R$${dataEnd}`,
+    access: `'数据来源'!$M$${dataStart}:$M$${dataEnd}`,
+    evidence: `'数据来源'!$N$${dataStart}:$N$${dataEnd}`,
+    scope: `'数据来源'!$O$${dataStart}:$O$${dataEnd}`,
+    status: `'数据来源'!$P$${dataStart}:$P$${dataEnd}`,
+    layer: `'数据来源'!$R$${dataStart}:$R$${dataEnd}`,
+    extension: `'数据来源'!$S$${dataStart}:$S$${dataEnd}`,
   };
   const descriptors = [];
   const add = (dimension, label, conditionRange, condition, note) => {
@@ -446,6 +453,9 @@ function coverageDescriptors(manifestRows) {
   for (const value of uniqueValues("status")) {
     add("来源状态", value, dataRange.status, value === "未标注" ? "" : value, "来自来源清单 status");
   }
+  for (const value of uniqueValues("access_restriction")) {
+    add("访问限制", value, dataRange.access, value === "未标注" ? "" : value, "来自来源清单 access_restriction");
+  }
 
   const extensionCounts = new Map();
   for (const row of manifestRows) {
@@ -473,10 +483,33 @@ function licenseRows(manifestRows, sourceDocument) {
       const registered = (sourceDocument.sources ?? []).filter(
         (source) => (textValue(source.license_spdx) || "UNKNOWN") === license,
       );
-      const redistributionAllowed =
-        registered.length > 0 && registered.every((source) => source.redistribution_allowed === true);
+      const files = manifestRows.filter(
+        (row) => (textValue(row.license_spdx) || "UNKNOWN") === license,
+      );
+      const redistributionAllowed = registered.length > 0 && registered.every(
+        (source) =>
+          source.derivatives_allowed === true &&
+          source.redistribution_allowed === true &&
+          textValue(source.access_restriction).toLowerCase() === "open" &&
+          textValue(source.status).toLowerCase() === "available",
+      );
+      const publicFileCount = redistributionAllowed
+        ? files.filter(
+            (row) =>
+              row.derivatives_allowed === true &&
+              row.redistribution_allowed === true &&
+              textValue(row.access_restriction).toLowerCase() === "open" &&
+              textValue(row.status).toLowerCase() === "available",
+          ).length
+        : 0;
       return {
         license,
+        fileCount: files.length,
+        bytes: files.reduce((total, row) => total + numberOrZero(row.size_bytes), 0),
+        publicFileCount,
+        reviewFileCount: files.filter(
+          (row) => textValue(row.status).toLowerCase() === "review_required",
+        ).length,
         verdict: redistributionAllowed ? "允许" : "禁止或待复核",
         registeredCount: registered.length,
         note: redistributionAllowed
@@ -553,12 +586,12 @@ function populateOverview(sheet, sourceRows, dimensions) {
     sheet,
     "TPU 高通量筛选数据库 v0.1 · 审核总览",
     "本工作簿是可追溯审核目录，不替代原始数据、规范化 Parquet 或 DuckDB 快照；公开发布必须通过许可证与质量门控。",
-    "H",
+    "I",
     3,
   );
 
   const cards = [
-    ["来源文件数", `=COUNTA('数据来源'!$B$5:$B$${dimensions.sourceEnd})`, "原始数据量 (Byte)", `=SUM('数据来源'!$E$5:$E$${dimensions.sourceEnd})`, "可用文件数", `=COUNTIF('数据来源'!$O$5:$O$${dimensions.sourceEnd},"available")`, "待复核文件数", `=COUNTIF('数据来源'!$O$5:$O$${dimensions.sourceEnd},"review_required")`],
+    ["来源文件数", `=COUNTA('数据来源'!$B$5:$B$${dimensions.sourceEnd})`, "原始数据量 (Byte)", `=SUM('数据来源'!$E$5:$E$${dimensions.sourceEnd})`, "可用文件数", `=COUNTIF('数据来源'!$P$5:$P$${dimensions.sourceEnd},"available")`, "待复核文件数", `=COUNTIF('数据来源'!$P$5:$P$${dimensions.sourceEnd},"review_required")`],
     ["字段数量", `=COUNTA('字段字典'!$D$5:$D$${dimensions.fieldEnd})`, "登记来源数", `=COUNTA('总览'!$A$17:$A$${dimensions.overviewSourceEnd})`, "已知许可证文件", `=COUNTIF('数据来源'!$J$5:$J$${dimensions.sourceEnd},"<>UNKNOWN")`, "未知许可证文件", `=COUNTIF('数据来源'!$J$5:$J$${dimensions.sourceEnd},"UNKNOWN")`],
     ["许可证类型数", `=COUNTA('许可证'!$A$5:$A$${dimensions.licenseEnd})`, "可公开再分发文件", `=SUM('许可证'!$D$5:$D$${dimensions.licenseEnd})`, "质量问题数", `=COUNTIF('质量问题'!$C$5:$C$${dimensions.qualityEnd},"<>NO_ISSUES_FILE")-COUNTIF('质量问题'!$C$5:$C$${dimensions.qualityEnd},"NO_QUALITY_ISSUES")`, "快照文件数", "='构建信息'!$C$8"],
   ];
@@ -599,29 +632,29 @@ function populateOverview(sheet, sourceRows, dimensions) {
     borders: { preset: "outside", style: "thin", color: "#F59E0B" },
   };
 
-  const headers = ["来源ID", "项目内相对路径", "许可证", "允许衍生", "允许再分发", "证据等级", "材料范围", "状态"];
-  sheet.getRange(`A16:H${dimensions.overviewSourceEnd}`).values = [headers, ...sourceRows];
-  addTable(sheet, `A16:H${dimensions.overviewSourceEnd}`, "RegisteredSourcesTable", "TableStyleMedium4");
-  addStatusFormats(sheet.getRange(`H17:H${dimensions.overviewSourceEnd}`), [
+  const headers = ["来源ID", "项目内相对路径", "许可证", "允许衍生", "允许再分发", "访问限制", "证据等级", "材料范围", "状态"];
+  sheet.getRange(`A16:I${dimensions.overviewSourceEnd}`).values = [headers, ...sourceRows];
+  addTable(sheet, `A16:I${dimensions.overviewSourceEnd}`, "RegisteredSourcesTable", "TableStyleMedium4");
+  addStatusFormats(sheet.getRange(`I17:I${dimensions.overviewSourceEnd}`), [
     { text: "available", fill: COLORS.green, font: COLORS.greenText },
     { text: "review_required", fill: COLORS.yellow, font: COLORS.yellowText },
   ]);
   addStatusFormats(sheet.getRange(`C17:C${dimensions.overviewSourceEnd}`), [
     { text: "UNKNOWN", fill: COLORS.red, font: COLORS.redText },
   ]);
-  setWidths(sheet, [24, 48, 20, 14, 14, 22, 24, 20], dimensions.overviewSourceEnd);
+  setWidths(sheet, [24, 48, 20, 14, 14, 20, 22, 24, 20], dimensions.overviewSourceEnd);
   sheet.getRange(`B17:B${dimensions.overviewSourceEnd}`).format.wrapText = true;
 }
 
 function populateSourceFiles(sheet, manifestRows) {
   const headers = [
     "来源ID", "来源文件ID", "原始相对路径", "原始文件名", "大小(Byte)", "SHA-256", "DOI", "来源URL",
-    "访问日期", "许可证", "允许衍生", "允许再分发", "证据等级", "材料范围", "状态", "备注", "原始数据层(派生)", "文件扩展名(派生)",
+    "访问日期", "许可证", "允许衍生", "允许再分发", "访问限制", "证据等级", "材料范围", "状态", "备注", "原始数据层(派生)", "文件扩展名(派生)",
   ];
   const dataRows = manifestRows.map((row) => [
     row.source_id, row.source_file_id, row.raw_path, row.original_filename, row.size_bytes, row.sha256, row.doi,
     row.url, row.accessed_at, row.license_spdx, row.derivatives_allowed, row.redistribution_allowed,
-    row.evidence_grade, row.material_scope, row.status, row.notes,
+    row.access_restriction, row.evidence_grade, row.material_scope, row.status, row.notes,
     row.raw_path.split("/")[0] === "01_原始数据" && row.raw_path.split("/")[1]
       ? row.raw_path.split("/")[1]
       : "其他",
@@ -632,16 +665,16 @@ function populateSourceFiles(sheet, manifestRows) {
     sheet,
     "数据来源与文件级溯源清单",
     "每行对应一个本地原始文件；SHA-256、许可证、访问日期与发布状态用于完整性复核和 fail-closed 发布门控。",
-    "R",
+    "S",
   );
-  sheet.getRange(`A4:R${finalRow}`).values = [headers, ...dataRows];
-  addTable(sheet, `A4:R${finalRow}`, "SourceFilesTable");
-  setWidths(sheet, [24, 27, 52, 32, 16, 26, 22, 36, 14, 20, 14, 14, 22, 22, 20, 54, 20, 20], finalRow);
+  sheet.getRange(`A4:S${finalRow}`).values = [headers, ...dataRows];
+  addTable(sheet, `A4:S${finalRow}`, "SourceFilesTable");
+  setWidths(sheet, [24, 27, 52, 32, 16, 26, 22, 36, 14, 20, 14, 14, 20, 22, 22, 20, 54, 20, 20], finalRow);
   sheet.getRange(`E5:E${finalRow}`).format.numberFormat = "#,##0";
   sheet.getRange(`I5:I${finalRow}`).format.numberFormat = "yyyy-mm-dd";
   sheet.getRange(`C5:C${finalRow}`).format.wrapText = true;
-  sheet.getRange(`P5:P${finalRow}`).format.wrapText = true;
-  addStatusFormats(sheet.getRange(`O5:O${finalRow}`), [
+  sheet.getRange(`Q5:Q${finalRow}`).format.wrapText = true;
+  addStatusFormats(sheet.getRange(`P5:P${finalRow}`), [
     { text: "available", fill: COLORS.green, font: COLORS.greenText },
     { text: "review_required", fill: COLORS.yellow, font: COLORS.yellowText },
     { text: "unavailable", fill: COLORS.red, font: COLORS.redText },
@@ -715,29 +748,26 @@ function populateQuality(sheet, issues) {
   ]);
 }
 
-function populateLicenses(sheet, licenses, sourceEnd) {
+function populateLicenses(sheet, licenses) {
   const headers = ["许可证标识", "文件数", "数据量(Byte)", "可公开再分发文件", "待复核文件", "公开再分发判定", "已登记来源数", "说明"];
-  const dataRows = licenses.map((row) => [row.license, null, null, null, null, row.verdict, row.registeredCount, row.note]);
+  const dataRows = licenses.map((row) => [
+    row.license,
+    row.fileCount,
+    row.bytes,
+    row.publicFileCount,
+    row.reviewFileCount,
+    row.verdict,
+    row.registeredCount,
+    row.note,
+  ]);
   const finalRow = 4 + dataRows.length;
   prepareSheet(
     sheet,
     "许可证与公开再分发门控",
-    "统计公式引用文件级来源清单；未确认许可、衍生权利或再分发权利时一律按禁止公开处理。",
+    "确定性汇总引用文件级来源清单；未确认许可、衍生权利或再分发权利时一律按禁止公开处理。",
     "H",
   );
   sheet.getRange(`A4:H${finalRow}`).values = [headers, ...dataRows];
-  licenses.forEach((license, index) => {
-    const row = index + 5;
-    const criterion = excelString(license.license);
-    sheet.getRange(`B${row}:E${row}`).formulas = [[
-      `=COUNTIF('数据来源'!$J$5:$J$${sourceEnd},"${criterion}")`,
-      `=SUMIF('数据来源'!$J$5:$J$${sourceEnd},"${criterion}",'数据来源'!$E$5:$E$${sourceEnd})`,
-      license.verdict === "允许"
-        ? `=COUNTIFS('数据来源'!$J$5:$J$${sourceEnd},"${criterion}",'数据来源'!$O$5:$O$${sourceEnd},"available")`
-        : "=0",
-      `=COUNTIFS('数据来源'!$J$5:$J$${sourceEnd},"${criterion}",'数据来源'!$O$5:$O$${sourceEnd},"review_required")`,
-    ]];
-  });
   addTable(sheet, `A4:H${finalRow}`, "LicenseGateTable", "TableStyleMedium5");
   setWidths(sheet, [22, 14, 20, 20, 18, 22, 18, 58], finalRow);
   sheet.getRange(`B5:E${finalRow}`).format.numberFormat = "#,##0";
@@ -831,13 +861,13 @@ async function main() {
   populateFieldDictionary(sheets["字段字典"], fieldRows);
   populateCoverage(sheets["数据覆盖"], descriptors, `'总览'!$B$4`);
   populateQuality(sheets["质量问题"], issues);
-  populateLicenses(sheets["许可证"], licenses, dimensions.sourceEnd);
+  populateLicenses(sheets["许可证"], licenses);
   populateBuildInfo(sheets["构建信息"], buildRows);
   populateOverview(sheets["总览"], sourceRows, dimensions);
 
   const overviewCheck = await workbook.inspect({
     kind: "table",
-    range: "总览!A1:H20",
+    range: "总览!A1:I20",
     include: "values,formulas",
     tableMaxRows: 20,
     tableMaxCols: 8,
@@ -853,7 +883,7 @@ async function main() {
   });
   const sourceCheck = await workbook.inspect({
     kind: "table",
-    range: "数据来源!A1:R9",
+    range: "数据来源!A1:S9",
     include: "values,formulas",
     tableMaxRows: 9,
     tableMaxCols: 18,
@@ -885,8 +915,8 @@ async function main() {
   }
 
   const previewRanges = {
-    "总览": `A1:H${dimensions.overviewSourceEnd}`,
-    "数据来源": "A1:R26",
+    "总览": `A1:I${dimensions.overviewSourceEnd}`,
+    "数据来源": "A1:S26",
     "字段字典": `A1:I${Math.min(dimensions.fieldEnd, 30)}`,
     "数据覆盖": `A1:F${Math.min(4 + descriptors.length, 36)}`,
     "质量问题": `A1:I${Math.min(dimensions.qualityEnd, 30)}`,

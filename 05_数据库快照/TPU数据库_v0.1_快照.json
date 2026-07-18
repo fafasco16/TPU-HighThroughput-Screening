@@ -1,6 +1,10 @@
 {
+  "build_parameters": {
+    "adapter_options": {}
+  },
   "input_hashes": [
     {
+      "access_restriction": "open",
       "accessed_at": "2026-07-18",
       "derivatives_allowed": "True",
       "doi": "10.1038/s41467-021-20931-z",
@@ -17,6 +21,7 @@
       "url": "https://doi.org/10.6084/m9.figshare.12936989.v1"
     },
     {
+      "access_restriction": "open",
       "accessed_at": "2026-07-18",
       "derivatives_allowed": "",
       "doi": "",
@@ -33,6 +38,7 @@
       "url": "https://github.com/joepugar/viscosity-modeling"
     },
     {
+      "access_restriction": "open",
       "accessed_at": "2026-07-18",
       "derivatives_allowed": "",
       "doi": "",
@@ -49,6 +55,7 @@
       "url": "https://github.com/big-material/DQ"
     },
     {
+      "access_restriction": "open",
       "accessed_at": "2026-07-18",
       "derivatives_allowed": "True",
       "doi": "",
@@ -68,6 +75,7 @@
   "outputs": {
     "derived_property": {
       "columns": [
+        "access_restriction",
         "algorithm_version",
         "curve_id",
         "derivatives_allowed",
@@ -89,8 +97,8 @@
       ],
       "path": "04_派生数据/derived_property.parquet",
       "rows": 48,
-      "sha256": "E6DAB514B267E7E10B134FB4B44FD5C8457BFCB6730589C30B80B6E29548A849",
-      "size_bytes": 12743
+      "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
+      "size_bytes": 13315
     },
     "duckdb": {
       "byte_reproducible": false,
@@ -100,12 +108,13 @@
     },
     "field_coverage_csv": {
       "path": "文档/质量报告/TPU数据库_v0.1_字段覆盖.csv",
-      "rows": 247,
-      "sha256": "E57A6C11DF938B4F3F3BC6B911CD1E79DBB937D8E1C8CEB658EB8507627D53F4",
-      "size_bytes": 14063
+      "rows": 257,
+      "sha256": "5CEF7F6886909F1B1C1C35EB8EEDC93374F52F34F1FA21517A7BBD014FAD9802",
+      "size_bytes": 14720
     },
     "normalized_chemical_candidate": {
       "columns": [
+        "access_restriction",
         "chemical_id",
         "derivatives_allowed",
         "duplicate_count",
@@ -117,6 +126,7 @@
         "functionality",
         "iupac_name_raw",
         "iupac_names_raw_json",
+        "license_resolution_status",
         "license_spdx",
         "material_scope",
         "may_publish",
@@ -132,8 +142,11 @@
         "schema_version",
         "smiles_raw",
         "source_file_id",
+        "source_file_ids_json",
         "source_id",
+        "source_ids_json",
         "source_locator",
+        "source_locators_json",
         "source_record_count",
         "source_record_id",
         "source_record_ids_json",
@@ -143,11 +156,12 @@
       ],
       "path": "03_规范数据/chemical_candidate.parquet",
       "rows": 1071,
-      "sha256": "82A2AAC083A281564096522A7AFD9D33DF4410BF03126F049AA166EA29D315E8",
-      "size_bytes": 132971
+      "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
+      "size_bytes": 143210
     },
     "normalized_curve": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "curve_id",
         "curve_type",
@@ -198,11 +212,12 @@
       ],
       "path": "03_规范数据/curve.parquet",
       "rows": 92,
-      "sha256": "200B4A8BEA61CCD0E7C637971BE7E2AFE65094C9DCA57C9D91501D3BA084190A",
-      "size_bytes": 34520
+      "sha256": "42035F8585242ED982AEF70E769842D73627FBC104E5E65A764ADD4627B7B203",
+      "size_bytes": 35096
     },
     "normalized_curve_point": {
       "columns": [
+        "access_restriction",
         "curve_id",
         "derivatives_allowed",
         "extraction_method",
@@ -246,11 +261,12 @@
       ],
       "path": "03_规范数据/curve_point.parquet",
       "rows": 30531,
-      "sha256": "1CDF95D40AFD330CE3F6F388E540952A40E0F9C909B9E01BD8C214BCFD2B90A9",
-      "size_bytes": 1477159
+      "sha256": "AD6E22C766F47B223D860D40B69EC094567857C2A86B4392A3444ACBE9579649",
+      "size_bytes": 1477757
     },
     "normalized_property_value": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "derivatives_allowed",
         "extraction_method",
@@ -285,8 +301,8 @@
       ],
       "path": "03_规范数据/property_value.parquet",
       "rows": 19,
-      "sha256": "82617FE5AE37503F4A8002DE426EEA359544C6BDDF46E27AD2FA87640E15C272",
-      "size_bytes": 19921
+      "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
+      "size_bytes": 20492
     },
     "normalized_pue_transformed_auxiliary": {
       "columns": [
@@ -311,6 +327,7 @@
         "ZS_log_StrainRate",
         "ZS_log_Tr1K",
         "ZS_log_Tr2K",
+        "access_restriction",
         "derivatives_allowed",
         "extraction_method",
         "extraction_method_raw",
@@ -336,8 +353,8 @@
       ],
       "path": "03_规范数据/pue_transformed_auxiliary.parquet",
       "rows": 326,
-      "sha256": "C9D6AB093B55900CD592D6DEB0035D559143B9EC0940DFA45BE29758D9B11FC2",
-      "size_bytes": 70026
+      "sha256": "CE1D76E8173DB93EC340AEB4E41B7C2F45857D40EEBF8BC464B65C057355F564",
+      "size_bytes": 70603
     },
     "normalized_source": {
       "columns": [
@@ -358,8 +375,8 @@
       ],
       "path": "03_规范数据/source.parquet",
       "rows": 4,
-      "sha256": "F6196A64C9E69B082798E638871C9C0E5E06CE541E53F9665952B2C41B7FA58E",
-      "size_bytes": 9357
+      "sha256": "B7A5A9D728CDDB7A2D68D36B26218D6FB8428CBE0AE3FAABC4B3E43D62F84E54",
+      "size_bytes": 9331
     },
     "normalized_source_file": {
       "columns": [
@@ -386,11 +403,12 @@
       ],
       "path": "03_规范数据/source_file.parquet",
       "rows": 4,
-      "sha256": "02908E09B0F56F170EAE9D500532C695D14404549F7ECA5AB903A67BB2C41158",
-      "size_bytes": 13583
+      "sha256": "F3BB88F72D0CAEB63141B8BA48D09D91440AE6F20EB725CE4847F4BE18D5B0B5",
+      "size_bytes": 13557
     },
     "public_chemical_candidate": {
       "columns": [
+        "access_restriction",
         "chemical_id",
         "derivatives_allowed",
         "duplicate_count",
@@ -402,6 +420,7 @@
         "functionality",
         "iupac_name_raw",
         "iupac_names_raw_json",
+        "license_resolution_status",
         "license_spdx",
         "material_scope",
         "may_publish",
@@ -417,8 +436,11 @@
         "schema_version",
         "smiles_raw",
         "source_file_id",
+        "source_file_ids_json",
         "source_id",
+        "source_ids_json",
         "source_locator",
+        "source_locators_json",
         "source_record_count",
         "source_record_id",
         "source_record_ids_json",
@@ -428,11 +450,12 @@
       ],
       "path": "04_派生数据/public_chemical_candidate.parquet",
       "rows": 1071,
-      "sha256": "82A2AAC083A281564096522A7AFD9D33DF4410BF03126F049AA166EA29D315E8",
-      "size_bytes": 132971
+      "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
+      "size_bytes": 143210
     },
     "public_curve": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "curve_id",
         "curve_type",
@@ -483,11 +506,12 @@
       ],
       "path": "04_派生数据/public_curve.parquet",
       "rows": 53,
-      "sha256": "009B99793E5C32DB9B29FDFC4A5E0370A40CB569B7285212BF0860C789B2891A",
-      "size_bytes": 30488
+      "sha256": "F6E3450CAB7CEA4B0480F895BF56FFD58F13C4139DBFFE8537E99A383DB15220",
+      "size_bytes": 31060
     },
     "public_curve_point": {
       "columns": [
+        "access_restriction",
         "curve_id",
         "derivatives_allowed",
         "extraction_method",
@@ -531,11 +555,12 @@
       ],
       "path": "04_派生数据/public_curve_point.parquet",
       "rows": 25972,
-      "sha256": "A1EE8F7B8EDDB1DA6502C8C3CAC8F124D162339B980A3A71962B314A1B838122",
-      "size_bytes": 1270877
+      "sha256": "F69B5E84E2340CB33B04ED4F12BDEDB7B78B36AAAF43251BB8CBF53111081839",
+      "size_bytes": 1271475
     },
     "public_derived_property": {
       "columns": [
+        "access_restriction",
         "algorithm_version",
         "curve_id",
         "derivatives_allowed",
@@ -557,11 +582,12 @@
       ],
       "path": "04_派生数据/public_derived_property.parquet",
       "rows": 48,
-      "sha256": "E6DAB514B267E7E10B134FB4B44FD5C8457BFCB6730589C30B80B6E29548A849",
-      "size_bytes": 12743
+      "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
+      "size_bytes": 13315
     },
     "public_property_value": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "derivatives_allowed",
         "extraction_method",
@@ -596,8 +622,8 @@
       ],
       "path": "04_派生数据/public_property_value.parquet",
       "rows": 19,
-      "sha256": "82617FE5AE37503F4A8002DE426EEA359544C6BDDF46E27AD2FA87640E15C272",
-      "size_bytes": 19921
+      "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
+      "size_bytes": 20492
     },
     "public_pue_transformed_auxiliary": {
       "columns": [
@@ -622,6 +648,7 @@
         "ZS_log_StrainRate",
         "ZS_log_Tr1K",
         "ZS_log_Tr2K",
+        "access_restriction",
         "derivatives_allowed",
         "extraction_method",
         "extraction_method_raw",
@@ -647,8 +674,8 @@
       ],
       "path": "04_派生数据/public_pue_transformed_auxiliary.parquet",
       "rows": 0,
-      "sha256": "79270F079E7EBB101450EFDAB5FBF96932EC04C4CC6B37B21E5175A642F922B5",
-      "size_bytes": 19024
+      "sha256": "BD62921449CDF94C98C805C47474F0A99CF8CCD4C8FDA531D2A45FDBC0835D8D",
+      "size_bytes": 19489
     },
     "public_source": {
       "columns": [
@@ -702,18 +729,19 @@
     },
     "qc_csv": {
       "path": "文档/质量报告/TPU数据库_v0.1_质量问题.csv",
-      "rows": 0,
-      "sha256": "09AE12F7ECD64EEE95003FEC80B28932E8C6B949B5813FDD1045128D2E9E87FB",
-      "size_bytes": 49
+      "rows": 2,
+      "sha256": "50556D95DBAF991E4D3586EA30F866C22AF4399FE4478C2D9B39081B8BD49382",
+      "size_bytes": 289
     },
     "qc_json": {
       "path": "文档/质量报告/TPU数据库_v0.1_质量问题.json",
-      "rows": 0,
-      "sha256": "B4208B8F7FB340F3983825DEE8E1370A01E82FBE34D221477719E4633CEC39C6",
-      "size_bytes": 263
+      "rows": 2,
+      "sha256": "3721CD5086D2AA845FFE6B834A2BB1B7A09EFB5B48574034794D924ADFCA221D",
+      "size_bytes": 780
     },
     "snapshot_derived_property": {
       "columns": [
+        "access_restriction",
         "algorithm_version",
         "curve_id",
         "derivatives_allowed",
@@ -735,11 +763,12 @@
       ],
       "path": "05_数据库快照/derived_property.parquet",
       "rows": 48,
-      "sha256": "E6DAB514B267E7E10B134FB4B44FD5C8457BFCB6730589C30B80B6E29548A849",
-      "size_bytes": 12743
+      "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
+      "size_bytes": 13315
     },
     "snapshot_normalized_chemical_candidate": {
       "columns": [
+        "access_restriction",
         "chemical_id",
         "derivatives_allowed",
         "duplicate_count",
@@ -751,6 +780,7 @@
         "functionality",
         "iupac_name_raw",
         "iupac_names_raw_json",
+        "license_resolution_status",
         "license_spdx",
         "material_scope",
         "may_publish",
@@ -766,8 +796,11 @@
         "schema_version",
         "smiles_raw",
         "source_file_id",
+        "source_file_ids_json",
         "source_id",
+        "source_ids_json",
         "source_locator",
+        "source_locators_json",
         "source_record_count",
         "source_record_id",
         "source_record_ids_json",
@@ -777,11 +810,12 @@
       ],
       "path": "05_数据库快照/normalized_chemical_candidate.parquet",
       "rows": 1071,
-      "sha256": "82A2AAC083A281564096522A7AFD9D33DF4410BF03126F049AA166EA29D315E8",
-      "size_bytes": 132971
+      "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
+      "size_bytes": 143210
     },
     "snapshot_normalized_curve": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "curve_id",
         "curve_type",
@@ -832,11 +866,12 @@
       ],
       "path": "05_数据库快照/normalized_curve.parquet",
       "rows": 92,
-      "sha256": "200B4A8BEA61CCD0E7C637971BE7E2AFE65094C9DCA57C9D91501D3BA084190A",
-      "size_bytes": 34520
+      "sha256": "42035F8585242ED982AEF70E769842D73627FBC104E5E65A764ADD4627B7B203",
+      "size_bytes": 35096
     },
     "snapshot_normalized_curve_point": {
       "columns": [
+        "access_restriction",
         "curve_id",
         "derivatives_allowed",
         "extraction_method",
@@ -880,11 +915,12 @@
       ],
       "path": "05_数据库快照/normalized_curve_point.parquet",
       "rows": 30531,
-      "sha256": "1CDF95D40AFD330CE3F6F388E540952A40E0F9C909B9E01BD8C214BCFD2B90A9",
-      "size_bytes": 1477159
+      "sha256": "AD6E22C766F47B223D860D40B69EC094567857C2A86B4392A3444ACBE9579649",
+      "size_bytes": 1477757
     },
     "snapshot_normalized_property_value": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "derivatives_allowed",
         "extraction_method",
@@ -919,8 +955,8 @@
       ],
       "path": "05_数据库快照/normalized_property_value.parquet",
       "rows": 19,
-      "sha256": "82617FE5AE37503F4A8002DE426EEA359544C6BDDF46E27AD2FA87640E15C272",
-      "size_bytes": 19921
+      "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
+      "size_bytes": 20492
     },
     "snapshot_normalized_pue_transformed_auxiliary": {
       "columns": [
@@ -945,6 +981,7 @@
         "ZS_log_StrainRate",
         "ZS_log_Tr1K",
         "ZS_log_Tr2K",
+        "access_restriction",
         "derivatives_allowed",
         "extraction_method",
         "extraction_method_raw",
@@ -970,8 +1007,8 @@
       ],
       "path": "05_数据库快照/normalized_pue_transformed_auxiliary.parquet",
       "rows": 326,
-      "sha256": "C9D6AB093B55900CD592D6DEB0035D559143B9EC0940DFA45BE29758D9B11FC2",
-      "size_bytes": 70026
+      "sha256": "CE1D76E8173DB93EC340AEB4E41B7C2F45857D40EEBF8BC464B65C057355F564",
+      "size_bytes": 70603
     },
     "snapshot_normalized_source": {
       "columns": [
@@ -992,8 +1029,8 @@
       ],
       "path": "05_数据库快照/normalized_source.parquet",
       "rows": 4,
-      "sha256": "F6196A64C9E69B082798E638871C9C0E5E06CE541E53F9665952B2C41B7FA58E",
-      "size_bytes": 9357
+      "sha256": "B7A5A9D728CDDB7A2D68D36B26218D6FB8428CBE0AE3FAABC4B3E43D62F84E54",
+      "size_bytes": 9331
     },
     "snapshot_normalized_source_file": {
       "columns": [
@@ -1020,11 +1057,12 @@
       ],
       "path": "05_数据库快照/normalized_source_file.parquet",
       "rows": 4,
-      "sha256": "02908E09B0F56F170EAE9D500532C695D14404549F7ECA5AB903A67BB2C41158",
-      "size_bytes": 13583
+      "sha256": "F3BB88F72D0CAEB63141B8BA48D09D91440AE6F20EB725CE4847F4BE18D5B0B5",
+      "size_bytes": 13557
     },
     "snapshot_public_chemical_candidate": {
       "columns": [
+        "access_restriction",
         "chemical_id",
         "derivatives_allowed",
         "duplicate_count",
@@ -1036,6 +1074,7 @@
         "functionality",
         "iupac_name_raw",
         "iupac_names_raw_json",
+        "license_resolution_status",
         "license_spdx",
         "material_scope",
         "may_publish",
@@ -1051,8 +1090,11 @@
         "schema_version",
         "smiles_raw",
         "source_file_id",
+        "source_file_ids_json",
         "source_id",
+        "source_ids_json",
         "source_locator",
+        "source_locators_json",
         "source_record_count",
         "source_record_id",
         "source_record_ids_json",
@@ -1062,11 +1104,12 @@
       ],
       "path": "05_数据库快照/public_chemical_candidate.parquet",
       "rows": 1071,
-      "sha256": "82A2AAC083A281564096522A7AFD9D33DF4410BF03126F049AA166EA29D315E8",
-      "size_bytes": 132971
+      "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
+      "size_bytes": 143210
     },
     "snapshot_public_curve": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "curve_id",
         "curve_type",
@@ -1117,11 +1160,12 @@
       ],
       "path": "05_数据库快照/public_curve.parquet",
       "rows": 53,
-      "sha256": "009B99793E5C32DB9B29FDFC4A5E0370A40CB569B7285212BF0860C789B2891A",
-      "size_bytes": 30488
+      "sha256": "F6E3450CAB7CEA4B0480F895BF56FFD58F13C4139DBFFE8537E99A383DB15220",
+      "size_bytes": 31060
     },
     "snapshot_public_curve_point": {
       "columns": [
+        "access_restriction",
         "curve_id",
         "derivatives_allowed",
         "extraction_method",
@@ -1165,11 +1209,12 @@
       ],
       "path": "05_数据库快照/public_curve_point.parquet",
       "rows": 25972,
-      "sha256": "A1EE8F7B8EDDB1DA6502C8C3CAC8F124D162339B980A3A71962B314A1B838122",
-      "size_bytes": 1270877
+      "sha256": "F69B5E84E2340CB33B04ED4F12BDEDB7B78B36AAAF43251BB8CBF53111081839",
+      "size_bytes": 1271475
     },
     "snapshot_public_derived_property": {
       "columns": [
+        "access_restriction",
         "algorithm_version",
         "curve_id",
         "derivatives_allowed",
@@ -1191,11 +1236,12 @@
       ],
       "path": "05_数据库快照/public_derived_property.parquet",
       "rows": 48,
-      "sha256": "E6DAB514B267E7E10B134FB4B44FD5C8457BFCB6730589C30B80B6E29548A849",
-      "size_bytes": 12743
+      "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
+      "size_bytes": 13315
     },
     "snapshot_public_property_value": {
       "columns": [
+        "access_restriction",
         "condition_label",
         "derivatives_allowed",
         "extraction_method",
@@ -1230,8 +1276,8 @@
       ],
       "path": "05_数据库快照/public_property_value.parquet",
       "rows": 19,
-      "sha256": "82617FE5AE37503F4A8002DE426EEA359544C6BDDF46E27AD2FA87640E15C272",
-      "size_bytes": 19921
+      "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
+      "size_bytes": 20492
     },
     "snapshot_public_pue_transformed_auxiliary": {
       "columns": [
@@ -1256,6 +1302,7 @@
         "ZS_log_StrainRate",
         "ZS_log_Tr1K",
         "ZS_log_Tr2K",
+        "access_restriction",
         "derivatives_allowed",
         "extraction_method",
         "extraction_method_raw",
@@ -1281,8 +1328,8 @@
       ],
       "path": "05_数据库快照/public_pue_transformed_auxiliary.parquet",
       "rows": 0,
-      "sha256": "79270F079E7EBB101450EFDAB5FBF96932EC04C4CC6B37B21E5175A642F922B5",
-      "size_bytes": 19024
+      "sha256": "BD62921449CDF94C98C805C47474F0A99CF8CCD4C8FDA531D2A45FDBC0835D8D",
+      "size_bytes": 19489
     },
     "snapshot_public_source": {
       "columns": [
@@ -1854,7 +1901,7 @@
       },
       {
         "path": "代码/database_build.py",
-        "sha256_text_lf": "364CC18F939E412BA028F116A285F33F2C31E7AB42FB568EDA84D7A6744A6D45"
+        "sha256_text_lf": "3E7212369860837B7CAE3A6455813A8404B865050DFDC8C8D7E0AF26A40CCACF"
       },
       {
         "path": "代码/ids.py",
@@ -1866,7 +1913,11 @@
       },
       {
         "path": "代码/qc.py",
-        "sha256_text_lf": "64B407FA83C351261C0BA96A6FA2EB70B96E0D6DBD985C1936F1A530CD8C6733"
+        "sha256_text_lf": "EEC1014B4CF9C3618CB9CF3C7D5A4611EAA18BA7AE0209489AE4BBAC7A2EBBDD"
+      },
+      {
+        "path": "代码/schema.py",
+        "sha256_text_lf": "3D68BEB9106F146A0766759FD1C001BADED146310A9E6E185F400F644D15EC4C"
       },
       {
         "path": "代码/snapshot.py",
@@ -1878,23 +1929,23 @@
       },
       {
         "path": "结构定义/v0.1字段字典.yaml",
-        "sha256_text_lf": "807D235EA143E6F3EFCA2766C95419D4F6A8AB314E42BCA6F45E56498F494A73"
+        "sha256_text_lf": "0243B8E114D05ABFE1E90E4BD92CF04DDDDDEA4E9BEAF2D58812D039F88ACA22"
       },
       {
         "path": "结构定义/v0.1枚举.yaml",
-        "sha256_text_lf": "DD30000660ED544BBEA2752AFC144D38884D4D0A2DCBCD301D03A60812C439B1"
+        "sha256_text_lf": "4C07B38A744A674359C156F35AADC790F292D00726D2F465071758E75A4A97FE"
       },
       {
         "path": "配置/数据源.yaml",
-        "sha256_text_lf": "1CC6F16B171F8A005327BC4D339D59FC01E82ADCCF01FE6C5D8AF8B59A7E0ECA"
+        "sha256_text_lf": "0C766BFF51F833B1265F0E73158AC7CA81841E38B32FF07E9DD0B2DE44DB97A2"
       }
     ],
-    "pipeline_id": "pipeline_293290cab27fae65",
-    "pipeline_version": "tpu-db/0.1.0"
+    "pipeline_id": "pipeline_94e0bb066d425128",
+    "pipeline_version": "tpu-db/0.1.1"
   },
   "quality": {
     "errors": 0,
-    "warnings": 0
+    "warnings": 2
   },
   "reproducibility": {
     "parquet_compression": "zstd",
@@ -1929,5 +1980,5 @@
     "staging_viscosity_curves": 39
   },
   "schema_version": "v0.1",
-  "snapshot_id": "snapshot_c40bb1ffb593eee5"
+  "snapshot_id": "snapshot_3195c290d7dc2d44"
 }

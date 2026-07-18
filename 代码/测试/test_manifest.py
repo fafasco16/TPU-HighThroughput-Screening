@@ -23,6 +23,7 @@ def _metadata(**overrides):
         "license_spdx": "CC-BY-4.0",
         "derivatives_allowed": True,
         "redistribution_allowed": True,
+        "access_restriction": "open",
         "evidence_grade": "measured_raw",
         "material_scope": "linear_tpu",
         "status": "available",

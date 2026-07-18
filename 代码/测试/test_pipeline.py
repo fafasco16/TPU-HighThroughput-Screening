@@ -21,6 +21,7 @@ def _write_config(root: Path) -> Path:
                 "license_spdx": "CC-BY-4.0",
                 "derivatives_allowed": True,
                 "redistribution_allowed": True,
+                "access_restriction": "open",
                 "evidence_grade": "measured_raw",
                 "material_scope": "linear_tpu",
                 "status": "available",
@@ -49,7 +50,9 @@ def test_full_manifest_covers_registered_and_unregistered_files(tmp_path):
     assert len({row["raw_path"] for row in rows}) == 2
     by_name = {row["original_filename"]: row for row in rows}
     assert by_name["known.csv"]["source_id"] == "registered_source"
+    assert by_name["known.csv"]["access_restriction"] == "open"
     assert by_name["unknown.txt"]["source_id"] == "raw_vault_unregistered"
+    assert by_name["unknown.txt"]["access_restriction"] == "unknown"
     with output.open(encoding="utf-8-sig", newline="") as stream:
         assert len(list(csv.DictReader(stream))) == 2
 

@@ -1,1 +1,3 @@
 ﻿rule_id,severity,table_name,record_id,message
+unit.unresolved,warning,curve,count=28,28 条记录缺少足够单位证据；许可可发布不等于模型就绪
+unit.unresolved,warning,curve_point,count=1036,1036 条记录缺少足够单位证据；许可可发布不等于模型就绪

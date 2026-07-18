@@ -41,6 +41,10 @@ enums:
     - additive
     - solvent
     - unclassified
+  license_resolution_status:
+    - uniform_publishable
+    - uniform_blocked
+    - mixed_or_blocked
   extraction_method:
     - direct_table
     - direct_curve

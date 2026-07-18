@@ -8,6 +8,7 @@ sources:
     license_spdx: BSD-3-Clause
     derivatives_allowed: true
     redistribution_allowed: true
+    access_restriction: open
     evidence_grade: candidate_structure
     material_scope: virtual_candidate
     status: available
@@ -21,6 +22,7 @@ sources:
     license_spdx: UNKNOWN
     derivatives_allowed: null
     redistribution_allowed: null
+    access_restriction: open
     evidence_grade: measured_summary
     material_scope: crosslinked_pue
     status: review_required
@@ -34,6 +36,7 @@ sources:
     license_spdx: CC-BY-4.0
     derivatives_allowed: true
     redistribution_allowed: true
+    access_restriction: open
     evidence_grade: measured_raw
     material_scope: linear_tpu
     status: available
@@ -47,6 +50,7 @@ sources:
     license_spdx: UNKNOWN
     derivatives_allowed: null
     redistribution_allowed: null
+    access_restriction: open
     evidence_grade: measured_raw
     material_scope: polyurethane_prepolymer
     status: review_required

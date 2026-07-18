@@ -8,6 +8,8 @@ from typing import Iterable, Sequence
 import numpy as np
 import pandas as pd
 
+from licensing import may_publish
+
 
 @dataclass(frozen=True)
 class QualityIssue:
@@ -162,13 +164,40 @@ def check_lineage_split(
 
 
 def check_public_release(frame: pd.DataFrame, table_name: str) -> list[QualityIssue]:
-    columns = ["may_publish", "material_scope"]
+    columns = [
+        "license_spdx",
+        "derivatives_allowed",
+        "redistribution_allowed",
+        "access_restriction",
+        "source_status",
+        "material_scope",
+        "may_publish",
+    ]
     required = check_required_columns(frame, table_name, columns)
     if required:
         return required
-    blocked = (frame["may_publish"] != True) | frame["material_scope"].isin(  # noqa: E712
-        ["reference_only", "restricted"]
+    license_gate = pd.Series(
+        [
+            may_publish(license_id, derivatives, redistribution)
+            for license_id, derivatives, redistribution in zip(
+                frame["license_spdx"],
+                frame["derivatives_allowed"],
+                frame["redistribution_allowed"],
+                strict=True,
+            )
+        ],
+        index=frame.index,
+        dtype=bool,
     )
+    allowed = (
+        frame["may_publish"].eq(True)  # noqa: E712
+        & license_gate
+        & frame["source_status"].astype(str).str.strip().str.casefold().eq("available")
+        & frame["access_restriction"].astype(str).str.strip().str.casefold().eq("open")
+        & frame["material_scope"].notna()
+        & frame["material_scope"].astype(str).str.strip().ne("")
+    )
+    blocked = ~allowed
     return [
         QualityIssue(
             "license.public_release_blocked",
@@ -181,6 +210,34 @@ def check_public_release(frame: pd.DataFrame, table_name: str) -> list[QualityIs
     ]
 
 
+def check_unresolved_units(
+    frame: pd.DataFrame,
+    table_name: str,
+    *,
+    status_column: str = "unit_status",
+) -> list[QualityIssue]:
+    """Emit one aggregate warning when source evidence leaves units unresolved."""
+
+    required = check_required_columns(frame, table_name, [status_column])
+    if required:
+        return required
+    unresolved = frame[status_column].astype(str).str.strip().str.casefold().eq(
+        "unresolved"
+    )
+    count = int(unresolved.sum())
+    if not count:
+        return []
+    return [
+        QualityIssue(
+            "unit.unresolved",
+            "warning",
+            table_name,
+            f"count={count}",
+            f"{count} 条记录缺少足够单位证据；许可可发布不等于模型就绪",
+        )
+    ]
+
+
 def issues_frame(issues: Iterable[QualityIssue]) -> pd.DataFrame:
     columns = ["rule_id", "severity", "table_name", "record_id", "message"]
     records = [asdict(issue) for issue in issues]
@@ -189,4 +246,3 @@ def issues_frame(issues: Iterable[QualityIssue]) -> pd.DataFrame:
 
 def has_errors(issues: Iterable[QualityIssue]) -> bool:
     return any(issue.severity == "error" for issue in issues)
-

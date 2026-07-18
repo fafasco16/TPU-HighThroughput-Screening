@@ -15,6 +15,7 @@ from database_build import (
     REQUIRED_SOURCES,
     SCHEMA_VERSION,
     DatabaseBuildResult,
+    _public_view,
     build_database,
     derive_curve_metrics,
     extract_staging_tables,
@@ -77,6 +78,7 @@ def _source_row(
         "license_spdx": license_spdx,
         "derivatives_allowed": derivatives_allowed,
         "redistribution_allowed": redistribution_allowed,
+        "access_restriction": "open",
         "evidence_grade": (
             "candidate_structure"
             if source_id == "ds_smipoly_monomers"
@@ -97,8 +99,13 @@ def _project(tmp_path: Path) -> tuple[Path, list[dict[str, object]], dict[str, d
         "04_派生数据",
         "05_数据库快照",
         "文档/质量报告",
+        "结构定义",
     ):
         (root / directory).mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(
+        PROJECT_ROOT / "结构定义" / "v0.1枚举.yaml",
+        root / "结构定义" / "v0.1枚举.yaml",
+    )
 
     smipoly_path = root / "01_原始数据" / "smipoly.csv"
     pue_path = root / "01_原始数据" / "pue.csv"
@@ -238,11 +245,31 @@ def test_four_source_build_is_layered_gated_and_reproducible(tmp_path: Path):
     assert snapshot_payload["pipeline"]["pipeline_id"].startswith("pipeline_")
     assert len(snapshot_payload["pipeline"]["files"]) >= 11
     assert pipeline_signature(root) == snapshot_payload["pipeline"]
+    assert snapshot_payload["build_parameters"] == {
+        "adapter_options": {
+            "ds_eom_hbond_2021": {"expected_sheets": ["Figure 1b"]},
+            "ds_prepolymer_viscosity": {"expected_sheets": ["P_44M_4"]},
+        }
+    }
     first_parquet_hash = result.outputs["snapshot_normalized_curve"]["sha256"]
     second = build_database(root, pd.DataFrame(rows), adapter_options=options)
     assert second.snapshot_id == result.snapshot_id
     assert second.outputs["snapshot_normalized_curve"]["sha256"] == first_parquet_hash
     assert (root / second.outputs["snapshot_json"]["path"]).read_bytes() == first_snapshot
+
+    list_options = {
+        source_id: {"expected_sheets": list(values["expected_sheets"])}
+        for source_id, values in options.items()
+    }
+    equivalent = build_database(root, rows, adapter_options=list_options)
+    assert equivalent.snapshot_id == result.snapshot_id
+
+    changed_options = {
+        **options,
+        "ds_eom_hbond_2021": {"expected_sheets": ("Figure 1b", "Mystery")},
+    }
+    changed_build = build_database(root, rows, adapter_options=changed_options)
+    assert changed_build.snapshot_id != result.snapshot_id
 
     changed_metadata = [dict(row) for row in rows]
     changed_metadata[0]["url"] = "https://example.test/revised-provenance"
@@ -309,6 +336,12 @@ def test_manifest_guards_missing_sources_hashes_and_paths(tmp_path: Path):
     with pytest.raises(ValueError, match="哈希不匹配"):
         extract_staging_tables(root, bad_hash, adapter_options=options)
 
+    for invalid_hash in ("", " ", None, "0" * 63, "0" * 65, "g" * 64):
+        invalid = [dict(row) for row in rows]
+        invalid[0]["sha256"] = invalid_hash
+        with pytest.raises(ValueError, match="64位十六进制"):
+            extract_staging_tables(root, invalid, adapter_options=options)
+
     duplicate = [dict(row) for row in rows]
     duplicate[1]["source_file_id"] = duplicate[0]["source_file_id"]
     with pytest.raises(ValueError, match="必须非空且唯一"):
@@ -324,6 +357,110 @@ def test_manifest_guards_missing_sources_hashes_and_paths(tmp_path: Path):
     escaped[0]["sha256"] = sha256_file(tmp_path / "outside.csv")
     with pytest.raises(ValueError, match="越出项目目录"):
         extract_staging_tables(root, escaped, adapter_options=options)
+
+    invalid_status = [dict(row) for row in rows]
+    invalid_status[0]["status"] = "not_declared"
+    with pytest.raises(ValueError, match="source_status"):
+        extract_staging_tables(root, invalid_status, adapter_options=options)
+
+
+def test_adapter_options_reject_unknown_or_ambiguous_values(tmp_path: Path):
+    root, rows, options = _project(tmp_path)
+    with pytest.raises(ValueError, match="未知来源"):
+        build_database(root, rows, adapter_options={"ds_unknown": {}})
+    with pytest.raises(ValueError, match="未知参数"):
+        build_database(
+            root,
+            rows,
+            adapter_options={"ds_eom_hbond_2021": {"guess_units": True}},
+        )
+    with pytest.raises(ValueError, match="不支持"):
+        build_database(
+            root,
+            rows,
+            adapter_options={
+                "ds_eom_hbond_2021": {"expected_sheets": {"Figure 1b"}}
+            },
+        )
+
+
+def test_public_policy_blocks_withdrawn_and_non_open_sources(tmp_path: Path):
+    root, rows, options = _project(tmp_path)
+    staging, selected = extract_staging_tables(root, rows, adapter_options=options)
+    for field, value in (
+        ("status", "withdrawn"),
+        ("access_restriction", "author_request"),
+    ):
+        changed = selected.copy()
+        changed.loc[
+            changed["source_id"].eq("ds_eom_hbond_2021"), field
+        ] = value
+        normalized = normalize_staging_tables(staging, changed)
+        assert _public_view(normalized["curve"])["source_id"].ne(
+            "ds_eom_hbond_2021"
+        ).all()
+
+
+def test_mixed_chemical_provenance_is_fail_closed(tmp_path: Path):
+    root, rows, options = _project(tmp_path)
+    staging, selected = extract_staging_tables(root, rows, adapter_options=options)
+    restricted_manifest = selected.iloc[[0]].copy()
+    restricted_manifest["source_id"] = "ds_restricted_candidate"
+    restricted_manifest["source_file_id"] = "file_restricted_candidate"
+    restricted_manifest["license_spdx"] = "UNKNOWN"
+    restricted_manifest["derivatives_allowed"] = None
+    restricted_manifest["redistribution_allowed"] = None
+    restricted_manifest["status"] = "review_required"
+    selected = pd.concat([selected, restricted_manifest], ignore_index=True)
+
+    restricted_record = staging["smipoly_chemical"].iloc[[0]].copy()
+    restricted_record["source_id"] = "ds_restricted_candidate"
+    restricted_record["source_file_id"] = "file_restricted_candidate"
+    restricted_record["record_id"] = "record_restricted_candidate"
+    restricted_record["source_record_id"] = "restricted-record"
+    restricted_record["iupac_name_raw"] = "BlockedName"
+    staging = dict(staging)
+    staging["smipoly_chemical"] = pd.concat(
+        [staging["smipoly_chemical"], restricted_record], ignore_index=True
+    )
+
+    normalized = normalize_staging_tables(staging, selected)
+    candidate = normalized["chemical_candidate"].iloc[0]
+    assert candidate["license_resolution_status"] == "mixed_or_blocked"
+    assert bool(candidate["may_publish"]) is False
+    assert candidate["license_spdx"] == "NOASSERTION"
+    assert "file_restricted_candidate" in candidate["source_file_ids_json"]
+    assert _public_view(normalized["chemical_candidate"]).empty
+
+    derived, derivation_issues = derive_curve_metrics(
+        normalized["curve"], normalized["curve_point"]
+    )
+    public_views = {
+        f"public_{name}": _public_view(frame)
+        for name, frame in normalized.items()
+        if "may_publish" in frame.columns
+    }
+    public_views["public_derived_property"] = _public_view(derived)
+    issues = run_quality_checks(
+        staging, normalized, derived, public_views, derivation_issues
+    )
+    assert "license.mixed_provenance_requires_review" in {
+        issue.rule_id for issue in issues
+    }
+
+
+def test_same_source_id_cannot_hide_conflicting_file_policy(tmp_path: Path):
+    root, rows, options = _project(tmp_path)
+    staging, selected = extract_staging_tables(root, rows, adapter_options=options)
+    conflicting = selected.iloc[[0]].copy()
+    conflicting["source_file_id"] = "file_conflicting"
+    conflicting["license_spdx"] = "UNKNOWN"
+    conflicting["derivatives_allowed"] = None
+    conflicting["redistribution_allowed"] = None
+    with pytest.raises(ValueError, match="许可策略必须一致"):
+        normalize_staging_tables(
+            staging, pd.concat([selected, conflicting], ignore_index=True)
+        )
 
 
 def test_derivation_and_quality_checks_report_structured_failures(tmp_path: Path):
