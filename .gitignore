@@ -1,0 +1,27 @@
+.venv/
+.agents/
+.codex/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+node_modules/
+临时构建/
+
+# 原始与中间数据只保留本地；各层 README 仍可跟踪。
+01_原始数据/**
+!01_原始数据/README.md
+02_暂存数据/**
+!02_暂存数据/README.md
+03_规范数据/**/*.parquet
+04_派生数据/**/*.parquet
+05_数据库快照/**/*.duckdb
+06_审核导出/*.xlsx
+06_审核导出/*.png
+
+# 避免误提交出版商附件和大体积容器。
+*.zip
+*.pdf
+*.docx
+

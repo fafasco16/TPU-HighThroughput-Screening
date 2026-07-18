@@ -1,0 +1,30 @@
+[project]
+name = "tpu-high-throughput-screening"
+version = "0.1.0"
+description = "TPU high-throughput screening database and multi-fidelity research workflow"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "pandas>=2.2,<3",
+  "pyarrow>=17,<22",
+  "duckdb>=1.2,<2",
+  "openpyxl>=3.1,<4",
+  "PyYAML>=6,<7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "pytest-cov>=5,<8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["代码/测试"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["代码"]
+omit = ["代码/测试/*"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
