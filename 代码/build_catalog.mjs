@@ -386,14 +386,19 @@ async function loadQualityIssues() {
       left[4].localeCompare(right[4], "en"),
   );
   if (issues.length === 0) {
+    const reportsExist = qualityFiles.length > 0;
     issues.push([
-      "文档/质量报告",
+      reportsExist
+        ? qualityFiles.map((filePath) => path.relative(PROJECT_ROOT, filePath).replaceAll("\\", "/")).join("；")
+        : "文档/质量报告",
       "info",
-      "NO_ISSUES_FILE",
+      reportsExist ? "NO_QUALITY_ISSUES" : "NO_ISSUES_FILE",
       "",
       "",
       "",
-      "当前未发现质量报告 CSV/JSON；待 Python 管道生成后重新运行本构建器。",
+      reportsExist
+        ? "QC 已运行，当前规则未发现错误或警告；这不等同于数据完备或论文已经具备发表条件。"
+        : "当前未发现质量报告 CSV/JSON；待 Python 管道生成后重新运行本构建器。",
       "",
       "",
     ]);
@@ -554,7 +559,7 @@ function populateOverview(sheet, sourceRows, dimensions) {
   const cards = [
     ["来源文件数", `=COUNTA('数据来源'!$B$5:$B$${dimensions.sourceEnd})`, "原始数据量 (Byte)", `=SUM('数据来源'!$E$5:$E$${dimensions.sourceEnd})`, "可用文件数", `=COUNTIF('数据来源'!$O$5:$O$${dimensions.sourceEnd},"available")`, "待复核文件数", `=COUNTIF('数据来源'!$O$5:$O$${dimensions.sourceEnd},"review_required")`],
     ["字段数量", `=COUNTA('字段字典'!$D$5:$D$${dimensions.fieldEnd})`, "登记来源数", `=COUNTA('总览'!$A$17:$A$${dimensions.overviewSourceEnd})`, "已知许可证文件", `=COUNTIF('数据来源'!$J$5:$J$${dimensions.sourceEnd},"<>UNKNOWN")`, "未知许可证文件", `=COUNTIF('数据来源'!$J$5:$J$${dimensions.sourceEnd},"UNKNOWN")`],
-    ["许可证类型数", `=COUNTA('许可证'!$A$5:$A$${dimensions.licenseEnd})`, "可公开再分发文件", `=SUM('许可证'!$D$5:$D$${dimensions.licenseEnd})`, "质量问题数", `=COUNTIF('质量问题'!$C$5:$C$${dimensions.qualityEnd},"<>NO_ISSUES_FILE")`, "快照文件数", "='构建信息'!$C$8"],
+    ["许可证类型数", `=COUNTA('许可证'!$A$5:$A$${dimensions.licenseEnd})`, "可公开再分发文件", `=SUM('许可证'!$D$5:$D$${dimensions.licenseEnd})`, "质量问题数", `=COUNTIF('质量问题'!$C$5:$C$${dimensions.qualityEnd},"<>NO_ISSUES_FILE")-COUNTIF('质量问题'!$C$5:$C$${dimensions.qualityEnd},"NO_QUALITY_ISSUES")`, "快照文件数", "='构建信息'!$C$8"],
   ];
   const rows = [4, 7, 10];
   for (let index = 0; index < cards.length; index += 1) {
@@ -693,7 +698,7 @@ function populateQuality(sheet, issues) {
   prepareSheet(
     sheet,
     "质量问题审核清单",
-    "自动汇总文档/质量报告中的 CSV/JSON；无报告时显示明确占位，不等同于“零问题”。",
+    "自动汇总文档/质量报告中的 CSV/JSON；QC 零问题与尚未生成报告会分别明确标注。",
     "I",
   );
   sheet.getRange(`A4:I${finalRow}`).values = [headers, ...issues];
@@ -903,7 +908,7 @@ async function main() {
       registeredSources: sourceRows.length,
       fields: fieldRows.length,
       coverageRows: descriptors.length,
-      qualityRows: issues.length,
+      qualityRows: issues.filter((row) => !["NO_ISSUES_FILE", "NO_QUALITY_ISSUES"].includes(row[2])).length,
       licenseRows: licenses.length,
       snapshotFiles: snapshotFiles.length,
     },
