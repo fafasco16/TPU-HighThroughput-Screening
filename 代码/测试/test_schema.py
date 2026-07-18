@@ -48,6 +48,10 @@ def test_project_schema_and_enums_load_from_chinese_paths():
     assert schema["schema_version"] == "v0.1"
     assert "source_file" in schema["tables"]
     assert "license_spdx" in schema["tables"]["source"]["fields"]
+    formulation_fields = schema["tables"]["formulation"]["fields"]
+    assert {"lineage_family", "lineage_record_id", "split_group"} <= set(
+        formulation_fields
+    )
     assert "evidence_grade" in enums["enums"]
 
 

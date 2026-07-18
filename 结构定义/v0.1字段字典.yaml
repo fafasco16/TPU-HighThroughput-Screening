@@ -99,6 +99,7 @@ tables:
       formulation_group: {type: string, required: true}
       chemistry_group: {type: string, required: true}
       lineage_family: {type: string, required: true}
+      lineage_record_id: {type: string, required: true}
       split_group: {type: string, required: true}
       material_scope: {type: string, required: true, enum: material_scope}
       fidelity: {type: string, required: true, enum: evidence_grade}
