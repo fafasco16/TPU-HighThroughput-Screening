@@ -22,6 +22,11 @@ node_modules/
 06_审核导出/*.png
 
 # 避免误提交出版商附件和大体积容器。
+*.xlsx
+*.xls
+*.xlsm
+*.parquet
+*.duckdb
 *.zip
 *.pdf
 *.docx

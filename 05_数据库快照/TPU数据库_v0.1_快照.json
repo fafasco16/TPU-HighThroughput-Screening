@@ -1,24 +1,68 @@
 {
   "input_hashes": [
     {
+      "accessed_at": "2026-07-18",
+      "derivatives_allowed": "True",
+      "doi": "10.1038/s41467-021-20931-z",
+      "evidence_grade": "measured_raw",
+      "license_spdx": "CC-BY-4.0",
+      "material_scope": "linear_tpu",
+      "notes": "官方Source Data主文件；用于氢键、温度与力学曲线垂直切片。",
+      "raw_path": "01_原始数据/外部数据/TPU_HBond_2021_Source_Main.xlsx",
+      "redistribution_allowed": "True",
       "sha256": "A71E665B656D471A59EA814D44C12D73A7F7E9C2D1E23044FFB6DC4B572BF8C4",
       "source_file_id": "source_file_d55587eb3ef897f3",
-      "source_id": "ds_eom_hbond_2021"
+      "source_id": "ds_eom_hbond_2021",
+      "status": "available",
+      "url": "https://doi.org/10.6084/m9.figshare.12936989.v1"
     },
     {
+      "accessed_at": "2026-07-18",
+      "derivatives_allowed": "",
+      "doi": "",
+      "evidence_grade": "measured_raw",
+      "license_spdx": "UNKNOWN",
+      "material_scope": "polyurethane_prepolymer",
+      "notes": "温度—黏度曲线；仓库未发现明确LICENSE，默认禁止公开再分发。",
+      "raw_path": "01_原始数据/代码仓库镜像/viscosity-modeling/ViscTempData.xlsx",
+      "redistribution_allowed": "",
       "sha256": "BBEC41DA4FF3CAE1231686E5D219EC217AC53D85E0F5FC561E408E78FDAF7085",
       "source_file_id": "source_file_959d1ae6ea945038",
-      "source_id": "ds_prepolymer_viscosity"
+      "source_id": "ds_prepolymer_viscosity",
+      "status": "review_required",
+      "url": "https://github.com/joepugar/viscosity-modeling"
     },
     {
+      "accessed_at": "2026-07-18",
+      "derivatives_allowed": "",
+      "doi": "",
+      "evidence_grade": "measured_summary",
+      "license_spdx": "UNKNOWN",
+      "material_scope": "crosslinked_pue",
+      "notes": "326行PUE基准母数据；DQ与MatImpute衍生版本必须共享lineage_family。",
+      "raw_path": "01_原始数据/代码仓库镜像/DQ/experiment/datasets/PUE.csv",
+      "redistribution_allowed": "",
       "sha256": "E5D07B13764089579F90F16FDA6A70024D67C683F5BDD41591720F9474308040",
       "source_file_id": "source_file_a3796d4376b3d558",
-      "source_id": "ds_pue326_dq"
+      "source_id": "ds_pue326_dq",
+      "status": "review_required",
+      "url": "https://github.com/big-material/DQ"
     },
     {
+      "accessed_at": "2026-07-18",
+      "derivatives_allowed": "True",
+      "doi": "",
+      "evidence_grade": "candidate_structure",
+      "license_spdx": "BSD-3-Clause",
+      "material_scope": "virtual_candidate",
+      "notes": "SMiPoly公开示例单体；只作为反应约束候选种子，不作为实验性能标签。",
+      "raw_path": "01_原始数据/基础数据/smipoly_monomers.csv",
+      "redistribution_allowed": "True",
       "sha256": "1E70860B89B492EB0E3272615DD7220B35719C6C770E1299269AEB359BE59713",
       "source_file_id": "source_file_799bf00de7641547",
-      "source_id": "ds_smipoly_monomers"
+      "source_id": "ds_smipoly_monomers",
+      "status": "available",
+      "url": "https://github.com/PEJpOhno/SMiPoly"
     }
   ],
   "outputs": {
@@ -53,6 +97,12 @@
       "content_basis": "snapshot_parquet_sha256_and_row_counts",
       "path": "05_数据库快照/TPU数据库_v0.1.duckdb",
       "table_count": 25
+    },
+    "field_coverage_csv": {
+      "path": "文档/质量报告/TPU数据库_v0.1_字段覆盖.csv",
+      "rows": 247,
+      "sha256": "E57A6C11DF938B4F3F3BC6B911CD1E79DBB937D8E1C8CEB658EB8507627D53F4",
+      "size_bytes": 14063
     },
     "normalized_chemical_candidate": {
       "columns": [
@@ -308,8 +358,8 @@
       ],
       "path": "03_规范数据/source.parquet",
       "rows": 4,
-      "sha256": "639611BC8AC56DE5748277A234A5BADE51F3ADF0A4BA6B9038685BD0FA8B7583",
-      "size_bytes": 9359
+      "sha256": "F6196A64C9E69B082798E638871C9C0E5E06CE541E53F9665952B2C41B7FA58E",
+      "size_bytes": 9357
     },
     "normalized_source_file": {
       "columns": [
@@ -336,8 +386,8 @@
       ],
       "path": "03_规范数据/source_file.parquet",
       "rows": 4,
-      "sha256": "E2AA2037861FC804A72781353A2EC5B5A1ABAE1CAA78DC1D7EEE1579D94FAFC3",
-      "size_bytes": 13586
+      "sha256": "02908E09B0F56F170EAE9D500532C695D14404549F7ECA5AB903A67BB2C41158",
+      "size_bytes": 13583
     },
     "public_chemical_candidate": {
       "columns": [
@@ -659,7 +709,7 @@
     "qc_json": {
       "path": "文档/质量报告/TPU数据库_v0.1_质量问题.json",
       "rows": 0,
-      "sha256": "DFDE48564007D6DAE7917616FF110308A9D25A158283FF3FA6EA72B350826035",
+      "sha256": "B4208B8F7FB340F3983825DEE8E1370A01E82FBE34D221477719E4633CEC39C6",
       "size_bytes": 263
     },
     "snapshot_derived_property": {
@@ -942,8 +992,8 @@
       ],
       "path": "05_数据库快照/normalized_source.parquet",
       "rows": 4,
-      "sha256": "639611BC8AC56DE5748277A234A5BADE51F3ADF0A4BA6B9038685BD0FA8B7583",
-      "size_bytes": 9359
+      "sha256": "F6196A64C9E69B082798E638871C9C0E5E06CE541E53F9665952B2C41B7FA58E",
+      "size_bytes": 9357
     },
     "snapshot_normalized_source_file": {
       "columns": [
@@ -970,8 +1020,8 @@
       ],
       "path": "05_数据库快照/normalized_source_file.parquet",
       "rows": 4,
-      "sha256": "E2AA2037861FC804A72781353A2EC5B5A1ABAE1CAA78DC1D7EEE1579D94FAFC3",
-      "size_bytes": 13586
+      "sha256": "02908E09B0F56F170EAE9D500532C695D14404549F7ECA5AB903A67BB2C41158",
+      "size_bytes": 13583
     },
     "snapshot_public_chemical_candidate": {
       "columns": [
@@ -1771,6 +1821,77 @@
       "size_bytes": 12454
     }
   },
+  "pipeline": {
+    "curve_algorithm_version": "tpu-curves/0.1.0",
+    "files": [
+      {
+        "path": "pyproject.toml",
+        "sha256_text_lf": "7824B63F1B8DF0263A5E2723D9B9B45FF91663BB20D4630B16C88BDDBB66FC2B"
+      },
+      {
+        "path": "uv.lock",
+        "sha256_text_lf": "7BF2D279AF0774424F7582E4DE807EC07704FD8E4A4562F1D7DB7C9F9D1A27CB"
+      },
+      {
+        "path": "代码/adapter_hbond.py",
+        "sha256_text_lf": "C6CF0213CE2F4DA44D85BD3F7C5A152C0594BA766CBAF69D3A096E269D94C6B9"
+      },
+      {
+        "path": "代码/adapter_pue326.py",
+        "sha256_text_lf": "41E784BDEA1F8FD2BD2C17C4366BDAD81C83A1187FEFAB12F61D6D379163C444"
+      },
+      {
+        "path": "代码/adapter_smipoly.py",
+        "sha256_text_lf": "ADF3203E02DCEBE1478C77107765EB38058C537BB47967F58444484EB1BC7E42"
+      },
+      {
+        "path": "代码/adapter_viscosity.py",
+        "sha256_text_lf": "43848612DB1A65F4BB0B0E4C5C5DFAE2D3969B01128CED3043C1DE4535E703F8"
+      },
+      {
+        "path": "代码/curves.py",
+        "sha256_text_lf": "145B32048940885655F384EEA38AA2BD897D96F514A51D97728FEDC773CC670D"
+      },
+      {
+        "path": "代码/database_build.py",
+        "sha256_text_lf": "364CC18F939E412BA028F116A285F33F2C31E7AB42FB568EDA84D7A6744A6D45"
+      },
+      {
+        "path": "代码/ids.py",
+        "sha256_text_lf": "61093ACCD1E75A9B21F5FC770BC46A55A24F39EC41701F342BE28AAB7F2500FF"
+      },
+      {
+        "path": "代码/licensing.py",
+        "sha256_text_lf": "BE577D272BF0558D4C547F3F0FB944EF2055686BA0FA5766387036FE7BA9DE2B"
+      },
+      {
+        "path": "代码/qc.py",
+        "sha256_text_lf": "64B407FA83C351261C0BA96A6FA2EB70B96E0D6DBD985C1936F1A530CD8C6733"
+      },
+      {
+        "path": "代码/snapshot.py",
+        "sha256_text_lf": "328CDE8E1AA9B6123C7022292199784293A2F43A9B377D41D124E22B1FD8704F"
+      },
+      {
+        "path": "代码/units.py",
+        "sha256_text_lf": "0CF791DDB370855A36E1BB05C30217F338A85FF9FB0FB37494D264490E788077"
+      },
+      {
+        "path": "结构定义/v0.1字段字典.yaml",
+        "sha256_text_lf": "807D235EA143E6F3EFCA2766C95419D4F6A8AB314E42BCA6F45E56498F494A73"
+      },
+      {
+        "path": "结构定义/v0.1枚举.yaml",
+        "sha256_text_lf": "DD30000660ED544BBEA2752AFC144D38884D4D0A2DCBCD301D03A60812C439B1"
+      },
+      {
+        "path": "配置/数据源.yaml",
+        "sha256_text_lf": "1CC6F16B171F8A005327BC4D339D59FC01E82ADCCF01FE6C5D8AF8B59A7E0ECA"
+      }
+    ],
+    "pipeline_id": "pipeline_293290cab27fae65",
+    "pipeline_version": "tpu-db/0.1.0"
+  },
   "quality": {
     "errors": 0,
     "warnings": 0
@@ -1808,5 +1929,5 @@
     "staging_viscosity_curves": 39
   },
   "schema_version": "v0.1",
-  "snapshot_id": "snapshot_4addf1652d789615"
+  "snapshot_id": "snapshot_c40bb1ffb593eee5"
 }

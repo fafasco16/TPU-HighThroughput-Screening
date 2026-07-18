@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -18,6 +19,7 @@ from adapter_pue326 import EXPECTED_COLUMNS as PUE_COLUMNS
 from adapter_pue326 import adapt_pue326
 from adapter_smipoly import adapt_smipoly
 from adapter_viscosity import adapt_viscosity
+from curves import ALGORITHM_VERSION as CURVE_ALGORITHM_VERSION
 from curves import tensile_metrics
 from ids import stable_id
 from licensing import may_publish
@@ -40,6 +42,7 @@ from snapshot import (
 
 
 SCHEMA_VERSION = "v0.1"
+PIPELINE_VERSION = "tpu-db/0.1.0"
 SOURCE_SMIPOLY = "ds_smipoly_monomers"
 SOURCE_PUE = "ds_pue326_dq"
 SOURCE_HBOND = "ds_eom_hbond_2021"
@@ -63,6 +66,42 @@ _MANIFEST_REQUIRED = (
     "status",
 )
 _RESTRICTED_SCOPES = frozenset({"reference_only", "restricted"})
+_SNAPSHOT_SIGNATURE_FIELDS = (
+    "source_id",
+    "source_file_id",
+    "raw_path",
+    "sha256",
+    "doi",
+    "url",
+    "accessed_at",
+    "license_spdx",
+    "derivatives_allowed",
+    "redistribution_allowed",
+    "evidence_grade",
+    "material_scope",
+    "status",
+    "notes",
+)
+_PIPELINE_CODE_FILES = (
+    "adapter_hbond.py",
+    "adapter_pue326.py",
+    "adapter_smipoly.py",
+    "adapter_viscosity.py",
+    "curves.py",
+    "database_build.py",
+    "ids.py",
+    "licensing.py",
+    "qc.py",
+    "snapshot.py",
+    "units.py",
+)
+_PIPELINE_PROJECT_FILES = (
+    "pyproject.toml",
+    "uv.lock",
+    "结构定义/v0.1字段字典.yaml",
+    "结构定义/v0.1枚举.yaml",
+    "配置/数据源.yaml",
+)
 
 
 @dataclass(frozen=True)
@@ -139,6 +178,61 @@ def _concat_frames(frames: Sequence[pd.DataFrame]) -> pd.DataFrame:
     if not frames:
         return pd.DataFrame()
     return pd.concat(frames, ignore_index=True, sort=False)
+
+
+def _signature_value(value: Any) -> Any:
+    """Convert manifest scalars into deterministic JSON-compatible values."""
+
+    if value is None or (not isinstance(value, (list, dict)) and pd.isna(value)):
+        return None
+    if isinstance(value, (bool, int, float, str)):
+        return value
+    if hasattr(value, "isoformat"):
+        return value.isoformat()
+    return str(value)
+
+
+def _normalized_text_sha256(path: Path) -> str:
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(text.encode("utf-8")).hexdigest().upper()
+
+
+def pipeline_signature(project_root: str | Path) -> dict[str, Any]:
+    """Hash transformation code, schemas, registry and environment lock."""
+
+    root = Path(project_root).resolve(strict=True)
+    code_dir = Path(__file__).resolve().parent
+    files: list[dict[str, str]] = []
+    for filename in _PIPELINE_CODE_FILES:
+        path = (code_dir / filename).resolve(strict=True)
+        files.append(
+            {
+                "path": f"代码/{filename}",
+                "sha256_text_lf": _normalized_text_sha256(path),
+            }
+        )
+    for relative in _PIPELINE_PROJECT_FILES:
+        path = root / relative
+        if path.is_file():
+            files.append(
+                {
+                    "path": relative,
+                    "sha256_text_lf": _normalized_text_sha256(path),
+                }
+            )
+    files.sort(key=lambda row: row["path"].casefold())
+    pipeline_id = stable_id(
+        "pipeline",
+        PIPELINE_VERSION,
+        CURVE_ALGORITHM_VERSION,
+        files,
+    )
+    return {
+        "pipeline_id": pipeline_id,
+        "pipeline_version": PIPELINE_VERSION,
+        "curve_algorithm_version": CURVE_ALGORITHM_VERSION,
+        "files": files,
+    }
 
 
 def extract_staging_tables(
@@ -806,6 +900,63 @@ def _write_qc(
     }
 
 
+def field_coverage_frame(
+    tables: Mapping[str, pd.DataFrame],
+) -> pd.DataFrame:
+    """Profile non-null/non-blank coverage without turning absence into facts."""
+
+    columns = [
+        "table_name",
+        "column_name",
+        "dtype",
+        "row_count",
+        "present_count",
+        "missing_count",
+        "missing_fraction",
+    ]
+    records: list[dict[str, Any]] = []
+    for table_name, frame in sorted(tables.items()):
+        row_count = len(frame)
+        for column_name in sorted(frame.columns, key=str.casefold):
+            values = frame[column_name]
+            present = values.notna()
+            if values.dtype == object or isinstance(values.dtype, pd.StringDtype):
+                present &= ~values.astype("string").str.strip().eq("").fillna(False)
+            present_count = int(present.sum())
+            missing_count = row_count - present_count
+            records.append(
+                {
+                    "table_name": table_name,
+                    "column_name": column_name,
+                    "dtype": str(values.dtype),
+                    "row_count": row_count,
+                    "present_count": present_count,
+                    "missing_count": missing_count,
+                    "missing_fraction": (
+                        float(missing_count / row_count) if row_count else 0.0
+                    ),
+                }
+            )
+    return pd.DataFrame(records, columns=columns)
+
+
+def _write_field_coverage(
+    root: Path,
+    tables: Mapping[str, pd.DataFrame],
+) -> dict[str, Any]:
+    path = root / "文档" / "质量报告" / "TPU数据库_v0.1_字段覆盖.csv"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frame = field_coverage_frame(tables)
+    frame.to_csv(
+        path,
+        index=False,
+        encoding="utf-8-sig",
+        lineterminator="\n",
+        float_format="%.8f",
+    )
+    return _file_metadata(path, root, rows=len(frame))
+
+
 def build_database(
     project_root: str | Path,
     manifest_rows: Iterable[Mapping[str, Any]] | pd.DataFrame,
@@ -837,17 +988,23 @@ def build_database(
         derivation_issues,
     )
 
-    input_signature = [
-        {
-            "source_id": str(row["source_id"]),
-            "source_file_id": str(row["source_file_id"]),
-            "sha256": str(row["sha256"]).upper(),
+    input_signature = []
+    for row in selected.sort_values(
+        ["source_id", "source_file_id"], kind="mergesort"
+    ).to_dict(orient="records"):
+        signature_row = {
+            field: _signature_value(row.get(field))
+            for field in _SNAPSHOT_SIGNATURE_FIELDS
         }
-        for row in selected.sort_values(
-            ["source_id", "source_file_id"], kind="mergesort"
-        ).to_dict(orient="records")
-    ]
-    snapshot_id = stable_id("snapshot", SCHEMA_VERSION, input_signature)
+        signature_row["sha256"] = str(signature_row["sha256"]).upper()
+        input_signature.append(signature_row)
+    transformation_signature = pipeline_signature(root)
+    snapshot_id = stable_id(
+        "snapshot",
+        SCHEMA_VERSION,
+        transformation_signature,
+        input_signature,
+    )
 
     layer_frames: dict[str, tuple[Path, pd.DataFrame, Sequence[str]]] = {}
     for name, frame in staging.items():
@@ -924,11 +1081,16 @@ def build_database(
         "table_count": len(snapshot_tables),
     }
     outputs.update(_write_qc(root, snapshot_id, issues))
+    outputs["field_coverage_csv"] = _write_field_coverage(
+        root,
+        {**normalized, "derived_property": derived},
+    )
 
     snapshot_path = snapshot_dir / "TPU数据库_v0.1_快照.json"
     snapshot_payload = {
         "snapshot_id": snapshot_id,
         "schema_version": SCHEMA_VERSION,
+        "pipeline": transformation_signature,
         "input_hashes": input_signature,
         "row_counts": dict(sorted(row_counts.items())),
         "outputs": {name: outputs[name] for name in sorted(outputs)},
@@ -955,11 +1117,14 @@ def build_database(
 
 __all__ = [
     "DatabaseBuildResult",
+    "PIPELINE_VERSION",
     "REQUIRED_SOURCES",
     "SCHEMA_VERSION",
     "build_database",
     "derive_curve_metrics",
     "extract_staging_tables",
+    "field_coverage_frame",
     "normalize_staging_tables",
+    "pipeline_signature",
     "run_quality_checks",
 ]

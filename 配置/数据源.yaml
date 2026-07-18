@@ -42,7 +42,7 @@ sources:
   - source_id: ds_prepolymer_viscosity
     path: 01_原始数据/代码仓库镜像/viscosity-modeling/ViscTempData.xlsx
     doi: ""
-    url: https://github.com/edgarsmdn/viscosity-modeling
+    url: https://github.com/joepugar/viscosity-modeling
     accessed_at: "2026-07-18"
     license_spdx: UNKNOWN
     derivatives_allowed: null

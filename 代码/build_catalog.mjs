@@ -360,7 +360,8 @@ function normalizeIssue(issue, sourcePath) {
 }
 
 async function loadQualityIssues() {
-  const qualityFiles = await listFiles(INPUTS.qualityDir, new Set([".csv", ".json"]));
+  const reportFiles = await listFiles(INPUTS.qualityDir, new Set([".csv", ".json"]));
+  const qualityFiles = reportFiles.filter((filePath) => path.basename(filePath).includes("质量问题"));
   const issues = [];
   for (const filePath of qualityFiles) {
     if (path.extname(filePath).toLowerCase() === ".csv") {
@@ -403,7 +404,7 @@ async function loadQualityIssues() {
       "",
     ]);
   }
-  return { issues, qualityFiles };
+  return { issues, qualityFiles, reportFiles };
 }
 
 function coverageDescriptors(manifestRows) {
@@ -789,7 +790,7 @@ async function main() {
   const sourceDocument = parseYamlSubset(sourceText);
   const fieldRows = flattenFieldDictionary(schemaDocument);
   const sourceRows = registeredSourceRows(sourceDocument);
-  const { issues, qualityFiles } = await loadQualityIssues();
+  const { issues, qualityFiles, reportFiles } = await loadQualityIssues();
   const snapshotFiles = await listFiles(INPUTS.snapshotDir, new Set([".json"]));
   const descriptors = coverageDescriptors(manifestRows);
   const licenses = licenseRows(manifestRows, sourceDocument);
@@ -800,7 +801,7 @@ async function main() {
     [INPUTS.sources, sourceRows.length],
     ...qualityFiles.map((filePath) => [filePath, issues.filter((issue) => issue[0] === path.relative(PROJECT_ROOT, filePath).replaceAll("\\", "/")).length]),
   ]);
-  const inventoryPaths = [INPUTS.manifest, INPUTS.schema, INPUTS.sources, ...qualityFiles, ...snapshotFiles];
+  const inventoryPaths = [INPUTS.manifest, INPUTS.schema, INPUTS.sources, ...reportFiles, ...snapshotFiles];
   const buildRows = [
     ["构建器", "工作簿", "TPU数据库_v0.1_审核目录.xlsx", "由代码/build_catalog.mjs 使用 @oai/artifact-tool 构建"],
     ["模式", "排序与计算", "确定性", "固定工作表顺序；记录、许可证、输入指纹按稳定键排序；不使用当前时间或随机数"],

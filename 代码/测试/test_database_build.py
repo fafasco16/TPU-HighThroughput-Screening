@@ -11,6 +11,7 @@ import yaml
 from openpyxl import Workbook
 
 from database_build import (
+    PIPELINE_VERSION,
     REQUIRED_SOURCES,
     SCHEMA_VERSION,
     DatabaseBuildResult,
@@ -18,6 +19,7 @@ from database_build import (
     derive_curve_metrics,
     extract_staging_tables,
     normalize_staging_tables,
+    pipeline_signature,
     run_quality_checks,
 )
 from qc import QualityIssue
@@ -179,6 +181,7 @@ def test_four_source_build_is_layered_gated_and_reproducible(tmp_path: Path):
         "snapshot_json",
         "qc_csv",
         "qc_json",
+        "field_coverage_csv",
         "normalized_curve",
         "snapshot_normalized_curve",
     }
@@ -213,12 +216,38 @@ def test_four_source_build_is_layered_gated_and_reproducible(tmp_path: Path):
     assert public_pue_count == 0
     assert mapped_types == {"tensile_monotonic", "viscosity_temperature"}
 
+    coverage = pd.read_csv(root / result.outputs["field_coverage_csv"]["path"])
+    assert set(coverage.columns) == {
+        "table_name",
+        "column_name",
+        "dtype",
+        "row_count",
+        "present_count",
+        "missing_count",
+        "missing_fraction",
+    }
+    curve_id_coverage = coverage[
+        (coverage["table_name"] == "curve")
+        & (coverage["column_name"] == "curve_id")
+    ].iloc[0]
+    assert curve_id_coverage["missing_fraction"] == 0.0
+
     first_snapshot = (root / result.outputs["snapshot_json"]["path"]).read_bytes()
+    snapshot_payload = json.loads(first_snapshot)
+    assert snapshot_payload["pipeline"]["pipeline_version"] == PIPELINE_VERSION
+    assert snapshot_payload["pipeline"]["pipeline_id"].startswith("pipeline_")
+    assert len(snapshot_payload["pipeline"]["files"]) >= 11
+    assert pipeline_signature(root) == snapshot_payload["pipeline"]
     first_parquet_hash = result.outputs["snapshot_normalized_curve"]["sha256"]
     second = build_database(root, pd.DataFrame(rows), adapter_options=options)
     assert second.snapshot_id == result.snapshot_id
     assert second.outputs["snapshot_normalized_curve"]["sha256"] == first_parquet_hash
     assert (root / second.outputs["snapshot_json"]["path"]).read_bytes() == first_snapshot
+
+    changed_metadata = [dict(row) for row in rows]
+    changed_metadata[0]["url"] = "https://example.test/revised-provenance"
+    revised = build_database(root, changed_metadata, adapter_options=options)
+    assert revised.snapshot_id != result.snapshot_id
 
 
 def test_normalized_records_use_v01_schema_and_declared_enums(tmp_path: Path):
