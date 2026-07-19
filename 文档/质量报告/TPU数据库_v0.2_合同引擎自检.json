@@ -1,0 +1,53 @@
+{
+  "audit_id": "v0.2-contract-engine-fixture-20260719",
+  "audited_at": "2026-07-19T23:50:54+08:00",
+  "scope": "engine_fixture_only",
+  "does_not_claim": [
+    "v0.2 domain schema implemented",
+    "v0.2 source adapters implemented",
+    "v0.1 data migrated",
+    "third-party rights cleared",
+    "v0.2 database frozen",
+    "model ready",
+    "model trained"
+  ],
+  "command": ".\\.venv\\Scripts\\python.exe 代码\\run_pipeline.py contract-audit --schema 代码\\测试\\夹具\\v0.2最小合同.yaml --enums 代码\\测试\\夹具\\v0.2最小枚举.yaml --rules 代码\\测试\\夹具\\v0.2最小质量规则.yaml",
+  "result": {
+    "status": "contract_valid",
+    "schema_version": "v0.2",
+    "table_count": 3,
+    "rule_count": 1,
+    "document_hashes": {
+      "schema": "cc037e3f544200c716625429fac0fd18238642acbda3d0cc37c4189fd90c6b22",
+      "enums": "4960a5125344a98cf92f355bc3e62ae9422f73ad58cb0e3908482ff96bee4860",
+      "rules": "10762c3138c90cb6ef4ca1193206fc0513e001f45f6734699a49a0b51eb3c860"
+    }
+  },
+  "production_rule_catalog": {
+    "path": "结构定义/v0.2质量规则.yaml",
+    "rule_count": 8,
+    "canonical_sha256": "a7abc3f29d45372caab143c7a24e95e84c85ce74aa7fb6e240d2b894e2554237",
+    "status": "contract_engine_phase_rules_only"
+  },
+  "verification": {
+    "verified_at": "2026-07-19T23:50:54+08:00",
+    "python": "3.12.13",
+    "statement_command": ".\\.venv\\Scripts\\python.exe -m pytest 代码\\测试 --cov=代码 --cov-report=term-missing --cov-fail-under=90",
+    "branch_command": ".\\.venv\\Scripts\\python.exe -m pytest 代码\\测试 --cov=代码 --cov-branch --cov-report=term --cov-fail-under=90",
+    "tests_collected": 371,
+    "tests_passed": 371,
+    "statement_coverage_percent": 97.14,
+    "statement_and_branch_coverage_percent": 96.19,
+    "contract_module_statement_and_branch_coverage_percent": 100.0,
+    "quality_rules_module_statement_and_branch_coverage_percent": 100.0,
+    "result": "pass"
+  },
+  "v0_1_regression": {
+    "command": ".\\.venv\\Scripts\\python.exe -m pytest 代码\\测试\\test_adapters.py 代码\\测试\\test_curves.py 代码\\测试\\test_database_build.py 代码\\测试\\test_ids.py 代码\\测试\\test_layout.py 代码\\测试\\test_licensing.py 代码\\测试\\test_manifest.py 代码\\测试\\test_pipeline.py 代码\\测试\\test_qc.py 代码\\测试\\test_schema.py 代码\\测试\\test_snapshot.py 代码\\测试\\test_units.py -k \"not contract_audit\" -q",
+    "legacy_tests_passed": 172,
+    "legacy_tests_failed": 0,
+    "frozen_snapshot_id": "snapshot_3195c290d7dc2d44",
+    "build_command_executed": false,
+    "build_command_reason": "当前 v0.1 build 入口原位写入 02_暂存数据、03_规范数据、04_派生数据、05_数据库快照和质量报告；在未实现隔离输出根之前，直接重跑会违反不覆盖最近冻结快照的验收边界。"
+  }
+}

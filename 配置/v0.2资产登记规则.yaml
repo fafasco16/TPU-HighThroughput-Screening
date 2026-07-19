@@ -1,0 +1,1063 @@
+schema_version: v0.2
+id_algorithm_version: uuid5-v1
+rules_version: v0.2-asset-rules-2026-07-20-rc3
+discovery_scope_key: local_raw_assets_v0.2
+
+scan:
+  root_hint: 01_原始数据
+  follow_symlinks: false
+  prune_directory_names:
+    - .git
+  path_normalization: unicode_nfc_posix
+  stable_sort: casefold_then_nfc
+  hash_algorithm: sha256_stream
+  chunk_size_bytes: 1048576
+  symlink_policy: block
+  read_failure_policy: block
+  unmatched_policy: block
+  conflict_policy: block
+
+duplicate_policy:
+  group_key: content_sha256
+  canonical_order: priority_desc_then_casefold_path
+
+rules:
+  - rule_id: root_readme
+    priority: 1000
+    path_regex: '^README\.md$'
+    source_scope_key: local_discovery_documentation
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: unknown
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 项目原始数据根目录说明文件，仅用于治理解释。
+    review_required: false
+
+  - rule_id: base_openpoly
+    priority: 1000
+    path_regex: '^基础数据/openpoly\.csv$'
+    source_scope_key: openpoly_local_export
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: general_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: OpenPoly 本地结构性质导出，保留为通用聚合物辅助数据。
+    review_required: true
+
+  - rule_id: base_pi1m_virtual_candidates
+    priority: 1000
+    path_regex: '^基础数据/PI1M_v2\.csv$'
+    source_scope_key: pi1m_v2_local_export
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PI1M 是虚拟聚合物候选空间，不声明为实验性能数据。
+    review_required: true
+
+  - rule_id: base_smipoly_monomer_rules
+    priority: 1000
+    path_regex: '^基础数据/smipoly_monomers\.csv$'
+    source_scope_key: smipoly_public_monomer_examples
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: monomer_rule
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: SMiPoly 单体示例仅支持反应规则和候选生成，不提供实验标签。
+    review_required: true
+
+  - rule_id: base_internal_plan_workbook
+    priority: 1000
+    path_regex: '^基础数据/TPU_开源数据库与建库方案\.xlsx$'
+    source_scope_key: local_discovery_documentation
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: unknown
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 内部建库方案工作簿，不作为第三方科学观测。
+    review_required: false
+
+  - rule_id: restricted_datasets
+    priority: 1000
+    path_regex: '^仅供参考/受限来源/(?:DiMPU2025|PUN2026)/source_data\.xlsx$'
+    source_scope_key: restricted_reference_collection
+    artifact_role: restricted_reference
+    data_stage: reference_only
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: denied
+    decision_basis: 本地可读但来源条款限制，动作级权利裁决前仅受控参考。
+    review_required: true
+
+  - rule_id: restricted_readme
+    priority: 1000
+    path_regex: '^仅供参考/受限来源/README\.md$'
+    source_scope_key: restricted_reference_collection
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: unknown
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 受限来源目录的治理说明文件。
+    review_required: false
+
+  - rule_id: wiley_supplementary_docx
+    priority: 1000
+    path_regex: '^仅供参考/Wiley补充材料/app51269-sup-0001-supinfo\.docx$'
+    source_scope_key: wiley_app51269_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: Wiley 补充文档含方法和汇总信息，不假定含原始曲线或可训练许可。
+    review_required: true
+
+  - rule_id: adept_simulation_candidate_table
+    priority: 1000
+    path_regex: '^代码仓库镜像/ADEPT/SMILES\.csv$'
+    source_scope_key: adept_repository_release
+    artifact_role: simulation_input
+    data_stage: raw
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: ADEPT SMILES 是待计算候选输入，不是已完成的模拟或实验标签。
+    review_required: true
+
+  - rule_id: adept_simulation_inputs
+    priority: 950
+    path_regex: '^代码仓库镜像/ADEPT/.+\.(?:elastic|in|mod|mol)$'
+    source_scope_key: adept_repository_release
+    artifact_role: simulation_input
+    data_stage: raw
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Psi4/LAMMPS 输入与模量模板只定义计算工作流，不能计作模拟输出。
+    review_required: true
+
+  - rule_id: adept_documentation
+    priority: 800
+    path_regex: '^代码仓库镜像/ADEPT/(?:README\.md)$'
+    source_scope_key: adept_repository_release
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: ADEPT 仓库说明文件。
+    review_required: false
+
+  - rule_id: adept_tg_model_artifact
+    priority: 1200
+    path_regex: '^代码仓库镜像/ADEPT/Files/model_mlp_tg\.pkl$'
+    source_scope_key: adept_repository_release
+    artifact_role: model_artifact
+    data_stage: model_output
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: ADEPT 训练后的 Tg MLP 二进制模型是模型制品，不是源代码、模拟结果或训练标签；禁止通过反序列化推断科学记录。
+    review_required: true
+
+  - rule_id: adept_code_and_configuration
+    priority: 500
+    path_regex: '^代码仓库镜像/ADEPT/.*\.(?:py|sh|yml|gitignore|gitkeep)$'
+    source_scope_key: adept_repository_release
+    artifact_role: code
+    data_stage: metadata_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: ADEPT 源代码、作业脚本与配置文件；训练后模型由高优先级模型制品规则单独登记。
+    review_required: false
+
+  - rule_id: dq_processed_pue
+    priority: 1000
+    path_regex: '^代码仓库镜像/DQ/experiment/processed_data/PUE\.csv$'
+    source_scope_key: dq_repository_pue_processed
+    artifact_role: derived_duplicate
+    data_stage: derived
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: DQ processed PUE 是母表投影或变换，不增加独立实验样本。
+    review_required: true
+
+  - rule_id: dq_processed_other
+    priority: 950
+    path_regex: '^代码仓库镜像/DQ/experiment/processed_data/.+\.csv$'
+    source_scope_key: dq_repository_processed_benchmarks
+    artifact_role: derived_duplicate
+    data_stage: derived
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: rejected
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: DQ processed 非 PU 基准是派生投影，保留审计但排除 TPU 主域。
+    review_required: false
+
+  - rule_id: dq_pue_parent
+    priority: 1000
+    path_regex: '^代码仓库镜像/DQ/experiment/datasets/PUE\.csv$'
+    source_scope_key: dq_repository_pue_parent
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: DQ PUE 母表是聚氨酯弹性体小样本基准候选。
+    review_required: true
+
+  - rule_id: dq_pue_backup_projection
+    priority: 990
+    path_regex: '^代码仓库镜像/DQ/experiment/datasets/PUE-bak\.csv$'
+    source_scope_key: dq_repository_pue_parent
+    artifact_role: derived_duplicate
+    data_stage: derived
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PUE-bak 是同一来源记录族的备份或不同投影，需行级血缘核对。
+    review_required: true
+
+  - rule_id: dq_non_domain_parent_tables
+    priority: 900
+    path_regex: '^代码仓库镜像/DQ/experiment/datasets/.+\.csv$'
+    source_scope_key: dq_repository_non_domain_benchmarks
+    artifact_role: excluded_non_domain
+    data_stage: raw
+    material_scope_hint: mixed_material_domain
+    registration_status: excluded_with_evidence
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: rejected
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: DQ 的非聚氨酯方法基准保留治理证据但不进入 TPU 科学域。
+    review_required: false
+
+  - rule_id: dq_documentation
+    priority: 800
+    path_regex: '^代码仓库镜像/DQ/README\.md$'
+    source_scope_key: dq_repository_release
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: DQ 仓库说明文件。
+    review_required: false
+
+  - rule_id: dq_code_notebooks
+    priority: 500
+    path_regex: '^代码仓库镜像/DQ/.*\.(?:py|ipynb|gitignore)$'
+    source_scope_key: dq_repository_release
+    artifact_role: code
+    data_stage: metadata_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: DQ 源代码、实验笔记本或仓库配置。
+    review_required: false
+
+  - rule_id: matimpute_missing_pue
+    priority: 1100
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/miss_datasets/PUE/.+\.csv$'
+    source_scope_key: matimpute_pue_missing_variants
+    artifact_role: derived_duplicate
+    data_stage: derived
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PUE 人工缺失率与缺失机制变体源于同一母表，不增加实验配方。
+    review_required: true
+
+  - rule_id: matimpute_missing_other
+    priority: 1000
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/miss_datasets/.+\.csv$'
+    source_scope_key: matimpute_non_domain_missing_variants
+    artifact_role: derived_duplicate
+    data_stage: derived
+    material_scope_hint: mixed_material_domain
+    registration_status: excluded_with_evidence
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: rejected
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 非 PU 方法基准的人工缺失变体，仅用于治理算法审计。
+    review_required: false
+
+  - rule_id: matimpute_filled_pue
+    priority: 1100
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/filled_results/PUE\.csv$'
+    source_scope_key: matimpute_pue_filled_results
+    artifact_role: model_output
+    data_stage: model_output
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PUE 填补表是机器学习派生输出，不是真实新增实验测量。
+    review_required: true
+
+  - rule_id: matimpute_filled_other
+    priority: 1000
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/filled_results/.+\.(?:csv|png)$'
+    source_scope_key: matimpute_filled_results
+    artifact_role: model_output
+    data_stage: model_output
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: MatImpute 填补或评估输出与母数据分层登记。
+    review_required: true
+
+  - rule_id: matimpute_pue_parent
+    priority: 1100
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/PUE\.csv$'
+    source_scope_key: matimpute_pue_parent
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: MatImpute 中 PUE 母表保留来源 occurrence，并与 DQ 镜像建立精确哈希关系。
+    review_required: true
+
+  - rule_id: matimpute_ccpm_review
+    priority: 1090
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/CCPM\.csv$'
+    source_scope_key: matimpute_ccpm_parent
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: unknown
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: CCPM 材料域与原始来源尚待核验，先登记并阻断模型准入。
+    review_required: true
+
+  - rule_id: matimpute_non_domain_parents
+    priority: 900
+    path_regex: '^代码仓库镜像/MatImpute/experiment/dataset/[^/]+\.csv$'
+    source_scope_key: matimpute_non_domain_parent_tables
+    artifact_role: excluded_non_domain
+    data_stage: raw
+    material_scope_hint: mixed_material_domain
+    registration_status: excluded_with_evidence
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: rejected
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: MatImpute 基础表中非 PU 数据保留方法审计，不增加 TPU 主域规模。
+    review_required: false
+
+  - rule_id: matimpute_benchmark_outputs
+    priority: 850
+    path_regex: '^代码仓库镜像/MatImpute/experiment/[^/]+\.(?:csv|xlsx|npy|png)$'
+    source_scope_key: matimpute_benchmark_outputs
+    artifact_role: model_output
+    data_stage: aggregate
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: MatImpute 根实验目录中的性能汇总、数组与图件属于算法输出。
+    review_required: true
+
+  - rule_id: matimpute_documentation
+    priority: 800
+    path_regex: '^代码仓库镜像/MatImpute/README\.md$'
+    source_scope_key: matimpute_repository_release
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: MatImpute 仓库说明文件。
+    review_required: false
+
+  - rule_id: matimpute_code_notebooks_configuration
+    priority: 500
+    path_regex: '^代码仓库镜像/MatImpute/.*\.(?:py|ipynb|toml|lock|gitignore)$'
+    source_scope_key: matimpute_repository_release
+    artifact_role: code
+    data_stage: metadata_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: MatImpute 源代码、笔记本、锁文件与项目配置。
+    review_required: false
+
+  - rule_id: polygraphmt_dft_outputs
+    priority: 1000
+    path_regex: '^代码仓库镜像/PolyGraphMT/data/raw/.+_DFT\.csv$'
+    source_scope_key: polygraphmt_dft_raw
+    artifact_role: simulation_output
+    data_stage: raw
+    material_scope_hint: general_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PolyGraphMT DFT 文件是计算观测候选，方法与体系映射复核后再准入。
+    review_required: true
+
+  - rule_id: polygraphmt_md_outputs
+    priority: 1000
+    path_regex: '^代码仓库镜像/PolyGraphMT/data/raw/.+_MD\.csv$'
+    source_scope_key: polygraphmt_md_raw
+    artifact_role: simulation_output
+    data_stage: raw
+    material_scope_hint: general_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PolyGraphMT MD 文件是计算观测候选，保留计算条件与不确定度边界。
+    review_required: true
+
+  - rule_id: polygraphmt_gc_outputs
+    priority: 1000
+    path_regex: '^代码仓库镜像/PolyGraphMT/data/raw/.+_GC\.csv$'
+    source_scope_key: polygraphmt_gc_raw
+    artifact_role: computed_property_output
+    data_stage: raw
+    material_scope_hint: general_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PolyGraphMT GC 文件是群贡献计算候选，不冒充 DFT 或 MD 轨迹结果。
+    review_required: true
+
+  - rule_id: polygraphmt_documentation
+    priority: 800
+    path_regex: '^代码仓库镜像/PolyGraphMT/(?:README\.md|data/README\.md)$'
+    source_scope_key: polygraphmt_repository_release
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: general_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: PolyGraphMT 仓库或数据目录说明文件。
+    review_required: false
+
+  - rule_id: polygraphmt_code_configuration
+    priority: 500
+    path_regex: '^代码仓库镜像/PolyGraphMT/.*\.(?:toml|txt|yml|gitignore)$'
+    source_scope_key: polygraphmt_repository_release
+    artifact_role: code
+    data_stage: metadata_only
+    material_scope_hint: general_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: PolyGraphMT 环境、依赖和项目配置文件。
+    review_required: false
+
+  - rule_id: viscosity_experimental_tables
+    priority: 1000
+    path_regex: '^代码仓库镜像/viscosity-modeling/(?:FeatureSpaces|ViscTempData)\.xlsx$'
+    source_scope_key: viscosity_modeling_data
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 聚氨酯预聚体特征与温度黏度实验表，待逐表协议核验。
+    review_required: true
+
+  - rule_id: viscosity_documentation
+    priority: 800
+    path_regex: '^代码仓库镜像/viscosity-modeling/(?:README\.md|toc-01\.(?:jpeg|tif))$'
+    source_scope_key: viscosity_modeling_repository_release
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 黏度研究仓库说明或图文资产。
+    review_required: false
+
+  - rule_id: viscosity_modeling_notebook
+    priority: 700
+    path_regex: '^代码仓库镜像/viscosity-modeling/modeling\.ipynb$'
+    source_scope_key: viscosity_modeling_repository_release
+    artifact_role: code
+    data_stage: metadata_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 黏度建模笔记本作为代码登记，不计实验样本。
+    review_required: false
+
+  - rule_id: external_polyomics_general
+    priority: 1100
+    path_regex: '^外部数据/PolyOmics_general\.csv$'
+    source_scope_key: polyomics_general_version
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PolyOmics general 是计算母库，只入库一次且不冒充实验标签。
+    review_required: true
+
+  - rule_id: external_polyomics_purt_subset
+    priority: 1100
+    path_regex: '^外部数据/PolyOmics_PURT\.csv$'
+    source_scope_key: polyomics_purt_partition
+    artifact_role: subset_view
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PURT 是 general 母库可重建逻辑子集；其记录为单组分计算聚合物，名称不足以证明线性TPU材料域，不重复增加计算观测并保留人工域裁决。
+    review_required: true
+
+  - rule_id: external_polyomics_readme
+    priority: 1000
+    path_regex: '^外部数据/PolyOmics_README\.md$'
+    source_scope_key: polyomics_general_version
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: PolyOmics 本地来源与字段说明。
+    review_required: false
+
+  - rule_id: external_pu18_archive_mirror
+    priority: 1100
+    path_regex: '^外部数据/PU18_Menon2019_figshare\.zip$'
+    source_scope_key: pu18_menon_figshare_deposit
+    artifact_role: mirror_duplicate
+    data_stage: raw
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: Figshare ZIP 内代码与已解压目录镜像，容器本身不增加数据样本。
+    review_required: true
+
+  - rule_id: external_pu18_extracted_code
+    priority: 1050
+    path_regex: '^外部数据/PU18_Menon2019/Code/.+\.py$'
+    source_scope_key: pu18_menon_figshare_deposit
+    artifact_role: code
+    data_stage: metadata_only
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: PU-18 解压内容是模型代码，不包含论文训练表。
+    review_required: false
+
+  - rule_id: external_zenodo15490464_archive_mirror
+    priority: 1200
+    path_regex: '^外部数据/力学曲线/Zenodo15490464/TPU_BC_CFF_raw\.zip$'
+    source_scope_key: zenodo_15490464_v1
+    artifact_role: mirror_duplicate
+    data_stage: raw
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: ZIP 中工作簿与同目录解压文件镜像，容器不重复计数。
+    review_required: true
+
+  - rule_id: external_am1c_si
+    priority: 1050
+    path_regex: '^外部数据/am1c24715_si_00[12]\.(?:pdf|xlsx)$'
+    source_scope_key: acs_am1c24715_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: ACS am1c24715 补充材料与主数据来源范围分离登记。
+    review_required: true
+
+  - rule_id: external_jp0c_si
+    priority: 1050
+    path_regex: '^外部数据/jp0c06439_si_00[23]\.xlsx$'
+    source_scope_key: acs_jp0c06439_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: ACS jp0c06439 补充材料独立登记，许可与表级语义待核。
+    review_required: true
+
+  - rule_id: external_ma4c_si
+    priority: 1050
+    path_regex: '^外部数据/ma4c02559_si_001\.pdf$'
+    source_scope_key: acs_ma4c02559_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: ACS ma4c02559 补充信息文档。
+    review_required: true
+
+  - rule_id: external_nature2025_main
+    priority: 1050
+    path_regex: '^外部数据/Nature2025_Source_Data\.xlsx$'
+    source_scope_key: nature2025_source_data
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Nature 2025 主 Source Data，逐工作表建立定位与协议后准入。
+    review_required: true
+
+  - rule_id: external_nature2025_supplementary
+    priority: 1040
+    path_regex: '^外部数据/Nature2025_Supplementary_(?:Data\.xlsx|Information\.pdf)$'
+    source_scope_key: nature2025_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: Nature 2025 补充数据与补充信息作为 companion scope 保存。
+    review_required: true
+
+  - rule_id: external_eom2021_main
+    priority: 1050
+    path_regex: '^外部数据/TPU_HBond_2021_Source_Main\.xlsx$'
+    source_scope_key: eom2021_source_main
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Eom 2021 线性 TPU 主 Source Data。
+    review_required: true
+
+  - rule_id: external_eom2021_supplementary
+    priority: 1040
+    path_regex: '^外部数据/TPU_HBond_2021_(?:Source_Supplementary\.xlsx|Supplementary_Information\.pdf)$'
+    source_scope_key: eom2021_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: Eom 2021 补充 Source Data 与 SI 分层保存。
+    review_required: true
+
+  - rule_id: external_wpu_dcr_main
+    priority: 1050
+    path_regex: '^外部数据/WPU_DCR_2025_Source_Data\.xlsx$'
+    source_scope_key: wpu_dcr_2025_source_data
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: waterborne_polyurethane
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: WPU-DCR 2025 主 Source Data。
+    review_required: true
+
+  - rule_id: external_wpu_dcr_supplementary
+    priority: 1040
+    path_regex: '^外部数据/WPU_DCR_2025_Supplementary_Information\.pdf$'
+    source_scope_key: wpu_dcr_2025_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: waterborne_polyurethane
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: WPU-DCR 补充信息独立于主 Source Data。
+    review_required: true
+
+  - rule_id: external_pue_stress_strain_esi
+    priority: 1040
+    path_regex: '^外部数据/PUE_StressStrain_2026_ESI\.pdf$'
+    source_scope_key: pue_stress_strain_2026_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: 2026 PUE 应力应变 ESI 文档，不推断包含可机器学习的原始表。
+    review_required: true
+
+  - rule_id: external_pue643_esi
+    priority: 1040
+    path_regex: '^外部数据/PUE643_2023_ESI\.pdf$'
+    source_scope_key: pue643_2023_supplementary
+    artifact_role: supplementary_information
+    data_stage: reference_only
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: PUE-643 ESI 是论文补充材料，逐表定位后才能形成观测。
+    review_required: true
+
+  - rule_id: external_curve_collection_readme
+    priority: 1100
+    path_regex: '^外部数据/力学曲线/README\.md$'
+    source_scope_key: mechanical_curve_collection_local_notes
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 力学曲线集合的本地来源说明。
+    review_required: false
+
+  - rule_id: curve_jiang2021
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/Jiang2021_SHE/.+$'
+    source_scope_key: jiang2021_she_source_data
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Jiang 2021 自修复聚氨酯 Source Data 曲线候选。
+    review_required: true
+
+  - rule_id: curve_li2026
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/Li2026_Mechanophore/.+$'
+    source_scope_key: li2026_mechanophore_deposit
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Li 2026 mechanophore 数据 deposit，ZIP 作为原始容器登记。
+    review_required: true
+
+  - rule_id: curve_schwarz2022
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/Schwarz2022_EPU40/.+$'
+    source_scope_key: schwarz2022_epu40_source_data
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Schwarz 2022 EPU40 原始力学数据。
+    review_required: true
+
+  - rule_id: curve_self_healing_4tu
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/SelfHealingTPU_4TU/.+$'
+    source_scope_key: self_healing_tpu_4tu_deposit
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 4TU 自修复 TPU 数据 deposit 原始容器。
+    review_required: true
+
+  - rule_id: curve_tpu_literature
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/TPU_literature_ftntxg4zdz/.+$'
+    source_scope_key: tpu_literature_ftntxg4zdz_deposit
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 文献图对应工作簿，需图表定位与测量协议核验。
+    review_required: true
+
+  - rule_id: curve_tpu95a_2026
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/TPU95A_2026/.+$'
+    source_scope_key: tpu95a_2026_deposit
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: TPU95A 多试样应力应变 CSV，重复试样不增加独立配方数。
+    review_required: true
+
+  - rule_id: curve_zenodo1098206
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/Zenodo1098206/.+$'
+    source_scope_key: zenodo_1098206
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 多孔导电 TPU 纳米复合材料数据 deposit。
+    review_required: true
+
+  - rule_id: curve_zenodo15490464
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/Zenodo15490464/.+\.xlsx$'
+    source_scope_key: zenodo_15490464_v1
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: TPU/BC/CFF 解压工作簿为规范读取候选，ZIP 镜像另行登记。
+    review_required: true
+
+  - rule_id: curve_zenodo4156000
+    priority: 1000
+    path_regex: '^外部数据/力学曲线/Zenodo4156000/.+\.csv$'
+    source_scope_key: zenodo_4156000
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_attempted
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Zenodo 4156000 动态与准静态拉伸曲线；同哈希错名文件需重复裁决。
+    review_required: true

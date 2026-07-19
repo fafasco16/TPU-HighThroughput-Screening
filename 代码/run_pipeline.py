@@ -1,4 +1,4 @@
-"""TPU 数据库 v0.1 命令行入口。"""
+"""TPU 数据库命令行入口：v0.1 构建与只读 v0.2 治理审计。"""
 
 from __future__ import annotations
 
@@ -8,9 +8,32 @@ import json
 from pathlib import Path
 from typing import Sequence
 
+from build_verification import (
+    ASSET_OUTPUT_FILES,
+    BuildVerificationError,
+    audit_asset_build,
+    compare_asset_builds,
+    verify_v01_baseline,
+)
+from asset_registry import AssetRegistryError
+from computational_admission import ComputationalAdmissionError
+from contract import ContractValidationError, load_contract_bundle
 from database_build import SCHEMA_VERSION as DATABASE_SCHEMA_VERSION
 from database_build import DatabaseBuildResult, build_database
 from manifest import build_manifest, build_manifest_from_config, write_manifest_csv
+from governance_build import (
+    DEFAULT_ASSET_RULES as DEFAULT_V02_ASSET_RULES,
+    DEFAULT_CONTRACT_SCHEMA as DEFAULT_V02_CONTRACT_SCHEMA,
+    DEFAULT_ENUMS as DEFAULT_V02_ENUMS,
+    DEFAULT_QUALITY_RULES as DEFAULT_V02_QUALITY_RULES,
+    DEFAULT_SOURCE_SCOPE_CONFIG as DEFAULT_V02_SOURCE_SCOPES,
+    DEFAULT_V01_SNAPSHOT,
+    GovernanceBuildError,
+    audit_governance_build,
+    build_governance_database,
+    compare_governance_builds,
+)
+from source_governance import SourceGovernanceError
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -120,6 +143,47 @@ def create_parser() -> argparse.ArgumentParser:
     manifest_parser = subparsers.add_parser("manifest", help="生成完整来源文件清单")
     manifest_parser.add_argument("--config", default=str(DEFAULT_SOURCE_CONFIG))
     manifest_parser.add_argument("--output", default=str(DEFAULT_MANIFEST))
+    contract_parser = subparsers.add_parser(
+        "contract-audit", help="只读审计一个显式指定的版本化合同三件套"
+    )
+    contract_parser.add_argument("--schema", required=True)
+    contract_parser.add_argument("--enums", required=True)
+    contract_parser.add_argument("--rules", required=True)
+    compare_parser = subparsers.add_parser(
+        "compare-builds", help="只读比较两个隔离 v0.2 资产构建"
+    )
+    compare_parser.add_argument("--left", required=True)
+    compare_parser.add_argument("--right", required=True)
+    compare_parser.add_argument("--require-byte-identical-csv", action="store_true")
+    compare_parser.add_argument("--require-logical-hash-identical", action="store_true")
+    audit_parser = subparsers.add_parser(
+        "asset-audit", help="只读核验一个隔离 v0.2 资产构建"
+    )
+    audit_parser.add_argument("--build-root", required=True)
+    audit_parser.add_argument("--report", required=True)
+    baseline_parser = subparsers.add_parser(
+        "verify-v0.1-baseline", help="只读复核冻结 v0.1 快照声明的全部哈希"
+    )
+    baseline_parser.add_argument("--snapshot", required=True)
+    governance_build_parser = subparsers.add_parser(
+        "governance-build", help="原子生成一个隔离的 v0.2 全量治理构建"
+    )
+    governance_build_parser.add_argument("--output-root", required=True)
+    governance_build_parser.add_argument("--asset-rules", default=str(DEFAULT_V02_ASSET_RULES))
+    governance_build_parser.add_argument("--source-scopes", default=str(DEFAULT_V02_SOURCE_SCOPES))
+    governance_build_parser.add_argument("--schema", default=str(DEFAULT_V02_CONTRACT_SCHEMA))
+    governance_build_parser.add_argument("--enums", default=str(DEFAULT_V02_ENUMS))
+    governance_build_parser.add_argument("--rules", default=str(DEFAULT_V02_QUALITY_RULES))
+    governance_build_parser.add_argument("--v01-snapshot", default=str(DEFAULT_V01_SNAPSHOT))
+    governance_audit_parser = subparsers.add_parser(
+        "governance-audit", help="从落盘产物重算并核验 v0.2 治理构建"
+    )
+    governance_audit_parser.add_argument("--build-root", required=True)
+    governance_compare_parser = subparsers.add_parser(
+        "compare-governance-builds", help="严格比较两个治理构建的全部产物"
+    )
+    governance_compare_parser.add_argument("--left", required=True)
+    governance_compare_parser.add_argument("--right", required=True)
     for command, help_text in (
         ("build", "构建四源 v0.1 分层数据库与快照"),
         ("qc", "重新构建并输出完整质量检查结果"),
@@ -137,6 +201,113 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "manifest":
         rows = build_full_manifest(PROJECT_ROOT, args.config, args.output)
         print(json.dumps(_manifest_summary(rows), ensure_ascii=False, sort_keys=True))
+        return 0
+    if args.command == "contract-audit":
+        try:
+            bundle = load_contract_bundle(args.schema, args.enums, args.rules)
+        except ContractValidationError as error:
+            print(
+                json.dumps(
+                    {"status": "contract_invalid", "error": error.as_dict()},
+                    ensure_ascii=False,
+                    sort_keys=True,
+                )
+            )
+            return 2
+        print(
+            json.dumps(
+                {
+                    "status": "contract_valid",
+                    "schema_version": bundle.schema_version,
+                    "table_count": len(bundle.schema["tables"]),
+                    "rule_count": len(bundle.rules["rules"]),
+                    "document_hashes": bundle.document_hashes,
+                },
+                ensure_ascii=False,
+                sort_keys=True,
+            )
+        )
+        return 0
+    if args.command in {"compare-builds", "asset-audit", "verify-v0.1-baseline"}:
+        try:
+            if args.command == "compare-builds":
+                payload = compare_asset_builds(
+                    args.left,
+                    args.right,
+                    require_byte_identical_csv=args.require_byte_identical_csv,
+                    require_logical_hash_identical=args.require_logical_hash_identical,
+                )
+            elif args.command == "asset-audit":
+                expected_report = (Path(args.build_root) / ASSET_OUTPUT_FILES[3]).resolve()
+                actual_report = Path(args.report).resolve()
+                if actual_report != expected_report:
+                    raise BuildVerificationError(
+                        "asset_audit_report_path_mismatch",
+                        "--report 必须指向 --build-root 内的标准资产审计文件",
+                        expected_report=str(expected_report),
+                        actual_report=str(actual_report),
+                    )
+                payload = audit_asset_build(args.build_root)
+            else:
+                payload = verify_v01_baseline(PROJECT_ROOT, args.snapshot)
+        except BuildVerificationError as error:
+            print(
+                json.dumps(
+                    {"status": "verification_failed", "error": error.as_dict()},
+                    ensure_ascii=False,
+                    sort_keys=True,
+                )
+            )
+            return 2
+        print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+        return 0
+    if args.command in {"governance-build", "governance-audit", "compare-governance-builds"}:
+        try:
+            if args.command == "governance-build":
+                result = build_governance_database(
+                    PROJECT_ROOT,
+                    args.output_root,
+                    asset_rules_path=args.asset_rules,
+                    source_scope_path=args.source_scopes,
+                    contract_schema_path=args.schema,
+                    enums_path=args.enums,
+                    quality_rules_path=args.rules,
+                    v01_snapshot_path=args.v01_snapshot,
+                )
+                payload = {
+                    "status": "provisional_pass",
+                    "output_root": str(result.output_root),
+                    "input_count": result.report["input_count"],
+                    "snapshot_logical_hash": result.report["snapshot_logical_hash"],
+                }
+            elif args.command == "governance-audit":
+                payload = audit_governance_build(args.build_root)
+            else:
+                payload = compare_governance_builds(args.left, args.right)
+        except (
+            GovernanceBuildError,
+            AssetRegistryError,
+            ComputationalAdmissionError,
+            ContractValidationError,
+            SourceGovernanceError,
+        ) as error:
+            if hasattr(error, "as_dict"):
+                detail = error.as_dict()
+            else:
+                detail = {
+                    "code": error.code,
+                    "message": error.message,
+                    "context": error.context,
+                }
+            print(
+                json.dumps(
+                    {"status": "governance_verification_failed", "error": detail},
+                    ensure_ascii=False,
+                    sort_keys=True,
+                )
+            )
+            return 2
+        print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
         return 0
     if args.command in {"build", "qc"}:
         result = build_from_manifest(PROJECT_ROOT, args.manifest)

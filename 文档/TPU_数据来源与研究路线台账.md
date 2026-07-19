@@ -9,13 +9,13 @@
 1. 将“论文声称的数据规模”“实际获得的文件”“可机器读取的有效样本数”分别记录，不能混用。
 2. 每条原始记录必须保留来源 DOI/URL、表格或图号、实验条件、单位、数据版本和提取方式；无法追溯到具体出处的数据不得进入最终高置信度训练集。
 3. GitHub 仓库只作为代码或数据载体；论文写作优先引用原始论文和正式数据 DOI，同时记录仓库提交哈希以保证可复现。
-4. 许可证未知或仓库无 LICENSE 的数据，只用于内部学术研究和方法复现，不重新分发，不直接并入拟公开的数据包。
-5. 文献提取值、作者提供的原始表格、由图像数字化获得的值、DFT 值和 MD 值必须使用不同的 `fidelity` 与 `extraction_method` 标记。
+4. 许可证未知、仓库无 LICENSE 或 TDM/AI 条款不清的数据默认只登记元数据和参考关系；内部分析、建模、原始再分发与派生发布分别人工复核，不能把“学术用途”自动等同于已获授权。
+5. 文献提取、作者原始表、图像数字化、DFT、MD、GC 和 ML 预测不得压入一个混合 `fidelity` 字段；观测分别保存 `origin_kind`、`reduction_level`、`acquisition_method`、`evidence_quality`、`scientific_use_class` 与 `rights_evidence_state`，候选身份另存。具体动作能否执行只由全血缘 `rights_action_decision` 决定。
 6. 任何性能值都必须绑定样品配方、合成/加工过程和测试条件。只含单体 SMILES、但不含配比与工艺的数据，不能直接训练可靠的 TPU 终性能模型。
 
 ## 2. 当前数据资产总览
 
-截至 2026-07-18，`01_原始数据` 已分为基础数据、外部数据、代码仓库镜像和仅供参考四层，共 1,606 个文件、642,262,263 字节（不含嵌套 Git 对象）。这个数字是文件资产量，不等于独立 TPU 配方数；真正可用于化学—性能主模型的高置信样品远少于文件数。
+2026-07-19 完成资产盘点，2026-07-20 完成计算资产科学语义复算。`01_原始数据` 已分为基础数据、外部数据、代码仓库镜像和仅供参考四层。含隐藏文件的物理盘点为 1,790 个文件、722,184,970 字节，其中嵌套 `.git/**` 为 183 个文件、79,921,870 字节；按 v0.2 当前发现规则排除 `.git/**` 后为 1,607 个文件、642,263,100 字节。v0.1 清单仍冻结为 1,606 行、642,262,263 字节：它排除了 820 字节的根 README，且两个项目 README 此后合计增长 17 字节。上述数字是不同扫描范围/时间的证据，不能互相覆盖，后续必须由规则、输入哈希和清单双向对账动态生成。文件资产量不等于独立 TPU 配方数；真正可用于化学—性能主模型的高置信样品远少于文件数。完整复算口径见[全量资产预审报告](质量报告/TPU数据库_v0.2_全量资产预审报告.md)。
 
 ### 2.1 工作区原有文件
 
@@ -23,7 +23,7 @@
 |---|---:|---|---|---|---|
 | `01_原始数据/基础数据/openpoly.csv` | 741 行，32 列 | 含 Tg、模量、强度、断裂伸长率等通用聚合物实验属性 | 性能字段高度稀疏；缺少 TPU 配方、合成工艺、测试条件和原始曲线 | 通用聚合物表征预训练、迁移学习和描述符筛选；不能单独作为 TPU 模型 | [5] |
 | `01_原始数据/基础数据/PI1M_v2.csv` | 995,799 行，2 列（SMILES、SA Score） | 大规模假想聚合物化学空间 | 无 TPU 标签、无实验性能、含部分不适合 TPU 的结构；不是“可直接合成的 TPU 候选库” | 自监督表征预训练、生成模型化学空间先验 | [6] |
-| `01_原始数据/基础数据/smipoly_monomers.csv` | 1,083 行，5 列；SMILES 有 12 个重复 | 有规则驱动的可聚合单体种子 | 缺少 TPU 角色、官能度、纯度、供应商、EHS、价格等字段 | 候选单体种子库；需二次分类为二异氰酸酯/多元醇/扩链剂等 | [7] |
+| `01_原始数据/基础数据/smipoly_monomers.csv` | 1,083 个 `comID` 来源记录、1,071 个大小写敏感 exact SMILES；10 个重复 exact-SMILES 组、12 条额外记录 | 有规则驱动的可聚合单体种子 | `comID` 是来源记录身份而非化学体系身份；缺少 TPU 角色、官能度、纯度、供应商、EHS、价格等字段 | 候选单体种子库；需二次分类为二异氰酸酯/多元醇/扩链剂等 | [7] |
 | `01_原始数据/基础数据/TPU_开源数据库与建库方案.xlsx` | 6 个工作表 | 已包含数据库比较、任务映射、字段与实施路线雏形 | 当前偏“单张宽表”思路，无法完整表达批次、重复、曲线、多保真计算与来源关系 | 作为需求草案；后续重构为规范化关系数据库 | 本项目内部文件 |
 
 ### 2.2 已核验并下载的外部来源
@@ -31,8 +31,8 @@
 | 来源/本地位置 | 论文或页面声称的规模 | 实际获得并核验的内容 | 许可证/使用边界 | 对本项目的价值 | 主要引用 |
 |---|---:|---|---|---|---|
 | `01_原始数据/外部数据/PUE643_2023_ESI.pdf` | 原始集 643 个 PUE；其中 386 条完整应力–应变曲线；基准集 326 条 | 官方 ESI PDF；说明 32 种多元醇、117 种硬段组合、20 个输入特征，但 PDF 内没有完整可机器读取的 643 行数据表 | 出版商版权；当前仅作学术核验与字段依据 | TPU/PUE 机械性能字段体系和基准设计的核心依据 | [1] |
-| `01_原始数据/代码仓库镜像/DQ/experiment/datasets/PUE.csv` | 对应 PUE 基准数据 | 326 行 × 24 列，无缺失；输入多为 Z-score/对数变换，输出为 `logEB`、`logYM`、`logTS` | 仓库未发现 LICENSE；不宜重新分发 | 可复现 326 条基准 ML；不能恢复原始配方身份，也不能直接生成新化学体系 | [1], [12] |
-| `01_原始数据/代码仓库镜像/MatImpute/experiment/dataset/PUE.csv` | 同一 PUE 基准数据 | 与上述 326 × 24 数据一致 | 仓库未发现 LICENSE | 缺失值处理/鲁棒性研究；不是新的独立实验数据 | [12] |
+| `01_原始数据/代码仓库镜像/DQ/experiment/datasets/PUE.csv` | 对应 PUE 基准数据 | 326 行 × 24 列，无缺失；SSID 326/326 唯一，其余 23 列均为有限数值；输入多为 Z-score/对数变换，输出为 `logEB`、`logYM`、`logTS` | 仓库未发现 LICENSE；当前证据状态 `scope_unresolved`，train/redistribute/publish 均保持人工复核或阻断 | 可复现 326 条变换后基准记录；不能恢复原始配方身份，也不能直接生成新化学体系 | [1], [12] |
+| `01_原始数据/代码仓库镜像/MatImpute/experiment/dataset/PUE.csv` | 同一 PUE 基准数据 | 与 DQ 母表逐字节相同；PUE 子族另含 2 个纯投影、207 个缺失变体（23 列 × 9 比率、33,741 个刻意空值）和 6 个聚合/RDF 模型输出；209 个派生容器、0 个新增材料观测 | 仓库未发现 LICENSE；当前证据状态 `scope_unresolved`，不得外推关联论文许可 | 用于缺失值处理/鲁棒性审计；不是新的独立实验数据。MatImpute 全仓 61 个 `model_output` 均为数组、指标表或图件 | [12] |
 | `01_原始数据/外部数据/Nature2025_Supplementary_Data.xlsx` | 10 组超分子聚氨酯体系的小分子计算数据 | 1 个工作表，94 行 × 76 列；含封端片段/二聚体的 DFT 优化坐标 | 论文与数据按 CC BY-NC-ND 4.0；可引用和非商业研究，修改/再分发需谨慎 | 建立“小分子氢键结合能 → TPU 强度/韧性”机理路线 | [3] |
 | `01_原始数据/外部数据/Nature2025_Source_Data.xlsx` | 文中各主图源数据 | 包含 2,558 行完整应力–应变点、10 个体系的韧性重复值、DMA/介电、SAXS/WAXS、循环拉伸、疲劳、自愈和回收数据 | CC BY-NC-ND 4.0 | 当前质量最高的“计算—结构—性能—验证”闭环范例；适合二次计算和机理验证 | [3] |
 | `01_原始数据/外部数据/Nature2025_Supplementary_Information.pdf` | 合成、DFT、表征和测试细节 | 14.06 MB 官方补充信息 | CC BY-NC-ND 4.0 | 复现实验与计算协议，定义后续验证标准 | [3] |
@@ -48,12 +48,14 @@
 | `01_原始数据/外部数据/TPU_HBond_2021_Source_Main.xlsx` | 碳酸酯型自修复 TPU 主图源数据 | 12 个工作表；含完整拉伸、FTIR、DMA/WAXS、温度依赖、循环与自修复相关数据 | CC BY 4.0 | 可合法再分析的 TPU 氢键阵列与应变诱导有序化基准 | [18] |
 | `01_原始数据/外部数据/TPU_HBond_2021_Source_Supplementary.xlsx` | 上述 TPU 的补充图源数据 | 20 个工作表；包含多组 1,000–16,000 行曲线与重复数据 | CC BY 4.0 | 与主图数据联合用于曲线级和机制级模型 | [18] |
 | `01_原始数据/外部数据/TPU_HBond_2021_Supplementary_Information.pdf` | 上述 TPU 的合成与测试细节 | 2.93 MB 官方 SI | CC BY 4.0 | 复现实验设计并把曲线回连到配方、温度和测试协议 | [18] |
-| `01_原始数据/外部数据/PolyOmics_general.csv` | PolyOmics 通用计算聚合物数据 | 当前快照实测 95,335 行 × 255 列，覆盖单体/重复单元、DFT、Mn/Mw/PDI、密度、Rg、自扩散、热容、体积模量、介电、折射、导热、Tg、溶解度参数等 | 仓库 README 声明 CC BY 4.0，但 Hugging Face card 的结构化 license 字段为空；引用时保留这一差异 | 大规模 Sim2Real/低保真预训练，不是 TPU 配方实验库 | [20] |
-| `01_原始数据/外部数据/PolyOmics_PURT.csv` | 从上述固定快照筛出的 PURT 子集 | 3,384 行 × 255 列；3,264 个唯一 `monomer_ID`；由 `class_PURT=True` 确定 | 派生子集仅内部使用；公开时需核对 CC BY 4.0 与数据卡元数据 | 当前最大的 PU 专用计算子集；适合计算表示预训练和模拟到实验迁移 | [20] |
+| `01_原始数据/外部数据/PolyOmics_general.csv` | PolyOmics 通用计算性质来源记录 | 95,335 个 UUID、78,379 个大小写敏感 exact `smiles_list`、22 个 QoI；1,932,365 个有限数值和 165,005 个缺失单元格；13,016 个重复 exact-structure 组/16,956 条额外 UUID，其中 348 组具有不同固定上下文 | 仓库 README 声明 CC BY 4.0，但 Hugging Face card 的结构化 license 字段为空；当前不存在动作级 v0.2 `allow` 裁决 | UUID 是来源记录身份而不是独立计算活动；方法、协议、输入输出闭合前只进入计算辅助/审计层 | [20] |
+| `01_原始数据/外部数据/PolyOmics_PURT.csv` | 从上述固定快照筛出的 PURT 逻辑子集 | 3,384 个 UUID、3,264 个 exact `smiles_list`；由 `class_PURT=True` 确定，32 行仅有末位数值格式差异 | 只生成带 lineage 的内部版本化视图；公开动作继续复核数据卡许可差异 | 大型 PU 分类计算子集；`class_PURT=True` 不证明线性 TPU、热塑加工性、配方身份或可合成性 | [20] |
 | `01_原始数据/外部数据/PolyOmics_README.md` | PolyOmics 数据卡快照 | 对应 Hugging Face revision `43c8c74cac5bef00e7c3a6cca95a9fab9ba1979c` | README 声明 CC BY 4.0 | 固定许可与引用上下文 | [20] |
-| `01_原始数据/代码仓库镜像/PolyGraphMT/data/raw/*.csv` | 论文整合约 62,000 个值、28 种属性、多保真 | 当前仓库 `data/raw` 核验到 21 个 CSV；包括 Young's modulus 1,012、Poisson 1,012、Tg 152、密度 1,935 等，大部分为 DFT/MD/基团贡献数据 | 论文 CC BY-NC 3.0；仓库未发现 LICENSE | 通用聚合物多任务/多保真预训练；不应冒充 TPU 实验数据 | [8] |
-| `01_原始数据/代码仓库镜像/ADEPT` | 自动构建聚合物并进行 MD/DFT | 已克隆代码与工作流 | 论文 CC BY-NC 3.0；仓库未发现 LICENSE | 用作候选的自动化 MD/DFT 计算骨架，需先做 TPU 专用验证 | [8] |
+| `01_原始数据/代码仓库镜像/PolyGraphMT/data/raw/*.csv` | 论文整合的聚合物多任务、多保真性质 | 21 个 CSV、44,083 个来源行；隔离 1 个 `nan` 身份后为 44,082 个有效候选：DFT 16,616、MD 15,333、GC 12,133，12,271 个 exact SMILES；224 个重复组/248 条额外记录，其中 144 个冲突组/158 条冲突额外记录和 90 条冗余额外记录 | 出版物页面报告 CC BY-NC 3.0；仓库/原始 CSV 未发现独立许可证，当前 `scope_unresolved` | 通用聚合物多任务/多保真辅助层；冲突、单位和协议未闭合前不生成聚合标签，更不冒充 TPU 实验数据 | [8] |
+| `01_原始数据/代码仓库镜像/ADEPT` | 自动构建聚合物并进行 MD/DFT | `SMILES.csv` 含 13,341 个 PID、13,272 个 exact SMILES、63 个多 PID 结构组和 69 条额外连接；PolyGraphMT 的 12,271 个有效 exact SMILES 全部包含于其中；另有 111 个已识别的模拟输入文件 | 出版物页面报告 CC BY-NC 3.0；代码仓库未发现独立许可证，当前 `scope_unresolved` | 与 PolyGraphMT 登记同论文伴生与 exact-containment；只有明确输出血缘后才声明派生方向，当前输入/流程不是性能观测 | [8] |
 | `01_原始数据/外部数据/PU18_Menon2019_figshare.zip` | 论文使用 18 个 PU 样品 | Figshare 压缩包仅 3,985 字节，解压后只有 4 个 Python 脚本；脚本引用的 `PU training dataset.xlsx` 并未包含在压缩包中 | Figshare/论文标为 CC BY 4.0 | 可审查算法结构，但当前不能据此复现 18 样本模型；需联系作者或从补充材料另行追索 | [2] |
+
+PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算口径集中维护在[全量资产预审报告第 5.5 节](质量报告/TPU数据库_v0.2_全量资产预审报告.md#55-跨库-exact-string-重叠最低限度泄漏保护)；这些计数是未经化学标准化的泄漏下界，不是化学等价结论。
 
 ### 2.3 新增的曲线、环境、加工和循环力学数据层
 
@@ -71,7 +73,7 @@
 | `01_原始数据/外部数据/力学曲线/Zenodo15490464/` | 4 个 XLSX 和原始 ZIP；纯 TPU 各向异性/加载速率曲线及 TPU/竹炭/连续纤维复合材料曲线 | CC BY 4.0 | 速率、打印方向和复合增强的外部验证 | 关联论文仍“in preparation”，材料元数据有限；暂不作为高置信化学训练集 | [28] |
 | `01_原始数据/外部数据/力学曲线/TPU_literature_ftntxg4zdz/TPU_literature_Fig18_Fig19.xlsx` | 热塑性聚氨酯力学文献数据库所附 Fig. 18/19 数值表；另有独立参考文献 RIS | CC BY 4.0 | 文献覆盖图、性能区间和后续逐文献追溯种子 | 只是图 18/19 的数值，不是完整配方—条件—曲线库；必须回到原论文核验 | [34] |
 | `01_原始数据/仅供参考/受限来源/DiMPU2025/source_data.xlsx` | 71 个工作表；金属–吡唑 PU 的工程/真实应力–应变、循环、DMA/流变、原位 SAXS 与 DFT 坐标 | CC BY-NC-ND 4.0 | 仅作内部机制比较和外部测试 | 不生成或公开派生训练集，不重新分发改编数据 | [29] |
-| `01_原始数据/仅供参考/受限来源/PUN2026/source_data.xlsx` | 19 个工作表；动态解交联 PUN 的拉伸、循环、DMA、应力松弛及再加工曲线 | CC BY-NC-ND 4.0 | 仅作可修复、再加工和升级回收机制参照 | 热固性动态网络而非 TPU，且 ND 许可；不得并入公开派生数据集 | [30] |
+| `01_原始数据/仅供参考/受限来源/PUN2026/source_data.xlsx` | 实测 22 个工作表；动态解交联 PUN 的拉伸、循环、DMA、应力松弛及再加工曲线 | CC BY-NC-ND 4.0 | 仅作可修复、再加工和升级回收机制参照 | 热固性动态网络而非 TPU，且 ND 许可；不得并入公开派生数据集 | [30] |
 
 ### 2.4 TPU 数据库 v0.1 首次可复现构建
 
@@ -79,7 +81,7 @@
 
 | 垂直切片 | 暂存结果 | 规范/派生结果 | 公开再分发门控 |
 |---|---:|---:|---|
-| SMiPoly 候选单体 [7] | 1,083 条来源记录 | 按 `chemical_id` 合并为 1,071 个唯一候选；角色与官能度保持未分类 | BSD-3-Clause；可进入候选结构公开视图，但不得表述为 TPU 实验标签 |
+| SMiPoly 候选单体 [7] | 1,083 个 `comID` 来源记录 | 按原始大小写 exact SMILES 得到 1,071 个候选；`comID` 与化学体系身份分列，10 个重复结构组/12 条额外记录保留来源血缘 | 仓库观察到 BSD-3-Clause；v0.2 公开动作仍需完成证据包与动作级裁决，不得表述为 TPU 实验标签 |
 | PUE 326 基准 [1], [12] | 326 条变换特征记录 | 326 个稳定 `lineage_record_id` 与 `split_group`；不尝试在缺少缩放参数时反演原始配方 | 许可证未知；公开视图 0 条，只在本地辅助表使用 |
 | Eom 氢键 TPU [18] | 53 条曲线、25,972 个点、19 个标量；另有 6 个未映射 sheet 审计项 | 16 条拉伸曲线派生 48 个强度、断裂伸长与韧性指标 | CC BY 4.0；公开视图保留 53 条曲线、25,972 个点、19 个标量和 48 个派生指标 |
 | 预聚体温度—黏度 [4] | 39 条曲线、4,559 个点；61 个空 sheet 审计项 | 单位规范为 K 与 Pa·s；明确标记为没有 specimen/test 链的加工辅助数据 | 仓库许可证未知；公开视图 0 条，只在本地使用 |
@@ -140,14 +142,14 @@
 
 ## 4. 尚未获得或尚不完整的高价值来源
 
-| 优先级 | 数据来源 | 价值 | 当前障碍 | 下一步 |
-|---|---|---|---|---|
+| 优先级 | 数据来源 | 价值 | 当前障碍 | 下一步 | 主要引用 |
+|---|---|---|---|---|---|
 | A | 生物基 PUE 数据集：超过 1,500 个样品、26 个特征、6 个输出（YM、TS、EB、Tg、Td5、tanδ） | 最适合构建可持续高性能 TPU 的多目标模型 | Wiley 附件 `marc70252-sup-0002-DataFile.zip` 被站点下载策略阻止，尚未落地 | 需要人工浏览器下载一次，随后做字段、重复、来源和许可证审计 | [9] |
 | A | 生物基含量数据：506 条 BPUE 样条 | 含 YM、TS、EB、Tg 与生物基质量分数，可做 BBC% 回归/分层；论文报告 BBC% 预测 R² = 0.89 | 两个官方 XLSX 附件均被 Wiley Cloudflare 阻止自动下载；非 CC，不能公开再分发 | 需要人工下载 Dataset S6/S7；与 >1,500 样本集做来源重叠与泄漏审计 | [19] |
 | A | PUE-643 完整原始数据与 386 条应力–应变曲线 | 与本课题目标最直接；可训练曲线级模型和韧性标签 | 官方 ESI 只给出说明，没有可读取的完整表；公开 GitHub 目前只有 326 条变换后子集 | 搜索作者数据仓库、补充附件镜像；必要时给通讯作者发送数据请求 | [1] |
 | A | 3D-Weighted-Matrix 多模态 PU 数据与 1.5 亿组合筛选结果 | 结构与合成工艺融合，论文报告 YM/TS/EB 平均 R² > 0.86；与本课题直接竞争 | 官方 Data Availability 明确写“合理请求后由通讯作者提供”；公开补充材料只有约 2.3 MB 的方法 DOCX，没有训练表/筛选候选/代码 | 需要正式向通讯作者申请；即使未获数据，也必须分析其设计空间以避免路线重复 | [14] |
 | A | 2026 PUE 应力–应变 Transformer 训练数据 | 最新曲线级建模，论文报告 R² = 0.79、RMSE = 5.82，并做实验确认 | 官方 ESI 已取得，含完整模型代码但没有训练曲线；搜索结果显示的“CSV”没有可核验的实际下载链接 | 联系作者索取训练曲线；现有 ESI 用作模型基准和新颖性对照 | [16] |
-| A | ScienceDB 2026 PU 应力–应变机器学习数据 `datasets.csv` | 撤回前文件元数据显示 3,044,630 字节，含化学结构描述符、硬段含量 HSC 与整条应力–应变曲线点；直接对应 [16,35] | ScienceDB 于 2026-07-02 撤回该 DOI 的全部版本，页面已无下载入口；公开理由为确保数据正确使用及知识产权合规，现仅接受邮件逐案授权 | 向 `zhoul0213@126.com` 提交申请，说明个人/机构信息和预期用途；获批后核对大小及 MD5 `dc28ea5ce05566288cf7c0d97903f30e` 再入库 | [16,35] |
+| A | ScienceDB 2026 PU 应力–应变机器学习数据 `datasets.csv` | 撤回前文件元数据显示 3,044,630 字节，含化学结构描述符、硬段含量 HSC 与整条应力–应变曲线点；直接对应 [16], [35] | ScienceDB 于 2026-07-02 撤回该 DOI 的全部版本，页面已无下载入口；公开理由为确保数据正确使用及知识产权合规，现仅接受邮件逐案授权 | 向 `zhoul0213@126.com` 提交申请，说明个人/机构信息和预期用途；获批后核对大小及 MD5 `dc28ea5ce05566288cf7c0d97903f30e` 再入库 | [16], [35] |
 | A | 2021 PUE 529 条应力–应变曲线及 25 个本构模型评估 | 是 PUE-643/386 数据链的重要前身；补充材料可复用本构模型、特征字典、聚类检验和拟合统计 | 2.29 MB 官方 DOCX 已取得并校验，但包内没有 CSV/XLSX/OLE 附件，也没有 529 条原始曲线点；仅含 5 张 TIFF 图、5 个统计/方法表及文字说明 | 已归档到 `01_原始数据/仅供参考/Wiley补充材料/`；联系作者索取机器可读曲线，再做 529→643→386→326 数据谱系审计 | [31] |
 | B | PolyOmics PURT MD 快照 | 5,084,441,903 字节的 PURT 结构轨迹，可用于 MLIP/形貌表征与复算 | 约 5.08 GB，尚未下载；当前还未确认是否需要全量快照 | 先用 3,384 行属性子集做基线；只有在选定 MLIP/轨迹模型后再下载 | [20] |
 | B | OPoly26 聚合物量子计算数据 | 超过 6.57 百万次 B97M-V/def2-SVP DFT 计算、总计超过 12 亿个原子，覆盖链长、架构、共聚、溶剂与反应环境 | Hugging Face 训练分片约 6.11 百万行且体量巨大；不是 TPU 终性能标签，数据卡当前显示 `other` 许可而非明确 CC BY | 先使用发布模型/小规模子集评估 TPU 片段域内误差；确有收益后再下载训练分片或做 TPU 定向微调 | [32] |
@@ -174,6 +176,8 @@
 
 ### 4.3 ScienceDB 撤回状态与申请入口
 
+以下撤回与申请边界对应论文 [16] 和数据记录 [35]：
+
 - 数据页：https://www.scidb.cn/detail?dataSetId=3d57444e27944678a99879205a20f595
 - 数据 DOI：https://doi.org/10.57760/sciencedb.j00189.00062
 - ScienceDB 撤回声明（页面核验日期：2026-07-18）：平台于 2026-07-02 撤回全部版本，以进一步确保数据的正确使用及知识产权法规合规；下载按钮已被撤回声明替代。
@@ -181,22 +185,42 @@
 - 撤回前记录的目标文件为 `datasets.csv`（3,044,630 字节；MD5 `dc28ea5ce05566288cf7c0d97903f30e`）。旧直链仅作数据谱系记录，不再视为有效下载入口：  
   https://download.scidb.cn/download?fileId=2d895b01c4545e91048684e6b56d3f1b&path=/V1/datasets.csv&fileName=datasets.csv
 
+### 4.4 v0.2 在线/临时核验、尚未落地的来源队列
+
+下列来源已经核对 DOI、部分官方文件元数据和初始权利边界，但尚未计入本地数据资产。详细端点、核验时间、会话响应指纹和动作级保守结论见[新增来源在线核验记录](来源证据/2026-07-19-v0.2新增来源在线核验记录.md)。表中规模必须带 `count_evidence_type`：`publisher_claim`、`repository_metadata`、`temporary_file_audit` 与 `ingested_file_recount` 不得混写；只有最后一种可作为冻结数据库事实。
+
+| 优先级 | 来源与已核验规模 | 官方文件 | 权利与证据状态 | 准入定位 | 引用 |
+|---|---|---|---|---|---|
+| A | PU Tg 扩展集：临时文件审计报告 83 条（73 + 10）；旧 43 条可能是其完整子集，若逐行匹配成立则净新增 40 | 仓库元数据列出 `ap5c04524_si_002.xlsx`，33,447 字节 | 当前为 `temporary_file_audit`；Figshare 数据记录报告 CC BY-NC 4.0，Crossref SI 组件没有 license 字段。权利证据登记 `scope_unresolved`，在文件落地、逐行复算和条款证据固化前关闭公开派生并人工复核内部建模 | 计划以扩展集取代旧 43 条主表；`subset_of/supersedes` 仅在机器匹配证明后生效 | [36], [37] |
+| A | CIAL 自愈 PU：SI 表结构预审得到 40 个汇总设计样 + 3 个跟进实验，尚待双流程复算 | RSC Supporting Information PDF，Tables S12–S15 | 当前为 `publisher_claim/temporary_file_audit`；论文元数据报告 CC BY-NC 3.0，SI 文件覆盖范围仍须取证；PDF 表格须双程序/双人核验 | 配方—强度—伸长—韧性—三类修复效率；PG15C 作为待核验的化学计量不合理/预测失败负结果保留 | [33] |
+| A | TPU EOS 1301 热黏弹—黏塑性本构数据；至少 14 个主要验证工况 | `ijss_2025_vevp_ScriptsForTestsImages.zip`，450,879,687 字节 | Zenodo CC BY 4.0 | 曲线、本构、模拟和验证层；不能当成 14 个化学配方 | [38], [39] |
+| A | 标准化弹性体表征：仓库描述 10 种材料；临时小包审计得到两种热塑材料 13 条拉伸、6 条压缩曲线及松弛/热分析 | 仓库元数据列出 7 个 ZIP，合计约 88.3 MB | 记录元数据报告 CC BY 4.0；曲线计数为 `temporary_file_audit`，临时文件位置/版本/清单未进入冻结证据，必须落地复算 | Filaflex 60A/Cheetah 的 TPU 本构、松弛和热学迁移 | [40], [41] |
+| B | PU 微球复合材料：出版物/仓库描述 6 个体积分数 × 2 个试样；临时审计报告 12 条机器、24 条 DIC、6 条平均曲线 | 仓库元数据列出 `Data_csv.zip`，780,946 字节；无需 26.9 GB 图像包 | 记录元数据报告 CC BY 4.0；试样/曲线计数落地解包后复算 | 加载—卸载、体积响应和滞回辅助层；配方化学不完整 | [42], [43] |
+| B | 热可逆超分子 PU 宽速率数据；一个化学体系，覆盖 40–1220 s⁻¹ | `tby33jd48k.1` 为 Supplementary Information & Data；`byjbmymyhh.5` 为独立 Raw/Processed deposit | 两个独立 Mendeley 记录，均 CC BY-NC 3.0；建立 `companion_to` 后再按文件哈希去重，不能当成同一 DOI 的两个版本 | NMR/GPC/SAXS/DSC/流变/DMA/循环与高速压缩辅助层 | [44]–[46] |
+| B | 两种商业双组分 PU 的低/高速变形后应力松弛，约 19 种温度/速率条件 | `rspa20220830_si_002.zip`，8,831,991 字节 | Royal Society Figshare CC BY 4.0 | DMA、温度—速率—松弛迁移；配方未知，不进入化学组成主任务 | [47], [48] |
+| B | 四种 PTMEG 分子量线性 PU 及复合体系的氢键—强韧—导热数据 | Nature Communications Source Data | CC BY-NC-ND 4.0；原样、非商业、署名分享与规范化/转换后的派生发布必须分别判定；派生长表默认不公开 | 内部机制标定；公开 Source Data 只覆盖指定主/补图，其余实验数据部分需作者申请 | [49] |
+| C | 形状记忆 PU + EMIM-TFSI 计算构型，一个体系 | 2 个 PDB + Initial/Final LAMMPS data，共约 17.3 MB | Figshare 记录元数据报告 CC BY 4.0；先登记待审候选关系，核验论文 Data Availability 后才能建立 `supplement_to` | 机制复现/计算输入；无轨迹和性质标签，不计实验样本 | [50], [51] |
+| C | 高密度氢键 WPU 的强韧、自修复和 DMA 原始包候选 | ACS SI `s002`–`s010`，9 个包，约 80 MB（尚未解包复核） | 出版商条款；许可、文件关系和实际样本数尚未形成证据 | 下载队列，不在解包审计前声明样本规模或模型就绪 | [52] |
+
 ## 5. 数据质量判定
 
-### 5.1 证据等级
+### 5.1 证据质量等级
 
-| 等级 | 定义 | 是否进入最终主模型 |
-|---|---|---|
-| A | 作者公开原始表格/曲线，具有 DOI、样品身份、配方、过程和测试条件 | 是，作为高保真数据 |
-| B | 作者公开的机器可读表格，但缺少部分条件或仅有摘要特征 | 可以，降低权重并标注缺失 |
-| C | 从 PDF 表格人工/OCR 提取，能追溯到页码、表号和单位 | 可以，需双人或双流程复核 |
-| D | 从图中数字化曲线或散点 | 仅作辅助，保留像素误差与提取工具版本 |
-| E | DFT/MD/基团贡献或 ML 预测值 | 作为低保真监督或特征，不与实验真值混同 |
-| X | 来源不明、无法追溯、许可证不允许或关键上下文缺失 | 否 |
+证据质量不再与实验/DFT/MD 等物理来源或许可混用：
+
+| 等级 | 定义 |
+|---|---|
+| Q1 | 作者原始机器可读记录，定位、身份、单位、条件和统计语义完整 |
+| Q2 | 作者机器可读记录，但部分配方、工艺、条件或统计语义缺失 |
+| Q3 | PDF/DOCX 表格经两个独立流程核验并完成差异裁决 |
+| Q4 | 图像数字化并保存像素、轴、校准和误差证据 |
+| Q5 | 来源、定位、单位、身份或语义存在未解决冲突，仅用于审计 |
+
+每条观测另行保存科学来源、汇总层级、获取方式、科学就绪状态和动作级权利。计算数据可以是 Q1，实验记录也可能是 Q5；证据等级本身不决定训练权重或发布权。
 
 ### 5.2 当前资产的结论
 
-- 现有文件足以开始搭建“通用聚合物预训练 + TPU 小样本校准 + 机理计算”的原型，但不足以直接训练一个能可靠外推到新 TPU 配方的终模型。
+- 这些资产在 v0.2 科学准入、权利裁决和快照冻结后，可用于评估“通用聚合物表示 + TPU 小样本校准 + 机理计算”原型；当前阶段不启动训练，更不足以宣称可可靠外推到新 TPU 配方。
 - 主要短板不是 SMILES 数量，而是 TPU 样品级的**配比、官能度、分子量分布、NCO/OH、催化剂、含水量、反应温度/时间、退火条件、试样制备和测试速率**。
 - 韧性必须优先由完整应力–应变曲线积分得到：
 
@@ -207,21 +231,18 @@
   当应力以 MPa、应变为无量纲时，积分结果数值单位为 MJ·m\(^{-3}\)。只用拉伸强度或断裂伸长率不能代表韧性。
 - `PI1M_v2.csv` 和 SMiPoly 适合扩展候选空间，不能作为“实验性能数据库”；PolyGraphMT 适合通用低保真先验，不能替代 TPU 相分离、氢键与加工历史的专用建模。
 
-## 6. 建议的数据库对象结构
+## 6. 数据库对象结构
 
-不建议继续把所有信息塞在一张宽表中。建议至少拆分为以下对象，并用稳定 ID 关联：
+当前冻结候选以 [TPU 数据库 v0.2 多保真设计规范](设计规范/2026-07-19-TPU数据库v0.2多保真设计规范.md)为唯一架构说明，不再在台账中维护一套易漂移的宽表清单。核心对象分为：
 
-1. `source`：论文、数据 DOI、URL、许可证、下载日期、文件哈希。
-2. `chemical`：规范名称、CAS、canonical/isomeric SMILES、InChIKey、官能团、官能度、EHS、供应商。
-3. `material_lot`：批号、纯度、含水量、Mn/Mw/PDI、羟值/NCO 含量。
-4. `formulation`：各组分质量/摩尔/当量、硬段含量、NCO/OH、催化剂和添加剂。
-5. `synthesis_batch`：一步法/预聚体法、加料顺序、温度、时间、气氛、脱泡、转化率。
-6. `specimen`：成型、厚度、退火、调湿、老化历史。
-7. `test`：标准、仪器、温度、湿度、应变率、重复编号、原始数据文件。
-8. `property_value`：数值、单位、误差、统计量、fidelity、是否从曲线派生。
-9. `raw_curve`：应力–应变、DMA、黏度–温度、循环拉伸等长表数据。
-10. `computation`：结构模型、DFT/MD 软件、版本、方法、力场、边界条件、收敛与不确定度。
-11. `prediction`：模型版本、训练数据快照、外推域、均值、不确定度、筛选排名。
+1. 来源/source scope、文件、定位、count assertion、citation assignment、rights evidence package/fact/action decision、转换与记录血缘；
+2. chemical/material lot/formulation/synthesis batch/synthesis outcome/polymer material/material state/processing event；
+3. event/failure、observation subject、measurement run、replicate group、aggregate observation、sequence/channel/point/value、measured curve、property/unit definition；
+4. computational system、method model、computational activity、computed observation、computed curve 与 artifact；
+5. 等价/泄漏组、质量规则/问题、快照/环境/报告与发布裁决；
+6. EHS、价格/供应、加工可行性、失败结果、论文/专利 novelty dossier 和候选决策。
+
+所有对象使用版本化稳定 ID、明确 PK/FK/唯一约束和无环血缘；历史冻结记录只通过修订与 supersession 演进，不静默覆盖。
 
 ## 7. 路线比较与当前主路线
 
@@ -235,7 +256,7 @@
 - “20 个左右实验 + 主动学习 + 多目标自修复 PU 优化”已经由 [33] 发表；
 - “生物基 PU + 常规 ML 多性能预测”已有 [9], [19]，仅换算法或扩大候选数量不够。
 
-因此，本文的核心不能写成泛泛的“DFT + MD + ML 高通量筛选”。真正需要建立的是：**分段 TPU 配方图表示 → 动态竞争氢键/相分离与应变诱导有序化 → 加工窗口和循环疲劳约束 → 校准不确定度的多保真决策 → 少量真实合成验证**。
+因此，本文的核心不能写成泛泛的“DFT + MD + ML 高通量筛选”。真正需要建立的是：**分段 TPU 配方图表示 → 动态竞争氢键/相分离与应变诱导有序化 → 加工窗口和循环疲劳约束 → 校准不确定度的多源/多模态/跨尺度决策 → 少量真实合成验证**。只有同一或明确映射的 QoI 具有分层精度、成本和校准证据时才称为“多保真”；DFT 氢键能与宏观韧性的组合属于跨尺度机制特征，不是天然高低保真标签。
 
 ### 7.2 路线 A：真正线性分段 TPU 的“时序耗散—延迟有序化”筛选（当前首选）
 
@@ -248,9 +269,9 @@
 3. **MD 层**：使用多链、多重复单元和多初始构型，提取氢键寿命/交换率、硬段团簇连通度、结构因子/域尺寸、链段取向、自由体积、内聚能密度、Tg、扩散和拉伸下的结构演化；必要时以 OPoly26/PolyOmics 预训练势能或表征，但必须在 TPU 片段上验证误差。
 4. **ML 层**：采用“二异氰酸酯—软段—扩链剂—比例—工艺”的分层配方图，而不是把最终重复单元压成一个 SMILES；分别学习终点性能和整条曲线的潜在表示，使用分组/留化学体系外验证与 conformal/ensemble 不确定度。
 5. **Pareto 目标**：韧性、强度、断裂伸长、循环残余应变/滞回恢复、DMA 储能/损耗、Tg、熔体/预聚体黏度、热稳定性、EHS、价格和供应可得性；禁止只优化拉伸强度。
-6. **实验闭环**：第一阶段不做“大规模实验建库”，而是选 8–12 个最大信息增益样品，至少包含高分候选、机制消融对照和模型认为不确定的样品；保留失败合成、凝胶、不可加工和低性能结果。第二阶段再根据不确定度选择 3–6 个增量样品。
+6. **实验闭环**：第一阶段不做“大规模实验建库”，而是由预注册的效应量、重复数、功效/精度目标和停止规则决定样品数；8–12 个首批样品与 3–6 个增量样品仅作为当前资源情景，不是固定科学阈值。首批至少包含高分候选、机制消融对照和高不确定样品，并保留失败合成、凝胶、不可加工和低性能结果。
 
-这条路线的潜在一区贡献是：在**真正 TPU 的线性、可加工边界**内，把“动态非共价相互作用的时序切换”量化为可计算、可学习、可用原位/离线表征验证的中间机制，并证明它同时改善韧性、循环恢复和加工性。高结合能本身不是成功判据；SAXS/WAXS、变温/变形 FTIR、DMA、循环拉伸和流变必须验证中间机制。
+这条路线的潜在一区贡献是：在按操作定义裁决的**线性、可加工 TPU 边界**内，把“动态非共价相互作用的时序切换”量化为可计算、可学习、可用原位/离线表征验证的中间机制，并在严格对照、重复和不确定度下检验它是否同时改善韧性、循环恢复和加工性。高结合能本身不是成功判据；SAXS/WAXS、变温/变形 FTIR、DMA、循环拉伸和流变必须验证中间机制。
 
 ### 7.3 路线 B：水性延迟结晶响应 + 生物基替换（高潜力备选，但需明确范围）
 
@@ -272,13 +293,18 @@
 - [x] 建立 `01_原始数据/`、`02_暂存数据/`、`03_规范数据/`、`04_派生数据/`、`05_数据库快照/`、`06_审核导出/` 中文分层，并在 `01_原始数据/仅供参考/` 隔离限制性材料、商业牌号和复合材料曲线。
 - [x] 获取 CC BY 4.0 的真实 TPU/PUE 曲线、循环、温度、湿态、流变和打印工艺数据，作为曲线/过程辅助层。
 - [ ] 取得并审计 Wiley 生物基 PUE 数据附件。
+- [ ] 获取并审计 ACS PU Tg 扩展集；机器复算 83、73 + 10、旧 43 子集关系和净新增量；完成数据记录许可页面固化和动作级裁决前只登记元数据，不生成公开派生表。
+- [ ] 从 RSC CIAL Tables S12–S15 双流程抽取并复算暂报的 40 个设计样和 3 个跟进实验，保留 PG15C 负结果与不确定度。
+- [ ] 获取 Zenodo 15370425、14983287、6390478 和 Royal Society 23635998 的最小必要文件，并按材料—工况—曲线层级登记。
+- [ ] 将 Mendeley 两个独立 deposit 建立 companion 血缘并做哈希去重；不得把宽速率曲线点当独立配方。
 - [x] 人工下载并审计 Ding 2021 官方 DOCX；确认其只有方法/统计结果，不含 529 条机器可读原始曲线。
 - [ ] 向 Ding 2021/PUE-643 作者追索 529/643 条原始数据和 386 条清洗曲线，并做 529→643→386→326 数据谱系审计。
 - [ ] 向 ScienceDB 通讯作者提交 `datasets.csv` 学术用途访问申请，获批后进行哈希、许可证和样品级泄漏审计。
-- [ ] 从 Eom 2021、Nature 2025、DCR 2025、4TU SH-TPU、Jiang 2021 和 Li 2026 生成规范化 `formulation`、`test`、`raw_curve`、`derived_property` 表。
+- [ ] 从 Eom 2021、Nature 2025、DCR 2025、4TU SH-TPU、Jiang 2021 和 Li 2026 生成规范化 `formulation/synthesis_batch/material_state/measurement_run/observation/sequence/measured_curve`，派生指标作为有父序列和算法证据的 observation，不再使用旧宽表简称。
 - [ ] 将预聚体黏度和 4TU 熔体流变转成长表，拟合 Andrade/WLF/Carreau–Yasuda 等候选模型并明确外推边界。
-- [ ] 为 1,083 个 SMiPoly 单体补齐 TPU 角色、官能度、EHS、供应可得性和价格等级。
-- [ ] 对 OpenPoly、PI1M、PolyGraphMT、PolyOmics PURT 和 OPoly26 做结构标准化、重复/泄漏检查和 TPU 化学域覆盖分析；先做小规模效益试验，再决定是否下载 5.08 GB/大分片。
+- [ ] 为 1,083 个 `comID` 来源记录/1,071 个 exact SMILES 补齐 TPU 角色、官能度、EHS、供应可得性和价格等级。
+- [x] 完成 PI1M、ADEPT、PolyOmics、PolyGraphMT 的 exact-string 重叠下界审计，并冻结六组交集计数。
+- [ ] 完成 OpenPoly、PI1M、ADEPT、PolyGraphMT、PolyOmics PURT 和 OPoly26 的化学标准化、图同构/近等价、最终防泄漏及 TPU 化学域覆盖审计；先做小规模效益试验，再决定是否下载 5.08 GB/大分片。
 - [ ] 建立文献数据提取模板，要求每个数值绑定 DOI、页码/表图号、单位、样品和条件。
 - [ ] 定义第一版线性 TPU 平台和硬约束：双官能、凝胶风险、NCO/OH、硬段范围、Mn、黏度窗口、EHS、成本和原料交期。
 - [ ] 对首批扩链剂/硬段候选做论文+专利新颖性检索，禁止在检索前宣称“无人研究”。
@@ -356,6 +382,40 @@
 
 [35] Zhou, L. 机器学习预测聚氨酯应力应变曲线的数据 [Data set]; Science Data Bank, version 1, 2026. https://doi.org/10.57760/sciencedb.j00189.00062. All versions withdrawn 2026-07-02; access is currently by author request.
 
+[36] Qin, Y.; Ma, Z.; Li, X.; Shen, J.; Liu, J. Machine Learning-Driven Prediction and Interpretation of Glass Transition Temperature in Polyurethanes. *ACS Applied Polymer Materials* **2026**, *8* (8), 5471–5484. https://doi.org/10.1021/acsapm.5c04524.
+
+[37] Qin, Y.; Ma, Z.; Li, X.; Shen, J.; Liu, J. Complete Data Set Utilized for Analysis [XLSX], Supporting Information to *Machine Learning-Driven Prediction and Interpretation of Glass Transition Temperature in Polyurethanes*; American Chemical Society, 2026. https://doi.org/10.1021/acsapm.5c04524.s002.
+
+[38] Jinaga, U. K.; Zulueta, K.; Burgoa, A.; Cobian, L.; Freitas, U.; Lackner, M.; Major, Z.; Noels, L. A Consistent Finite-Strain Thermomechanical Quasi-Nonlinear-Viscoelastic Viscoplastic Constitutive Model for Thermoplastic Polymers. *International Journal of Solids and Structures* **2025**, *321*, 113517. https://doi.org/10.1016/j.ijsolstr.2025.113517.
+
+[39] Noels, L.; Jinaga, U. K. Data of “A Consistent Finite-Strain Thermomechanical Quasi-Nonlinear-Viscoelastic Viscoplastic Constitutive Model for Thermoplastic Polymers” [Data set], version 1; Zenodo, 2025. https://doi.org/10.5281/zenodo.15370425.
+
+[40] Roels, E.; Costa Cornellà, A.; Brancart, J. A Standardized Framework for Elastomer Characterization in Soft Robotics. *Advanced Intelligent Systems* **2026**, *8* (3), e202500699. https://doi.org/10.1002/aisy.202500699.
+
+[41] Roels, E.; Costa Cornellà, A.; Brancart, J. A Standardized Elastomer Characterization Framework for Soft Robotics—Accompanying Dataset [Data set], version 1; Vrije Universiteit Brussel/Zenodo, 2025. https://doi.org/10.5281/zenodo.14983287.
+
+[42] Coret, M.; Verron, E.; Rublon, P.; Leblé, B. Remarkable Response of Hollow Thermoplastic Microspheres–Elastomer Matrix Composites in Uniaxial Tension. *Mechanics of Soft Materials* **2022**, *4*, 8. https://doi.org/10.1007/s42558-022-00046-1.
+
+[43] Coret, M.; Verron, E.; Rublon, P. Images and Data Accompanying Article: Remarkable Response of Hollow Thermoplastic Microspheres–Elastomer Matrix Composites in Uniaxial Tension [Data set], version 1; Zenodo, 2022. https://doi.org/10.5281/zenodo.6390478.
+
+[44] Chen, H.; Hart, L. R.; Hayes, W.; Siviour, C. R. Mechanical Characterisation and Modelling of a Thermoreversible Superamolecular Polyurethane over a Wide Range of Rates. *Polymer* **2021**, *221*, 123607. https://doi.org/10.1016/j.polymer.2021.123607.
+
+[45] Chen, H.; Hart, L. R.; Hayes, W.; Siviour, C. R. Supplementary Information & Data for Mechanical Characterisation and Modelling of a Thermoreversible Superamolecular Polyurethane over a Wide Range of Rates [Data set], version 1; Mendeley Data, 2021. https://doi.org/10.17632/tby33jd48k.1.
+
+[46] Chen, H.; Hart, L. R.; Hayes, W.; Siviour, C. R. Mechanical Characterisation and Modelling of a Thermoreversible Superamolecular Polyurethane over a Wide Range of Rates [Data set], version 5; Mendeley Data, 2021. https://doi.org/10.17632/byjbmymyhh.5.
+
+[47] Commins, T.; Siviour, C. R. Stress Relaxation after Low- and High-Rate Deformation of Polyurethanes. *Proceedings of the Royal Society A* **2023**, *479* (2275), 20220830. https://doi.org/10.1098/rspa.2022.0830.
+
+[48] Commins, T.; Siviour, C. R. Data from Stress Relaxation after Low- and High-Rate Deformation of Polyurethanes [Data set], version 1; The Royal Society/Figshare, 2023. https://doi.org/10.6084/m9.figshare.23635998.v1.
+
+[49] Liu, X.; Wen, J.; Xu, R.; et al. Flexible Rubber with Metal-Like Thermal Conductivity Achieved via Hydrogen Bonding Engineering. *Nature Communications* **2026**, *17*, 4480. https://doi.org/10.1038/s41467-026-71056-0.
+
+[50] Chen, T.; Xu, J.; Wang, C.; Zhang, X.; Pei, X.; Wang, T.; Wang, Q. Shape-Memory Polyurethanes for Polar Wearables with Ultrasensitive Multi-Monitoring. *Nature Communications* **2025**, *16*, 11329. https://doi.org/10.1038/s41467-025-66422-3.
+
+[51] Chen, T.; Xu, J.; Wang, C.; Zhang, X.; Pei, X.; Wang, T.; Wang, Q. Shape-Memory Polyurethanes for Polar Wearables with Ultrasensitive Multi-Monitoring [Data set], version 2; Figshare, 2025. https://doi.org/10.6084/m9.figshare.30484481.v2.
+
+[52] Wu, C.-Q.; Chen, J.; Long, Q.-Y.; Sun, D.-X.; Qi, X.-D.; Yang, J.-H.; Wang, Y. Healable, Recyclable, and Ultra-Tough Waterborne Polyurethane Elastomer Achieved through High-Density Hydrogen Bonding Cross-Linking Strategy. *ACS Applied Materials & Interfaces* **2024**, *16* (46), 64333–64344. https://doi.org/10.1021/acsami.4c15188.
+
 ## 10. 论文写作时的引用约定
 
 - 描述数据集规模、字段与用途时，引用数据集原始论文，例如 PUE-643 引用 [1]，不能只引用承载其副本的 DQ/MatImpute GitHub。
@@ -363,3 +423,7 @@
 - 使用 Nature 2025 数据进行再分析时引用 [3]，并明确写明是对作者 Source Data/Supplementary Data 的二次分析。
 - 使用生成的假想结构时明确写“virtual/hypothetical”，PI1M 和 SMiPoly 候选不得表述为已合成或已验证。
 - 最终公开数据包只包含许可证允许再分发的内容；对于不允许再分发的数据，提供下载脚本、来源链接、哈希和处理代码，不附带原文件。
+- 论文 DOI 与数据 DOI 分开引用；数据记录的作者、版本和许可证不得从关联论文推断。
+- 每条引用应维护稳定 `citation_key`，并在实现阶段同步生成 BibTeX/CSL-JSON；Markdown 编号只用于阅读展示。
+- 许可证结论绑定官方证据 URL、核验日期和条款哈希；元数据冲突时标记 `license_conflict` 并 fail closed，不能选择最宽松的解释。
+- 新增来源的本次在线核验端点、响应指纹、规模证据类型和初始动作裁决见[2026-07-19 v0.2 新增来源在线核验记录](来源证据/2026-07-19-v0.2新增来源在线核验记录.md)；其中会话响应指纹不替代后续归档的原始响应或数据文件 SHA-256。
