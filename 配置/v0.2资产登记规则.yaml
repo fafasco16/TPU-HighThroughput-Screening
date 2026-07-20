@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-20-rc18
+rules_version: v0.2-asset-rules-2026-07-21-rc20
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -3620,4 +3620,340 @@ rules:
     model_readiness_status: blocked
     release_status: denied
     decision_basis: 十个Git LFS载荷已按OID与全帧TRR审计闭合，但仓库无LICENSE且部分运行非正常完成；当前只作科研复现证据，训练权重为零。
+    review_required: true
+
+  - rule_id: fifth_batch_fisher_metadata
+    priority: 2200
+    path_regex: '^外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/(?:来源元数据\.json|下载清单\.tsv|mmc7\.xml)$'
+    source_scope_key: scope_fisher_2020_shape_memory_pu_dataset
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 来源页面、下载对象、许可证与已知缺件留证；元数据本身不产生训练样本。
+    review_required: true
+
+  - rule_id: fifth_batch_fisher_audit_outputs
+    priority: 2190
+    path_regex: '^外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/(?:内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv|配方审计清单\.tsv)$'
+    source_scope_key: scope_fisher_2020_shape_memory_pu_dataset
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 109条热机械曲线、12个配方及复制尾部污染的确定性审计输出；仅描述原始数据，不单独增加样本。
+    review_required: true
+
+  - rule_id: fifth_batch_fisher_raw_payloads
+    priority: 2180
+    path_regex: '^外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/mmc[1-6]\.(?:txt|xlsx)$'
+    source_scope_key: scope_fisher_2020_shape_memory_pu_dataset
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: crosslinked_pue
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: CC BY 4.0原始热学、失效拉伸和循环拉伸文件；作为PU相邻迁移数据，按配方家族分组并排除复制污染点。
+    review_required: true
+
+  - rule_id: fifth_batch_lignin_tpu_metadata
+    priority: 2200
+    path_regex: '^外部数据/新增开放数据/Zenodo_木质素_TPU多模态数据/(?:来源元数据\.json|下载清单\.tsv)$'
+    source_scope_key: scope_zenodo_3631551_lignin_tpu_dataset
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: Zenodo版本、文件散列、CC BY 4.0和论文关联留证；元数据层不产生样本。
+    review_required: true
+
+  - rule_id: fifth_batch_lignin_tpu_audit_outputs
+    priority: 2190
+    path_regex: '^外部数据/新增开放数据/Zenodo_木质素_TPU多模态数据/(?:内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv|配方审计清单\.tsv)$'
+    source_scope_key: scope_zenodo_3631551_lignin_tpu_dataset
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 木质素/商业TPU共混物的曲线、标量、配方、重复和单位冲突审计输出；不与原始工作簿重复计数。
+    review_required: true
+
+  - rule_id: fifth_batch_lignin_tpu_raw_workbook
+    priority: 2180
+    path_regex: '^外部数据/新增开放数据/Zenodo_木质素_TPU多模态数据/Biobased\.xlsx$'
+    source_scope_key: scope_zenodo_3631551_lignin_tpu_dataset
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: CC BY 4.0原始多模态工作簿；配方明确的前驱体观测进入TPU复合迁移层，缺标签曲线、精确重复和下游碳纤维结果分别隔离。
+    review_required: true
+
+  - rule_id: sixth_batch_hdi_peg_metadata_and_article
+    priority: 2300
+    path_regex: '^外部数据/新增开放数据/MDPI_HDI_PEG双力场TPU/(?:官方Crossref元数据\.json|PMC全文\.xml)$'
+    source_scope_key: scope_mdpi_hdi_peg_dual_ff
+    artifact_role: documentation
+    data_stage: reference_only
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方Crossref与PMC正文支撑DOI、CC BY 4.0、实验汇总及双力场方法解析；正文文件本身不增加样本。
+    review_required: true
+
+  - rule_id: sixth_batch_hdi_peg_supplement
+    priority: 2290
+    path_regex: '^外部数据/新增开放数据/MDPI_HDI_PEG双力场TPU/molecules-31-01259-s001\.zip$'
+    source_scope_key: scope_mdpi_hdi_peg_dual_ff
+    artifact_role: supplementary_information
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 官方CC BY 4.0补充材料提供五个HDI–PEG体系的组成与模拟盒证据；无原始轨迹，不能按帧扩样本。
+    review_required: true
+
+  - rule_id: sixth_batch_hdi_peg_audit_outputs
+    priority: 2280
+    path_regex: '^外部数据/新增开放数据/MDPI_HDI_PEG双力场TPU/(?:内容审计摘要\.json|文件校验清单\.tsv|计算体系清单\.tsv|计算观测清单\.tsv|计算输入参数清单\.tsv)$'
+    source_scope_key: scope_mdpi_hdi_peg_dual_ff
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 五体系、实验与MD逐记录Gold分层、双力场及种子归组的确定性审计视图；不与原始来源重复计权。
+    review_required: true
+
+  - rule_id: sixth_batch_mdi_polyether_metadata_and_article
+    priority: 2300
+    path_regex: '^外部数据/新增开放数据/MDPI_MDI聚醚双组分PU分子动力学/(?:官方Crossref元数据\.json|PMC全文\.xml)$'
+    source_scope_key: scope_mdpi_mdi_polyether_md
+    artifact_role: documentation
+    data_stage: reference_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方CC BY 4.0正文表2–6提供120个计算量及16个拟合质量数；原始轨迹需向作者索取，不作已获得声明。
+    review_required: true
+
+  - rule_id: sixth_batch_mdi_polyether_audit_outputs
+    priority: 2280
+    path_regex: '^外部数据/新增开放数据/MDPI_MDI聚醚双组分PU分子动力学/(?:内容审计摘要\.json|文件校验清单\.tsv|计算体系清单\.tsv|计算观测清单\.tsv|计算输入参数清单\.tsv)$'
+    source_scope_key: scope_mdpi_mdi_polyether_md
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 配比温度体系、79个候选、低R2和μ/G重复隔离的确定性审计输出；相同体系内派生量共享损失预算。
+    review_required: true
+
+  - rule_id: sixth_batch_reaxff_metadata_and_article
+    priority: 2300
+    path_regex: '^外部数据/新增开放数据/Frontiers_PU_ReaxFF热解/(?:官方Crossref元数据\.json|Frontiers全文\.html)$'
+    source_scope_key: scope_frontiers_pu_reaxff
+    artifact_role: documentation
+    data_stage: reference_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: Frontiers官方CC BY 4.0正文支撑分子模型、六温度协议和适用域；高温加速结果只用于热解/EHS迁移。
+    review_required: true
+
+  - rule_id: sixth_batch_reaxff_supplement
+    priority: 2290
+    path_regex: '^外部数据/新增开放数据/Frontiers_PU_ReaxFF热解/Data Sheet 1\.docx$'
+    source_scope_key: scope_frontiers_pu_reaxff
+    artifact_role: supplementary_information
+    data_stage: raw
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: partially_parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 官方补充DOCX提供活化能与拟合质量汇总，但没有机器可读温度速率表或轨迹；图片不数字化扩样本。
+    review_required: true
+
+  - rule_id: sixth_batch_reaxff_audit_outputs
+    priority: 2280
+    path_regex: '^外部数据/新增开放数据/Frontiers_PU_ReaxFF热解/(?:内容审计摘要\.json|文件校验清单\.tsv|计算体系清单\.tsv|计算观测清单\.tsv|计算输入参数清单\.tsv)$'
+    source_scope_key: scope_frontiers_pu_reaxff
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 单体系六温度、一个候选活化能和质量证据的确定性审计输出；六温度共同拟合不计六个独立目标。
+    review_required: true
+
+  - rule_id: sixth_batch_fea_metadata
+    priority: 2300
+    path_regex: '^外部数据/新增开放数据/Figshare_商用PUR形状记忆本构FEA/官方API元数据\.json$'
+    source_scope_key: scope_figshare_31111210_pur_smp_fea
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: Figshare v3官方元数据冻结DOI、文件ID、散列、作者和CC BY 4.0；元数据不产生目标。
+    review_required: true
+
+  - rule_id: sixth_batch_fea_simulation_input
+    priority: 2290
+    path_regex: '^外部数据/新增开放数据/Figshare_商用PUR形状记忆本构FEA/Simulation Data_PECCII 2026\.docx$'
+    source_scope_key: scope_figshare_31111210_pur_smp_fea
+    artifact_role: simulation_input
+    data_stage: raw
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: partially_parsed
+    scientific_admission_status: admitted
+    model_readiness_status: blocked
+    release_status: not_assessed
+    decision_basis: 四种商业PUR的材料卡和Prony本构输入进入Gold-C条件参考；无机器可读FEA响应，训练目标为0。
+    review_required: true
+
+  - rule_id: sixth_batch_fea_audit_outputs
+    priority: 2280
+    path_regex: '^外部数据/新增开放数据/Figshare_商用PUR形状记忆本构FEA/(?:内容审计摘要\.json|文件校验清单\.tsv|计算体系清单\.tsv|计算观测清单\.tsv|计算输入参数清单\.tsv)$'
+    source_scope_key: scope_figshare_31111210_pur_smp_fea
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: commercial_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: pending
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 4材料、40个Prony项、112个完整输入和8个不完整CTE标记的审计视图；输入参数和图片不冒充性能标签。
+    review_required: true
+
+  - rule_id: local_backlog_4tu_audit_outputs
+    priority: 2300
+    path_regex: '^外部数据/力学曲线/SelfHealingTPU_4TU/(?:内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv|配方审计清单\.tsv)$'
+    source_scope_key: self_healing_tpu_4tu_deposit
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 4TU原始档案的确定性曲线、标量、配方与文件审计输出；不与原件重复计权。
+    review_required: true
+
+  - rule_id: local_backlog_schwarz_audit_outputs
+    priority: 2300
+    path_regex: '^外部数据/力学曲线/Schwarz2022_EPU40/(?:内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv|配方审计清单\.tsv)$'
+    source_scope_key: schwarz2022_epu40_source_data
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_elastomer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: EPU40水老化拉伸工作簿的确定性曲线、端点和文件审计输出；作者端点与母曲线共享试样预算。
+    review_required: true
+
+  - rule_id: local_backlog_zenodo4156_audit_outputs
+    priority: 2300
+    path_regex: '^外部数据/力学曲线/Zenodo4156000/(?:内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv|配方审计清单\.tsv)$'
+    source_scope_key: zenodo_4156000
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: mixed_material_domain
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: Eel导电TPU与Empa SEBS/炭黑的力电通道、工艺条件和重复隔离审计输出；不把工艺条件当新配方。
+    review_required: true
+
+  - rule_id: local_backlog_zenodo1098_audit_outputs
+    priority: 2300
+    path_regex: '^外部数据/力学曲线/Zenodo1098206/(?:内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv|配方审计清单\.tsv)$'
+    source_scope_key: zenodo_1098206
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: CNF/TPU曲线、标量、配方、错误公式和血缘审计输出；依赖统计量不重复计权。
     review_required: true

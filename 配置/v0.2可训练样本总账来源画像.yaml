@@ -1,8 +1,8 @@
 schema_version: v0.2
-profile_version: trainable-inventory-profile-v0.2.0
+profile_version: trainable-inventory-profile-v0.2.3
 profile_status: audit_inventory_only
 generated_training_view: false
-audit_as_of_utc: '2026-07-20T00:00:00Z'
+audit_as_of_utc: '2026-07-21T14:00:00Z'
 count_semantics:
   source_record_count: 来源报告的记录/容器级科学条目；不等于独立样本。
   material_count: 可区分材料牌号或材料代码数；商业牌号不等于配方已知。
@@ -144,3 +144,74 @@ profiles:
   - {source_directory: Zenodo_TPU_SWCNT热电, task: TPU/SWCNT热电/导电/IR应用迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.60, unit_status: 部分已解析, license_status: manual_review, dedup_status: 123文件不当作123配方, split_group_status: 配方键可用, completeness: source_aggregate_plus_workbook_records, audit_basis: 内容审计摘要.json;工作簿解析清单.tsv, notes: 15配方=3牌号×1–5wt% SWCNT；纯TPU力学任务上限0.20, counts: {source_record_count: 123, material_count: 15, formulation_count: 15, batch_count: null, specimen_count: null, run_count: 123, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 123, scalar_count_candidate: 123, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 8037, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Zenodo_TPU1301热黏弹黏塑本构, task: TPU1301实验本构/速率/FE验证, origin_kind: 混合, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 1.0, unit_status: 部分已解析, license_status: manual_review, dedup_status: 对称域分片与重复内容已标记, split_group_status: 运行键可用, completeness: source_aggregate_plus_record_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 80身份闭合直接实验运行+4数字化曲线；15唯一FE验证运行, counts: {source_record_count: 193, material_count: 1, formulation_count: null, batch_count: null, specimen_count: 80, run_count: 95, curve_count_observed: 193, curve_count_candidate: 179, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 5996489, point_count_candidate: 5818564, numeric_value_count: 118177356, evidence_group_count: 0, computational_system_count: 1, source_identity_count_contribution: 1}}
   - {source_directory: Zenodo_TPU回收封端剂DFT与机器学习, task: 封端剂DFT描述符—解封温度映射, origin_kind: 混合, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.50, unit_status: 已解析, license_status: manual_review, dedup_status: 24体系与158输出已分层, split_group_status: 化合物家族键可用, completeness: source_aggregate_plus_compound_and_run_records, audit_basis: 内容审计摘要.json;Gaussian解析清单.tsv, notes: 21个带实验标签化合物；158 Gaussian输出不是158个独立化学样本, counts: {source_record_count: 179, material_count: 21, formulation_count: 21, batch_count: 0, specimen_count: 0, run_count: 158, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 21, scalar_count_candidate: 21, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: null, evidence_group_count: 0, computational_system_count: 24, source_identity_count_contribution: 1}}
+  - {source_directory: DataInBrief_聚氨酯形状记忆多模态原始数据, task: 配方—热机械—循环形状记忆PU迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.35, unit_status: 部分已解析, license_status: allow_with_attribution, dedup_status: 109曲线唯一且1702个复制尾部点已排除, split_group_status: 12个配方家族键可用, completeness: source_aggregate_plus_record_curves_and_formulations, audit_basis: 内容审计摘要.json;曲线审计清单.tsv;配方审计清单.tsv, notes: 12个HDI/HPED/TEA交联形状记忆PU配方；61条机械运行不是61个已证实独立试样，另有48条热学曲线；作为Gold-E迁移层保留，不冒充线性TPU核心, counts: {source_record_count: 109, material_count: 12, formulation_count: 12, batch_count: null, specimen_count: null, run_count: 109, curve_count_observed: 109, curve_count_candidate: 109, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 975903, point_count_candidate: 974201, numeric_value_count: null, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: Zenodo_木质素_TPU多模态数据, task: 木质素—商业TPU共混多模态与前驱体力学迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.20, unit_status: 部分已解析, license_status: allow_with_attribution, dedup_status: 39展示曲线中37唯一且2个精确重复已隔离, split_group_status: 配方与共享参考家族键可用, completeness: source_aggregate_plus_record_curves_scalar_groups_and_formulations, audit_basis: 内容审计摘要.json;曲线审计清单.tsv;标量审计清单.tsv;配方审计清单.tsv, notes: Pearlthane ECO 12T95与两类木质素共19个材料/共混身份；22条有标签曲线和22个前驱体力学标量进入Gold-E迁移参考，16条缺标签曲线、精确重复及下游碳纤维结果隔离, counts: {source_record_count: 51, material_count: 19, formulation_count: 19, batch_count: null, specimen_count: null, run_count: 37, curve_count_observed: 39, curve_count_candidate: 22, scalar_count_observed: 38, scalar_count_candidate: 22, point_count_observed: 106731, point_count_candidate: 92346, numeric_value_count: 38, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
+
+# 早期已下载到“力学曲线”目录、现已完成逐文件与逐记录审计的正式参考层。
+# 这些来源不迁移物理目录；通过 source_path 接入同一总账，避免复制原始数据。
+  - {source_directory: MDPI_HDI_PEG双力场TPU, task: HDI–PEG软段长度—密度—Tg—模量双力场基准, origin_kind: 混合, scientific_role: TPU核心, quality_status: 降权, weight_ceiling: 0.65, unit_status: 已解析, license_status: allow_with_attribution, dedup_status: 同一PEG体系的双力场与随机种子已按体系归组, split_group_status: DOI+PEG分子量分组且双力场同折, completeness: source_aggregate_plus_systems_and_observations, audit_basis: 内容审计摘要.json;计算体系清单.tsv;计算观测清单.tsv, notes: 5个HDI–PEG体系、100个报告种子运行及26个QoI记录；实验汇总逐行归Gold-E，MD逐行归Gold-C，高应变率模量不得冒充准静态实验值。, counts: {source_record_count: 26, material_count: 5, formulation_count: 5, batch_count: null, specimen_count: null, run_count: 100, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 26, scalar_count_candidate: 26, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 52, evidence_group_count: 0, computational_system_count: 5, source_identity_count_contribution: 1}}
+  - {source_directory: MDPI_MDI聚醚双组分PU分子动力学, task: MDI/聚醚配比—温度—相容性—扩散—弹性描述符, origin_kind: 模拟, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.20, unit_status: 已解析, license_status: allow_with_attribution, dedup_status: μ与G定义重复及低R2扩散项已隔离, split_group_status: DOI+配比同折且温度为运行条件, completeness: source_aggregate_plus_systems_and_observations, audit_basis: 内容审计摘要.json;计算体系清单.tsv;计算观测清单.tsv, notes: 3个粗粒度PU配方和1个共享纯多元醇参考、16个体系温度条件、120个计算量；79个候选进入Gold-C，原始轨迹和唯一聚醚结构未公开。, counts: {source_record_count: 120, material_count: 4, formulation_count: 3, batch_count: null, specimen_count: null, run_count: 16, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 120, scalar_count_candidate: 79, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 136, evidence_group_count: 0, computational_system_count: 4, source_identity_count_contribution: 1}}
+  - {source_directory: Frontiers_PU_ReaxFF热解, task: PU高温ReaxFF热解机理与EHS降解先验, origin_kind: 模拟, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.20, unit_status: 已解析, license_status: allow_with_attribution, dedup_status: 六温度共同拟合量仅计一个派生目标, split_group_status: 单一分子模型的六温度条件全部同折, completeness: source_aggregate_plus_systems_and_observations, audit_basis: 内容审计摘要.json;计算体系清单.tsv;计算观测清单.tsv, notes: 一个PU计算体系、六个1500–3000 K条件；活化能进入Gold-C的EHS任务，相关系数只作质量证据，力学任务权重为0。, counts: {source_record_count: 2, material_count: 1, formulation_count: null, batch_count: null, specimen_count: null, run_count: 6, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 2, scalar_count_candidate: 1, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 2, evidence_group_count: 0, computational_system_count: 1, source_identity_count_contribution: 1}}
+  - {source_directory: Figshare_商用PUR形状记忆本构FEA, task: 商业PUR形状记忆材料本构输入与有限元迁移参考, origin_kind: 模拟, scientific_role: 迁移, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 部分已解析, license_status: allow_with_attribution, dedup_status: 4材料各10个Prony项按材料归组, split_group_status: 数据集DOI+商业材料ID同折, completeness: source_aggregate_plus_systems_and_simulation_inputs, audit_basis: 内容审计摘要.json;计算体系清单.tsv;计算输入参数清单.tsv, notes: 4个商业PUR材料、120个原始材料卡/本构数值标记中112个完整；DOCX无机器可读FEA性能输出，因此Gold-C条件参考准入但候选目标为0。, counts: {source_record_count: 120, material_count: 4, formulation_count: null, batch_count: null, specimen_count: null, run_count: 0, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 112, evidence_group_count: 4, computational_system_count: 4, source_identity_count_contribution: 1}}
+
+local_backlog_profiles:
+  - source_directory: SelfHealingTPU_4TU
+    source_path: 外部数据/力学曲线/SelfHealingTPU_4TU
+    task: 自修复TPU打印/切割/热流变多模态迁移
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    weight_ceiling: 0.55
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 5条归一化依赖视图与2条负黏度曲线已隔离
+    split_group_status: 2个材料家族与26个机械试样键可用
+    completeness: source_aggregate_plus_record_curves_scalars_and_formulations
+    audit_basis: 内容审计摘要.json;曲线审计清单.tsv;标量审计清单.tsv;配方审计清单.tsv
+    notes: 公开包含自修复TPU与Ninjaflex的机械、DSC、TGA、FTIR、流变及丝径数据；61条曲线和32个标量保留为Gold-E迁移参考，完整化学计量仍需正文补齐。
+    counts: {source_record_count: 72, material_count: 2, formulation_count: 2, batch_count: null, specimen_count: 26, run_count: null, curve_count_observed: 68, curve_count_candidate: 61, scalar_count_observed: 32, scalar_count_candidate: 32, point_count_observed: 148379, point_count_candidate: 131022, numeric_value_count: null, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
+  - source_directory: Schwarz2022_EPU40
+    source_path: 外部数据/力学曲线/Schwarz2022_EPU40
+    task: 光固化聚氨酯水老化—拉伸本构迁移
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    weight_ceiling: 0.65
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: 45条有效曲线唯一且10个空列对不计记录
+    split_group_status: 45个试样键可用且同一商业材料条件必须同折
+    completeness: source_aggregate_plus_record_curves_scalars_and_formulation
+    audit_basis: 内容审计摘要.json;曲线审计清单.tsv;标量审计清单.tsv;配方审计清单.tsv
+    notes: 45条应力—伸长比曲线、135个同试样失效/模量端点和70个厚度质量辅助标量；商业EPU40组成未知，不构造伪SMILES。
+    counts: {source_record_count: 125, material_count: 1, formulation_count: 1, batch_count: null, specimen_count: 45, run_count: 45, curve_count_observed: 45, curve_count_candidate: 45, scalar_count_observed: 205, scalar_count_candidate: 205, point_count_observed: 73500, point_count_candidate: 73500, numeric_value_count: 205, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
+  - source_directory: Zenodo4156000
+    source_path: 外部数据/力学曲线/Zenodo4156000
+    task: 导电热塑性弹性体打印—力电耦合迁移
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    weight_ceiling: 0.35
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: 1对文件精确重复且6条协议输入通道已隔离
+    split_group_status: 2个化学配方同折且3个工艺条件/14个运行组可追溯
+    completeness: source_aggregate_plus_record_curves_and_formulations
+    audit_basis: 内容审计摘要.json;曲线审计清单.tsv;配方审计清单.tsv
+    notes: 33个曲线通道全部保留原始证据；25个材料响应通道进入Gold-E迁移参考。Eel导电TPU与Empa SEBS/炭黑为2个化学配方，Empa0.3/0.5只是同配方工艺条件；协议输入和重复冲突通道权重为0。
+    counts: {source_record_count: 33, material_count: 2, formulation_count: 2, batch_count: null, specimen_count: null, run_count: 14, curve_count_observed: 33, curve_count_candidate: 25, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 377353, point_count_candidate: 152271, numeric_value_count: null, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
+  - source_directory: Zenodo1098206
+    source_path: 外部数据/力学曲线/Zenodo1098206
+    task: 多孔CNF/TPU力学—导电—孔隙多任务迁移
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    weight_ceiling: 0.60
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 55条曲线无精确重复且错误公式已逐项隔离
+    split_group_status: 5个配方家族与25个拉伸试样键可用
+    completeness: source_aggregate_plus_record_curves_scalars_and_formulations
+    audit_basis: 内容审计摘要.json;曲线审计清单.tsv;标量审计清单.tsv;配方审计清单.tsv
+    notes: 正文闭合IROGRAN PS 455-203与0/10/20/30/40 wt% CNF；55条原始曲线和57个候选标量用于多任务迁移，6个错误厚度引用及依赖统计量不重复计权。
+    counts: {source_record_count: 68, material_count: 6, formulation_count: 5, batch_count: null, specimen_count: 25, run_count: 55, curve_count_observed: 55, curve_count_candidate: 55, scalar_count_observed: 63, scalar_count_candidate: 57, point_count_observed: 43032, point_count_candidate: 43032, numeric_value_count: 63, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}

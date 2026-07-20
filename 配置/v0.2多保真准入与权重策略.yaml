@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.9
+policy_version: multi-fidelity-admission-weight-v0.2.12
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -33,6 +33,35 @@ principles:
     - core_tpu_vs_transfer_domain
     - raw_vs_aggregate
     - observation_vs_model_output
+
+# Gold 是“可追溯参考集合”，不是“全部等权真值”。可靠计算和虚拟候选可先
+# 进入对应层，是否用于某个监督任务及其权重由后续任务门单独决定。
+gold_layer_admission:
+  Gold-E:
+    admitted_origins: [experimental]
+    minimum_requirement: 可追溯到来源、材料或配方身份、测试定义及单位；不完整字段显式为空而不是猜测。
+    allowed_roles: [core_truth, transfer_reference, validation_only]
+  Gold-C:
+    admitted_origins: [dft, aimd, md, coarse_grained_md, finite_element]
+    experimental_mapping_required_for_reference_admission: false
+    minimum_requirement: 体系、输入输出血缘、方法版本、协议、收敛或质量证据和适用域可审计。
+    allowed_without_experimental_mapping:
+      - mechanism_descriptor
+      - representation_pretraining
+      - low_fidelity_label
+      - candidate_rescoring
+      - uncertainty_prior
+    experimental_mapping_required_for:
+      - claim_as_experimental_truth
+      - direct_macroscopic_property_calibration
+      - final_candidate_validation
+  Gold-V:
+    admitted_origins: [reaction_rule_generated, enumeration, group_contribution, model_generated, ml_prediction]
+    minimum_requirement: 生成器或模型版本、输入结构、约束规则和适用域可追溯；不确定度在方法可提供时记录，父候选只对派生候选必填，根候选保留生成种子或输入集合。
+    experimental_label_required_for_reference_admission: false
+    allowed_uses: [chemical_space_enumeration, ranking, active_learning, acquisition_design, representation_pretraining]
+    direct_experimental_property_supervision_weight: 0.0
+    note: Gold-V中的预测值是候选证据而非实验真值；经可靠计算或实验验证后沿同一candidate_id升级，不重复建样本。
 
 source_override_key_semantics:
   group_keys: 观测身份、血缘和组内归一维度；不得直接解释为训练拆分键。
@@ -69,6 +98,8 @@ future_weight_materialization:
       direct_specimen_observation: 1.00
       formulation_condition_aggregate: 0.75
       simulation_experiment_calibrated_pair: 0.70
+      simulation_candidate_exact_mapping: 0.60
+      simulation_component_or_segment_proxy_mapping: 0.35
       study_level_or_commercial_grade_only: 0.45
       no_auditable_mapping: 0.00
     q_independence:
@@ -146,6 +177,12 @@ simulation_aggregation:
       - convergence_or_stationarity_evidence
   applicability_rule: 方法专属字段只在科学上适用时强制；确定性DFT不因缺少随机种子或MD系综字段被误阻断，MD/AIMD则必须记录适用的系综、平衡、生产段和随机性证据。
   experimental_calibration_required_for_primary_computational_use: true
+  experimental_calibration_required_for_gold_c_reference_admission: false
+  uncalibrated_reproducible_simulation_allowed_uses:
+    - mechanism_descriptor
+    - representation_pretraining
+    - low_fidelity_label
+    - candidate_rescoring
 
 derived_qoi_handling:
   valid_requirements:
@@ -217,6 +254,16 @@ default_weight_bands:
     normalization_unit: unique_system_protocol_seed
     rationale: 力场或从头算协议、平衡、生产段、独立种子和输出完整时，才可作为计算层观测。
 
+  - policy_key: md_or_aimd_unmapped_reference
+    origin_kind: md
+    method_family: [md, aimd]
+    scientific_use_class: auxiliary
+    required_scope: protocol_complete_system_mapped_without_experimental_pair
+    minimum_weight: 0.05
+    maximum_weight: 0.20
+    normalization_unit: unique_system_protocol_seed
+    rationale: 没有实验配对但体系、协议、输出和质量证据完整的MD/AIMD仍可进入Gold-C参考层，用于机理、表示、低保真复筛和不确定度先验；不得声称为实验真值。
+
   - policy_key: group_contribution_or_virtual_candidate
     origin_kind: group_contribution
     scientific_use_class: representation
@@ -232,6 +279,8 @@ default_weight_bands:
     maximum_weight: 0.00
     normalization_unit: prediction_lineage
     rationale: 模型预测可保存用于审计、蒸馏研究或主动学习，但默认不回灌为真值。
+    gold_layer: Gold-V
+    candidate_ranking_allowed: true
 
   - policy_key: simulation_input_or_code
     artifact_roles: [simulation_input, code, model_artifact]
@@ -652,6 +701,81 @@ source_overrides:
       cross_protocol_quasistatic_transfer: 0.10
       atomistic_data_force_field_or_input_script: 0.00
     note: 当前只取得一个607104原子初始体系及2.0 km/s冲击输入，没有输出轨迹或QoI，故权重为零；上游Git辅助文件还缺明确许可证，不得对外再分发。未来上限须同时满足输出、验证、实验映射和权利闭合。
+
+  - source_scope_key: scope_fisher_2020_shape_memory_pu_dataset
+    intended_use: crosslinked_shape_memory_pu_thermomechanical_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_doi, formulation, normalized_run_label, modality]
+    split_group_keys: [dataset_doi, formulation]
+    task_specific_ceilings:
+      failure_or_cyclic_mechanical_curve: 0.35
+      missing_terminal_marker_cycle_curve: 0.30
+      dma_dsc_or_tga_curve: 0.20
+      copied_tail_contamination_point: 0.00
+      direct_linear_tpu_endpoint: 0.00
+    note: 12个HDI/HPED/TEA交联形状记忆PU配方和109条曲线作为Gold-E迁移参考；61条机械运行不宣称为61个独立试样，复制尾部1702点单独置零，同配方跨模态同折。
+
+  - source_scope_key: scope_zenodo_3631551_lignin_tpu_dataset
+    intended_use: lignin_commercial_tpu_multimodal_composite_transfer
+    base_weight_ceiling: 0.20
+    group_keys: [dataset_doi, commercial_tpu_grade, lignin_identity, blend_fraction, modality, record]
+    split_group_keys: [dataset_doi, commercial_tpu_grade, lignin_identity, blend_fraction]
+    task_specific_ceilings:
+      labeled_ftir_dsc_tga_xrd_or_rheology_curve: 0.20
+      precursor_fiber_mechanical_scalar: 0.15
+      missing_sample_label_or_exact_duplicate_curve: 0.00
+      downstream_carbon_fiber_for_tpu_task: 0.00
+      unresolved_or_physically_suspect_unit: 0.00
+    note: Pearlthane ECO 12T95与两类木质素的共混体系进入Gold-E复合迁移层；缺标签曲线、精确重复、可疑直径单位和下游碳纤维结果不回灌为TPU本体真值。
+
+  - source_scope_key: self_healing_tpu_4tu_deposit
+    intended_use: self_healing_tpu_printing_mechanics_and_multimodal_transfer
+    base_weight_ceiling: 0.55
+    group_keys: [dataset_doi, material_family, process_state, specimen_or_run, modality]
+    split_group_keys: [dataset_doi, material_family]
+    task_specific_ceilings:
+      direct_cut_or_healed_tensile_curve_with_specimen_key: 0.55
+      dsc_tga_ftir_or_rheology_curve: 0.30
+      filament_diameter_support_scalar: 0.35
+      normalized_dependent_view_or_negative_viscosity_curve: 0.00
+    note: 可靠实验曲线可进入Gold-E迁移层，即使完整单体计量尚未闭合；但SH-TPU与Ninjaflex必须按材料家族同折，依赖归一化视图和负黏度异常不得形成独立监督。
+
+  - source_scope_key: schwarz2022_epu40_source_data
+    intended_use: commercial_photopolyurethane_water_aging_constitutive_transfer
+    base_weight_ceiling: 0.65
+    group_keys: [dataset_doi, commercial_grade, conditioning_state, specimen]
+    split_group_keys: [dataset_doi, commercial_grade]
+    task_specific_ceilings:
+      direct_tensile_curve: 0.65
+      failure_endpoint_or_initial_modulus_from_same_curve: 0.45
+      thickness_or_mass_support_scalar: 0.25
+      formatted_empty_column_pair: 0.00
+    note: 45个试样的直接曲线可用于商业聚氨酯条件—本构迁移；作者端点与母曲线共享试样总预算，商业配方未知只降低化学映射因子，不删除可靠力学观测。
+
+  - source_scope_key: zenodo_4156000
+    intended_use: conductive_tpe_printing_electromechanical_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_record, formulation_identity, process_condition, source_file, response_channel]
+    split_group_keys: [dataset_record, formulation_identity]
+    task_specific_ceilings:
+      eel_tpu_cb_measured_force_displacement_or_resistance_response: 0.35
+      empa_sebs_cb_cross_material_response: 0.15
+      prescribed_time_strain_protocol_channel: 0.00
+      exact_duplicate_file_or_label_conflict_channel: 0.00
+    note: 25个材料响应通道作为Gold-E迁移参考；Eel导电TPU与Empa SEBS/炭黑是2个化学配方，Empa0.3/0.5只是同配方工艺条件且必须同折。施加的应变程序是输入坐标，不是材料响应，精确重复文件和冲突标签整组隔离。
+
+  - source_scope_key: zenodo_1098206
+    intended_use: porous_cnf_tpu_mechanical_conductive_multitask_transfer
+    base_weight_ceiling: 0.60
+    group_keys: [dataset_record, tpu_grade, cnf_mass_fraction, specimen_or_run, modality]
+    split_group_keys: [dataset_record, tpu_grade]
+    task_specific_ceilings:
+      neat_tpu_direct_tensile_curve: 0.60
+      cnf_tpu_direct_tensile_curve: 0.50
+      conductivity_or_piezoresistive_response: 0.35
+      spectroscopy_or_porosity_support: 0.25
+      wrong_thickness_reference_or_dependent_mean_std_formula: 0.00
+    note: 正文可闭合商业TPU牌号和CNF质量分数，因此55条曲线与57个候选标量保留；六个错误厚度引用公式和由同一母数据生成的均值/标准差不重复计权。
 
 materialization_gate:
   required_before_training:

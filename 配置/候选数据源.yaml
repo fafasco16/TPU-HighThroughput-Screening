@@ -1,0 +1,240 @@
+schema_version: v0.2
+registry_version: candidate-registry-v0.1
+registry_state: candidate_only
+observed_at: "2026-07-20T11:35:00+08:00"
+asserted_by: tpu_source_curator
+training_split_created: false
+training_weight_materialized: false
+model_ready_record_count: 0
+
+score_dimensions:
+  provenance: 5
+  rights: 5
+  file_access: 5
+  data_granularity: 5
+  tpu_relevance: 5
+  gap_value: 5
+  reproducibility: 5
+grade_thresholds:
+  A: 28
+  B: 21
+  C: 0
+allowed_rights_statuses_for_download:
+  - open_redistributable
+  - open_noncommercial
+allowed_download_hosts:
+  - ars.els-cdn.com
+  - zenodo.org
+  - ora.ox.ac.uk
+
+candidates:
+  - candidate_id: fisher_2020_pu_shape_memory_raw
+    title: "Thermomechanical data of polyurethane shape memory polymer: Considering varying compositions"
+    canonical_identifier: "doi:10.1016/j.dib.2020.106294"
+    publication_identifier: "doi:10.1016/j.dib.2020.106294"
+    stable_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7495509/"
+    repository: PubMed Central / Elsevier supplementary data
+    version_label: published_2020
+    publication_year: 2020
+    origin_kind: experiment
+    scientific_role: polyurethane_adjacent_transfer
+    material_scope: "12种HDI/HPED/TEA脂肪族聚氨酯形状记忆网络"
+    chemistry_scope:
+      - HDI
+      - HPED
+      - TEA
+    property_scope:
+      - cyclic_tensile
+      - tensile_failure
+      - DMA_storage_modulus
+      - DMA_tan_delta
+      - DSC
+      - TGA
+    reported_scale:
+      formulation_count: 12
+      replicate_note: "失效试验每配方5次并选3次分析；循环测试含预调理与10次循环"
+    rights:
+      status: open_redistributable
+      license_spdx: CC-BY-4.0
+      evidence_url: "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7495509/fullTextXML"
+    files:
+      - {file_id: mmc1, upstream_name: mmc1.txt, size_bytes: 238259, media_type: text/plain, checksum: "sha256:c12f6d47ba1316018b2217e04a8151f8fcb0e57e5c6d32c00e79830e84c713ca", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc1.txt"}
+      - {file_id: mmc2, upstream_name: mmc2.txt, size_bytes: 263010, media_type: text/plain, checksum: "sha256:9645491e8ccc3bb648eae032abce6bfeb0285196dbcb0ce402186964bdbaf911", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc2.txt"}
+      - {file_id: mmc3, upstream_name: mmc3.txt, size_bytes: 42273, media_type: text/plain, checksum: "sha256:54833a24480665882af959633bfacad41a639df01381b77e0a00ba09dc9a1e53", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc3.txt"}
+      - {file_id: mmc4, upstream_name: mmc4.xlsx, size_bytes: 5447590, media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, checksum: "sha256:95602f21bead7323df157a1bcbd84d6d1c638a33ec8a53268670ef92253037ec", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc4.xlsx"}
+      - {file_id: mmc5, upstream_name: mmc5.txt, size_bytes: 275021, media_type: text/plain, checksum: "sha256:8ca6f66a29ea10d8e363a983a687753238b795844a8f08cd3ea49debfbb2b044", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc5.txt"}
+      - {file_id: mmc6, upstream_name: mmc6.xlsx, size_bytes: 41022679, media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, checksum: "sha256:687f2837d4e4922c1a76981e031ba704c60c36de71566a85cc786f0c7f71e032", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc6.xlsx"}
+      - {file_id: mmc7, upstream_name: mmc7.xml, size_bytes: 358, media_type: text/xml, checksum: "sha256:96c71fac9d41a4b5f27be0fcd501ace626629b913b9bbf2104101f764233de69", download_url: "https://ars.els-cdn.com/content/image/1-s2.0-S2352340920311884-mmc7.xml"}
+    evidence_urls:
+      - "https://doi.org/10.1016/j.dib.2020.106294"
+      - "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7495509/fullTextXML"
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 5, tpu_relevance: 4, gap_value: 5, reproducibility: 5}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_fisher_2020_shape_memory_pu], matched_scope_keys: [scope_fisher_2020_shape_memory_pu_dataset], independent_source_contribution: false}
+    proposed_action: verify_existing_payload_and_continue_audit
+    assessment_note: "原始文本和XLSX随文开放；mmc7.xml只是数据可用性说明。论文提及的MATLAB分析脚本未出现在公开补充包中，必须登记为已知缺件。配方明确但属于交联形状记忆PU，不得冒充线性TPU核心。"
+
+  - candidate_id: ora_2026_rate_dependent_tpu
+    title: "Supporting data for Rate-dependent energy dissipation in additively manufactured thermoplastic polyurethanes"
+    canonical_identifier: "doi:10.5287/ora-9r4x5xx4q"
+    publication_identifier: null
+    stable_url: "https://ora.ox.ac.uk/objects/uuid:859a5f81-ec54-40a8-bb8a-ba2f074a02ff"
+    repository: Oxford University Research Archive
+    version_label: published_2026
+    publication_year: 2026
+    origin_kind: experiment
+    scientific_role: tpu_mechanics_transfer
+    material_scope: "增材制造TPU在不同应变率下的力热耦合与能量耗散"
+    chemistry_scope: [commercial_tpu_chemistry_unresolved]
+    property_scope: [rate_dependent_tensile, cyclic_dissipation, thermomechanical_coupling, infrared_thermography]
+    reported_scale:
+      formulation_count: null
+      replicate_note: "数据按论文图号组织；Excel与Telops HCC热像并存"
+    rights:
+      status: restricted_internal_research
+      license_spdx: null
+      evidence_url: "https://api.datacite.org/dois/10.5287/ora-9r4x5xx4q"
+    files:
+      - {file_id: r1c18dj417, upstream_name: Supporting_Data.zip, size_bytes: null, displayed_size: 4.0 MB, media_type: application/zip, download_url: "https://ora.ox.ac.uk/objects/uuid:859a5f81-ec54-40a8-bb8a-ba2f074a02ff/files/r1c18dj417"}
+      - {file_id: rb2773z36w, upstream_name: thermal_camera_bundle_1, size_bytes: null, displayed_size: 186.4 MB, media_type: application/octet-stream, download_url: "https://ora.ox.ac.uk/objects/uuid:859a5f81-ec54-40a8-bb8a-ba2f074a02ff/files/rb2773z36w"}
+      - {file_id: r7s75dg39x, upstream_name: thermal_camera_bundle_2, size_bytes: null, displayed_size: 269.3 MB, media_type: application/octet-stream, download_url: "https://ora.ox.ac.uk/objects/uuid:859a5f81-ec54-40a8-bb8a-ba2f074a02ff/files/r7s75dg39x"}
+      - {file_id: rqj72p999r, upstream_name: thermal_camera_bundle_3, size_bytes: null, displayed_size: 1018.1 MB, media_type: application/octet-stream, download_url: "https://ora.ox.ac.uk/objects/uuid:859a5f81-ec54-40a8-bb8a-ba2f074a02ff/files/rqj72p999r"}
+      - {file_id: r4x51hm81n, upstream_name: thermal_camera_bundle_4, size_bytes: null, displayed_size: 433.5 MB, media_type: application/octet-stream, download_url: "https://ora.ox.ac.uk/objects/uuid:859a5f81-ec54-40a8-bb8a-ba2f074a02ff/files/r4x51hm81n"}
+    evidence_urls:
+      - "https://doi.org/10.5287/ora-9r4x5xx4q"
+      - "https://api.datacite.org/dois/10.5287/ora-9r4x5xx4q"
+    scores: {provenance: 5, rights: 0, file_access: 4, data_granularity: 5, tpu_relevance: 5, gap_value: 5, reproducibility: 4}
+    vetoes: [rights_restricted]
+    dedup: {state: new, matched_source_keys: [], matched_scope_keys: [], independent_source_contribution: true}
+    proposed_action: metadata_only_until_rights_review
+    assessment_note: "内容价值高，但DataCite仅给出all-rights-reserved；未取得许可前不自动下载、不再分发。"
+
+  - candidate_id: zenodo_3631551_lignin_tpu_blends
+    title: "Biobased Structurally Compatible Polymer Blends Based on Lignin and Thermoplastic Elastomer Polyurethane as Carbon Fiber Precursors"
+    canonical_identifier: "doi:10.5281/zenodo.3631551"
+    publication_identifier: "doi:10.1021/acssuschemeng.8b01170"
+    stable_url: "https://zenodo.org/records/3631551"
+    repository: Zenodo
+    version_label: record_3631551
+    publication_year: 2018
+    origin_kind: experiment
+    scientific_role: tpu_composite_transfer
+    material_scope: "两类木质素与热塑性弹性体聚氨酯的多配方共混体系"
+    chemistry_scope: [thermoplastic_elastomer_polyurethane, hardwood_lignin, softwood_lignin]
+    property_scope: [FTIR, DSC, oscillatory_rheology, TGA, XRD, tensile]
+    reported_scale:
+      formulation_count: 8
+      replicate_note: "实际配方、工作表与重复数待内容审计复算"
+    rights:
+      status: open_redistributable
+      license_spdx: CC-BY-4.0
+      evidence_url: "https://zenodo.org/api/records/3631551"
+    files:
+      - file_id: biobased_xlsx
+        upstream_name: Biobased.xlsx
+        size_bytes: 1318528
+        media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        checksum: "sha256:5dd712d854f56a50946e195039d875e1dc22fb755b309f99e9516789d120c6d4"
+        upstream_checksum: "md5:7e9e5de0a4e26481fcd96bf04ec1e873"
+        download_url: "https://zenodo.org/api/records/3631551/files/Biobased.xlsx/content"
+    evidence_urls:
+      - "https://doi.org/10.5281/zenodo.3631551"
+      - "https://zenodo.org/api/records/3631551"
+      - "https://doi.org/10.1021/acssuschemeng.8b01170"
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 5, tpu_relevance: 4, gap_value: 5, reproducibility: 4}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_zenodo_3631551_lignin_tpu], matched_scope_keys: [scope_zenodo_3631551_lignin_tpu_dataset], independent_source_contribution: false}
+    proposed_action: verify_existing_payload_and_continue_audit
+    assessment_note: "开放单工作簿、体量小且补流变/热学缺口；木质素复合体系未来只作TPU复合材料迁移层。"
+
+  - candidate_id: existing_4tu_self_healing_tpu
+    title: "Self-healing thermoplastic polyurethane 4TU data"
+    canonical_identifier: "doi:10.4121/13603775.v1"
+    publication_identifier: null
+    stable_url: "https://doi.org/10.4121/13603775.v1"
+    repository: 4TU.ResearchData
+    version_label: v1
+    publication_year: 2021
+    origin_kind: experiment
+    scientific_role: tpu_core_backlog
+    material_scope: "自愈TPU的增材制造与力学数据"
+    chemistry_scope: [self_healing_tpu]
+    property_scope: [additive_manufacturing, tensile, self_healing]
+    reported_scale: {formulation_count: null, replicate_note: "本地原件已存在，等待纳入规模总账复算"}
+    rights: {status: open_redistributable, license_spdx: CC-BY-4.0, evidence_url: "https://doi.org/10.4121/13603775.v1"}
+    files: []
+    evidence_urls: ["https://doi.org/10.4121/13603775.v1"]
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 4, tpu_relevance: 5, gap_value: 4, reproducibility: 4}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_4tu_data], matched_scope_keys: [], independent_source_contribution: false}
+    proposed_action: audit_existing_payload_and_add_to_ledger
+    assessment_note: "不是净新增；已在全量来源配置和本地原始层，当前遗漏在49来源贡献总账之外。"
+
+  - candidate_id: existing_schwarz_2022_epu40_water_aging
+    title: "Schwarz 2022 EPU40 raw water-aging data"
+    canonical_identifier: "doi:10.17632/wcwtjrkfsm.1"
+    publication_identifier: null
+    stable_url: "https://doi.org/10.17632/wcwtjrkfsm.1"
+    repository: Mendeley Data
+    version_label: v1
+    publication_year: 2022
+    origin_kind: experiment
+    scientific_role: polyurethane_aging_transfer_backlog
+    material_scope: "EPU40在水浸条件下的老化与力学响应"
+    chemistry_scope: [EPU40]
+    property_scope: [water_aging, tensile, water_uptake, thickness_change]
+    reported_scale: {formulation_count: 1, replicate_note: "本地审计初查为9条件×5重复、45曲线、135失效标量和35个吸水/厚度记录"}
+    rights: {status: open_redistributable, license_spdx: CC-BY-4.0, evidence_url: "https://doi.org/10.17632/wcwtjrkfsm.1"}
+    files: []
+    evidence_urls: ["https://doi.org/10.17632/wcwtjrkfsm.1"]
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 5, tpu_relevance: 3, gap_value: 5, reproducibility: 5}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_schwarz_data], matched_scope_keys: [], independent_source_contribution: false}
+    proposed_action: audit_existing_payload_and_add_to_ledger
+    assessment_note: "不是净新增；EPU而非标准线性TPU，适合作耐水老化迁移层，不得作为TPU核心配方。"
+
+  - candidate_id: existing_zenodo_1098206_porous_cnf_tpu
+    title: "Porous carbon nanofiber / thermoplastic polyurethane nanocomposite data"
+    canonical_identifier: "doi:10.5281/zenodo.1098206"
+    publication_identifier: "doi:10.1038/s41598-017-17647-w"
+    stable_url: "https://zenodo.org/records/1098206"
+    repository: Zenodo
+    version_label: record_1098206
+    publication_year: 2017
+    origin_kind: experiment
+    scientific_role: tpu_composite_backlog
+    material_scope: "多孔CNF/TPU纳米复合膜"
+    chemistry_scope: [commercial_tpu, carbon_nanofiber]
+    property_scope: [tensile, conductivity, piezoresistivity, porosity]
+    reported_scale: {formulation_count: null, replicate_note: "本地单工作簿已存在，待逐表复算"}
+    rights: {status: open_redistributable, license_spdx: CC-BY-4.0, evidence_url: "https://zenodo.org/records/1098206"}
+    files: []
+    evidence_urls: ["https://doi.org/10.5281/zenodo.1098206", "https://doi.org/10.1038/s41598-017-17647-w"]
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 4, tpu_relevance: 4, gap_value: 4, reproducibility: 4}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_zenodo1098206], matched_scope_keys: [], independent_source_contribution: false}
+    proposed_action: audit_existing_payload_and_add_to_ledger
+    assessment_note: "不是净新增；复合传感体系有明确TPU载体，但应用性能与本体力学必须分任务。"
+
+  - candidate_id: existing_zenodo_4156000_conductive_tpu
+    title: "Conductive TPU/TPE filament tensile and cyclic data"
+    canonical_identifier: "doi:10.5281/zenodo.4156000"
+    publication_identifier: "doi:10.1088/2058-8585/ab9a22"
+    stable_url: "https://zenodo.org/records/4156000"
+    repository: Zenodo
+    version_label: record_4156000
+    publication_year: 2020
+    origin_kind: experiment
+    scientific_role: commercial_tpu_mechanics_backlog
+    material_scope: "商用导电TPU/TPE丝材的拉伸与循环数据"
+    chemistry_scope: [commercial_conductive_tpu, commercial_tpe]
+    property_scope: [tensile_to_failure, quasistatic_cyclic, dynamic_cyclic]
+    reported_scale: {formulation_count: null, replicate_note: "15个CSV；发现至少1对上游内容重复，正式审计必须按哈希隔离"}
+    rights: {status: open_redistributable, license_spdx: CC-BY-4.0, evidence_url: "https://zenodo.org/records/4156000"}
+    files: []
+    evidence_urls: ["https://doi.org/10.5281/zenodo.4156000", "https://doi.org/10.1088/2058-8585/ab9a22"]
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 4, tpu_relevance: 4, gap_value: 3, reproducibility: 4}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_zenodo4156000], matched_scope_keys: [], independent_source_contribution: false}
+    proposed_action: audit_existing_payload_and_add_to_ledger
+    assessment_note: "不是净新增；先解决重复文件及TPU/TPE材料身份，再决定迁移权重。"

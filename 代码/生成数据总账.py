@@ -17,6 +17,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_NEW = ROOT / "数据/原始" / "外部数据" / "新增开放数据"
+RAW_MECHANICAL = ROOT / "数据/原始" / "外部数据" / "力学曲线"
 PROFILE_PATH = ROOT / "配置" / "v0.2可训练样本总账来源画像.yaml"
 SCOPE_PATH = ROOT / "配置" / "v0.2来源范围.yaml"
 SNAPSHOT_V01 = ROOT / "数据/快照" / "TPU数据库_v0.1_快照.json"
@@ -65,6 +66,8 @@ LEDGER_COLUMNS = [
     "task",
     "origin_kind",
     "scientific_role",
+    "gold_layer",
+    "gold_admission_status",
     *COUNT_FIELDS,
     *AUDIT_DETAIL_FIELDS,
     "quality_status",
@@ -94,6 +97,10 @@ MANIFEST_COLUMNS = [
     "task",
     "origin_kind",
     "scientific_role",
+    "gold_layer",
+    "gold_admission_status",
+    "target_origin",
+    "candidate_id",
     "raw_sample_key",
     "material_formula_key",
     "specimen_key",
@@ -133,6 +140,13 @@ ENUMS = {
     "origin_kind": {"实验", "模拟", "混合", "虚拟候选", "证据"},
     "scientific_role": {"TPU核心", "迁移", "证据"},
     "quality_status": {"入选", "降权", "仅验证", "隔离"},
+    "gold_layer": {"Gold-E", "Gold-C", "Gold-V", "Gold-E+Gold-C", "Not-Gold"},
+    "gold_admission_status": {
+        "admitted_reference",
+        "conditional_reference",
+        "blocked",
+        "evidence_only",
+    },
 }
 
 BASELINE_SOURCE_KEY = {
@@ -259,6 +273,94 @@ def _normalize_layout_text(value: Any) -> Any:
     return normalized
 
 
+def _gold_layer(profile: dict[str, Any]) -> str:
+    return {
+        "实验": "Gold-E",
+        "模拟": "Gold-C",
+        "混合": "Gold-E+Gold-C",
+        "虚拟候选": "Gold-V",
+        "证据": "Not-Gold",
+    }[profile["origin_kind"]]
+
+
+def _gold_admission_status(
+    profile: dict[str, Any], quality_status: str, layer: str | None = None
+) -> str:
+    layer = layer or _gold_layer(profile)
+    if layer == "Not-Gold":
+        return "evidence_only"
+    if quality_status == "隔离":
+        return "blocked"
+    # Gold-V 是可追溯候选参考集合；没有实验性质标签只会使其监督权重为零，
+    # 不会反向取消候选准入。
+    if layer == "Gold-V":
+        return "admitted_reference"
+    if quality_status == "仅验证":
+        return "conditional_reference"
+    return "admitted_reference"
+
+
+def _target_origin(profile: dict[str, Any], explicit: Any = None) -> str:
+    value = str(explicit or "").strip().lower().replace("-", "_")
+    aliases = {
+        "experiment": "experimental",
+        "实验": "experimental",
+        "computation": "computational",
+        "simulation": "computational",
+        "模拟": "computational",
+        "cgmd": "coarse_grained_md",
+        "coarse_grained": "coarse_grained_md",
+        "fea": "finite_element",
+        "finite_element_input": "simulation_input",
+        "virtual_candidate": "virtual",
+        "虚拟候选": "virtual",
+        "证据": "evidence",
+        "混合": "mixed",
+    }
+    if value:
+        return aliases.get(value, value)
+    return {
+        "实验": "experimental",
+        "模拟": "computational",
+        "混合": "mixed",
+        "虚拟候选": "virtual",
+        "证据": "evidence",
+    }[profile["origin_kind"]]
+
+
+def _gold_layer_for_target(
+    profile: dict[str, Any], target_origin: str, explicit: Any = None
+) -> str:
+    declared = str(explicit or "").strip()
+    if declared in ENUMS["gold_layer"]:
+        return declared
+    if target_origin == "experimental":
+        return "Gold-E"
+    if target_origin in {
+        "computational",
+        "dft",
+        "aimd",
+        "md",
+        "coarse_grained_md",
+        "finite_element",
+        "simulation_input",
+    }:
+        return "Gold-C"
+    if target_origin in {
+        "virtual",
+        "reaction_rule_generated",
+        "enumeration",
+        "model_generated",
+        "ml_prediction",
+    }:
+        return "Gold-V"
+    if target_origin == "mixed":
+        return "Gold-E+Gold-C"
+    if target_origin == "evidence":
+        return "Not-Gold"
+    return _gold_layer(profile)
+
+
 @dataclass(frozen=True)
 class SourceIdentity:
     source_id: str
@@ -280,26 +382,28 @@ def _resolve_source_identities(
     for mapping in scope_config["path_mappings"]:
         if mapping.get("match_type") != "prefix":
             continue
-        pattern = str(mapping.get("pattern", ""))
-        marker = "外部数据/新增开放数据/"
-        if not pattern.startswith(marker):
-            continue
-        directory = pattern[len(marker) :].split("/", 1)[0]
-        prefix_map[directory] = mapping["source_scope_key"]
+        pattern = str(mapping.get("pattern", "")).replace("\\", "/").strip("/")
+        prefix_map[pattern] = mapping["source_scope_key"]
 
     resolved: dict[str, SourceIdentity] = {}
     for profile in profiles:
         directory = profile["source_directory"]
-        scope_id = prefix_map.get(directory)
+        relative_base = str(
+            profile.get("source_path") or f"外部数据/新增开放数据/{directory}"
+        ).replace("\\", "/").strip("/")
+        scope_id = prefix_map.get(relative_base)
         if not scope_id:
-            raise ValueError(f"缺少来源范围映射: {directory}")
+            raise ValueError(f"缺少来源范围映射: {relative_base}")
         scope = scopes[scope_id]
+        source = sources.get(scope["source_key"])
+        source_family_key = source.get("source_family_key") if source else None
         matched_citations = [
             item
             for item in citations
-            if item.get("source_key") == scope["source_key"] or item.get("target_scope_key") == scope_id
+            if item.get("source_key") == scope["source_key"]
+            or item.get("target_scope_key") == scope_id
+            or (source_family_key and item.get("source_family_key") == source_family_key)
         ]
-        source = sources.get(scope["source_key"])
         if source is None:
             if not matched_citations:
                 raise ValueError(f"来源范围既无source定义也无citation: {scope_id}")
@@ -342,14 +446,20 @@ def _resolve_source_identities(
     return resolved
 
 
+def _profile_base(profile: dict[str, Any]) -> Path:
+    source_path = profile.get("source_path")
+    if source_path:
+        return ROOT / "数据/原始" / Path(str(source_path))
+    return RAW_NEW / profile["source_directory"]
+
+
 def _audit_paths(profile: dict[str, Any]) -> list[Path]:
-    directory = profile["source_directory"]
     paths: list[Path] = []
     for fragment in str(profile["audit_basis"]).split(";"):
         fragment = fragment.strip()
         if not fragment:
             continue
-        candidate = ROOT / fragment if "/" in fragment or "\\" in fragment else RAW_NEW / directory / fragment
+        candidate = ROOT / fragment if "/" in fragment or "\\" in fragment else _profile_base(profile) / fragment
         if not candidate.exists():
             raise FileNotFoundError(f"审计依据不存在: {candidate}")
         _register_input(candidate)
@@ -378,6 +488,10 @@ def _build_ledger(
             "task": profile["task"],
             "origin_kind": profile["origin_kind"],
             "scientific_role": profile["scientific_role"],
+            "gold_layer": _gold_layer(profile),
+            "gold_admission_status": _gold_admission_status(
+                profile, profile["quality_status"]
+            ),
             **{field: counts.get(field) for field in COUNT_FIELDS},
             **{
                 field: profile.get("audit_metrics", {}).get(field)
@@ -444,6 +558,7 @@ def _record_status(profile: dict[str, Any], row: dict[str, Any]) -> str:
         "conflict",
         "duplicate",
         "hold_",
+        "downstream_task_only",
         "not_selected",
         "mirror",
     )
@@ -499,6 +614,12 @@ def _base_record(
         "task": profile["task"],
         "origin_kind": profile["origin_kind"],
         "scientific_role": profile["scientific_role"],
+        "gold_layer": _gold_layer(profile),
+        "gold_admission_status": _gold_admission_status(
+            profile, profile["quality_status"]
+        ),
+        "target_origin": _target_origin(profile),
+        "candidate_id": "",
         "raw_sample_key": raw_key,
         "material_formula_key": "",
         "specimen_key": "",
@@ -547,9 +668,21 @@ def _tabular_record(
     if not raw_key:
         raw_key = f"{path.name}:row:{index + 2}"
     record = _base_record(profile, identity, granularity, raw_key, index)
-    material = _first(row, "材料代码", "材料", "material", "material_grade", "resolved_material_grade")
+    material = _first(
+        row,
+        "材料代码",
+        "材料",
+        "material",
+        "material_grade",
+        "resolved_material_grade",
+        "formulation_id",
+    )
     specimen = _first(row, "试样键", "试样ID", "record_id", "试样或家族组", "工况或试样")
-    curve = _first(row, "curve_id", "曲线ID", "曲线或文件", "曲线或文件")
+    instance_key = _first(row, "instance_key")
+    if source == "SelfHealingTPU_4TU" and row.get("modality") == "mechanical" and instance_key:
+        # 原始/愈合曲线属于同一物理试样；不能让曲线 record_id 把试样数翻倍。
+        specimen = instance_key
+    curve = _first(row, "curve_id", "曲线ID", "曲线或文件", "曲线或文件", "record_id")
     scalar = _joined(
         _first(row, "record_kind", "observable", "reported_items", "y_observable"),
         _first(row, "source_location", "sheet", "工作表"),
@@ -576,9 +709,21 @@ def _tabular_record(
     record.update(
         {
             "task": _first(row, "试验类型", "protocol", "record_kind", "数据角色", "modality") or profile["task"],
+            "target_origin": _target_origin(
+                profile,
+                _first(row, "target_origin", "data_origin", "来源类型", "数据来源类型"),
+            ),
+            "candidate_id": _first(
+                row,
+                "candidate_id",
+                "mapped_candidate_id",
+                "formulation_id",
+                "体系或路径",
+            ),
             "material_formula_key": material,
             "specimen_key": specimen if granularity in {"specimen", "curve", "scalar"} else "",
-            "run_key": _first(row, "test_run", "试验", "条件"),
+            # 审计器已把同一原始运行中的多通道写成共同 instance_key。
+            "run_key": instance_key or _first(row, "test_run", "试验", "条件"),
             "curve_key": curve if granularity == "curve" else "",
             "scalar_key": scalar if granularity == "scalar" else "",
             "leakage_group_key": group or identity.source_family_id,
@@ -608,27 +753,50 @@ def _tabular_record(
 def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for index, row in enumerate(_read_tsv(path)):
-        raw_key = _joined(row.get("工作簿"), row.get("试样ID"), row.get("observable"), row.get("scalar_lineage_class"))
+        raw_key = _joined(
+            row.get("工作簿"),
+            row.get("试样ID"),
+            row.get("observable"),
+            row.get("scalar_lineage_class"),
+            row.get("record_id"),
+            row.get("source_location"),
+        )
         record = _base_record(profile, identity, "scalar", raw_key or f"row:{index + 2}", index)
         status = _record_status(profile, row)
-        group = _first(row, "试样组", "试样ID")
+        group = _first(row, "试样组", "试样ID", "split_group")
         value = _number(row.get("value"))
+        direct_numeric_count = _number(row.get("direct_numeric_result_count"))
+        derived_numeric_count = _number(row.get("derived_numeric_result_count"))
+        has_grouped_count = direct_numeric_count is not None or derived_numeric_count is not None
+        scalar_count = int((direct_numeric_count or 0) + (derived_numeric_count or 0)) if has_grouped_count else 1
         record.update(
             {
-                "task": row.get("observable") or profile["task"],
-                "material_formula_key": _first(row, "来源"),
-                "specimen_key": row.get("试样ID", ""),
-                "scalar_key": _joined(row.get("observable"), row.get("unit")),
+                "task": row.get("observable") or row.get("task_role") or profile["task"],
+                "target_origin": _target_origin(
+                    profile,
+                    _first(row, "target_origin", "data_origin", "来源类型", "数据来源类型"),
+                ),
+                "candidate_id": _first(
+                    row,
+                    "candidate_id",
+                    "mapped_candidate_id",
+                    "formulation_id",
+                ),
+                "material_formula_key": _first(row, "来源", "formulation_id"),
+                "specimen_key": row.get("试样ID") or row.get("record_id", ""),
+                "scalar_key": _joined(
+                    row.get("observable"), row.get("unit"), row.get("result_names")
+                ),
                 "leakage_group_key": _joined(identity.source_family_id, group) if group else identity.source_family_id,
                 "leakage_key_status": "explicit_record_group" if group else "coarse_source_family",
                 "quality_status": status,
                 "weight_ceiling": _record_ceiling(profile, row, status),
-                "scalar_count": 1,
-                "numeric_value_count": 1 if value is not None else 0,
+                "scalar_count": scalar_count,
+                "numeric_value_count": scalar_count if has_grouped_count else (1 if value is not None else 0),
                 "source_locator": f"{_to_relative(path)}#row={index + 2}",
                 "audit_basis": _to_relative(path),
-                "decision_basis": row.get("quality_gate", ""),
-                "notes": row.get("备注", ""),
+                "decision_basis": row.get("quality_gate") or row.get("decision", ""),
+                "notes": row.get("备注") or row.get("notes", ""),
             }
         )
         records.append(record)
@@ -638,28 +806,48 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
 def _computational_records(profile: dict[str, Any], identity: SourceIdentity, path: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for index, row in enumerate(_read_tsv(path)):
-        level = _first(row, "记录层级")
+        level = _first(row, "记录层级", "reduction_level")
         granularity = "run" if any(token in level.lower() for token in ("run", "path", "trajectory", "system", "路径", "体系", "运行")) else "scalar"
-        raw_key = _joined(_first(row, "体系或路径"), _first(row, "观测或计算"), level)
+        raw_key = _first(row, "record_id") or _joined(
+            _first(row, "体系或路径", "system_id"),
+            _first(row, "观测或计算", "property_name"),
+            level,
+        )
         record = _base_record(profile, identity, granularity, raw_key or f"row:{index + 2}", index)
         status = _record_status(profile, row)
         record.update(
             {
-                "task": _first(row, "观测或计算") or profile["task"],
-                "material_formula_key": _first(row, "体系或路径"),
-                "run_key": _first(row, "体系或路径") if granularity == "run" else "",
-                "scalar_key": _first(row, "观测或计算") if granularity == "scalar" else "",
-                "leakage_group_key": _joined(identity.source_family_id, _first(row, "体系或路径")) or identity.source_family_id,
+                "task": _first(row, "观测或计算", "property_name") or profile["task"],
+                "target_origin": _target_origin(
+                    profile,
+                    _first(row, "target_origin", "data_origin", "来源类型", "数据来源类型"),
+                ),
+                "candidate_id": _first(
+                    row,
+                    "candidate_id",
+                    "mapped_candidate_id",
+                    "system_id",
+                    "体系或路径",
+                ),
+                "material_formula_key": _first(row, "体系或路径", "system_id"),
+                "run_key": _first(row, "体系或路径", "system_id") if granularity == "run" else "",
+                "scalar_key": _first(row, "观测或计算", "property_name") if granularity == "scalar" else "",
+                "leakage_group_key": _first(row, "split_group")
+                or _joined(identity.source_family_id, _first(row, "体系或路径", "system_id"))
+                or identity.source_family_id,
                 "leakage_key_status": "explicit_record_group",
                 "quality_status": status,
                 "weight_ceiling": _record_ceiling(profile, row, status),
                 "run_count": 1 if granularity == "run" else 0,
                 "scalar_count": 1 if granularity == "scalar" else 0,
-                "numeric_value_count": 1 if _number(row.get("数值")) is not None else 0,
-                "source_locator": f"{_to_relative(path)}#row={index + 2}",
+                "numeric_value_count": 1
+                if _number(row.get("数值") or row.get("value")) is not None
+                else 0,
+                "source_locator": _first(row, "source_location")
+                or f"{_to_relative(path)}#row={index + 2}",
                 "audit_basis": _to_relative(path),
-                "decision_basis": _first(row, "准入状态", "训练权重状态"),
-                "notes": row.get("备注", ""),
+                "decision_basis": _first(row, "准入状态", "训练权重状态", "decision"),
+                "notes": row.get("备注") or row.get("notes", ""),
             }
         )
         records.append(record)
@@ -668,7 +856,7 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
 
 def _specific_records(profile: dict[str, Any], identity: SourceIdentity) -> list[dict[str, Any]]:
     source = profile["source_directory"]
-    base = RAW_NEW / source
+    base = _profile_base(profile)
     records: list[dict[str, Any]] = []
     summary_path = base / "内容审计摘要.json"
     summary = _read_json(summary_path) if summary_path.exists() else None
@@ -834,7 +1022,7 @@ def _build_manifest(
 
     for profile in profiles:
         identity = identities[profile["source_directory"]]
-        base = RAW_NEW / profile["source_directory"]
+        base = _profile_base(profile)
         for filename in ("曲线审计清单.tsv", "曲线解析清单.tsv"):
             path = base / filename
             if not path.exists():
@@ -973,6 +1161,13 @@ def _build_manifest(
                 records.append(record)
 
     for record in records:
+        profile = profile_by_dir[record["source_directory"]]
+        record["gold_layer"] = _gold_layer_for_target(
+            profile, record["target_origin"]
+        )
+        record["gold_admission_status"] = _gold_admission_status(
+            profile, record["quality_status"], record["gold_layer"]
+        )
         for field in PATH_BEARING_MANIFEST_FIELDS:
             record[field] = _normalize_layout_text(record.get(field, ""))
     return records
@@ -1070,11 +1265,17 @@ def _build_summary(
     audit_as_of_utc: str,
     input_fingerprint_sha256: str,
     input_file_count: int,
+    open_source_directories: set[str],
+    local_backlog_source_directories: set[str],
 ) -> dict[str, Any]:
     by_dir = {row["source_directory"]: row for row in ledger}
     profile_counts = Counter(row["quality_status"] for row in ledger)
+    source_gold_layer_counts = Counter(row["gold_layer"] for row in ledger)
+    source_gold_admission_counts = Counter(row["gold_admission_status"] for row in ledger)
     granularity_counts = Counter(row["record_granularity"] for row in manifest)
     detail_status_counts = Counter(row["quality_status"] for row in manifest)
+    manifest_gold_layer_counts = Counter(row["gold_layer"] for row in manifest)
+    manifest_gold_admission_counts = Counter(row["gold_admission_status"] for row in manifest)
     core_curve_count = 148 + 28 + 41 + 16
     strict_core_keyed_specimen_count = 148 + 28 + 41
     core_source_directory_keyed_specimen_count = 158 + 28 + 41
@@ -1118,11 +1319,21 @@ def _build_summary(
         "training_split_created": False,
         "training_weight_materialized": False,
         "model_ready_record_count": 0,
-        "v0_2_source_directory_count": 46,
+        "v0_2_source_directory_count": len(
+            {row["source_directory"] for row in ledger} & open_source_directories
+        ),
         "v0_2_independent_source_identity_count": sum(
             int(row["source_identity_count_contribution"] or 0)
             for row in ledger
-            if row["source_directory"] in {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
+            if row["source_directory"] in open_source_directories
+        ),
+        "local_backlog_source_directory_count": len(
+            {row["source_directory"] for row in ledger} & local_backlog_source_directories
+        ),
+        "local_backlog_independent_source_identity_count": sum(
+            int(row["source_identity_count_contribution"] or 0)
+            for row in ledger
+            if row["source_directory"] in local_backlog_source_directories
         ),
         "v0_1_frozen_baseline_source_count": 4,
         "ledger_source_scope_count": len(ledger),
@@ -1130,9 +1341,17 @@ def _build_summary(
             int(row["source_identity_count_contribution"] or 0) for row in ledger
         ),
         "source_quality_status_counts": dict(sorted(profile_counts.items())),
+        "source_gold_layer_counts": dict(sorted(source_gold_layer_counts.items())),
+        "source_gold_admission_status_counts": dict(
+            sorted(source_gold_admission_counts.items())
+        ),
         "manifest_row_count": len(manifest),
         "manifest_granularity_counts": dict(sorted(granularity_counts.items())),
         "manifest_quality_status_counts": dict(sorted(detail_status_counts.items())),
+        "manifest_gold_layer_counts": dict(sorted(manifest_gold_layer_counts.items())),
+        "manifest_gold_admission_status_counts": dict(
+            sorted(manifest_gold_admission_counts.items())
+        ),
         "strict_core_calibration_curve_count": core_curve_count,
         "strict_core_calibration_curve_definition": "新增三套核心源中217条具有键控试样的校准曲线，加v0.1 Eom 16条可合法派生曲线；Eom 16条尚未闭合配方—独立试样链，因此233条不是同一composition-linked总体。",
         "strict_core_calibration_curve_point_row_count": strict_core_keyed_curve_point_row_count + v0_1_eom_eligible_curve_point_row_count,
@@ -1169,11 +1388,24 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 50
-    assert summary["v0_2_source_directory_count"] == 46
-    assert summary["v0_2_independent_source_identity_count"] == 45
-    assert summary["total_independent_source_contribution_count"] == 49
+    assert len(ledger) == 60
+    assert summary["v0_2_source_directory_count"] == 52
+    assert summary["v0_2_independent_source_identity_count"] == 51
+    assert summary["local_backlog_source_directory_count"] == 4
+    assert summary["local_backlog_independent_source_identity_count"] == 4
+    assert summary["total_independent_source_contribution_count"] == 59
     assert summary["model_ready_record_count"] == 0
+    expected_layer_by_origin = {
+        "实验": "Gold-E",
+        "模拟": "Gold-C",
+        "混合": "Gold-E+Gold-C",
+        "虚拟候选": "Gold-V",
+        "证据": "Not-Gold",
+    }
+    for row in ledger:
+        assert row["gold_layer"] == expected_layer_by_origin[row["origin_kind"]]
+        if row["gold_layer"] == "Gold-V" and row["quality_status"] != "隔离":
+            assert row["gold_admission_status"] == "admitted_reference"
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
     assert summary["strict_core_keyed_curve_count"] == 217
@@ -1190,10 +1422,10 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     assert summary["selected_source_heterogeneous_specimen_or_run_arithmetic_pool"] == 1119
     assert summary["major_experimental_curve_history_lower_bound"] == 1112
     assert summary["major_experimental_curve_point_lower_bound"] == 12258315
-    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1258
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2031
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 1905
-    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 6980144
+    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1354
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2380
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2222
+    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 8705042
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 344
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7606461
     strict_core_manifest = [
@@ -1266,6 +1498,12 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
         assert row["audit_basis"]
         assert row["model_ready"] is False
         assert row["current_weight_materialized"] is False
+        assert row["gold_layer"] == _gold_layer_for_target(
+            {"origin_kind": row["origin_kind"]}, row["target_origin"]
+        )
+        assert row["target_origin"]
+        if row["quality_status"] == "隔离" and row["gold_layer"] != "Not-Gold":
+            assert row["gold_admission_status"] == "blocked"
         assert float(row["weight_ceiling"]) >= 0
         if row["quality_status"] in {"隔离", "仅验证"}:
             assert float(row["weight_ceiling"]) == 0.0
@@ -1305,7 +1543,7 @@ def _write_report(
         "# TPU 数据库 v0.2：可训练样本清单与数据规模总账",
         "",
         "> 状态：`audit_inventory_only / training_blocked / weights_not_materialized`",
-        "> 生成方式：由 v0.1 冻结快照、v0.2 来源治理配置、46 个新增开放数据目录的审计摘要与逐记录 TSV 确定性生成。",
+        f"> 生成方式：由 v0.1 冻结快照、v0.2 来源治理配置、{summary['v0_2_source_directory_count']} 个新增开放数据目录和 {summary['local_backlog_source_directory_count']} 个已审计既有力学目录的摘要与逐记录 TSV 确定性生成。",
         f"> 固定审计时点：`{summary['audit_as_of_utc']}`；输入文件：{summary['input_file_count']}；输入指纹：`{summary['input_fingerprint_sha256']}`。",
         "> 重要边界：本报告中的“候选”只表示科学审计后仍值得保留；**当前模型就绪记录仍为 0**。",
         "",
@@ -1315,8 +1553,11 @@ def _write_report(
         "|---|---:|---|",
         f"| v0.2 新增开放数据目录 | {summary['v0_2_source_directory_count']} | 物理目录数，不是独立来源数 |",
         f"| v0.2 新增独立来源身份 | {summary['v0_2_independent_source_identity_count']} | PCL Git LFS 补采与 Zenodo PCL 母来源同源，贡献记 0 |",
-        f"| 总账来源范围 | {summary['ledger_source_scope_count']} | 46 个 v0.2 目录 + 4 个 v0.1 冻结基线 |",
-        f"| 独立来源贡献合计 | {summary['total_independent_source_contribution_count']} | v0.2 独立来源45 + v0.1冻结基线4；PCL Git LFS补采贡献为0 |",
+        f"| 已审计既有力学目录/独立来源 | {summary['local_backlog_source_directory_count']} / {summary['local_backlog_independent_source_identity_count']} | 早期下载目录不复制原始数据，通过 source_path 接入同一总账 |",
+        f"| 总账来源范围 | {summary['ledger_source_scope_count']} | {summary['v0_2_source_directory_count']} 个 v0.2 新增目录 + {summary['local_backlog_source_directory_count']} 个既有力学目录 + 4 个 v0.1 冻结基线 |",
+        f"| 独立来源贡献合计 | {summary['total_independent_source_contribution_count']} | v0.2 新增独立来源 {summary['v0_2_independent_source_identity_count']} + 既有力学独立来源 {summary['local_backlog_independent_source_identity_count']} + v0.1 冻结基线 4 |",
+        f"| Gold参考来源分层 | E={summary['source_gold_layer_counts'].get('Gold-E', 0)} / C={summary['source_gold_layer_counts'].get('Gold-C', 0)} / V={summary['source_gold_layer_counts'].get('Gold-V', 0)} / 混合={summary['source_gold_layer_counts'].get('Gold-E+Gold-C', 0)} | 分层表示证据来源，不表示等权；实验、计算和虚拟候选不再混成一种真值 |",
+        f"| Gold来源准入状态 | 正式参考={summary['source_gold_admission_status_counts'].get('admitted_reference', 0)} / 条件参考={summary['source_gold_admission_status_counts'].get('conditional_reference', 0)} / 阻断={summary['source_gold_admission_status_counts'].get('blocked', 0)} | 参考准入与训练权重独立；Gold-V可准入但实验性质监督权重仍为0 |",
         f"| 逐记录清单行 | {summary['manifest_row_count']:,} | 含来源聚合、逐试样、逐运行、逐曲线、逐标量和证据组；不是单一统计分母 |",
         f"| 核心校准曲线/已审计点行 | {summary['strict_core_calibration_curve_count']} / {summary['strict_core_calibration_curve_point_row_count']:,} | 新增三源217条/913,608点行 + v0.1 Eom 16条/21,489点行；完整点对上限≤935,095，Eom试样链未闭合 |",
         f"| 严格核心键控试样/曲线/已审计点行 | {summary['strict_core_keyed_specimen_count']} / {summary['strict_core_keyed_curve_count']} / {summary['strict_core_keyed_curve_point_row_count']:,} | DRUM主核心148 + 低天花板28 + QUB 41；完整点对上限≤913,606 |",
@@ -1344,12 +1585,13 @@ def _write_report(
         "- `仅验证`：只作外部验证、表示审计或来源证据，训练上限为 0。",
         "- `隔离`：重复、冲突、单位/许可/输出缺失或访问受阻；训练上限为 0。",
         "- `curve_count_candidate/scalar_count_candidate` 是科学候选数，不是模型就绪数；所有 `current_weight_materialized=false`。",
+        "- `gold_layer` 区分 Gold-E 实验参考、Gold-C 计算参考和 Gold-V 虚拟候选；`gold_admission_status` 与训练权重独立，零训练权重不自动等于不准入参考集合。",
         "- `point_count`、模拟帧、数值单元格和 PDF 页数绝不增加独立材料、配方、批次或试样数。",
         "",
         "## 3. 来源级总账",
         "",
-        "| 来源范围 | 来源范围键 / 引用键 / DOI或稳定标识 | 任务/角色 | 材料/配方 | 试样/运行 | 曲线（观测/候选） | 标量（观测/候选） | 点/帧 | 状态 | 上限 |",
-        "|---|---|---|---:|---:|---:|---:|---:|---|---:|",
+        "| 来源范围 | 来源范围键 / 引用键 / DOI或稳定标识 | 任务/角色 | Gold层/准入 | 材料/配方 | 试样/运行 | 曲线（观测/候选） | 标量（观测/候选） | 点/帧 | 状态 | 上限 |",
+        "|---|---|---|---|---:|---:|---:|---:|---:|---|---:|",
     ]
     for row in ledger:
         material_formula = f"{_format_int(row['material_count'])}/{_format_int(row['formulation_count'])}"
@@ -1361,7 +1603,7 @@ def _write_report(
             f"`{row['source_scope_id']}`<br>{citation_keys}<br>{row['canonical_identifier']}"
         )
         lines.append(
-            f"| `{row['source_directory']}` | {source_reference} | {row['task']} / {row['scientific_role']} | {material_formula} | {specimen_run} | {curves} | {scalars} | {_format_int(row['point_count_observed'])} | {row['quality_status']} | {float(row['weight_ceiling']):.2f} |"
+            f"| `{row['source_directory']}` | {source_reference} | {row['task']} / {row['scientific_role']} | {row['gold_layer']} / {row['gold_admission_status']} | {material_formula} | {specimen_run} | {curves} | {scalars} | {_format_int(row['point_count_observed'])} | {row['quality_status']} | {float(row['weight_ceiling']):.2f} |"
         )
 
     lines.extend(
@@ -1427,18 +1669,32 @@ def main() -> None:
     profile_config = _read_yaml(PROFILE_PATH)
     scope_config = _read_yaml(SCOPE_PATH)
     profiles = profile_config["profiles"]
+    local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
+    all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 46:
-        raise AssertionError(f"v0.2来源画像必须覆盖46个目录，当前为{len(profiles)}")
+    if len(profiles) != 52:
+        raise AssertionError(f"v0.2来源画像必须覆盖52个目录，当前为{len(profiles)}")
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
         raise AssertionError(
             f"来源画像与目录差异: missing={sorted(actual_directories - configured_directories)}, extra={sorted(configured_directories - actual_directories)}"
         )
-    identities = _resolve_source_identities(scope_config, profiles, baseline_profiles)
-    ledger = _build_ledger(profiles, baseline_profiles, identities)
-    manifest = _build_manifest(profiles, baseline_profiles, identities, ledger)
+    if len(local_backlog_profiles) != 4:
+        raise AssertionError(f"已审计既有力学来源画像必须覆盖4个目录，当前为{len(local_backlog_profiles)}")
+    backlog_directories = {profile["source_directory"] for profile in local_backlog_profiles}
+    if len(backlog_directories) != len(local_backlog_profiles):
+        raise AssertionError("已审计既有力学来源目录名重复")
+    missing_backlog = [
+        str(_profile_base(profile))
+        for profile in local_backlog_profiles
+        if not _profile_base(profile).is_dir()
+    ]
+    if missing_backlog:
+        raise AssertionError(f"已审计既有力学来源目录不存在: {missing_backlog}")
+    identities = _resolve_source_identities(scope_config, all_profiles, baseline_profiles)
+    ledger = _build_ledger(all_profiles, baseline_profiles, identities)
+    manifest = _build_manifest(all_profiles, baseline_profiles, identities, ledger)
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
         ledger,
@@ -1446,13 +1702,15 @@ def main() -> None:
         profile_config["audit_as_of_utc"],
         input_fingerprint_sha256,
         len(input_fingerprints),
+        configured_directories,
+        backlog_directories,
     )
     _validate(ledger, manifest, summary)
     _write_csv(OUTPUT_LEDGER, LEDGER_COLUMNS, ledger)
     _write_csv(OUTPUT_MANIFEST, MANIFEST_COLUMNS, manifest)
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.0",
+        "artifact_version": "trainable-inventory-v0.2.3",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],

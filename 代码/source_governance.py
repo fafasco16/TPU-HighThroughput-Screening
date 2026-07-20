@@ -185,6 +185,7 @@ _RELATION_TYPES = {
 }
 _SOURCE_FAMILY_TYPES = {
     "independent_experiment",
+    "independent_computational_study",
     "companion_materials",
     "repository_mirror",
     "parent_dataset",

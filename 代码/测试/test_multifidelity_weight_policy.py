@@ -6,6 +6,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 POLICY_PATH = ROOT / "配置" / "v0.2多保真准入与权重策略.yaml"
 SOURCE_SCOPE_PATH = ROOT / "配置" / "v0.2来源范围.yaml"
+ENUM_PATH = ROOT / "配置" / "结构定义" / "v0.2枚举.yaml"
 
 
 def _load(path: Path) -> dict:
@@ -15,7 +16,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
-    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.9"
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.12"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -111,6 +112,10 @@ def test_simulation_frames_do_not_outvote_unique_experimental_or_computational_u
     assert aggregation["trajectory_frames_change_resolution_not_total_weight"] is True
     assert aggregation["multiple_seeds_increase_precision_not_chemical_coverage"] is True
     assert aggregation["experimental_calibration_required_for_primary_computational_use"] is True
+    assert aggregation["experimental_calibration_required_for_gold_c_reference_admission"] is False
+    assert "candidate_rescoring" in aggregation[
+        "uncalibrated_reproducible_simulation_allowed_uses"
+    ]
     fields = aggregation["minimum_reproducibility_fields_by_method"]
     assert "random_seed_if_stochastic" in fields["md_or_aimd"]
     assert "random_seed_if_stochastic" not in fields["dft"]
@@ -118,6 +123,30 @@ def test_simulation_frames_do_not_outvote_unique_experimental_or_computational_u
     assert bands["md_or_aimd_validated"]["maximum_weight"] < bands[
         "experimental_core_raw"
     ]["maximum_weight"]
+
+
+def test_gold_reference_admission_includes_reliable_computational_and_virtual_data():
+    policy = _load(POLICY_PATH)
+    canonical_origins = set(_load(ENUM_PATH)["enums"]["origin_kind"])
+    gold = policy["gold_layer_admission"]
+
+    assert gold["Gold-C"]["experimental_mapping_required_for_reference_admission"] is False
+    assert {"dft", "md", "finite_element"} <= set(gold["Gold-C"]["admitted_origins"])
+    assert "low_fidelity_label" in gold["Gold-C"]["allowed_without_experimental_mapping"]
+    assert gold["Gold-V"]["experimental_label_required_for_reference_admission"] is False
+    assert "ml_prediction" in gold["Gold-V"]["admitted_origins"]
+    assert gold["Gold-V"]["direct_experimental_property_supervision_weight"] == 0.0
+    assert "active_learning" in gold["Gold-V"]["allowed_uses"]
+    assert set(gold["Gold-C"]["admitted_origins"]) <= canonical_origins
+    assert set(gold["Gold-V"]["admitted_origins"]) <= canonical_origins
+    assert "physics_surrogate" not in gold["Gold-C"]["admitted_origins"]
+
+    bands = {row["policy_key"]: row for row in policy["default_weight_bands"]}
+    unmapped_md = bands["md_or_aimd_unmapped_reference"]
+    assert 0.0 < unmapped_md["minimum_weight"] <= unmapped_md["maximum_weight"] <= 0.20
+    assert policy["future_weight_materialization"]["factors"]["q_mapping"][
+        "simulation_candidate_exact_mapping"
+    ] > 0.0
 
 
 def test_valid_derived_qoi_is_usable_without_becoming_an_independent_specimen():
@@ -301,6 +330,16 @@ def test_second_batch_source_overrides_preserve_scientific_weight_boundaries():
     }
     assert expected_scopes <= declared
     assert expected_scopes <= set(by_scope)
+
+    fisher = by_scope["scope_fisher_2020_shape_memory_pu_dataset"]
+    assert fisher["base_weight_ceiling"] == 0.35
+    assert fisher["task_specific_ceilings"]["copied_tail_contamination_point"] == 0.0
+    assert fisher["split_group_keys"] == ["dataset_doi", "formulation"]
+
+    lignin = by_scope["scope_zenodo_3631551_lignin_tpu_dataset"]
+    assert lignin["base_weight_ceiling"] == 0.20
+    assert lignin["task_specific_ceilings"]["precursor_fiber_mechanical_scalar"] == 0.15
+    assert lignin["task_specific_ceilings"]["missing_sample_label_or_exact_duplicate_curve"] == 0.0
 
     elastomer = by_scope["scope_zenodo14983287"]
     assert elastomer["base_weight_ceiling"] == 0.35

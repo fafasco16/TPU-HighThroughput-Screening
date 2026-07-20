@@ -200,9 +200,14 @@ def test_lifecycle_enums_and_asset_lifecycle_fields_are_exact():
     assert enums["origin_kind"] == [
         "experimental",
         "dft",
+        "aimd",
         "md",
         "coarse_grained_md",
+        "finite_element",
         "group_contribution",
+        "reaction_rule_generated",
+        "enumeration",
+        "model_generated",
         "ml_prediction",
     ]
     assert enums["reduction_level"] == [
@@ -566,7 +571,7 @@ def test_contract_semantic_hashes_are_deterministic_across_two_loads():
         "63bb1bcea8e5791e86368279956c1b0c30cc09da918a745da92fc1b31836433d"
     )
     assert first.document_hashes["enums"] == (
-        "02b27cb5ad2a1f7e59b1a1c263d00780299b534f6cbf0e6670333a050a67085c"
+        "d887e6f3347740f79ea26fbf7b42e0412f77086fde351189b03766ce60afc6c7"
     )
     assert first.document_hashes["rules"] == (
         "3e3859b683a14b8ff5d548f45b4cc067e08e906339ca2808c71d513c347db3d1"

@@ -61,6 +61,7 @@ enums:
     - withdrawn_version_of
   source_family_type:
     - independent_experiment
+    - independent_computational_study
     - companion_materials
     - repository_mirror
     - parent_dataset
@@ -99,9 +100,14 @@ enums:
   origin_kind:
     - experimental
     - dft
+    - aimd
     - md
     - coarse_grained_md
+    - finite_element
     - group_contribution
+    - reaction_rule_generated
+    - enumeration
+    - model_generated
     - ml_prediction
   reduction_level:
     - raw_point
