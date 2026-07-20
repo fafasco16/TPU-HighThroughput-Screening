@@ -216,3 +216,163 @@ def test_tracked_audit_scripts_have_no_machine_absolute_or_runtime_timestamp():
         assert "临时构建" not in text
         assert "datetime.now" not in text
         assert "Date.now(" not in text
+
+
+@pytest.mark.parametrize(
+    ("filename", "source_names"),
+    [
+        (
+            "新增开放数据核心与镜像.py",
+            ("QUB_生物基三重自修复TPU", "Mendeley_TPU95A_TPMS应变率力学"),
+        ),
+        (
+            "新增开放数据标准力学三源.py",
+            (
+                "MaterialsCloud_商用PU泡沫多轴断裂力学",
+                "ScienceDB_微孔PU动态力学",
+                "Texas_湿干单根电纺PU纤维力学",
+            ),
+        ),
+        (
+            "新增开放数据工作簿双源.py",
+            ("Mendeley_SLS_TPU工艺力学", "Figshare_热固PU原子经济升级回收"),
+        ),
+        (
+            "新增开放数据受限与专有格式两源.py",
+            ("Mendeley_热可逆超分子PU宽应变率", "Bath_多牌号PU泡沫多模态表征"),
+        ),
+    ],
+)
+def test_remaining_source_audit_scripts_are_fail_closed_and_atomic(
+    filename: str, source_names: tuple[str, ...]
+):
+    text = (AUDIT_DIR / filename).read_text(encoding="utf-8")
+
+    for source_name in source_names:
+        assert source_name in text
+    assert "OUTPUT_WHITELIST" in text
+    assert "tempfile.mkstemp" in text
+    assert "os.fsync" in text
+    assert "os.replace" in text
+    assert "datetime.now" not in text
+
+
+def test_sls_legacy_excel_reader_is_read_only_and_never_saves():
+    text = (AUDIT_DIR / "读取SLS旧版XLS.ps1").read_text(encoding="utf-8")
+
+    assert "ReadOnly" in text
+    assert "Workbooks.Open" in text
+    assert ".Save(" not in text
+    assert "SaveAs" not in text
+    assert "BitConverter" in text
+    assert "ToHexString" not in text
+
+
+def test_workbook_audit_uses_streaming_ooxml_and_authoritative_weight_caps():
+    text = (AUDIT_DIR / "新增开放数据工作簿双源.py").read_text(encoding="utf-8")
+
+    assert "zipfile.ZipFile" in text
+    assert "ElementTree.iterparse" in text
+    assert 'events=("start", "end")' in text
+    assert "parent.remove(element)" in text
+    assert "resident_rows != 0 or element_stack" in text
+    assert '"maximum_active_row_value_buffers": 1' in text
+    assert '"completed_row_elements_retained_after_parse": 0' in text
+    assert "maximum_buffered_sheet_rows" not in text
+    assert '"policy_authority": "multi-fidelity-admission-weight-v0.2.6"' in text
+    assert '"source_weight_ceiling": 0.35' in text
+    assert '"source_weight_ceiling": 0.25' in text
+    assert '"candidate_eligible_after_governance_materialization": True' in text
+    assert '"training_weight_materialized": False' in text
+    assert '"split_materialized": False' in text
+    assert '"split_group_key": "dataset_doi|feedstock"' in text
+    assert '"split_group_key": "dataset_doi|feedstock_id"' not in text
+    assert '"admit": True' not in text
+    assert "0.20-0.30" not in text
+
+
+def test_restricted_and_proprietary_sources_remain_current_zero():
+    text = (AUDIT_DIR / "新增开放数据受限与专有格式两源.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert '"current_weight_ceiling": 0.0' in text
+    assert '"rights_evidence_state": "evidence_missing"' in text
+    assert "requests." not in text
+    assert "urlopen(" not in text
+
+
+def test_standard_mechanics_audit_fails_closed_if_excluded_sffe_appears():
+    text = (AUDIT_DIR / "新增开放数据标准力学三源.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert 'set(official_entries) != {"PUF.zip", "README.txt", "SFFE.zip"}' in text
+    assert 'local_root_archives != {"PUF.zip"}' in text
+    assert 'base / "SFFE.zip"' in text
+    assert "必须先建立独立范围和审计规则" in text
+
+
+def test_audit_readme_declares_complete_twenty_three_source_coverage():
+    text = (AUDIT_DIR / "README.md").read_text(encoding="utf-8")
+
+    assert "全部 23 个来源" in text
+    for filename in (
+        "新增开放数据核心与镜像.py",
+        "新增开放数据标准力学三源.py",
+        "新增开放数据工作簿双源.py",
+        "新增开放数据受限与专有格式两源.py",
+        "读取SLS旧版XLS.ps1",
+    ):
+        assert filename in text
+        assert (AUDIT_DIR / filename).is_file()
+
+
+def test_restricted_audit_atomic_write_is_allowlisted_and_reproducible(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    module = _extract_definitions(
+        "新增开放数据受限与专有格式两源.py",
+        {"AuditBlocked", "assert_output_allowed", "atomic_write"},
+    )
+    target = tmp_path / "内容审计摘要.json"
+    monkeypatch.setitem(module, "OUTPUT_WHITELIST", frozenset({target}))
+
+    module["atomic_write"](target, b"stable\n")
+    first = target.read_bytes()
+    module["atomic_write"](target, b"stable\n")
+
+    assert first == target.read_bytes() == b"stable\n"
+    with pytest.raises(module["AuditBlocked"], match="白名单"):
+        module["atomic_write"](tmp_path / "outside.json", b"blocked")
+    assert not list(tmp_path.glob("*.audit.tmp"))
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "新增开放数据核心与镜像.py",
+        "新增开放数据标准力学三源.py",
+        "新增开放数据工作簿双源.py",
+    ],
+)
+def test_remaining_audit_atomic_replace_failure_preserves_previous_output(
+    filename: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    module = _extract_definitions(
+        filename,
+        {"AuditBlocked", "assert_output_allowed", "atomic_write"},
+    )
+    target = tmp_path / "内容审计摘要.json"
+    target.write_bytes(b"previous")
+    monkeypatch.setitem(module, "OUTPUT_WHITELIST", frozenset({target}))
+
+    def fail_replace(_source: Path, _target: Path) -> None:
+        raise OSError("injected replace failure")
+
+    monkeypatch.setattr(os, "replace", fail_replace)
+    with pytest.raises(OSError, match="injected replace failure"):
+        module["atomic_write"](target, b"new")
+
+    assert target.read_bytes() == b"previous"
+    assert not list(tmp_path.glob("*.audit.tmp"))
