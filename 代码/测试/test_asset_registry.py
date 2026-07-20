@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-import io
 import os
-import shutil
 import stat
 import unicodedata
-from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -806,6 +803,84 @@ def test_new_source_audits_metadata_and_raw_observations_are_not_conflated():
         ) == frozen
 
 
+def test_fourth_batch_experiment_and_pdf_evidence_are_fail_closed():
+    config = load_asset_rules(PRODUCTION_RULES)
+
+    mendeley_audit = classify_path(
+        "外部数据/新增开放数据/Mendeley_TPU压缩打印DOE/曲线审计清单.tsv",
+        config,
+    )
+    assert (
+        mendeley_audit.artifact_role,
+        mendeley_audit.data_stage,
+        mendeley_audit.parse_status,
+        mendeley_audit.model_readiness_status,
+    ) == ("documentation", "derived", "parsed", "ineligible")
+
+    mendeley_archive = classify_path(
+        "外部数据/新增开放数据/Mendeley_TPU压缩打印DOE/7zcd9bmmg5-1.zip",
+        config,
+    )
+    assert (
+        mendeley_archive.artifact_role,
+        mendeley_archive.data_stage,
+        mendeley_archive.parse_status,
+        mendeley_archive.model_readiness_status,
+        mendeley_archive.review_required,
+    ) == ("primary_data", "raw", "parsed", "blocked", True)
+
+    pdfs = {
+        "ACS_Figshare_TPU退火硬段聚集": "ma5c00142_si_001.pdf",
+        "ACS_Figshare_双相演化聚氨酯": "tz5c00732_si_001.pdf",
+        "ACS_Figshare_PLA立构复合TPU": "ma5c03502_si_001.pdf",
+        "ACS_Figshare_呋喃高强聚氨酯": "ma5c03627_si_001.pdf",
+        "ACS_Figshare_聚酰亚胺回收链扩剂PU": "ap5c04872_si_001.pdf",
+        "ACS_Figshare_二氧化碳共聚酯聚氨酯": "mz6c00123_si_001.pdf",
+        "ACS_Figshare_聚碳酸酯大分子二醇TPU": "ap6c00646_si_001.pdf",
+        "ACS_Figshare_氢键纳米结构TPU": "ma6c00352_si_001.pdf",
+    }
+    for directory, filename in pdfs.items():
+        metadata = classify_path(
+            f"外部数据/新增开放数据/{directory}/官方API元数据.json",
+            config,
+        )
+        audit = classify_path(
+            f"外部数据/新增开放数据/{directory}/曲线审计清单.tsv",
+            config,
+        )
+        pdf = classify_path(
+            f"外部数据/新增开放数据/{directory}/{filename}",
+            config,
+        )
+        assert (
+            metadata.artifact_role,
+            metadata.data_stage,
+            metadata.model_readiness_status,
+            metadata.review_required,
+        ) == ("documentation", "metadata_only", "ineligible", True)
+        assert (
+            audit.artifact_role,
+            audit.data_stage,
+            audit.model_readiness_status,
+            audit.review_required,
+        ) == ("documentation", "derived", "ineligible", True)
+        assert (
+            pdf.artifact_role,
+            pdf.data_stage,
+            pdf.parse_status,
+            pdf.scientific_admission_status,
+            pdf.model_readiness_status,
+            pdf.review_required,
+        ) == (
+            "supplementary_information",
+            "reference_only",
+            "partially_parsed",
+            "pending",
+            "blocked",
+            True,
+        )
+
+
 def test_zero_byte_castor_table_is_machine_blocked_until_verified_redownload():
     selected = classify_path(
         "外部数据/新增开放数据/Figshare_蓖麻油脂肪族PU化学性能/Table_1.xls",
@@ -924,3 +999,17 @@ def test_real_disk_inventory_is_completely_and_unambiguously_classified_read_onl
     )
     assert roles["excluded_non_domain"] == result.audit["excluded_count"]
     assert result.audit["duplicate_group_count"] > 0
+
+
+def test_fdm_scalar_audit_output_is_governed_as_derived_documentation():
+    config = load_asset_rules(PRODUCTION_RULES)
+    selected = classify_path(
+        "外部数据/新增开放数据/Mendeley_FDM_TPU晶格与基材力学/标量审计清单.tsv",
+        config,
+    )
+
+    assert selected.rule_id == "third_batch_mendeley_fdm_tpu_lattice_audit"
+    assert selected.artifact_role == "documentation"
+    assert selected.data_stage == "derived"
+    assert selected.parse_status == "parsed"
+    assert selected.model_readiness_status == "ineligible"

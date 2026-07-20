@@ -114,6 +114,15 @@ def test_real_configuration_covers_required_scopes_and_all_ledger_citations():
         "scope_mendeley_byjbmymyhh_v5",
         "scope_figshare23635998_v1",
         "scope_nature2026_source_data",
+        "scope_mendeley_7zcd9bmmg5_v1",
+        "scope_acs_figshare_28906446_v1",
+        "scope_acs_figshare_29074233_v1",
+        "scope_acs_figshare_31333274_v1",
+        "scope_acs_figshare_31429142_v1",
+        "scope_acs_figshare_31614502_v1",
+        "scope_acs_figshare_31989433_v1",
+        "scope_acs_figshare_32256977_v1",
+        "scope_acs_figshare_32567339_v1",
     }
 
     assert required <= scope_keys

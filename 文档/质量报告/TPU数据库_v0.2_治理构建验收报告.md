@@ -6,13 +6,13 @@
 
 ## 1. 验收结论
 
-在不修改 `01_原始数据`、不覆盖 v0.1 冻结快照、不写入 `02_暂存数据` 至 `06_审核导出` 的条件下，分别在 `临时构建/治理构建A` 和 `临时构建/治理构建B` 执行了两次真实全量构建。两次构建均生成 11 个声明产物、9 张治理表，逐产物 SHA-256 完全一致，表级与快照级逻辑哈希完全一致。
+在不修改 `01_原始数据`、不覆盖 v0.1 冻结快照、不写入 `02_暂存数据` 至 `06_审核导出` 的条件下，分别在 `临时构建/本轮收口A` 和 `临时构建/本轮收口B` 执行了两次真实全量构建。两次构建均生成 11 个声明产物、9 张治理表，逐产物 SHA-256 完全一致，表级与快照级逻辑哈希完全一致。
 
-- 输入资产：1,607
-- 已登记：1,588
-- 有证据排除：19
+- 输入资产：8,412
+- 已登记：8,358
+- 有证据排除：54
 - 未分类、歧义、读取失败、未知来源范围、范围不一致、缺失状态：均为 0
-- 共同快照逻辑哈希：`6002262b0a1db595798690a86a2458b80666ae73462d9bd8dd1080072bed1af8`
+- 共同快照逻辑哈希：`b380fb0239d6907b27bcbc18d1cf54e0cb5aef82361d9f7f3381cd190870e911`
 - 结构重叠画像逻辑哈希：`ad6f495c3f07bb85923333f53bfd789404a3c2dc2ea38ce16ec5300c95a605cc`
 - 训练/验证拆分：未创建
 - 训练权重：未设置
@@ -24,37 +24,37 @@
 
 | 资产角色 | 文件数 |
 |---|---:|
-| `code` | 117 |
-| `computed_property_output` | 1 |
+| `code` | 121 |
+| `computed_property_output` | 61 |
 | `derived_duplicate` | 1,196 |
-| `documentation` | 13 |
-| `excluded_non_domain` | 19 |
-| `mirror_duplicate` | 2 |
-| `model_artifact` | 1 |
+| `documentation` | 293 |
+| `excluded_non_domain` | 54 |
+| `mirror_duplicate` | 37 |
+| `model_artifact` | 2 |
 | `model_output` | 61 |
-| `primary_data` | 49 |
-| `restricted_reference` | 2 |
-| `simulation_input` | 112 |
-| `simulation_output` | 20 |
+| `primary_data` | 6,164 |
+| `restricted_reference` | 13 |
+| `simulation_input` | 126 |
+| `simulation_output` | 35 |
 | `subset_view` | 1 |
-| `supplementary_information` | 13 |
-| **合计** | **1,607** |
+| `supplementary_information` | 248 |
+| **合计** | **8,412** |
 
-资产媒体类型由项目内冻结映射决定，不再依赖 Windows 注册表或系统 `mimetypes`。现有 1,607 条资产的身份、角色和媒体类型联合哈希为 `daf895ecb2694b047c13c64d252567ef5de67f56f7cd059b8245580bafb6c89a`。
+资产媒体类型由项目内冻结映射决定，不再依赖 Windows 注册表或系统 `mimetypes`。现有 8,412 条资产登记表逻辑哈希为 `24a7e4e52bdab53994a09ce40242ef15ad65fdf603e87f2656d47ad501e29e73`。
 
 ## 3. 来源、引用与权利候选
 
 | 治理表 | 行数 |
 |---|---:|
-| `source` | 84 |
-| `source_scope` | 1,742 |
-| `source_scope_relation` | 101 |
-| `source_locator` | 1,607 |
-| `citation` | 52 |
-| `citation_assignment` | 151 |
-| `rights_action_candidate` | 13,936 |
+| `source` | 174 |
+| `source_scope` | 8,617 |
+| `source_scope_relation` | 195 |
+| `source_locator` | 8,412 |
+| `citation` | 119 |
+| `citation_assignment` | 319 |
+| `rights_action_candidate` | 68,936 |
 
-来源治理逻辑哈希为 `437fee7ed84ff22839c73b18f350d9b3c28ff90bbb05892429f31cf7418d0e2b`。52 条 citation 均有纯文本参考文献、实名作者、题名、年份、DOI/规范标识和 CSL；7 条原台账使用 `et al.` 的作者表保持 `pending`，未伪造缺失作者。`rights_action_candidate` 是 staging 候选，不是正式 `rights_action_decision`；当前没有任何 v0.2 `allow` 权利裁决。
+来源治理逻辑哈希为 `9072b39c4a727312e2182387fba812f8821268fdedee8c11d049a702d044c52f`。119 条 citation 均保留机器可读引用信息；作者或许可证据不完整的记录保持 `pending`，未伪造缺失信息。`rights_action_candidate` 是 staging 候选，不是正式 `rights_action_decision`；当前没有任何 v0.2 `allow` 权利裁决。
 
 ## 4. 计算数据实盘画像
 
@@ -100,22 +100,22 @@ PolyOmics 的 95,335 个 UUID 中有 13,016 个重复 exact-structure 组和 16,
 | 产物 | A/B 共同 SHA-256 |
 |---|---|
 | `TPU数据库_v0.2_计算数据准入报告.md` | `a32c3f3fcc030db690215b2f680d1a9b5e61bfa74926a97ca2b9a32ecdd5fade` |
-| `TPU数据库_v0.2_资产登记审计.json` | `1fd4df2041df5c040841a11344728ffb555907fcd422a40bc9fbbb8035194f2c` |
-| `v0.2全量资产登记.csv` | `d8f5bfc8b6b8d6c36ac376f1433323c7c68fc9357bfd161d495969ef82497384` |
-| `v0.2引用.csv` | `3caed9820d6d8963e9d185a2f91fd971165e87d0ab02a6bf826442d45d580fde` |
-| `v0.2引用分配.csv` | `f8cc56984ff8b77d825a568ac3bb16eabe31461191b7aa33a21d52bb19579eb2` |
-| `v0.2权利动作候选.csv` | `d8f211aa676891edad77d45f7d2f89a1da7f8ec5b8660d82ff3d7df92a765865` |
-| `v0.2来源.csv` | `e49df33ab9dd9068d5f2dfbc06b01f5e855136a4fa4784b1ed2585b339f934c4` |
-| `v0.2来源定位.csv` | `99bf06200b56e3fd421d8e10cf320c8bbf8110d17c279e3448280e1668a199ba` |
-| `v0.2来源范围.csv` | `ff4d583d08b41bd32e68405138327141ab8850c48c949609e8a732f6c0c7ad97` |
-| `v0.2来源范围关系.csv` | `87e3670d8b5f76261df429b7e5f60c6b2d5daf4b7926d96b322693` |
-| `v0.2精确重复组.csv` | `5486e4d661fade9a8e1f3d770296652bb5f0c3d5fb0781fb2516e030423338eb` |
+| `TPU数据库_v0.2_资产登记审计.json` | `7dd7560275a3f2cd09a0118376ad613e89abc5087e44cc00fc5b61e805ec9413` |
+| `v0.2全量资产登记.csv` | `882f1eb51c97d0553bc9ad6abcc0beda3db11c4c542489067cc199c7a3c2b8c9` |
+| `v0.2引用.csv` | `7e71c49d601157d4c5041f241c03dbf9343496f04cccca5c0ec5dd65faec89b9` |
+| `v0.2引用分配.csv` | `5b3da2ae7e358e60b55cab9dfe7dd8b6dcbbd9d27fe44d0392fab0863d01a7c2` |
+| `v0.2权利动作候选.csv` | `ce4924afb1511cea98d130d08d92246b5f48add098c5f995b16987acd7f34a45` |
+| `v0.2来源.csv` | `0fcbfd064d3711172d7d49db5385d8e217061da53cf595f192d8f3b9a04d8527` |
+| `v0.2来源定位.csv` | `aaf170ba495a269f09f0565ee852e2dafe93007f2df5af2fcf76731132a14501` |
+| `v0.2来源范围.csv` | `028953f13d535ea33d15f7cb4545941a530a9ac8bb8ec9f0b1870e348e3ef6d0` |
+| `v0.2来源范围关系.csv` | `5cc38bbeb3d3111d5faf2f21761c9ed3af49b29fb728b2881fb639bf2f95d476` |
+| `v0.2精确重复组.csv` | `e7a8297e9a3dfe3b8d685bbf4e1a98e8e690a229b285593160953e0d4c5aec41` |
 
-合同语义哈希：schema `63bb1bcea8e5791e86368279956c1b0c30cc09da918a745da92fc1b31836433d`；enums `35c236c8a45decf26e61cd79a2e97bd53b543141d96619a836f05a11b8508610`；rules `3e3859b683a14b8ff5d548f45b4cc067e08e906339ca2808c71d513c347db3d1`。
+合同语义哈希：schema `63bb1bcea8e5791e86368279956c1b0c30cc09da918a745da92fc1b31836433d`；enums `02b27cb5ad2a1f7e59b1a1c263d00780299b534f6cbf0e6670333a050a67085c`；rules `3e3859b683a14b8ff5d548f45b4cc067e08e906339ca2808c71d513c347db3d1`。
 
 ## 8. 测试与尚未通过的门
 
-全仓测试为 625 项全部通过；statement + branch 综合覆盖率为 92.11%，高于 90% 门槛。冻结前仍必须完成：
+本轮全仓回归在总账与下载安全修复后重新执行，698 项全部通过。冻结前仍必须完成：
 
 1. 将当前 9 张构建表扩展为合同要求的 31 表完整物化，并在 DuckDB 中验证全部 PK、UK、FK、CHECK 和条件规则；
 2. 将 `rights_action_candidate` 解析为带证据闭包的正式动作决定；未知许可继续 fail closed；

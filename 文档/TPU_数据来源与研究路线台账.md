@@ -15,7 +15,7 @@
 
 ## 2. 当前数据资产总览
 
-2026-07-19 完成扩充前资产盘点，2026-07-20 完成计算资产科学语义复算与新增开放数据审计。扩充前基线为 1,790 个文件、722,184,970 字节；其中嵌套 `.git/**` 为 183 个文件、79,921,870 字节，排除后为 1,607 个文件、642,263,100 字节。扩充后的当前实时盘点为 8,394 个文件、2,636,609,911 字节；其中嵌套 `.git/**` 为 212 个文件、84,032,925 字节，按 v0.2 发现规则排除后为 8,182 个文件、2,552,576,986 字节。新增开放数据层单独包含 23 个来源目录、6,604 个文件、1,914,424,941 字节。v0.1 清单仍冻结为 1,606 行、642,262,263 字节：它是历史快照，不能被当前动态盘点覆盖。上述数字必须连同扫描范围和时间报告；文件资产量不等于独立 TPU 配方数，真正可用于化学—性能主模型的高置信样品远少于文件数。扩充前口径见[全量资产预审报告](质量报告/TPU数据库_v0.2_全量资产预审报告.md)，新增层逐来源复算见[新增开放数据准入报告](质量报告/TPU数据库_v0.2_新增开放数据准入报告.md)。
+2026-07-19 完成扩充前资产盘点，2026-07-20 完成计算资产科学语义复算与多批新增开放数据审计。扩充前基线为 1,790 个文件、722,184,970 字节；其中嵌套 `.git/**` 为 183 个文件、79,921,870 字节，排除后为 1,607 个文件、642,263,100 字节。早期 v0.2 扩充快照为 8,394 个文件、2,636,609,911 字节；其中嵌套 `.git/**` 为 212 个文件、84,032,925 字节，按发现规则排除后为 8,182 个文件、2,552,576,986 字节；当时新增开放数据层为 23 个来源目录、6,604 个文件、1,914,424,941 字节。这些数字现在只作为历史验收口径，不能再标作“当前实时盘点”。第四批落地后，新增开放数据层机械盘点为 **46 个一级目录**；`PCL_GitLFS轨迹补采` 与 `Zenodo_PCL软段构象粗粒化MD` 属同一 DOI/固定仓库树，因此对应 **45 个独立来源身份**。本轮动态审计输出和同源载荷补采结束后，必须重新冻结全量文件数、字节数和逻辑哈希。v0.1 清单仍冻结为 1,606 行、642,262,263 字节：它是历史快照，不能被当前动态盘点覆盖。所有数字必须连同扫描范围和时间报告；文件资产量不等于独立 TPU 配方数，真正可用于化学—性能主模型的高置信样品远少于文件数。扩充前口径见[全量资产预审报告](质量报告/TPU数据库_v0.2_全量资产预审报告.md)，新增层逐来源复算见[新增开放数据准入报告](质量报告/TPU数据库_v0.2_新增开放数据准入报告.md)、[PCL Git LFS 十轨迹补采质量报告](质量报告/TPU数据库_v0.2_PCL_GitLFS十轨迹补采质量报告.md)和[第四批九源质量报告](质量报告/TPU数据库_v0.2_第四批九源质量报告.md)。
 
 ### 2.1 工作区原有文件
 
@@ -80,6 +80,30 @@ PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算�
 2026-07-20 完成的新一轮扩充不再用“文件行数”代表样本数，而是分别登记研究、配方、合成批次、物理试样、曲线/采集、曲线点及计算体系—协议—种子。已落地的高价值增量包括：两套 DRUM 可回收 TPUU 数据（合计 30 个规范化材料代码、186 个试样键和 186 条力学/DMTA 曲线）、QUB 生物基自修复 TPU（4 个配方、41 个本体单调拉伸试样）、SLS 商业 TPU（75 个试验序列、350 个试样）、DFT 封端剂（24 个唯一科学体系、158 个正常终止输出）、硬段量化结构、TPU/SWCNT 热电复合、泡沫/纤维/器件及循环力学迁移数据。新增目录中的镜像、压缩包—解包副本、AppleDouble、公共仪器模板、模拟帧和同一试样循环均不增加独立化学样本数。
 
 本轮正式允许 DFT、AIMD、经典 MD、计算描述符和虚拟候选进入多保真数据库，但要求输出、方法、体系、协议、收敛和实验映射闭合。未来权重按证据质量、目标一致性、映射强度和独立性乘法衰减；核心 TPU/TPUU 实验为主标定，计算数据只作机理描述符或校准辅助，泡沫、热固 PU、复合材料、打印件和器件按任务迁移或外部验证。完整逐来源计数、限制、硬零清单和推荐路线见[《TPU 数据库 v0.2 新增开放数据准入报告》](质量报告/TPU数据库_v0.2_新增开放数据准入报告.md)，机器规则见[`v0.2多保真准入与权重策略.yaml`](../配置/v0.2多保真准入与权重策略.yaml)。
+
+### 2.3.2 第四批九源：打印压缩候选监督与 ACS 证据层
+
+第四批固定落地 1 个 Mendeley 实验数据集和 8 个 ACS Figshare 支持信息，共 9 个第三方科学原件、17,664,466 字节；官方元数据、官方文件清单和本地审计输出另行登记，不重复计作观测。详细哈希、计数、异常和人工抽取顺序见[《TPU 数据库 v0.2 第四批九源质量报告》](质量报告/TPU数据库_v0.2_第四批九源质量报告.md)。
+
+| 本地来源 | 固定身份 | 已核验内容 | 当前科学用途 | 准入边界 | 引用 |
+|---|---|---|---|---|---|
+| `Mendeley_TPU压缩打印DOE` | Mendeley v1，DOI `10.17632/7zcd9bmmg5.1` | 184 个物理试样、46 个相关试样家族；1,372 个完整直接响应值、1,292 个有效内部派生值；4 个直接缺失及其 4 个缓存伪零已隔离 | 打印工艺/几何—压缩响应候选监督 | 商品牌号化学与硬度缺失；必须按 `specimen_family_id` 组级拆分，训练权重尚未物化，MPX不反序列化 | [103] |
+| `ACS_Figshare_TPU退火硬段聚集` | Figshare 28906446 v1；SI/论文 DOI `10.1021/acs.macromol.5c00142.s001` / `10.1021/acs.macromol.5c00142` | 3 个退火热学、SAXS、AFM证据组 | 加工后处理—硬段形貌—性能机制 | PDF人工双录前仅证据层 | [104], [105] |
+| `ACS_Figshare_双相演化聚氨酯` | Figshare 29074233 v1；`10.1021/acsmaterialslett.5c00732.s001` / `10.1021/acsmaterialslett.5c00732` | 4 个配方、分子量、氢键和机械图证据组 | 双相演化与强韧机制 | 无原始曲线，图线需坐标化和双人复核 | [106], [107] |
+| `ACS_Figshare_PLA立构复合TPU` | Figshare 31333274 v1；`10.1021/acs.macromol.5c03502.s001` / `10.1021/acs.macromol.5c03502` | 5 个PCL/三嵌段/分子量/热学/机械证据组 | 高模量—弹性与生物基路线 | L/D身份、跨页表头和机械图未规范化 | [108], [109] |
+| `ACS_Figshare_呋喃高强聚氨酯` | Figshare 31429142 v1；`10.1021/acs.macromol.5c03627.s001` / `10.1021/acs.macromol.5c03627` | 5 个配方、耗散、恢复、残余应变和拉伸图证据组 | 后动态交联、强韧与功能升级 | PDF合并单元格会造成文本移位；摘要端点不能替代重复曲线 | [110], [111] |
+| `ACS_Figshare_聚酰亚胺回收链扩剂PU` | Figshare 31614502 v1；`10.1021/acsapm.5c04872.s001` / `10.1021/acsapm.5c04872` | 5 个链扩剂工艺、配方、力学和图线证据组 | 回收链扩剂与循环利用候选路线 | Figshare自动年份1753错误；正式引用按Crossref 2026；二手文献表不作样本 | [112], [113] |
+| `ACS_Figshare_二氧化碳共聚酯聚氨酯` | Figshare 31989433 v1；`10.1021/acsmacrolett.6c00123.s001` / `10.1021/acsmacrolett.6c00123` | 3 个共聚酯、拉伸图和合成协议证据组 | CO2基聚酯—热塑性PUU—回收路线 | 图线不是原始数据；人工双录前不形成标签 | [114], [115] |
+| `ACS_Figshare_聚碳酸酯大分子二醇TPU` | Figshare 32256977 v1；`10.1021/acsapm.6c00646.s001` / `10.1021/acsapm.6c00646` | 4 个进料筛选、重复合成、羟基和TPU性能图证据组 | 聚碳酸酯大分子二醇—TPU组成性能路线 | 多级表头、NMR/GPC脚注和重复编号需人工复核 | [116], [117] |
+| `ACS_Figshare_氢键纳米结构TPU` | Figshare 32567339 v1；`10.1021/acs.macromol.6c00352.s001` / `10.1021/acs.macromol.6c00352` | 4 个配方、分子量、力学和氢键证据组 | 氢键纳米结构—强度/韧性机制 | 破折号必须保留为缺失；多级表头未规范化 | [118], [119] |
+
+上述 8 个 ACS 来源合计 33 个证据组，全部为 `evidence_only_not_materialized`；没有任何材料级训练记录、训练拆分或训练权重。本轮另保留但未入选 4 个候选：31333277 仅为已入选 PLA 论文的伴随 MP4；31879167 无表且 TPU 只作吸湿复合体系中的一相；28445288 仅 5 页图像型 PDF、无直接表格且边际价值较低；32061510 为无表格、有效文本很少的 DOCX。它们只是“本轮未入选”，获得机器可读表、原始曲线或新任务需求后可重新评估。
+
+### 2.3.3 PCL Git LFS 十轨迹：同源模拟载荷补采
+
+`PCL_GitLFS轨迹补采` 固定到 GitHub 提交 `446ebadb9ba937d393b6cd7d727256c90e15f24e`、树 `51894a12d912275f37a23853a76dbc2f36e09584`，取得 Zenodo v1.0_2 归档内十个 Git LFS 指针对应的真实载荷。[99], [100] 目录共有 35 个文件、2,313,383,883 字节，其中 10 个 `trr.bz2` 为 2,313,207,356 字节；全部满足 OID、声明字节、本地字节和本地 SHA-256 一致，并通过 BZip2/TRR 全帧检查。解压后共 2,578,712,040 字节、10,569 帧，科学独立单位上限仍是 10 个模拟运行家族，不能把帧数解释为材料或配方数。详细身份、终止状态和 SHA-256 见[《PCL Git LFS 十轨迹补采质量报告》](质量报告/TPU数据库_v0.2_PCL_GitLFS十轨迹补采质量报告.md)。
+
+七条运行正常完成；三条分别在声明步数前终止、续跑超过声明步数后终止和第二次中断信号终止。当前只允许用于来源复现、协议核对和未来运行级聚合描述符设计，不进入训练、不建立拆分、不赋权。Zenodo 包记录 CC BY 4.0，但 GitHub 仓库元数据 `license = null` 且固定树无 `LICENSE/COPYING`；该许可证不得自动传递给从 Git LFS 端点取得的载荷，训练与再分发继续阻断。它与 `Zenodo_PCL软段构象粗粒化MD` 是同一 DOI、同一固定仓库树和同一模型家族的补充层，不增加独立来源身份。
 
 ### 2.4 TPU 数据库 v0.1 首次可复现构建
 
@@ -191,19 +215,19 @@ PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算�
 - 撤回前记录的目标文件为 `datasets.csv`（3,044,630 字节；MD5 `dc28ea5ce05566288cf7c0d97903f30e`）。旧直链仅作数据谱系记录，不再视为有效下载入口：  
   https://download.scidb.cn/download?fileId=2d895b01c4545e91048684e6b56d3f1b&path=/V1/datasets.csv&fileName=datasets.csv
 
-### 4.4 v0.2 在线/临时核验、尚未落地的来源队列
+### 4.4 v0.2 在线核验、已落地来源与后续队列
 
-下列来源已经核对 DOI、部分官方文件元数据和初始权利边界，但尚未计入本地数据资产。详细端点、核验时间、会话响应指纹和动作级保守结论见[新增来源在线核验记录](来源证据/2026-07-19-v0.2新增来源在线核验记录.md)。表中规模必须带 `count_evidence_type`：`publisher_claim`、`repository_metadata`、`temporary_file_audit` 与 `ingested_file_recount` 不得混写；只有最后一种可作为冻结数据库事实。
+下列来源包含已落地深审和仍在排队的候选。2026-07-20 落地的四源均已保存官方 API 元数据、固定文件清单、原始文件哈希和只读复算输出；详细审计见[第二批四源深审报告](质量报告/TPU数据库_v0.2_第二批四源深审报告.md)。其余候选的端点、核验时间、会话响应指纹和动作级保守结论见[新增来源在线核验记录](来源证据/2026-07-19-v0.2新增来源在线核验记录.md)。表中规模必须带 `count_evidence_type`：`publisher_claim`、`repository_metadata`、`temporary_file_audit` 与 `ingested_file_recount` 不得混写；只有最后一种可作为本地冻结事实。
 
 | 优先级 | 来源与已核验规模 | 官方文件 | 权利与证据状态 | 准入定位 | 引用 |
 |---|---|---|---|---|---|
 | A | PU Tg 扩展集：临时文件审计报告 83 条（73 + 10）；旧 43 条可能是其完整子集，若逐行匹配成立则净新增 40 | 仓库元数据列出 `ap5c04524_si_002.xlsx`，33,447 字节 | 当前为 `temporary_file_audit`；Figshare 数据记录报告 CC BY-NC 4.0，Crossref SI 组件没有 license 字段。权利证据登记 `scope_unresolved`，在文件落地、逐行复算和条款证据固化前关闭公开派生并人工复核内部建模 | 计划以扩展集取代旧 43 条主表；`subset_of/supersedes` 仅在机器匹配证明后生效 | [36], [37] |
 | A | CIAL 自愈 PU：SI 表结构预审得到 40 个汇总设计样 + 3 个跟进实验，尚待双流程复算 | RSC Supporting Information PDF，Tables S12–S15 | 当前为 `publisher_claim/temporary_file_audit`；论文元数据报告 CC BY-NC 3.0，SI 文件覆盖范围仍须取证；PDF 表格须双程序/双人核验 | 配方—强度—伸长—韧性—三类修复效率；PG15C 作为待核验的化学计量不合理/预测失败负结果保留 | [33] |
-| A | TPU EOS 1301 热黏弹—黏塑性本构数据；至少 14 个主要验证工况 | `ijss_2025_vevp_ScriptsForTestsImages.zip`，450,879,687 字节 | Zenodo CC BY 4.0 | 曲线、本构、模拟和验证层；不能当成 14 个化学配方 | [38], [39] |
-| A | 标准化弹性体表征：仓库描述 10 种材料；临时小包审计得到两种热塑材料 13 条拉伸、6 条压缩曲线及松弛/热分析 | 仓库元数据列出 7 个 ZIP，合计约 88.3 MB | 记录元数据报告 CC BY 4.0；曲线计数为 `temporary_file_audit`，临时文件位置/版本/清单未进入冻结证据，必须落地复算 | Filaflex 60A/Cheetah 的 TPU 本构、松弛和热学迁移 | [40], [41] |
-| B | PU 微球复合材料：出版物/仓库描述 6 个体积分数 × 2 个试样；临时审计报告 12 条机器、24 条 DIC、6 条平均曲线 | 仓库元数据列出 `Data_csv.zip`，780,946 字节；无需 26.9 GB 图像包 | 记录元数据报告 CC BY 4.0；试样/曲线计数落地解包后复算 | 加载—卸载、体积响应和滞回辅助层；配方化学不完整 | [42], [43] |
+| A | **已落地，`ingested_file_recount`。** EOS TPU 1301：排除 PA12 后 85 个采集/曲线单元；80 个身份闭合直接实验运行、1 个身份冲突运行隔离、4 条物理试样 ID 不明的手工数字化拉伸曲线；实验候选 5,818,564 个有限点。标定为 7 case/20 子运行/7,792 同步点；验证为 16 个目录、15 个唯一模拟运行、92 CSV/162,764 行/112,358,792 个有限单元 | 固定 ZIP 450,879,687 字节，614 条目/549 文件，SHA-256 `988c4d2f...7ee`；pickle 只用 opcode 静态审计，不执行 | Zenodo CC BY 4.0；实验、数字化曲线、标定内拟合和有限元验证分别登记 | 单一商业牌号的曲线、本构和模拟映射；网格、分片、时间步及重复文件不增加独立权重，不能当成多个化学配方 | [38], [39] |
+| A | **已落地，`ingested_file_recount`。** 标准化弹性体数据实际出现 11 个材料标签；NinjaFlex 90A 的热流列全空，隔离。目标 Cheetah 与 Filaflex 60A 共 26 条 CSV 曲线；Filaflex 旧版 XLS 经只读 Excel COM 复算出 16 条多变量流变曲线、2,094 个同步点。两牌号合计 42 条曲线、1,341,840 个可用行/同步点 | 7 个 ZIP 合计 88,262,468 字节；139 个文件；旧版 XLS 成员 SHA-256 `3fc855fb...295` | Zenodo CC BY 4.0；曲线编号不等于可跨模态确认的物理试样，`physical_specimen_count=null` | Filaflex 60A/Cheetah 的本构、松弛、热学和流变迁移；商业牌号配方未知，不进入结构—性能主任务 | [40], [41] |
+| B | **已落地，`ingested_file_recount`。** 6 个微球体积分数 × 2 个物理试样；12 条 Machine、24 条 DIC，共 23,922 个通道索引行，9 个 YZ 尾端缺失点保留掩码；6 条条件均值/3,000 点为派生视图。`MinMax_Jp.xlsx` 两表重复且含 `98,998,646` 数量级异常，隔离 | `Data_csv.zip` 780,946 字节；最小充分下载排除 12 个合计约 26.9 GB、不会增加试样身份的原始图像包 | Zenodo CC BY 4.0；Machine/DIC 必须按同一试样绑定，Post/MinMax 不新增样本 | 加载—卸载、体积响应和滞回辅助层；是 PU 微球复合体系，配方化学不完整 | [42], [43] |
 | B | 热可逆超分子 PU 宽速率数据；一个化学体系，覆盖 40–1220 s⁻¹；`byjbmymyhh.5` 的 34/34 个资产完成校验，固定解析器可靠读取 4 个实验资产、19 个直接数值采集和 35,919 个同步点行 | `tby33jd48k.1` 为 Supplementary Information & Data；`byjbmymyhh.5` 为独立 Raw/Processed deposit；当前集中摘要只闭合后者，GPC 逐表复算为 6,446 对，修正旧摘要的 6,395 对 | 两个 Mendeley 记录均为 CC BY-NC 3.0；建立 `companion_to` 后再按文件哈希去重，不能当成两个独立化学数据集，也不能把后者的文件级闭合外推给前者；24 OPJ、3 OPJU 与 1 MNOVA 在固定解析器缺失时保持未解析和当前权重 0 | NMR/GPC/SAXS/DSC/流变/DMA/循环与高速压缩辅助层 | [44]–[46] |
-| B | 两种商业双组分 PU 的低/高速变形后应力松弛，约 19 种温度/速率条件 | `rspa20220830_si_002.zip`，8,831,991 字节 | Royal Society Figshare CC BY 4.0 | DMA、温度—速率—松弛迁移；配方未知，不进入化学组成主任务 | [47], [48] |
+| B | **已落地，`ingested_file_recount`。** 两种商用反应固化 PU（TASK 3/11），可恢复 38 个材料—工况单元和 108 条机械实验/重复曲线实例，但无 sample ID，物理试样数保持 `null`。51 CSV + 2 XLSX 共 153,375 行、1,459,510 个完整坐标对；91.97% 集中在四个高密度或重复视图。Figure 10 CSV/XLSX 精确重复，Figure 4b 列错位已纠正，Figure 31 协议冲突隔离 | `rspa20220830_si_002.zip` 8,831,991 字节，53 个成员 | Royal Society Figshare CC BY 4.0 | 只作 PU 黏弹/温度—速率辅助；跨 Figure 的归一化、模型、坐标变换和精确重复视图权重为 0，不得标为已知结构 TPU | [47], [48] |
 | B | 四种 PTMEG 分子量线性 PU 及复合体系的氢键—强韧—导热数据 | Nature Communications Source Data | CC BY-NC-ND 4.0；原样、非商业、署名分享与规范化/转换后的派生发布必须分别判定；派生长表默认不公开 | 内部机制标定；公开 Source Data 只覆盖指定主/补图，其余实验数据部分需作者申请 | [49] |
 | C | 形状记忆 PU + EMIM-TFSI 计算构型，一个体系 | 2 个 PDB + Initial/Final LAMMPS data，共约 17.3 MB | Figshare 记录元数据报告 CC BY 4.0；先登记待审候选关系，核验论文 Data Availability 后才能建立 `supplement_to` | 机制复现/计算输入；无轨迹和性质标签，不计实验样本 | [50], [51] |
 | C | 高密度氢键 WPU 的强韧、自修复和 DMA 原始包候选 | ACS SI `s002`–`s010`，9 个包，约 80 MB（尚未解包复核） | 出版商条款；许可、文件关系和实际样本数尚未形成证据 | 下载队列，不在解包审计前声明样本规模或模型就绪 | [52] |
@@ -301,7 +325,7 @@ PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算�
 - [ ] 取得并审计 Wiley 生物基 PUE 数据附件。
 - [ ] 获取并审计 ACS PU Tg 扩展集；机器复算 83、73 + 10、旧 43 子集关系和净新增量；完成数据记录许可页面固化和动作级裁决前只登记元数据，不生成公开派生表。
 - [ ] 从 RSC CIAL Tables S12–S15 双流程抽取并复算暂报的 40 个设计样和 3 个跟进实验，保留 PG15C 负结果与不确定度。
-- [ ] 获取 Zenodo 15370425、14983287、6390478 和 Royal Society 23635998 的最小必要文件，并按材料—工况—曲线层级登记。
+- [x] 获取 Zenodo 15370425、14983287、6390478 和 Royal Society 23635998 的最小必要文件；完成固定哈希、容器安全、材料—试样—通道—曲线—点、跨 Figure 血缘及实验—模拟映射审计。
 - [ ] 将 Mendeley 两个独立 deposit 建立 companion 血缘并做哈希去重；不得把宽速率曲线点当独立配方。
 - [x] 人工下载并审计 Ding 2021 官方 DOCX；确认其只有方法/统计结果，不含 529 条机器可读原始曲线。
 - [ ] 向 Ding 2021/PUE-643 作者追索 529/643 条原始数据和 386 条清洗曲线，并做 529→643→386→326 数据谱系审计。
@@ -491,6 +515,70 @@ PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算�
 [86] Beneš, H.; Sedlacek, O.; Kopilec, O.; Hodan, J. Dataset for Rigid Biobased Vinylogous Urethane Vitrimers from d-Isosorbide/Furfural-Derived Monomers [Data set], version 1.0; Zenodo, 2026. https://doi.org/10.5281/zenodo.21096098.
 
 [87] Kopilec, O.; Hodan, J.; Sedlacek, O.; Beneš, H. Rigid Biobased Vinylogous Urethane Vitrimers from d-Isosorbide/Furfural-Derived Monomers. *ACS Polymers Au* **2026**, Article ASAP. https://doi.org/10.1021/acspolymersau.6c00063.
+
+[88] Georgopoulou, A.; Vanderborght, B.; Clemens, F. Fabrication of a Soft Robotic Gripper With Integrated Strain Sensing Elements Using Multi-Material Additive Manufacturing [Data set]; Zenodo, 2021. https://doi.org/10.5281/zenodo.5841610.
+
+[89] Georgopoulou, A.; Vanderborght, B.; Clemens, F. Fabrication of a Soft Robotic Gripper With Integrated Strain Sensing Elements Using Multi-Material Additive Manufacturing. *Frontiers in Robotics and AI* **2021**, *8*, 615991. https://doi.org/10.3389/frobt.2021.615991.
+
+[90] Vazquez-Rodriguez, J. A.; Shaqour, B.; Guarch-Pérez, C.; Choińska, E.; Riool, M.; Verleije, B.; Beyers, K.; Costantini, V. J. A.; Święszkowski, W.; Zaat, S. A. J.; Cos, P.; Felici, A.; Ferrari, L. A Niclosamide-Releasing Hot-Melt Extruded Catheter Prevents Staphylococcus aureus Experimental Biomaterial-Associated Infection [Data set]; Zenodo, 2022. https://doi.org/10.5281/zenodo.6128356.
+
+[91] Vazquez-Rodriguez, J. A.; Shaqour, B.; Guarch-Pérez, C.; Choińska, E.; Riool, M.; Verleije, B.; Beyers, K.; Costantini, V. J. A.; Święszkowski, W.; Zaat, S. A. J.; Cos, P.; Felici, A.; Ferrari, L. A Niclosamide-Releasing Hot-Melt Extruded Catheter Prevents Staphylococcus aureus Experimental Biomaterial-Associated Infection. *Scientific Reports* **2022**, *12*, 12329. https://doi.org/10.1038/s41598-022-16107-4.
+
+[92] Habets, S. Internship_CSM_XSTRMLAB_Sandor_Habets_2024 [Data set], version 1; Mendeley Data, 2024. https://doi.org/10.17632/hc6npzvw3m.1.
+
+[93] Tapia, M. Experimental and Numerical Data for FDM-Printed PLA and TPU Cellular Structures under Compression and Bending [Data set], version 1; Mendeley Data, 2026. https://doi.org/10.17632/dbzdkz95f8.1.
+
+[94] Mohd Azli, D. A. S-S Curve for TPU Experiment [Data set], version 1; Mendeley Data, 2023. https://doi.org/10.17632/kysnxmy7xw.1.
+
+[95] Liu, M. liuminghao0830/cg-polyurea-curing: Published Version of the CG Model [Software], version 1.0; Zenodo, 2023. https://doi.org/10.5281/zenodo.7811383.
+
+[96] Liu, M.; Ye, J.; Oswald, J. Coarse-Grained Molecular Simulation of the Role of Curing Rates on the Structure and Strength of Polyurea. *Computational Materials Science* **2023**, *230*, 112428. https://doi.org/10.1016/j.commatsci.2023.112428.
+
+[97] Červinka, C.; Paušová, Š.; Bouzek, K. Dataset of “Fast Carbon Dioxide–Epoxide Cycloaddition Catalyzed by Metal and Metal-Free Ionic Liquids for Designing Non-Isocyanate Polyurethanes” [Data set], version 1; Zenodo, 2024. https://doi.org/10.5281/zenodo.10817092.
+
+[98] Rebei, M.; Červinka, C.; Mahun, A.; et al. Fast Carbon Dioxide–Epoxide Cycloaddition Catalyzed by Metal and Metal-Free Ionic Liquids for Designing Non-Isocyanate Polyurethanes. *Materials Advances* **2024**, *5*, 4311–4323. https://doi.org/10.1039/D3MA00852E.
+
+[99] Bačová, P. PCL in Vacuum and in Water [Software/Data], version 1.0_2; Zenodo, 2025. https://doi.org/10.5281/zenodo.17790918.
+
+[100] Bačová, P.; González Huarte, G.; Harmandaris, V.; Molina, S. I. Development of a Systematic Coarse-Grained Model for Poly(ε-Caprolactone) in Melt. *Open Research Europe* **2025**, *5*, 296. https://doi.org/10.12688/openreseurope.21354.2.
+
+[101] Dewapriya, N.; Miller, R. LAMMPS Model to Simulate Spallation in Polyurethane [Data set]; Zenodo, 2021. https://doi.org/10.5281/zenodo.5099589.
+
+[102] Dewapriya, M. A. N.; Miller, R. E. Molecular Dynamics Simulations of Shock Propagation and Spallation in Amorphous Polymers. *Journal of Applied Mechanics* **2021**, *88* (10), 101005. https://doi.org/10.1115/1.4051238.
+
+[103] Wentz, J. Impact of Infill and Shell Design Features on Compression Stiffness in Material Extrusion of Thermoplastic Urethane [Data set], version 1; Mendeley Data, 2022. https://doi.org/10.17632/7zcd9bmmg5.1.
+
+[104] Wang, Z.; Wang, C.; Zhao, X.; Yang, X. Manipulating the Mechanical Properties of Thermoplastic Polyurethane via Regulating Hard Segment Aggregation [Supporting information], version 1; ACS Publications/Figshare, 2025. https://doi.org/10.1021/acs.macromol.5c00142.s001.
+
+[105] Wang, Z.; Wang, C.; Zhao, X.; Yang, X. Manipulating the Mechanical Properties of Thermoplastic Polyurethane via Regulating Hard Segment Aggregation. *Macromolecules* **2025**, *58* (9), 4394–4406. https://doi.org/10.1021/acs.macromol.5c00142.
+
+[106] Lu, K.; Chen, H.; Huang, C.; Wang, Z.; Yan, J. Capturing Robust and Tough Thermoplastic Polyurethane Elastomers via Engineering Dual-Phase Evolution Rather than Chain Extenders [Supporting information], version 1; ACS Publications/Figshare, 2025. https://doi.org/10.1021/acsmaterialslett.5c00732.s001.
+
+[107] Lu, K.; Chen, H.; Huang, C.; Wang, Z.; Yan, J. Capturing Robust and Tough Thermoplastic Polyurethane Elastomers via Engineering Dual-Phase Evolution Rather than Chain Extenders. *ACS Materials Letters* **2025**, *7* (6), 2238–2245. https://doi.org/10.1021/acsmaterialslett.5c00732.
+
+[108] Xu, R.; Miao, X.; Yang, S.; et al. Stiff Yet Elastic Thermoplastic Polyurethanes Based on Nanoconfined Stereocomplexation in PLA Interphases [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acs.macromol.5c03502.s001.
+
+[109] Xu, R.; Miao, X.; Yang, S.; et al. Stiff Yet Elastic Thermoplastic Polyurethanes Based on Nanoconfined Stereocomplexation in PLA Interphases. *Macromolecules* **2026**, *59* (4), 2613–2622. https://doi.org/10.1021/acs.macromol.5c03502.
+
+[110] Yang, T.; Chen, X.; Wei, Z.; et al. High-Strength, Tough, Furan-Based Polyurethane Elastomers Achieving Performance and Functionality Upgrades through Postdynamic Cross-Linking [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acs.macromol.5c03627.s001.
+
+[111] Yang, T.; Chen, X.; Wei, Z.; et al. High-Strength, Tough, Furan-Based Polyurethane Elastomers Achieving Performance and Functionality Upgrades through Postdynamic Cross-Linking. *Macromolecules* **2026**, *59* (5), 3171–3187. https://doi.org/10.1021/acs.macromol.5c03627.
+
+[112] Guo, H.; Zhang, R.; Li, H.; et al. Upcycling of Polyimide for the Preparation of a High-Performance Polyurethane Chain Extender [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acsapm.5c04872.s001.
+
+[113] Guo, H.; Zhang, R.; Li, H.; et al. Upcycling of Polyimide for the Preparation of a High-Performance Polyurethane Chain Extender. *ACS Applied Polymer Materials* **2026**, *8* (6), 4305–4314. https://doi.org/10.1021/acsapm.5c04872.
+
+[114] Kong, W.; Dar, U. A.; Ma, Y.; et al. Recyclable Thermoplastic Poly(urethane-urea)s with Enhanced Mechanical and Adhesive Properties Derived from CO2-Based Copolyesters [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acsmacrolett.6c00123.s001.
+
+[115] Kong, W.; Dar, U. A.; Ma, Y.; et al. Recyclable Thermoplastic Poly(urethane-urea)s with Enhanced Mechanical and Adhesive Properties Derived from CO2-Based Copolyesters. *ACS Macro Letters* **2026**, *15* (4), 647–654. https://doi.org/10.1021/acsmacrolett.6c00123.
+
+[116] Zhong, W.; Zhang, T.; Huang, S.; et al. One-Pot Synthesis of CO2-Based Polycarbonate Macrodiols: (Propylene Carbonate)/(Ethylene Carbonate) Composition Evolution Versus Physicochemical Performance [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acsapm.6c00646.s001.
+
+[117] Zhong, W.; Zhang, T.; Huang, S.; et al. One-Pot Synthesis of CO2-Based Polycarbonate Macrodiols: (Propylene Carbonate)/(Ethylene Carbonate) Composition Evolution Versus Physicochemical Performance. *ACS Applied Polymer Materials* **2026**, *8* (10), 7438–7450. https://doi.org/10.1021/acsapm.6c00646.
+
+[118] Wei, Z.; Zhang, Y.; Lei, Y.; et al. Design of Sustainable and High Strength-Toughness Thermoplastic Elastomer via a Strong Hydrogen Bond-Reinforced Nanostructure [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acs.macromol.6c00352.s001.
+
+[119] Wei, Z.; Zhang, Y.; Lei, Y.; et al. Design of Sustainable and High Strength-Toughness Thermoplastic Elastomer via a Strong Hydrogen Bond-Reinforced Nanostructure. *Macromolecules* **2026**, *59* (12), 7171–7182. https://doi.org/10.1021/acs.macromol.6c00352.
 
 ## 10. 论文写作时的引用约定
 

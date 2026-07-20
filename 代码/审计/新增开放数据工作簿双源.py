@@ -877,7 +877,7 @@ def build_sls_summary() -> tuple[dict[str, Any], bytes]:
             "训练拆分权重物化": False,
         },
         "统一准入权重策略": {
-            "policy_authority": "multi-fidelity-admission-weight-v0.2.6",
+            "policy_authority": "multi-fidelity-admission-weight-v0.2.9",
             "source_weight_ceiling": 0.35,
             "exact_duplicate_or_derived_record_weight": 0.0,
             "note": "这里只记录准入上限；本审计不物化训练权重。",
@@ -1345,7 +1345,7 @@ def build_figshare_summary() -> dict[str, Any]:
             ],
             "domain_boundary": "研究对象是化学交联的热固性PU泡沫及其光固化再生网络，不是热塑性聚氨酯TPU；不存在可直接用于TPU候选单体筛选的完整单体结构、软硬段配方、分子量和热塑加工标签。",
             "recommended_weights_relative_to_one_verified_core_tpu_experimental_sample": {
-                "policy_authority": "multi-fidelity-admission-weight-v0.2.6",
+                "policy_authority": "multi-fidelity-admission-weight-v0.2.9",
                 "source_weight_ceiling": 0.25,
                 "core_tpu_structure_property": 0.0,
                 "exact_duplicate_or_derived_record_weight": 0.0,

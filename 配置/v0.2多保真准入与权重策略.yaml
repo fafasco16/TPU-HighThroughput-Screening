@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.6
+policy_version: multi-fidelity-admission-weight-v0.2.9
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -468,6 +468,190 @@ source_overrides:
       youngs_modulus_declared_unit_scale_conflict: 0.00
       toughness_declared_unit_or_scale_conflict: 0.00
     note: 该体系是交联共轭氨基甲酸酯玻璃体而非PU/TPU；只支持动态网络和循环利用迁移任务。观测身份保留原始/再生与试样，拆分必须按DOI+formulation把同配方原始/再生状态同折；模量与韧性单位冲突字段机器硬置零。
+
+  - source_scope_key: scope_zenodo14983287
+    intended_use: commercial_tpe_multimodal_mechanics_thermal_rheology_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_doi, material_grade, test_mode, specimen_or_run, curve]
+    split_group_keys: [dataset_doi, material_grade]
+    task_specific_ceilings:
+      direct_mechanical_thermal_or_rheology_curve: 0.35
+      ninjaflex_empty_response_protocol_file: 0.00
+      curve_point_or_response_channel: 0.00
+    note: Cheetah与Filaflex 60A为商业牌号且配方未知，只支持多模态迁移；XLS一个工作表是一条同步多变量曲线，多个响应通道不增加实验权重。材料牌号整体同折，physical_specimen_count保持空值。
+
+  - source_scope_key: scope_zenodo6390478
+    intended_use: pu_microsphere_composite_hysteresis_and_dic_transfer
+    base_weight_ceiling: 0.30
+    group_keys: [dataset_doi, porosity, specimen_id, acquisition_channel]
+    split_group_keys: [dataset_doi, porosity, specimen_id]
+    task_specific_ceilings:
+      direct_machine_and_dic_bound_specimen: 0.30
+      post_average_or_smoothed_curve: 0.00
+      minmax_derived_summary_or_conflicting_xlsx: 0.00
+      apple_resource_fork_or_ds_store: 0.00
+    note: 12个物理试样的Machine、DIC-xy和DIC-yz按试样绑定并共享总权重；9个YZ尾端缺失点保留掩码。六条条件平均和MinMax不增加试样。
+
+  - source_scope_key: scope_figshare23635998_v1
+    intended_use: cured_pu_temperature_rate_relaxation_transfer_after_series_normalization
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, material, condition_family, inferred_replicate, curve_view]
+    split_group_keys: [dataset_doi, material]
+    future_task_specific_ceilings_after_series_level_provenance_materialization:
+      original_task3_task11_experimental_mechanics: 0.25
+      figure31_after_protocol_conflict_resolution: 0.10
+      normalized_master_curve_or_scalar_summary: 0.10
+      prony_or_abaqus_same_source_model: 0.05
+      exact_duplicate_or_alternative_coordinate_view: 0.00
+      tpu_chemistry_conditioned_task: 0.00
+    source_batch_fraction_cap: 0.05
+    note: TASK3/11是结构与配方未知的反应固化商用PU。当前未将108条曲线实例拆成规范系列，来源权重保持0；未来必须先在曲线内、工况内和材料内分层平均，禁止1459510个图中坐标对按行加权。
+
+  - source_scope_key: scope_zenodo15370425
+    intended_use: eos_tpu1301_direct_experiment_and_calibrated_constitutive_fe
+    base_weight_ceiling: 1.00
+    group_keys: [dataset_doi, material_grade, protocol, specimen_or_run, paired_experiment_simulation_family]
+    split_group_keys: [dataset_doi, material_grade]
+    task_specific_ceilings:
+      direct_raw_tpu_experiment: 1.00
+      manually_digitized_tension_curve: 0.65
+      mapped_validation_fe_physics_surrogate: 0.35
+      calibration_fit_output_for_property_supervision: 0.00
+      calibration_output_for_separate_fe_emulator: 0.25
+      timestep_mesh_partition_exact_copy_pa12_identity_conflict_or_bad_point: 0.00
+    note: base ceiling 1.00只定义来源内直接实验参考层；商业牌号用于化学外推时仍单独应用q_mapping=study_level_or_commercial_grade_only，不能再把0.45写进来源上限而二次衰减。80个身份闭合直接运行、数字化曲线、标定和15个唯一验证运行严格分层且整牌号同折。
+
+  - source_scope_key: scope_zenodo_5841610_dataset
+    intended_use: commercial_tpu_grade_multimodal_printing_sensor_transfer
+    base_weight_ceiling: 0.40
+    group_keys: [dataset_doi, material_grade, protocol, measurement_channel, curve]
+    split_group_keys: [dataset_doi, material_grade]
+    task_specific_ceilings:
+      direct_mechanical_history_with_resolved_material_identity: 0.40
+      relative_resistance_history: 0.25
+      modulus_hardness_published_scalar: 0.30
+      absolute_resistance_with_complete_shared_time: 0.15
+      figure_s7_70a_85a_material_identity_conflict: 0.00
+      figure_s5_embedded_reference_protocol_conflict: 0.00
+      duplicate_padding_or_orphan_coordinate: 0.00
+    source_batch_fraction_cap: 0.10
+    note: 六个商业牌号有高密度同步力学—电学历史，但没有配方、批次与试样ID；只能作牌号和工况迁移。同一牌号跨全部协议同折。Figure S7中70A与85A序列完全相同且无法判断真实归属，必须双边隔离，不能任意保留其中之一。
+
+  - source_scope_key: scope_zenodo_6128356_dataset
+    intended_use: tecoflex_niclosamide_multimodal_experimental_transfer
+    base_weight_ceiling: 0.55
+    group_keys: [dataset_doi, base_tpu_grade, additive_loading, workbook_version, specimen_slot, qoi]
+    split_group_keys: [dataset_doi, base_tpu_grade]
+    task_specific_ceilings:
+      main_workbook_direct_specimen_scalar: 0.55
+      published_zero_baseline_curve_after_explicit_strain_unit_resolution: 0.55
+      xrd_or_thermal_or_spectroscopic_characterization: 0.25
+      bioactivity_or_release_application: 0.35
+      main_workbook_fixed_offset_curve_copy: 0.00
+      unresolved_strain_unit_curve: 0.00
+      exact_duplicate_scalar_or_cross_workbook_identity_unresolved_copy: 0.00
+    note: 主工作簿22个直接试样槽位与补表20个槽位都保留，但跨表身份未知，物理试样总数保持空值；三项主表属性共享试样槽位权重。主表固定偏移曲线、重复标量和未解决的应变百分数/应变比冲突均不得形成监督标签。
+
+  - source_scope_key: scope_mendeley_hc6npzvw3m_v1
+    intended_use: commercial_tpu_temperature_cycle_recovery_mechanics
+    base_weight_ceiling: 1.00
+    group_keys: [dataset_doi, material_grade, specimen_id, temperature, cycle_count, loading_direction, acquisition]
+    split_group_keys: [dataset_doi, material_grade]
+    task_specific_ceilings:
+      direct_tpu_specimen_history: 1.00
+      recovery_history_same_specimen_total_budget: 0.50
+      santoprene_tpv_analogue_transfer: 0.15
+      metadata_identity_conflict_or_missing_history: 0.00
+      third_party_pdf_or_code_asset: 0.00
+    note: 190个商业TPU物理试样和196条TPU历史是本批最强的条件—循环力学来源；商业牌号缺少单体配方时仍由q_mapping降权。恢复曲线复用原试样，不增加独立试样权重；Santoprene只作TPV类比域。
+
+  - source_scope_key: scope_mendeley_dbzdkz95f8_v1
+    intended_use: fdm_tpu_base_and_lattice_process_structure_mechanics_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_doi, material_identity, print_batch, geometry_family, test_mode, specimen]
+    split_group_keys: [dataset_doi, material_identity, print_batch]
+    task_specific_ceilings:
+      direct_base_material_tension_or_bending: 0.35
+      direct_lattice_compression_or_bending: 0.25
+      chemistry_conditioned_tpu_endpoint_without_grade_identity: 0.00
+      workbook_summary_or_duplicate: 0.00
+      stl_geometry_or_proprietary_zs2_asset: 0.00
+      claimed_but_unidentifiable_fea_run: 0.00
+    note: 76个实验试样支持FDM几何与工艺迁移，但材料化学和牌号身份不足；12本主工作簿可作实验层，汇总表、STL、ZS2和未实际提供的FEA运行不能重复产生标签。
+
+  - source_scope_key: scope_mendeley_kysnxmy7xw_v1
+    intended_use: limited_tpu_experiment_simulation_curve_family
+    base_weight_ceiling: 0.30
+    group_keys: [dataset_doi, experiment_or_simulation, specimen_or_curve, simulation_family]
+    split_group_keys: [dataset_doi, experimental_material_identity]
+    task_specific_ceilings:
+      direct_experimental_replicate_curve: 0.30
+      simulation_curve_with_missing_solver_protocol: 0.05
+      experiment_average_or_chart_copy: 0.00
+      tail_sample_count_shift_or_unmapped_curve: 0.00
+    maximum_total_weight_for_all_13_simulation_curves: 0.05
+    note: 三条实验重复可保留为一个材料体系的试样观测；13条仿真子曲线只有一个家族且缺求解器、网格、参数和运行条件，合计上限而非逐曲线上限为0.05。Average与图表引用不增加监督。
+
+  - source_scope_key: scope_zenodo_7811383_dataset
+    intended_use: reactive_cg_polyurea_curing_reproducibility_asset
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, molecular_system, curing_protocol, potential_family, simulation_seed]
+    split_group_keys: [dataset_doi, molecular_system]
+    future_task_specific_ceilings_after_output_and_convergence_audit:
+      polyurea_curing_or_morphology_descriptor: 0.25
+      conventional_tpu_direct_mechanics: 0.00
+      topology_potential_or_simulation_input: 0.00
+    note: 当前归档提供拓扑、势函数和协议输入但没有科学输出，按simulation_input_without_output硬置零。将来只有取得可复算输出、平衡/收敛与种子证据后，才能作为聚脲固化形貌迁移层，不能替代TPU宏观实验。
+
+  - source_scope_key: scope_zenodo_10817092_dataset
+    intended_use: nipu_reaction_pathway_dft_descriptor
+    base_weight_ceiling: 0.50
+    group_keys: [dataset_doi, reaction_pathway, stationary_point, electronic_structure_method]
+    split_group_keys: [dataset_doi, reaction_pathway]
+    task_specific_ceilings:
+      converged_pathway_barrier_or_stationary_point_thermochemistry: 0.50
+      nipu_synthesis_cross_chemistry_prior: 0.15
+      conventional_isocyanate_tpu_mechanics: 0.00
+      lammps_input_without_output: 0.00
+      unconverged_or_wrong_imaginary_frequency_count: 0.00
+    note: 20个Gaussian日志形成4条反应路径，每条路径的五个驻点必须同折并先聚合为路径级势垒，不能把驻点当20个独立化学样本。它是NIPU合成机理描述符，不是常规异氰酸酯TPU力学真值。
+
+  - source_scope_key: scope_zenodo_17790918_dataset
+    intended_use: pcl_soft_segment_conformation_cgmd_prior
+    base_weight_ceiling: 0.30
+    group_keys: [dataset_doi, chain_length, solvent_condition, protocol, trajectory_seed]
+    split_group_keys: [dataset_doi, chain_length, solvent_condition]
+    task_specific_ceilings:
+      system_level_radius_of_gyration_or_conformation_descriptor: 0.30
+      trajectory_time_series_after_within_system_aggregation: 0.20
+      verified_git_lfs_trajectory_after_within_run_aggregation: 0.20
+      direct_tpu_mechanics_or_full_polyurethane_endpoint: 0.00
+      git_lfs_pointer_or_missing_trajectory_object: 0.00
+    maximum_combined_weight_across_archive_and_lfs_supplement: 0.30
+    note: PCL软段构象可作为跨尺度先验；Zenodo归档自身含8条真实TRR运行和10个LFS指针，另已在独立补采层按OID取得并全帧验证这10个载荷。18条运行仍属于同一PCL模型家族，轨迹帧与时间点只提高同一体系统计精度，不增加化学覆盖；归档指针本身硬置零，真实运行须按链长、环境、温度、步长、终止状态和整条运行分组，并完成收敛、实验映射与权利闭合后再裁决。
+
+  - source_scope_key: scope_pcl_git_lfs_supplement_local
+    intended_use: pcl_soft_segment_cgmd_trajectory_provenance_supplement
+    base_weight_ceiling: 0.00
+    group_keys: [parent_dataset_doi, git_commit, chain_length, solvent_condition, protocol, trajectory_seed]
+    split_group_keys: [parent_dataset_doi, chain_length, solvent_condition]
+    future_task_specific_ceilings_after_rights_and_convergence_closure:
+      within_run_aggregated_conformation_descriptor: 0.20
+      raw_frame_or_timepoint_as_independent_sample: 0.00
+      direct_tpu_mechanics_or_full_polyurethane_endpoint: 0.00
+    maximum_combined_weight_with_scope_zenodo_17790918_dataset: 0.30
+    note: 补采层10个Git LFS对象共2,313,207,356字节、10,569帧，均以声明大小和OID-SHA256验证，并解析为10条运行；其中7条finished、1条普通TERM提前终止、1条TERM后续跑越过声明步数、1条second INT/TERM。GitHub固定tree未发现LICENSE/COPYING，不能把Zenodo归档许可证自动外推到LFS载荷，因此当前权重为零、禁止再分发假设；即使未来权利闭合，也只按运行聚合并与母来源共享0.30总预算。
+
+  - source_scope_key: scope_zenodo_5099589_dataset
+    intended_use: ptmo_mdi_bdo_polyurethane_shock_md_reproducibility_asset
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, exact_molecular_system, shock_protocol, simulation_seed]
+    split_group_keys: [dataset_doi, exact_molecular_system]
+    future_task_specific_ceilings_after_output_validation_and_rights_closure:
+      mapped_spallation_or_shock_qoi: 0.40
+      cross_protocol_quasistatic_transfer: 0.10
+      atomistic_data_force_field_or_input_script: 0.00
+    note: 当前只取得一个607104原子初始体系及2.0 km/s冲击输入，没有输出轨迹或QoI，故权重为零；上游Git辅助文件还缺明确许可证，不得对外再分发。未来上限须同时满足输出、验证、实验映射和权利闭合。
 
 materialization_gate:
   required_before_training:

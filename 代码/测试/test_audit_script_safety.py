@@ -1,16 +1,30 @@
 import ast
 import hashlib
+import importlib.util
 import json
 import os
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any
+from urllib.request import Request
 
 import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT_DIR = ROOT / "代码" / "审计"
+
+
+def _load_script(relative_path: str):
+    path = ROOT / relative_path
+    module_name = f"tpu_safety_{path.stem}_{abs(hash(path))}"
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 def _extract_definitions(filename: str, names: set[str]) -> dict[str, object]:
@@ -165,11 +179,15 @@ def test_sciencedb_image_audit_is_current_zero_with_conditional_future_ceiling()
 def test_historical_audit_alignment_script_uses_authoritative_caps_and_atomic_write():
     text = (AUDIT_DIR / "历史审计策略对齐.py").read_text(encoding="utf-8")
 
-    assert 'POLICY_VERSION = "multi-fidelity-admission-weight-v0.2.6"' in text
+    assert 'POLICY_VERSION = "multi-fidelity-admission-weight-v0.2.9"' in text
     assert '"experimental_Tdeblock_label_ceiling": 1.0' in text
     assert '"experimentally_mapped_DFT_QoI_or_calibrated_descriptor_ceiling": 0.50' in text
     assert '"通用PU力学曲线表征预训练上限": 0.35' in text
     assert 'transfer["suggested_relative_weight"] = 0.25' in text
+    assert '"accepted_previous_alignment_sha256"' in text
+    assert '"multi-fidelity-admission-weight-v0.2.6"' in text
+    assert '"multi-fidelity-admission-weight-v0.2.7"' in text
+    assert "旧策略摘要不在精确迁移白名单" in text
     assert "tempfile.mkstemp" in text
     assert "os.fsync" in text
     assert "os.replace" in text
@@ -268,6 +286,28 @@ def test_sls_legacy_excel_reader_is_read_only_and_never_saves():
     assert "ToHexString" not in text
 
 
+def test_standard_elastomer_legacy_excel_reader_is_fixed_read_only_and_never_saves():
+    helper = AUDIT_DIR / "读取标准弹性体旧版XLS.ps1"
+    text = helper.read_text(encoding="utf-8")
+    audit_text = (AUDIT_DIR / "新增开放数据第二批四源.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert "Melting.zip" in text
+    assert "Melting/viscosity/Filaflex 60A.xls" in text
+    assert "Workbooks.Open" in text
+    assert "ReadOnly" in text
+    assert ".Save(" not in text
+    assert "SaveAs" not in text
+    assert "AutomationSecurity" in text
+    assert "CreateDirectory" in text
+    assert "Remove-Item" in text
+    assert "curve_point_count" in text
+    assert "XLS_READER" in audit_text
+    assert "subprocess.run" in audit_text
+    assert '"curve_point_count": 2_094' in audit_text
+
+
 def test_workbook_audit_uses_streaming_ooxml_and_authoritative_weight_caps():
     text = (AUDIT_DIR / "新增开放数据工作簿双源.py").read_text(encoding="utf-8")
 
@@ -279,7 +319,7 @@ def test_workbook_audit_uses_streaming_ooxml_and_authoritative_weight_caps():
     assert '"maximum_active_row_value_buffers": 1' in text
     assert '"completed_row_elements_retained_after_parse": 0' in text
     assert "maximum_buffered_sheet_rows" not in text
-    assert '"policy_authority": "multi-fidelity-admission-weight-v0.2.6"' in text
+    assert '"policy_authority": "multi-fidelity-admission-weight-v0.2.9"' in text
     assert '"source_weight_ceiling": 0.35' in text
     assert '"source_weight_ceiling": 0.25' in text
     assert '"candidate_eligible_after_governance_materialization": True' in text
@@ -313,15 +353,24 @@ def test_standard_mechanics_audit_fails_closed_if_excluded_sffe_appears():
     assert "必须先建立独立范围和审计规则" in text
 
 
-def test_audit_readme_declares_complete_twenty_three_source_coverage():
+def test_audit_readme_declares_current_source_identity_coverage():
     text = (AUDIT_DIR / "README.md").read_text(encoding="utf-8")
 
-    assert "全部 23 个来源" in text
+    assert "46 个一级目录" in text
+    assert "45 个独立来源身份" in text
+    assert "PCL_GitLFS轨迹补采" in text
+    assert "不增加来源身份" in text
     for filename in (
         "新增开放数据核心与镜像.py",
         "新增开放数据标准力学三源.py",
         "新增开放数据工作簿双源.py",
         "新增开放数据受限与专有格式两源.py",
+        "新增开放数据第二批四源.py",
+        "新增开放数据第三批Zenodo实验双源.py",
+        "新增开放数据第三批Mendeley三源.py",
+        "新增开放数据第三批模拟四源.py",
+        "审计PCL_GitLFS十轨迹.py",
+        "新增开放数据第四批精选源.py",
         "读取SLS旧版XLS.ps1",
     ):
         assert filename in text
@@ -372,6 +421,176 @@ def test_remaining_audit_atomic_replace_failure_preserves_previous_output(
 
     monkeypatch.setattr(os, "replace", fail_replace)
     with pytest.raises(OSError, match="injected replace failure"):
+        module["atomic_write"](target, b"new")
+
+    assert target.read_bytes() == b"previous"
+    assert not list(tmp_path.glob("*.audit.tmp"))
+
+
+def test_second_batch_downloader_is_fixed_allowlist_and_fail_closed():
+    path = ROOT / "代码" / "获取" / "下载第二批开放数据四源.py"
+    text = path.read_text(encoding="utf-8")
+
+    for record_id in ("14983287", "15370425", "6390478", "23635998"):
+        assert record_id in text
+    for source_directory in (
+        "Zenodo_标准化弹性体表征",
+        "Zenodo_PU微球复合材料拉伸",
+        "Figshare_PU高低速变形后应力松弛",
+        "Zenodo_TPU1301热黏弹黏塑本构",
+    ):
+        assert source_directory in text
+    assert "EXPECTED_FILE_COUNT = 11" in text
+    assert "EXPECTED_EXCLUDED_FILE_COUNT = 12" in text
+    assert '"https"' in text
+    assert "ALLOWED_DOWNLOAD_HOSTS" in text
+    assert 'part_suffix = ".part"' in text
+    assert "os.replace" in text
+    assert "datetime.now" not in text
+    assert 'item["local_state"] = "verified_present"' in text
+    assert 'item["local_state"], item["local_sha256"]' not in text
+
+
+@pytest.mark.parametrize(
+    "target_url",
+    [
+        "https://example.invalid/payload",
+        "http://zenodo.org/payload",
+    ],
+)
+def test_second_batch_downloader_rejects_cross_host_and_https_downgrade_redirects(
+    target_url: str,
+):
+    module = _load_script("代码/获取/下载第二批开放数据四源.py")
+    handler = module.StrictRedirectHandler()
+    request = Request("https://zenodo.org/api/records/14983287")
+
+    with pytest.raises(module.AcquisitionBlocked, match="拒绝非白名单下载端点"):
+        handler.redirect_request(request, None, 302, "Found", {}, target_url)
+
+
+def test_second_batch_downloader_rejects_disallowed_final_response_endpoint():
+    module = _load_script("代码/获取/下载第二批开放数据四源.py")
+
+    class FakeResponse:
+        @staticmethod
+        def geturl() -> str:
+            return "https://example.invalid/final"
+
+    with pytest.raises(module.AcquisitionBlocked, match="拒绝非白名单下载端点"):
+        module.require_allowed_response_endpoint(FakeResponse())
+
+
+@pytest.mark.parametrize(
+    ("headers", "expected_message"),
+    [
+        (
+            {"Content-Length": "900", "Content-Range": "bytes 99-998/1000"},
+            "Content-Range",
+        ),
+        (
+            {"Content-Length": "899", "Content-Range": "bytes 100-999/1000"},
+            "Content-Length",
+        ),
+    ],
+)
+def test_second_batch_downloader_rejects_inexact_resume_headers(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    headers: dict[str, str],
+    expected_message: str,
+):
+    module = _load_script("代码/获取/下载第二批开放数据四源.py")
+    target = tmp_path / "payload.bin"
+    partial = tmp_path / "payload.bin.part"
+    partial.write_bytes(b"x" * 100)
+
+    class FakeResponse:
+        status = 206
+
+        def __init__(self) -> None:
+            self.headers = headers
+            self.closed = False
+
+        @staticmethod
+        def getcode() -> int:
+            return 206
+
+        def close(self) -> None:
+            self.closed = True
+
+    response = FakeResponse()
+    monkeypatch.setattr(module, "open_request", lambda request, timeout: response)
+
+    with pytest.raises(module.AcquisitionBlocked, match=expected_message):
+        module.download_file(
+            "https://zenodo.org/api/files/frozen/payload.bin",
+            target,
+            1000,
+            "0" * 32,
+        )
+
+    assert response.closed is True
+    assert partial.read_bytes() == b"x" * 100
+
+
+def test_second_batch_audit_is_fail_closed_atomic_and_training_closed():
+    path = AUDIT_DIR / "新增开放数据第二批四源.py"
+    text = path.read_text(encoding="utf-8")
+
+    for source_directory in (
+        "Zenodo_标准化弹性体表征",
+        "Zenodo_PU微球复合材料拉伸",
+        "Figshare_PU高低速变形后应力松弛",
+        "Zenodo_TPU1301热黏弹黏塑本构",
+    ):
+        assert source_directory in text
+    for boundary_marker in (
+        "NinjaFlex 90A",
+        "__MACOSX",
+        "Uniaxial_compression_2CV_2p78E-3_RT_PA12.csv",
+        "Relaxation_7H_1E-1_RT_TPU.csv",
+        '"header_label": "6V"',
+    ):
+        assert boundary_marker in text
+    assert "OUTPUT_WHITELIST" in text
+    assert "tempfile.mkstemp" in text
+    assert "os.fsync" in text
+    assert "os.replace" in text
+    assert "zipfile.ZipFile" in text
+    assert ".testzip()" in text
+    assert "MAX_COMPRESSION_RATIO" in text
+    assert "MAX_UNCOMPRESSED_BYTES" in text
+    assert "pickletools.genops" in text
+    assert "pickle.load" not in text
+    assert "112_358_792" in text
+    assert "5_818_564" in text
+    assert "1_459_510" in text
+    assert "Figure_4b" in text
+    assert "protocol_consistency" in text
+    assert '"training_split_created": False' in text
+    assert '"training_weight_materialized": False' in text
+    assert "urlopen(" not in text
+    assert "requests." not in text
+    assert "datetime.now" not in text
+
+
+def test_second_batch_audit_atomic_replace_failure_preserves_previous_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    module = _extract_definitions(
+        "新增开放数据第二批四源.py",
+        {"AuditBlocked", "assert_output_allowed", "atomic_write"},
+    )
+    target = tmp_path / "内容审计摘要.json"
+    target.write_bytes(b"previous")
+    monkeypatch.setitem(module, "OUTPUT_WHITELIST", frozenset({target}))
+
+    def fail_replace(_source: Path, _target: Path) -> None:
+        raise OSError("injected second-batch replace failure")
+
+    monkeypatch.setattr(os, "replace", fail_replace)
+    with pytest.raises(OSError, match="injected second-batch replace failure"):
         module["atomic_write"](target, b"new")
 
     assert target.read_bytes() == b"previous"

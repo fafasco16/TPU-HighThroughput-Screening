@@ -19,7 +19,7 @@ from typing import Any, Callable
 SCRIPT_PATH = Path(__file__).resolve()
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
 DATA_ROOT = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
-POLICY_VERSION = "multi-fidelity-admission-weight-v0.2.6"
+POLICY_VERSION = "multi-fidelity-admission-weight-v0.2.9"
 ALIGNMENT_BASELINE_DATE = "2026-07-20"
 
 TARGETS = {
@@ -28,18 +28,42 @@ TARGETS = {
         / "Zenodo_TPU回收封端剂DFT与机器学习"
         / "内容审计摘要.json",
         "pre_alignment_sha256": "2afeea72e73893a22047f6dd1e871d76e2e240efdd4c8accfee6c2e94b467cdf",
+        "accepted_previous_alignment_sha256": {
+            "multi-fidelity-admission-weight-v0.2.6":
+                "720f186ff9b633ab6c329dbee7a9d3882bd9a7c9765a554ae4f8b1fbc835b1e7",
+            "multi-fidelity-admission-weight-v0.2.7":
+                "c5b0457ec25e539876f4777de12ad1504f6130b897c5a9c1f9301480634b4300",
+            "multi-fidelity-admission-weight-v0.2.8":
+                "c91e4d569affb8f7e8d99f8a299ea21e7f15880fd4bec7b1c20eba6573a527de",
+        },
     },
     "plant_foam_aging": {
         "path": DATA_ROOT
         / "Mendeley_植物基PU泡沫温湿老化压缩"
         / "内容审计摘要.json",
         "pre_alignment_sha256": "cc9f386ebde5f00fdbe40fb1e70212dceeb95fd5b60964e25eca17ea1086fa25",
+        "accepted_previous_alignment_sha256": {
+            "multi-fidelity-admission-weight-v0.2.6":
+                "c776662dd70be10c1197744c21e87efe927904eafa75f77eb051ffa28305df19",
+            "multi-fidelity-admission-weight-v0.2.7":
+                "3bf89e7da69662f108050334eaa769fac24fce8ef8c7712f092fa7043cd36f8e",
+            "multi-fidelity-admission-weight-v0.2.8":
+                "a933f13caa7960989cbeed4e22303c4ac9a7c1584af062964b492485edac5a01",
+        },
     },
     "printable_composite": {
         "path": DATA_ROOT
         / "Zenodo_可打印自愈可回收PU生物电子"
         / "内容审计摘要.json",
         "pre_alignment_sha256": "10ba39558c0ad49bd42c5a3246de64fbf907bcd45da0884c220028e18d9ef0d8",
+        "accepted_previous_alignment_sha256": {
+            "multi-fidelity-admission-weight-v0.2.6":
+                "01a61308f830250da96a3f763b6124e21eed926e7a23ff3830b5d4dbdc0a44de",
+            "multi-fidelity-admission-weight-v0.2.7":
+                "deb9c76f37834039ab770981b259e54b76a790e6c29216b6ee63e9dddcd115da",
+            "multi-fidelity-admission-weight-v0.2.8":
+                "f1748f36f1eb23c170a37d3fb4e834f0867004c0265ea703b377b2b9964b3c95",
+        },
     },
 }
 AUDIT_OUTPUTS = frozenset(Path(item["path"]) for item in TARGETS.values())
@@ -102,8 +126,16 @@ def load_payload(key: str) -> tuple[Path, dict[str, Any]]:
                 f"{key}: 初始摘要SHA-256漂移，expected={meta['pre_alignment_sha256']}, actual={actual}"
             )
     else:
-        if alignment.get("策略版本") != POLICY_VERSION:
-            raise AuditBlocked(f"{key}: 已对齐摘要策略版本不一致")
+        aligned_policy_version = alignment.get("策略版本")
+        if aligned_policy_version != POLICY_VERSION:
+            accepted_previous = meta["accepted_previous_alignment_sha256"]
+            expected_previous_hash = accepted_previous.get(aligned_policy_version)
+            actual = sha256_bytes(raw)
+            if expected_previous_hash is None or actual != expected_previous_hash:
+                raise AuditBlocked(
+                    f"{key}: 旧策略摘要不在精确迁移白名单，"
+                    f"policy={aligned_policy_version!r}, actual={actual}"
+                )
         if alignment.get("对齐前摘要SHA256") != meta["pre_alignment_sha256"]:
             raise AuditBlocked(f"{key}: 对齐前摘要SHA-256证据不一致")
     return path, payload

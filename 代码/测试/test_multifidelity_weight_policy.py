@@ -15,6 +15,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.9"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -282,3 +283,142 @@ def test_materialization_gate_requires_grouped_split_and_rights_decision():
         "declared_unit_or_scale_conflict_unresolved",
         "coordinate_scale_undeclared_for_absolute_geometry_qoi",
     } <= set(policy["hard_zero_conditions"])
+
+
+def test_second_batch_source_overrides_preserve_scientific_weight_boundaries():
+    policy = _load(POLICY_PATH)
+    source_config = _load(SOURCE_SCOPE_PATH)
+    declared = {row["source_scope_key"] for row in source_config["scopes"]}
+    by_scope = {
+        row["source_scope_key"]: row for row in policy["source_overrides"]
+    }
+
+    expected_scopes = {
+        "scope_zenodo14983287",
+        "scope_zenodo6390478",
+        "scope_figshare23635998_v1",
+        "scope_zenodo15370425",
+    }
+    assert expected_scopes <= declared
+    assert expected_scopes <= set(by_scope)
+
+    elastomer = by_scope["scope_zenodo14983287"]
+    assert elastomer["base_weight_ceiling"] == 0.35
+    assert elastomer["split_group_keys"] == ["dataset_doi", "material_grade"]
+    assert elastomer["task_specific_ceilings"][
+        "curve_point_or_response_channel"
+    ] == 0.0
+
+    microsphere = by_scope["scope_zenodo6390478"]
+    assert microsphere["base_weight_ceiling"] == 0.30
+    assert microsphere["split_group_keys"] == [
+        "dataset_doi",
+        "porosity",
+        "specimen_id",
+    ]
+    assert microsphere["task_specific_ceilings"][
+        "post_average_or_smoothed_curve"
+    ] == 0.0
+    assert microsphere["task_specific_ceilings"][
+        "minmax_derived_summary_or_conflicting_xlsx"
+    ] == 0.0
+
+    relaxation = by_scope["scope_figshare23635998_v1"]
+    assert relaxation["base_weight_ceiling"] == 0.0
+    future = relaxation[
+        "future_task_specific_ceilings_after_series_level_provenance_materialization"
+    ]
+    assert future["original_task3_task11_experimental_mechanics"] == 0.25
+    assert future["prony_or_abaqus_same_source_model"] == 0.05
+    assert future["exact_duplicate_or_alternative_coordinate_view"] == 0.0
+    assert relaxation["split_group_keys"] == ["dataset_doi", "material"]
+
+    tpu1301 = by_scope["scope_zenodo15370425"]
+    assert tpu1301["base_weight_ceiling"] == 1.00
+    assert tpu1301["split_group_keys"] == ["dataset_doi", "material_grade"]
+    task_caps = tpu1301["task_specific_ceilings"]
+    assert task_caps["direct_raw_tpu_experiment"] == 1.00
+    assert task_caps["manually_digitized_tension_curve"] == 0.65
+    assert task_caps["mapped_validation_fe_physics_surrogate"] == 0.35
+    assert task_caps["calibration_fit_output_for_property_supervision"] == 0.0
+    assert task_caps["calibration_output_for_separate_fe_emulator"] == 0.25
+
+
+def test_third_batch_source_overrides_include_experiments_and_simulations_without_row_inflation():
+    policy = _load(POLICY_PATH)
+    source_config = _load(SOURCE_SCOPE_PATH)
+    declared = {row["source_scope_key"] for row in source_config["scopes"]}
+    by_scope = {
+        row["source_scope_key"]: row for row in policy["source_overrides"]
+    }
+    expected = {
+        "scope_zenodo_5841610_dataset",
+        "scope_zenodo_6128356_dataset",
+        "scope_mendeley_hc6npzvw3m_v1",
+        "scope_mendeley_dbzdkz95f8_v1",
+        "scope_mendeley_kysnxmy7xw_v1",
+        "scope_zenodo_7811383_dataset",
+        "scope_zenodo_10817092_dataset",
+        "scope_zenodo_17790918_dataset",
+        "scope_pcl_git_lfs_supplement_local",
+        "scope_zenodo_5099589_dataset",
+    }
+    assert expected <= declared
+    assert expected <= set(by_scope)
+
+    commercial = by_scope["scope_zenodo_5841610_dataset"]
+    assert commercial["split_group_keys"] == ["dataset_doi", "material_grade"]
+    assert commercial["task_specific_ceilings"][
+        "figure_s7_70a_85a_material_identity_conflict"
+    ] == 0.0
+    assert commercial["source_batch_fraction_cap"] == 0.10
+
+    tecoflex = by_scope["scope_zenodo_6128356_dataset"]
+    assert tecoflex["split_group_keys"] == ["dataset_doi", "base_tpu_grade"]
+    assert tecoflex["task_specific_ceilings"][
+        "main_workbook_direct_specimen_scalar"
+    ] == 0.55
+    assert tecoflex["task_specific_ceilings"][
+        "unresolved_strain_unit_curve"
+    ] == 0.0
+
+    fatigue = by_scope["scope_mendeley_hc6npzvw3m_v1"]
+    assert fatigue["base_weight_ceiling"] == 1.0
+    assert fatigue["split_group_keys"] == ["dataset_doi", "material_grade"]
+    assert fatigue["task_specific_ceilings"][
+        "recovery_history_same_specimen_total_budget"
+    ] < fatigue["task_specific_ceilings"]["direct_tpu_specimen_history"]
+
+    lattice = by_scope["scope_mendeley_dbzdkz95f8_v1"]
+    assert lattice["task_specific_ceilings"]["claimed_but_unidentifiable_fea_run"] == 0.0
+    limited = by_scope["scope_mendeley_kysnxmy7xw_v1"]
+    assert limited["maximum_total_weight_for_all_13_simulation_curves"] == 0.05
+    assert limited["task_specific_ceilings"]["experiment_average_or_chart_copy"] == 0.0
+
+    input_only = by_scope["scope_zenodo_7811383_dataset"]
+    shock_input = by_scope["scope_zenodo_5099589_dataset"]
+    assert input_only["base_weight_ceiling"] == 0.0
+    assert shock_input["base_weight_ceiling"] == 0.0
+    assert input_only[
+        "future_task_specific_ceilings_after_output_and_convergence_audit"
+    ]["topology_potential_or_simulation_input"] == 0.0
+    assert shock_input[
+        "future_task_specific_ceilings_after_output_validation_and_rights_closure"
+    ]["atomistic_data_force_field_or_input_script"] == 0.0
+
+    dft = by_scope["scope_zenodo_10817092_dataset"]
+    assert dft["split_group_keys"] == ["dataset_doi", "reaction_pathway"]
+    assert dft["task_specific_ceilings"][
+        "converged_pathway_barrier_or_stationary_point_thermochemistry"
+    ] == 0.50
+    pcl = by_scope["scope_zenodo_17790918_dataset"]
+    assert pcl["task_specific_ceilings"][
+        "git_lfs_pointer_or_missing_trajectory_object"
+    ] == 0.0
+    assert pcl["maximum_combined_weight_across_archive_and_lfs_supplement"] == 0.30
+    supplement = by_scope["scope_pcl_git_lfs_supplement_local"]
+    assert supplement["base_weight_ceiling"] == 0.0
+    assert supplement[
+        "future_task_specific_ceilings_after_rights_and_convergence_closure"
+    ]["within_run_aggregated_conformation_descriptor"] == 0.20
+    assert supplement["maximum_combined_weight_with_scope_zenodo_17790918_dataset"] == 0.30

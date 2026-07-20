@@ -1,0 +1,196 @@
+# TPU 数据库 v0.2：可训练样本清单与数据规模总账
+
+> 状态：`audit_inventory_only / training_blocked / weights_not_materialized`
+> 生成方式：由 v0.1 冻结快照、v0.2 来源治理配置、46 个新增开放数据目录的审计摘要与逐记录 TSV 确定性生成。
+> 固定审计时点：`2026-07-20T00:00:00Z`；输入文件：86；输入指纹：`d2370dc52d74411ea6dd91572896348171f94bee1004849a3b5235b7c51fc2be`。
+> 重要边界：本报告中的“候选”只表示科学审计后仍值得保留；**当前模型就绪记录仍为 0**。
+
+## 1. 直接结论
+
+| 指标 | 当前可复算值 | 正确解释 |
+|---|---:|---|
+| v0.2 新增开放数据目录 | 46 | 物理目录数，不是独立来源数 |
+| v0.2 新增独立来源身份 | 45 | PCL Git LFS 补采与 Zenodo PCL 母来源同源，贡献记 0 |
+| 总账来源范围 | 50 | 46 个 v0.2 目录 + 4 个 v0.1 冻结基线 |
+| 独立来源贡献合计 | 49 | v0.2 独立来源45 + v0.1冻结基线4；PCL Git LFS补采贡献为0 |
+| 逐记录清单行 | 3,132 | 含来源聚合、逐试样、逐运行、逐曲线、逐标量和证据组；不是单一统计分母 |
+| 核心校准曲线/已审计点行 | 233 / 935,097 | 新增三源217条/913,608点行 + v0.1 Eom 16条/21,489点行；完整点对上限≤935,095，Eom试样链未闭合 |
+| 严格核心键控试样/曲线/已审计点行 | 217 / 217 / 913,608 | DRUM主核心148 + 低天花板28 + QUB 41；完整点对上限≤913,606 |
+| 三个核心目录全部键控试样 | 227 | DRUM 158 + 低天花板28 + QUB 41；含DRUM 10个桥接/外部/橡皮筋对照，仅作目录全范围盘点 |
+| 严格新增核心规范配方 | 30 | DRUM主核心22 + 低天花板4 + QUB 4；规范配方键口径，不是材料代码别名数 |
+| 三个核心目录全范围规范配方 | 34 | DRUM 26 + 低天花板4 + QUB 4；DRUM额外4个为P4MCL热固、14BDO桥接、Elastollan外部和rubber band对照 |
+| 严格可确认核心批次 | 27 | DRUM主核心23 + 低天花板4；QUB批次未知，不补零 |
+| 三个核心目录全范围可确认批次 | 31 | 含4个非核心对照/桥接批次；QUB批次未知 |
+| 保守 TPU/TPUU 试样或直接运行盘点下界 | 1,088 | 由1119算术池剔除FDM 19个hold与12个PU微球试样；仍是异质盘点口径，不是可训练样本数 |
+| 选定来源异质物理试样/运行算术池 | 1,119 | 含FDM hold与PU微球；只复核来源级算术，**不可训练、不可作单一统计分母** |
+| 主要实验曲线/历史下界 | 1,112 | 跨 12 个非重叠来源范围的曲线/历史审计下界 |
+| 主要实验曲线点下界 | 12,258,315 | 点强相关，不能随机拆点 |
+| 纯实验 origin 已知试样合计 | 1,258 | 仅汇总有明确试样计数的 14 个来源范围；未知试样数不补零 |
+| 纯实验 origin 曲线（观测/候选） | 2,031/1,905 | 分母分别为 24/24 个已知来源范围 |
+| 纯实验 origin 已知点 | 6,980,144 | 来自 24 个点数已知来源范围 |
+| 混合 origin 曲线/点 | 344 / 7,606,461 | 含实验+模拟/模型视图，**不得直接并入纯实验合计** |
+| 当前模型就绪记录 | **0** | 未完成动作级训练许可、配方—批次—试样血缘、目标定义、组级拆分与权重物化 |
+
+主任务采用 1,088 的保守盘点下界；1,119 只保留为选定来源的异质算术池，不能称为 TPU/TPUU 可用样本。核心校准曲线233=新增三源217条键控核心曲线+v0.1 Eom 16条可派生曲线；后16条的配方—独立试样链尚未闭合。严格核心键控试样是217，三个核心目录全范围则是227；严格规范配方是30，目录全范围规范配方是34，均不得用材料代码别名数替代。
+
+## 2. 状态与计数定义
+
+- `入选`：科学上属于核心任务且具有非零未来上限；仍需权利、拆分和权重物化，当前不是训练行。
+- `降权`：只适用于工艺、商业牌号、PU邻域、计算描述符或应用子任务；不可主导化学—本征性能模型。
+- `仅验证`：只作外部验证、表示审计或来源证据，训练上限为 0。
+- `隔离`：重复、冲突、单位/许可/输出缺失或访问受阻；训练上限为 0。
+- `curve_count_candidate/scalar_count_candidate` 是科学候选数，不是模型就绪数；所有 `current_weight_materialized=false`。
+- `point_count`、模拟帧、数值单元格和 PDF 页数绝不增加独立材料、配方、批次或试样数。
+
+## 3. 来源级总账
+
+| 来源范围 | 来源范围键 / 引用键 / DOI或稳定标识 | 任务/角色 | 材料/配方 | 试样/运行 | 曲线（观测/候选） | 标量（观测/候选） | 点/帧 | 状态 | 上限 |
+|---|---|---|---:|---:|---:|---:|---:|---|---:|
+| `基础数据/smipoly_monomers.csv` | `v0.1_snapshot_smipoly`<br>ledger-007-smipoly-2023<br>local-export:smipoly_monomers.csv | 反应规则约束与虚拟候选生成 / 迁移 | 1,071/— | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `代码仓库镜像/DQ/experiment/datasets/PUE.csv` | `v0.1_snapshot_pue326`<br>ledger-012-xie-2025-matimpute<br>https://github.com/ai4mat/Deep-learning-quality | 交联 PUE 变换后性质辅助 / 迁移 | —/— | —/— | 0/0 | 326/0 | 0 | 隔离 | 0.00 |
+| `代码仓库镜像/viscosity-modeling/ViscTempData.xlsx` | `v0.1_snapshot_prepolymer_viscosity`<br>ledger-004-pugar-2025-viscosity<br>https://github.com/joepugar/viscosity-modeling | 预聚体温度—黏度加工辅助 / 迁移 | 39/39 | —/39 | 39/0 | 0/0 | 4,559 | 隔离 | 0.00 |
+| `外部数据/TPU_HBond_2021_Source_Main.xlsx` | `v0.1_snapshot_eom_hbond`<br>ledger-018-eom-2021-hbond-tpu<br>doi:10.6084/m9.figshare.12936989.v1 | TPU 氢键—温度—力学与曲线派生 / TPU核心 | —/— | —/53 | 53/53 | 19/19 | 25,972 | 入选 | 1.00 |
+| `ACS_Figshare_二氧化碳共聚酯聚氨酯` | `scope_acs_figshare_31989433_v1`<br>ledger-114-kong-2026-co2-copolyester-puu-si<br>doi:10.1021/acsmacrolett.6c00123.s001 | 配方/合成/力学文献证据 / 证据 | 4/4 | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_呋喃高强聚氨酯` | `scope_acs_figshare_31429142_v1`<br>ledger-110-yang-2026-furan-tpu-si<br>doi:10.1021/acs.macromol.5c03627.s001 | 高强韧/耗散/恢复文献证据 / 证据 | 6/6 | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_聚碳酸酯大分子二醇TPU` | `scope_acs_figshare_32256977_v1`<br>ledger-116-zhong-2026-co2-macrodiol-tpu-si<br>doi:10.1021/acsapm.6c00646.s001 | CO2 基大分子二醇—TPU性能证据 / 证据 | —/— | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_聚酰亚胺回收链扩剂PU` | `scope_acs_figshare_31614502_v1`<br>ledger-112-guo-2026-polyimide-chain-extender-si<br>doi:10.1021/acsapm.5c04872.s001 | 回收链扩剂—PU性能证据 / 证据 | 5/5 | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_氢键纳米结构TPU` | `scope_acs_figshare_32567339_v1`<br>ledger-118-wei-2026-hbond-nanostructure-si<br>doi:10.1021/acs.macromol.6c00352.s001 | 氢键程度—热/力学证据 / 证据 | 7/7 | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_双相演化聚氨酯` | `scope_acs_figshare_29074233_v1`<br>ledger-106-lu-2025-dual-phase-tpu-si<br>doi:10.1021/acsmaterialslett.5c00732.s001 | 双相演化—氢键—力学证据 / 证据 | 5/5 | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_PLA立构复合TPU` | `scope_acs_figshare_31333274_v1`<br>ledger-108-xu-2026-scpla-tpu-si<br>doi:10.1021/acs.macromol.5c03502.s001 | 立构复合界面—热/力学证据 / 证据 | 11/11 | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `ACS_Figshare_TPU退火硬段聚集` | `scope_acs_figshare_28906446_v1`<br>ledger-104-wang-2025-hard-segment-aggregation-si<br>doi:10.1021/acs.macromol.5c00142.s001 | 退火—硬段聚集—性能证据 / 证据 | —/— | —/21 | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `AGH_低石化多元醇硬质PU泡沫` | `scope_agh_lkhz6q_v1`<br>ledger-068-zakrzewska-2026-rpuf-data<br>doi:10.58032/AGH/LKHZ6Q | 生物基硬质PU泡沫候选元数据 / 证据 | —/— | 0/0 | 0/0 | 0/0 | 0 | 隔离 | 0.00 |
+| `Bath_多牌号PU泡沫多模态表征` | `scope_bath_00385_dataset`<br>ledger-085-dams-2017-pu-foam-data<br>doi:10.15125/BATH-00385 | 商业PU泡沫多模态迁移候选 / 证据 | 3/— | —/— | —/0 | —/0 | — | 隔离 | 0.00 |
+| `DRUM_TPUU_低天花板` | `scope_drum_zf53w893_dataset`<br>ledger-055-meyersohn-2024-low-ceiling-tpuu-data<br>doi:10.13020/zf53-w893 | 低天花板TPUU力学/耗散/回收 / TPU核心 | 4/4 | 28/28 | 28/28 | 0/0 | 113,060 | 入选 | 1.00 |
+| `DRUM_TPUU_机械回收` | `scope_drum_05ek6k60_dataset`<br>ledger-053-pfau-cloud-2024-recyclable-tpuu-data<br>doi:10.13020/05ek-6k60 | 可回收TPUU力学/耗散/回收 / TPU核心 | 26/26 | 158/158 | 158/157 | 0/0 | 779,948 | 入选 | 1.00 |
+| `Figshare_蓖麻油脂肪族PU化学性能` | `scope_figshare_14279117_v1`<br>ledger-073-uscategui-2021-castor-pu-data<br>doi:10.6084/m9.figshare.14279117.v1 | 生物基PU配方/性能候选 / 证据 | 0/0 | 0/0 | 0/0 | 0/0 | 0 | 隔离 | 0.00 |
+| `Figshare_热固PU原子经济升级回收` | `scope_figshare_31552786_v1`<br>ledger-069-zhu-2026-pu-upcycling-data<br>doi:10.6084/m9.figshare.31552786.v1 | 热固PU解聚/再生/黏接迁移 / 迁移 | 1/3 | —/9 | —/— | —/— | — | 降权 | 0.25 |
+| `Figshare_自愈离子胶黏PU源数据` | `scope_figshare_21716516_v1`<br>ledger-071-gao-2022-shpu-source-data<br>doi:10.6084/m9.figshare.21716516.v1 | 自愈/界面/器件多任务迁移 / 迁移 | 4/3 | —/— | —/— | —/— | — | 降权 | 0.20 |
+| `Figshare_PU高低速变形后应力松弛` | `scope_figshare23635998_v1`<br>ledger-048-commins-2023-relaxation-data<br>doi:10.6084/m9.figshare.23635998.v1 | PU温度/速率/松弛迁移 / 迁移 | 2/— | —/38 | 108/108 | 0/0 | 1,459,510 | 降权 | 0.25 |
+| `Jagiellonian_硬段从头算MD` | `scope_jagiellonian_tyapfm_dataset`<br>ledger-061-didovets-2026-hard-segment-aimd-data<br>doi:10.57903/UJ/TYAPFM | 硬段量化/AIMD表示与氢键机理 / 迁移 | 0/0 | 0/4 | 0/0 | 0/0 | 466 | 降权 | 0.15 |
+| `MaterialsCloud_商用PU泡沫多轴断裂力学` | `scope_materialscloud_vf_ry_dataset`<br>ledger-081-rezaei-2026-pu-foam-data<br>doi:10.24435/materialscloud:VF-RY | PU泡沫多轴/DIC/断裂迁移 / 迁移 | 1/— | 37/37 | 74/74 | 0/0 | 54,416 | 降权 | 0.30 |
+| `Mendeley_热可逆超分子PU宽应变率` | `scope_mendeley_byjbmymyhh_v5`<br>ledger-046-chen-2021-supermolecular-raw<br>doi:10.17632/byjbmymyhh.5 | PU速率/松弛/DMA流变迁移 / 迁移 | 1/1 | —/19 | 19/0 | 0/0 | 35,919 | 仅验证 | 0.00 |
+| `Mendeley_商业TPU温度疲劳多工况` | `scope_mendeley_hc6npzvw3m_v1`<br>ledger-092-habets-2024-commercial-tpu-data<br>doi:10.17632/hc6npzvw3m.1 | 商业TPU温度/速率/疲劳与恢复 / 迁移 | 5/— | 190/196 | 196/196 | 0/0 | 333,492 | 降权 | 0.35 |
+| `Mendeley_植物基PU泡沫温湿老化压缩` | `scope_mendeley_2sp8fyvhfm_v3`<br>ledger-084-pires-da-silva-2023-aged-puf-data<br>doi:10.17632/2sp8fyvhfm.3 | PU泡沫温湿老化/压缩/DIC迁移 / 迁移 | 1/— | 90/90 | 90/88 | 0/0 | 360,176 | 降权 | 0.35 |
+| `Mendeley_FDM_TPU晶格与基材力学` | `scope_mendeley_dbzdkz95f8_v1`<br>ledger-093-tapia-2026-fdm-tpu-cellular-data<br>doi:10.17632/dbzdkz95f8.1 | FDM TPU晶格/基材力学迁移 / 迁移 | 1/— | 76/76 | 76/57 | 1,206/935 | 712,240 | 降权 | 0.35 |
+| `Mendeley_PU泡沫动态力学_精选表` | `scope_mendeley_x6b72k59xn_v1`<br>ledger-065-morrison-2023-dynamic-pu-foam-data<br>doi:10.17632/x6b72k59xn.1 | PU泡沫温度/速率/吸能迁移 / 迁移 | 2/— | —/14 | 14/2 | 105/0 | 32,982 | 仅验证 | 0.00 |
+| `Mendeley_SLS_TPU工艺力学` | `scope_mendeley_wfsm6f9rbn_v1`<br>ledger-059-ciobotaru-2023-sls-tpu-data<br>doi:10.17632/wfsm6f9rbn.1 | SLS TPU工艺—拉伸迁移 / 迁移 | 1/— | 350/75 | 350/348 | —/— | 1,787,452 | 降权 | 0.35 |
+| `Mendeley_TPU95A_TPMS应变率力学` | `scope_tpu95a_mendeley_local_mirror`<br>ledger-025-xu-2026-tpu95a<br>doi:10.17632/mc6zh4cwhf.2 | TPU95A应变率/松弛/几何迁移镜像 / 迁移 | 1/— | 12/12 | 12/0 | 0/0 | 47,065 | 隔离 | 0.00 |
+| `Mendeley_TPU实验仿真曲线` | `scope_mendeley_kysnxmy7xw_v1`<br>ledger-094-mohd-azli-2023-tpu-curve-data<br>doi:10.17632/kysnxmy7xw.1 | TPU实验—仿真曲线对照 / 迁移 | 1/— | 3/16 | 16/16 | 0/0 | 150,462 | 降权 | 0.35 |
+| `Mendeley_TPU压缩打印DOE` | `scope_mendeley_7zcd9bmmg5_v1`<br>ledger-103-wentz-2022-tpu-compression-doe-data<br>doi:10.17632/7zcd9bmmg5.1 | 打印工艺/几何—离散压缩响应 / 迁移 | 2/— | 184/184 | 0/0 | 2,664/1,356 | 0 | 降权 | 0.35 |
+| `PCL_GitLFS轨迹补采` | `scope_pcl_git_lfs_supplement_local`<br>未映射（见审计依据）<br>https://github.com/pbacova/PCL_Supplementary_material_systematic_CG | PCL软段CGMD轨迹来源闭包 / 迁移 | 0/0 | 0/10 | 0/0 | 0/0 | 10,569 | 隔离 | 0.00 |
+| `QUB_生物基三重自修复TPU` | `scope_qub_83fdb865_dataset`<br>ledger-075-griggs-2024-triple-healing-tpu-data<br>doi:10.17034/83fdb865-0ead-4c8b-81d2-59265a8810f3 | 生物基自愈TPU力学/循环/器件 / TPU核心 | 4/4 | 41/68 | 79/68 | 0/0 | 234,822 | 入选 | 1.00 |
+| `ScienceDB_微孔PU动态力学` | `scope_sciencedb_j00189_00045_dataset`<br>ledger-057-jiang-2024-microcellular-pu-data<br>doi:10.57760/sciencedb.j00189.00045 | 微孔PU冲击实验—仿真迁移 / 迁移 | 3/— | 9/27 | 27/27 | 0/0 | — | 降权 | 0.30 |
+| `ScienceDB_TPU芳纶纳米纤维能量吸收` | `scope_sciencedb_26393_v1`<br>ledger-067-zhang-2025-tpu-anf-data<br>doi:10.57760/sciencedb.26393 | TPU/ANF形貌证据与视觉候选 / 证据 | —/— | —/— | 0/0 | 0/0 | 0 | 仅验证 | 0.00 |
+| `SND_TPU导电轨迹循环拉伸` | `scope_snd_2024_267_v1`<br>ledger-066-ahmad-2019-tpu-conductive-tracks-data<br>doi:10.5878/tc7g-1056 | TPU基底导电轨迹工艺—电阻保持 / 迁移 | 1/— | —/24 | 0/0 | 288/283 | 0 | 降权 | 0.40 |
+| `Texas_湿干单根电纺PU纤维力学` | `scope_texas_zyq5z1_dataset`<br>ledger-083-madariaga-2026-single-pu-fiber-data<br>doi:10.18738/T8/ZYQ5Z1 | 单根PU纤维湿干非线性/恢复迁移 / 迁移 | 1/— | 38/38 | 646/646 | 38/38 | 53,846 | 降权 | 0.30 |
+| `Zenodo_标准化弹性体表征` | `scope_zenodo14983287`<br>ledger-041-roels-2025-elastomer-data<br>doi:10.5281/zenodo.14983287 | 商业TPE力学/松弛/热学/流变迁移 / 迁移 | 2/— | —/42 | 42/42 | 0/0 | 1,341,840 | 降权 | 0.35 |
+| `Zenodo_反应型粗粒化聚脲固化` | `scope_zenodo_7811383_dataset`<br>ledger-095-liu-2023-reactive-cg-polyurea-data<br>doi:10.5281/zenodo.7811383 | 反应型CG聚脲固化复现 / 迁移 | 0/0 | 0/0 | 0/0 | 0/0 | 0 | 隔离 | 0.00 |
+| `Zenodo_可打印自愈可回收PU生物电子` | `scope_zenodo_19609901_dataset`<br>ledger-078-cicoira-2026-printable-pu-data<br>doi:10.5281/zenodo.19609901 | 可打印自愈PU复合物力学/电学迁移 / 迁移 | 9/9 | —/30 | 30/30 | 98/98 | 155,872 | 降权 | 0.25 |
+| `Zenodo_商业TPU多材料打印传感` | `scope_zenodo_5841610_dataset`<br>ledger-088-georgopoulou-2021-tpu-gripper-data<br>doi:10.5281/zenodo.5841610 | 商业TPU打印力学/传感迁移 / 迁移 | —/— | —/64 | 66/64 | 6/6 | 830,958 | 降权 | 0.35 |
+| `Zenodo_生物基共轭氨基甲酸酯玻璃体` | `scope_zenodo_21096098_dataset`<br>ledger-086-benes-2026-vinylogous-urethane-data<br>doi:10.5281/zenodo.21096098 | 动态网络/循环利用迁移 / 迁移 | 8/8 | 20/36 | 16/16 | 76/— | 38,953 | 降权 | 0.20 |
+| `Zenodo_NIPU反应路径DFT与MD` | `scope_zenodo_10817092_dataset`<br>ledger-097-cervinka-2024-nipu-reaction-data<br>doi:10.5281/zenodo.10817092 | NIPU反应路径DFT机理描述符 / 迁移 | 0/0 | 0/4 | 0/0 | 8/8 | 20 | 降权 | 0.25 |
+| `Zenodo_PCL软段构象粗粒化MD` | `scope_zenodo_17790918_dataset`<br>ledger-099-bacova-2025-pcl-soft-segment-data<br>doi:10.5281/zenodo.17790918 | PCL软段CGMD构象先验 / 迁移 | 0/0 | 0/8 | 0/0 | 5/0 | 17,673 | 仅验证 | 0.00 |
+| `Zenodo_PTMO_MDI_BDO聚氨酯冲击MD` | `scope_zenodo_5099589_dataset`<br>ledger-101-dewapriya-2021-pu-spallation-data<br>10.5281/zenodo.5099589 | PTMO/MDI/BDO聚氨酯冲击MD复现 / 迁移 | 0/0 | 0/0 | 0/0 | 0/0 | 0 | 隔离 | 0.00 |
+| `Zenodo_PU微球复合材料拉伸` | `scope_zenodo6390478`<br>ledger-043-coret-2022-microsphere-data<br>doi:10.5281/zenodo.6390478 | PU微球复合滞回/DIC迁移 / 迁移 | 6/6 | 12/12 | 43/36 | 0/0 | 23,922 | 降权 | 0.35 |
+| `Zenodo_Tecoflex药物复合TPU` | `scope_zenodo_6128356_dataset`<br>ledger-090-vazquez-rodriguez-2022-tecoflex-data<br>doi:10.5281/zenodo.6128356 | Tecoflex复合TPU力学/多模态迁移 / 迁移 | 4/4 | 22/— | 0/0 | 98/89 | 12,650 | 降权 | 0.35 |
+| `Zenodo_TPU_SWCNT热电` | `scope_zenodo_20932248_dataset`<br>ledger-063-krause-2026-tpu-swcnt-data<br>doi:10.5281/zenodo.20932248 | TPU/SWCNT热电/导电/IR应用迁移 / 迁移 | 15/15 | —/123 | 0/0 | 123/123 | 0 | 降权 | 0.60 |
+| `Zenodo_TPU1301热黏弹黏塑本构` | `scope_zenodo15370425`<br>ledger-039-noels-2025-constitutive-data<br>doi:10.5281/zenodo.15370425 | TPU1301实验本构/速率/FE验证 / 迁移 | 1/— | 80/95 | 193/179 | 0/0 | 5,996,489 | 降权 | 1.00 |
+| `Zenodo_TPU回收封端剂DFT与机器学习` | `scope_zenodo_17883052_dataset`<br>ledger-077-rafiq-2026-deblocking-dft-data<br>doi:10.5281/zenodo.17883052 | 封端剂DFT描述符—解封温度映射 / 迁移 | 21/21 | 0/158 | 0/0 | 21/21 | 0 | 降权 | 0.50 |
+
+## 4. 逐记录清单覆盖度
+
+逐记录清单不是把每个来源都虚构成同一粒度；只有现有审计能确认的实体才展开。没有逐试样 ID 的来源保留来源级或曲线级记录，并将 `completeness` 与 `leakage_key_status` 明示。
+
+| 粒度 | 行数 |
+|---|---:|
+| `curve` | 1,099 |
+| `evidence_group` | 54 |
+| `run` | 196 |
+| `scalar` | 1,511 |
+| `source` | 50 |
+| `specimen` | 222 |
+
+FDM 来源的 76 条曲线与 1,206 条标量共享 76 个试样组。候选规则是 `quality_gate=pass_source_summary_selected`：57 条曲线、935 条标量；`not_selected` 为 9 条曲线/128 条标量，仅留审计；`conflict` 为 10 条曲线/143 条标量，隔离。审计中另有 36 个 `blocked_summary_conflict_evidence` 空值，只保留来源冲突证据，不变成数值样本。
+
+打印 DOE 的有效观测科学标量为 2,664=1,372 个完整直接响应+1,292 个有效规范派生；派生量与母响应不可重复计权。主候选只保留 1,356 个直接响应，另有4个实心立方体对照试样产生16个完整直接响应，仅作验证且权重为0。`direct_numeric_total=1,500` 还包含载荷、面积等输入，不能当作响应数；4 个无效缓存伪零和 4 个已知缺失仅作异常审计，均不计入有效观测标量。
+
+## 5. 无泄漏与权重边界
+
+所有逐记录行至少具有来源家族级粗粒度泄漏键；存在试样、配方、运行或作者显式组键时使用更细键。粗粒度键的含义是保守地把整来源家族放在同一折，不代表材料身份已经解析。当前没有训练拆分；以后物化时还必须执行 `source_family → study/DOI → formulation → batch → specimen → curve/run` 的逐级保护。
+
+本总账只保存未来权重上限。任何隔离/仅验证记录上限强制为 0；曲线内与试样内归一、同体系多帧聚合和来源平衡均未执行。不能用行数、点数或帧数推高权重。
+
+## 6. 机器可读产物与复算
+
+- 来源级总账：`06_审核导出/TPU数据库_v0.2_数据规模总账.csv`
+- 逐记录清单：`06_审核导出/TPU数据库_v0.2_可训练样本清单.csv`
+- JSON 总账：`06_审核导出/TPU数据库_v0.2_可训练样本总账.json`
+- 复算程序：`代码/生成v0.2可训练样本总账.py`
+- 校验：`代码/测试/test_trainable_inventory.py`
+
+## 7. 审计依据
+
+[A1] TPU 高通量筛选数据库与多保真研究工作流，`README.md`。
+
+[A2] TPU 数据库 v0.2 新增开放数据准入报告，`文档/质量报告/TPU数据库_v0.2_新增开放数据准入报告.md`。
+
+[A3] TPU 数据库 v0.2 第二批四源深审报告，`文档/质量报告/TPU数据库_v0.2_第二批四源深审报告.md`。
+
+[A4] TPU 数据库 v0.2 第四批九源质量报告，`文档/质量报告/TPU数据库_v0.2_第四批九源质量报告.md`。
+
+[A5] TPU 数据库 v0.2 PCL Git LFS 十轨迹补采质量报告，`文档/质量报告/TPU数据库_v0.2_PCL_GitLFS十轨迹补采质量报告.md`。
+[A6] TPU 数据库 v0.1 快照，`05_数据库快照/TPU数据库_v0.1_快照.json`。
+
+## 8. 数据来源参考文献
+
+下列参考文献由 `配置/v0.2来源范围.yaml` 的固定 citation 台账生成；论文 DOI 与数据 DOI 分开保存。一个来源范围可能同时对应数据集与主论文，因此不能按参考文献条数增加来源或样本数。
+
+[R001] Kong, W.; Dar, U. A.; Ma, Y.; et al. Recyclable Thermoplastic Poly(urethane-urea)s with Enhanced Mechanical and Adhesive Properties Derived from CO2-Based Copolyesters [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acsmacrolett.6c00123.s001.
+[R002] Yang, T.; Chen, X.; Wei, Z.; et al. High-Strength, Tough, Furan-Based Polyurethane Elastomers Achieving Performance and Functionality Upgrades through Postdynamic Cross-Linking [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acs.macromol.5c03627.s001.
+[R003] Zhong, W.; Zhang, T.; Huang, S.; et al. One-Pot Synthesis of CO2-Based Polycarbonate Macrodiols: (Propylene Carbonate)/(Ethylene Carbonate) Composition Evolution Versus Physicochemical Performance [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acsapm.6c00646.s001.
+[R004] Guo, H.; Zhang, R.; Li, H.; et al. Upcycling of Polyimide for the Preparation of a High-Performance Polyurethane Chain Extender [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acsapm.5c04872.s001.
+[R005] Wei, Z.; Zhang, Y.; Lei, Y.; et al. Design of Sustainable and High Strength-Toughness Thermoplastic Elastomer via a Strong Hydrogen Bond-Reinforced Nanostructure [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acs.macromol.6c00352.s001.
+[R006] Lu, K.; Chen, H.; Huang, C.; Wang, Z.; Yan, J. Capturing Robust and Tough Thermoplastic Polyurethane Elastomers via Engineering Dual-Phase Evolution Rather than Chain Extenders [Supporting information], version 1; ACS Publications/Figshare, 2025. https://doi.org/10.1021/acsmaterialslett.5c00732.s001.
+[R007] Xu, R.; Miao, X.; Yang, S.; et al. Stiff Yet Elastic Thermoplastic Polyurethanes Based on Nanoconfined Stereocomplexation in PLA Interphases [Supporting information], version 1; ACS Publications/Figshare, 2026. https://doi.org/10.1021/acs.macromol.5c03502.s001.
+[R008] Wang, Z.; Wang, C.; Zhao, X.; Yang, X. Manipulating the Mechanical Properties of Thermoplastic Polyurethane via Regulating Hard Segment Aggregation [Supporting information], version 1; ACS Publications/Figshare, 2025. https://doi.org/10.1021/acs.macromol.5c00142.s001.
+[R009] Zakrzewska, P. Rigid Polyurethane Foams with Reduced Petrochemical Polyol Content [Data set], version 1; AGH University Dataverse, 2026. https://doi.org/10.58032/AGH/LKHZ6Q.
+[R010] Dams, B. Reprocell 500, Reprocell 300 and LD40 Polyurethane Foam Mechanical and Characterisation Tests October 2016–April 2017 [Data set]; University of Bath Research Data Archive, 2017. https://doi.org/10.15125/BATH-00385.
+[R011] Meyersohn, M. S.; Block, A.; Bates, F. S.; Hillmyer, M. A. Supporting Information for Tackling the Thermodynamic Stability of Low-Ceiling Temperature Polymers in the Preparation of Tough and Chemically Recyclable Thermoplastic Polyurethane-Urea Elastomers [Data set]; Data Repository for the University of Minnesota, 2024. https://doi.org/10.13020/zf53-w893.
+[R012] Pfau-Cloud, M. R.; Batiste, D. C.; Kim, H. J.; Ellison, C. J.; Hillmyer, M. A. Data for Alkyl Substituted Polycaprolactone Poly(Urethane-Urea)s as Mechanically-Competitive and Chemically-Recyclable Materials [Data set]; Data Repository for the University of Minnesota, 2024. https://doi.org/10.13020/05ek-6k60.
+[R013] Uscategui, Y. L.; Díaz, L. E.; Valero, M. F. Effect of the Addition of Short Chain Polymers on the Chemical Structure, Mechanical, Thermal and Biological Properties of Polyurethanes Synthesized with Aliphatic Diisocyanates and Castor Oil [Data set], version 1; Figshare, 2021. https://doi.org/10.6084/m9.figshare.14279117.v1.
+[R014] Zhu, Y.; Huang, Y.; Ye, S.; Deng, Y.; Chen, J.; Liu, Z.; Guo, X.; Zhu, Y. Atom-Economy Upcycling of Commodity Thermoset Polyurethane into Photocuring 3D Printing Resins Based on Selective Cleavage—Crosslink Strategy [Data set], version 1; Figshare, 2026. https://doi.org/10.6084/m9.figshare.31552786.v1.
+[R015] Gao, D.; Thangavel, G.; Lee, J.; Lv, J.; Li, Y.; Ciou, J.-H.; Xiong, J.; Park, T.; Lee, P. S. Source Data.xlsx [Data set], version 1; Figshare, 2022. https://doi.org/10.6084/m9.figshare.21716516.v1.
+[R016] Commins, T.; Siviour, C. R. Data from Stress Relaxation after Low- and High-Rate Deformation of Polyurethanes [Data set], version 1; The Royal Society/Figshare, 2023. https://doi.org/10.6084/m9.figshare.23635998.v1.
+[R017] Didovets, Y. Structure–Property Relationship between Hard Segments of Shape Memory Polyurethane Copolymers and Interchain Hydrogen Bonds: A Comprehensive Theoretical Study - Raw Data [Data set]; Jagiellonian University Repository, 2026. https://doi.org/10.57903/UJ/TYAPFM.
+[R018] Rezaei, S.; Machado Junior, J. L.; Bilasse, M.; Othmani, Y.; Berthe, S.; Ehlinger, M. Dataset for Characterization of Fracture and Elastic Properties of Commercially Available Polyurethane Foam and Short Fiber Filled Epoxy for Bone Models [Data set]; Materials Cloud, 2026. https://doi.org/10.24435/materialscloud:VF-RY.
+[R019] Chen, H.; Hart, L. R.; Hayes, W.; Siviour, C. R. Mechanical Characterisation and Modelling of a Thermoreversible Superamolecular Polyurethane over a Wide Range of Rates [Data set], version 5; Mendeley Data, 2021. https://doi.org/10.17632/byjbmymyhh.5.
+[R020] Habets, S. Internship_CSM_XSTRMLAB_Sandor_Habets_2024 [Data set], version 1; Mendeley Data, 2024. https://doi.org/10.17632/hc6npzvw3m.1.
+[R021] Pires da Silva, E. H. Aged PUF Compression Tests [Data set], version 3; Mendeley Data, 2023. https://doi.org/10.17632/2sp8fyvhfm.3.
+[R022] Tapia, M. Experimental and Numerical Data for FDM-Printed PLA and TPU Cellular Structures under Compression and Bending [Data set], version 1; Mendeley Data, 2026. https://doi.org/10.17632/dbzdkz95f8.1.
+[R023] Morrison, D. Temperature Dependent Dynamic Response of High-Density Polyurethane Foams [Data set], version 1; Mendeley Data, 2023. https://doi.org/10.17632/x6b72k59xn.1.
+[R024] Ciobotaru, V. Modelling Mechanical Properties of Thermoplastic Polyurethanes through Laser Sintering Exposure for Replicating Micrometric Aortic Valve Membranes [Data set], version 1; Mendeley Data, 2023. https://doi.org/10.17632/wfsm6f9rbn.1.
+[R025] Xu, C. Strain Rate Dependent Mechanical Performance of 3D-Printed Isotropic TPMS-Based Lattices in Thermoplastic Polyurethane; Mendeley Data, version 2, 2026. https://doi.org/10.17632/mc6zh4cwhf.2.
+[R026] Mohd Azli, D. A. S-S Curve for TPU Experiment [Data set], version 1; Mendeley Data, 2023. https://doi.org/10.17632/kysnxmy7xw.1.
+[R027] Wentz, J. Impact of Infill and Shell Design Features on Compression Stiffness in Material Extrusion of Thermoplastic Urethane [Data set], version 1; Mendeley Data, 2022. https://doi.org/10.17632/7zcd9bmmg5.1.
+[R028] Griggs, T. Dataset for A Bio-Based Thermoplastic Polyurethane with Triple Self-Healing Action for Wearable Technology and Smart Textiles [Data set]; Queen’s University Belfast, 2024. https://doi.org/10.17034/83fdb865-0ead-4c8b-81d2-59265a8810f3.
+[R029] Jiang, H. Research on the Dynamic Compressibility of Polyurethane Microcellular Elastomer and its Application for Impact Resistance [Data set], version 1; Science Data Bank, 2024. https://doi.org/10.57760/sciencedb.j00189.00045.
+[R030] Zhang, S. 3D-Printed Multiscale Hierarchical Thermoplastic Polyurethane / Aramid Nanofiber Structures with Enhanced Energy Absorption via In-Situ Foaming Technology [Data set], version 1; Science Data Bank, 2025. https://doi.org/10.57760/sciencedb.26393.
+[R031] Ahmad, J. An Analysis of Screen-Printed Stretchable Conductive Tracks on Thermoplastic Polyurethane [Data set], version 1; Mid Sweden University/SND, 2019. https://doi.org/10.5878/tc7g-1056.
+[R032] Madariaga, A. Replication Data for: The Nonlinear Mechanics of Single Electrospun Polyurethane Fibers Under Wet and Dry Conditions [Data set]; Texas Data Repository, 2026. https://doi.org/10.18738/T8/ZYQ5Z1.
+[R033] Roels, E.; Costa Cornellà, A.; Brancart, J. A Standardized Elastomer Characterization Framework for Soft Robotics—Accompanying Dataset [Data set], version 1; Vrije Universiteit Brussel/Zenodo, 2025. https://doi.org/10.5281/zenodo.14983287.
+[R034] Liu, M. liuminghao0830/cg-polyurea-curing: Published Version of the CG Model [Software], version 1.0; Zenodo, 2023. https://doi.org/10.5281/zenodo.7811383.
+[R035] Cicoira, F.; Kim, J. Printable, Self-Healing and Recyclable PEDOT:PSS/Polyurethane Composites for Durable Bioelectronics [Data set]; Zenodo, 2026. https://doi.org/10.5281/zenodo.19609901.
+[R036] Georgopoulou, A.; Vanderborght, B.; Clemens, F. Fabrication of a Soft Robotic Gripper With Integrated Strain Sensing Elements Using Multi-Material Additive Manufacturing [Data set]; Zenodo, 2021. https://doi.org/10.5281/zenodo.5841610.
+[R037] Beneš, H.; Sedlacek, O.; Kopilec, O.; Hodan, J. Dataset for Rigid Biobased Vinylogous Urethane Vitrimers from d-Isosorbide/Furfural-Derived Monomers [Data set], version 1.0; Zenodo, 2026. https://doi.org/10.5281/zenodo.21096098.
+[R038] Červinka, C.; Paušová, Š.; Bouzek, K. Dataset of “Fast Carbon Dioxide–Epoxide Cycloaddition Catalyzed by Metal and Metal-Free Ionic Liquids for Designing Non-Isocyanate Polyurethanes” [Data set], version 1; Zenodo, 2024. https://doi.org/10.5281/zenodo.10817092.
+[R039] Bačová, P. PCL in Vacuum and in Water [Software/Data], version 1.0_2; Zenodo, 2025. https://doi.org/10.5281/zenodo.17790918.
+[R040] Dewapriya, N.; Miller, R. LAMMPS Model to Simulate Spallation in Polyurethane [Data set]; Zenodo, 2021. https://doi.org/10.5281/zenodo.5099589.
+[R041] Coret, M.; Verron, E.; Rublon, P. Images and Data Accompanying Article: Remarkable Response of Hollow Thermoplastic Microspheres–Elastomer Matrix Composites in Uniaxial Tension [Data set], version 1; Zenodo, 2022. https://doi.org/10.5281/zenodo.6390478.
+[R042] Vazquez-Rodriguez, J. A.; Shaqour, B.; Guarch-Pérez, C.; Choińska, E.; Riool, M.; Verleije, B.; Beyers, K.; Costantini, V. J. A.; Święszkowski, W.; Zaat, S. A. J.; Cos, P.; Felici, A.; Ferrari, L. A Niclosamide-Releasing Hot-Melt Extruded Catheter Prevents Staphylococcus aureus Experimental Biomaterial-Associated Infection [Data set]; Zenodo, 2022. https://doi.org/10.5281/zenodo.6128356.
+[R043] Krause, B.; Zimmerer, C. Raw Data for the Paper Nitrogen Content Governs Thermoelectric Performance in TPU/SWCNT Composites [Data set]; Zenodo, 2026. https://doi.org/10.5281/zenodo.20932248.
+[R044] Noels, L.; Jinaga, U. K. Data of “A Consistent Finite-Strain Thermomechanical Quasi-Nonlinear-Viscoelastic Viscoplastic Constitutive Model for Thermoplastic Polymers” [Data set], version 1; Zenodo, 2025. https://doi.org/10.5281/zenodo.15370425.
+[R045] Rafiq, R.; Zulueta, B.; Zucco, H.; Suresh, R.; Shoemaker, J. E.; Call, M.; Sheppard, D.; Cormack, G.; Keith, J. A.; Veser, G. Supporting Data: Bond Energy Descriptors Enable Machine Learning with Limited Data: Design of Capping Agents for Thermoplastic Polyurethane Recycling [Data set]; Zenodo, 2026. https://doi.org/10.5281/zenodo.17883052.
+[R046] Ohno, M.; Hayashi, Y.; Zhang, Q.; Kaneko, Y.; Yoshida, R. SMiPoly: Generation of a Synthesizable Polymer Virtual Library Using Rule-Based Polymerization Reactions. Journal of Chemical Information and Modeling 2023, 63, 5539–5548. https://doi.org/10.1021/acs.jcim.3c00329. Code: https://github.com/PEJpOhno/SMiPoly.
+[R047] Xie, C.; Li, R.; Li, Y.; Xie, H.; Liu, Q. Imputation of Missing Data in Materials Science through Nearest Neighbors and Iterative Predictions. Journal of Chemical Theory and Computation 2025, 21, 70–78. https://doi.org/10.1021/acs.jctc.4c01237.
+[R048] Pugar, J. A.; Gang, C.; Millan, I.; Haider, K.; Washburn, N. R. Machine Learning of Polyurethane Prepolymer Viscosity: A Comparison of Chemical and Physicochemical Approaches. Digital Discovery 2025, 4, 3652–3661. https://doi.org/10.1039/D5DD00287G. Data and code: https://github.com/joepugar/viscosity-modeling.
+[R049] Eom, Y.; Kim, S.-M.; Lee, M.; Jeon, H.; Park, J.; Lee, E. S.; Hwang, S. Y.; Park, J.; Oh, D. X. Mechano-Responsive Hydrogen-Bonding Array of Thermoplastic Polyurethane Elastomer Captures Both Strength and Self-Healing. Nature Communications 2021, 12, 621. https://doi.org/10.1038/s41467-021-20931-z. Source data: https://doi.org/10.6084/m9.figshare.12936989.v1.
