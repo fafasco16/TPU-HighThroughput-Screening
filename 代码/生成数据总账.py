@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import csv
+import gzip
 import hashlib
 import io
 import json
+import math
 import os
 import stat
 import tempfile
@@ -13,6 +15,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import yaml
+from rdkit import Chem, rdBase
 
 from 审计.SMiPoly_TPU候选分类 import (
     CANDIDATE_COLUMNS,
@@ -24,6 +27,24 @@ from 审计.第七批PURGEN虚拟片段 import (
     ARCHIVE as PURGEN_ARCHIVE,
     build_fragment_rows as build_purgen_fragment_rows,
 )
+from 审计.第九批PolyUniverse异氰酸酯单体 import (
+    AUDIT_PATH as POLYUNIVERSE_DINCO_AUDIT,
+    FILE_SPECS as POLYUNIVERSE_DINCO_FILE_SPECS,
+    MAPPING_PATH as POLYUNIVERSE_DINCO_MAPPING,
+    SOURCE_DIR as POLYUNIVERSE_DINCO_SOURCE_DIR,
+    SOURCE_ID as POLYUNIVERSE_DINCO_SOURCE_ID,
+    SUMMARY_PATH as POLYUNIVERSE_DINCO_SUMMARY,
+    build_candidate_rows as build_polyuniverse_dinco_rows,
+)
+from 审计.第九批PolyOmics import (
+    CSV_PATH as POLYOMICS_CSV_PATH,
+    PROPERTY_FIELDS as POLYOMICS_PROPERTY_FIELDS,
+    SOURCE_DIR as POLYOMICS_SOURCE_DIR,
+)
+from 审计.第九批RadonPy_PI1070 import (
+    BASE_UNITS as RADONPY_BASE_UNITS,
+    SOURCE_DIR as RADONPY_SOURCE_DIR,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,16 +54,49 @@ PROFILE_PATH = ROOT / "配置" / "v0.2可训练样本总账来源画像.yaml"
 SCOPE_PATH = ROOT / "配置" / "v0.2来源范围.yaml"
 SNAPSHOT_V01 = ROOT / "数据/快照" / "TPU数据库_v0.1_快照.json"
 OUTPUT_LEDGER = ROOT / "结果" / "数据规模总账.csv"
-OUTPUT_MANIFEST = ROOT / "结果" / "样本清单.csv"
+OUTPUT_MANIFEST = ROOT / "结果" / "样本清单.csv.gz"
 OUTPUT_JSON = ROOT / "结果" / "数据总账.json"
 OUTPUT_REPORT = ROOT / "结果" / "数据总账说明.md"
 OUTPUT_CANDIDATES = ROOT / "结果" / "Gold_候选.csv"
+OUTPUT_GOLD_C_VALUES = ROOT / "结果" / "Gold_C_计算性能.csv.gz"
 SCRIPT_PATH = Path(__file__).resolve()
 SMIPOLY_CLASSIFIER_PATH = (
     ROOT / "代码" / "审计" / "SMiPoly_TPU候选分类.py"
 )
 PURGEN_AUDIT_SCRIPT_PATH = ROOT / "代码" / "审计" / "第七批PURGEN虚拟片段.py"
+POLYUNIVERSE_DINCO_AUDIT_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第九批PolyUniverse异氰酸酯单体.py"
+)
+POLYOMICS_AUDIT_SCRIPT_PATH = ROOT / "代码" / "审计" / "第九批PolyOmics.py"
 INPUT_FILES_READ: set[Path] = set()
+
+
+GOLD_C_VALUE_COLUMNS = [
+    "source_id",
+    "source_record_id",
+    "observation_id",
+    "canonical_structure",
+    "global_structure_family_key",
+    "simulation_key",
+    "property_name",
+    "value",
+    "unit",
+    "unit_status",
+    "method_family",
+    "method_detail",
+    "fidelity_level",
+    "temp",
+    "press",
+    "gold_admission_status",
+    "property_admission_status",
+    "source_validation_status",
+    "record_role",
+    "potential_weight_ceiling",
+    "current_weight_materialized",
+    "training_weight",
+    "source_locator",
+    "citation_keys",
+]
 
 
 COUNT_FIELDS = [
@@ -116,6 +170,9 @@ MANIFEST_COLUMNS = [
     "gold_layer",
     "gold_admission_status",
     "target_origin",
+    "record_role",
+    "method_family",
+    "fidelity_level",
     "candidate_id",
     "raw_sample_key",
     "material_formula_key",
@@ -306,6 +363,13 @@ def _gold_admission_status(
     layer = layer or _gold_layer(profile)
     if layer == "Not-Gold":
         return "evidence_only"
+    declared = str(profile.get("reference_admission_status", "")).strip()
+    if declared:
+        if declared not in ENUMS["gold_admission_status"]:
+            raise ValueError(
+                f"非法来源参考准入状态: {profile['source_directory']}={declared}"
+            )
+        return declared
     if quality_status == "隔离":
         return "blocked"
     # Gold-V 是可追溯候选参考集合；没有实验性质标签只会使其监督权重为零，
@@ -330,6 +394,11 @@ def _target_origin(profile: dict[str, Any], explicit: Any = None) -> str:
         "coarse_grained": "coarse_grained_md",
         "fea": "finite_element",
         "finite_element_input": "simulation_input",
+        "experimental_processed_curve": "experimental",
+        "experimental_derived_scalar": "experimental",
+        "published_continuum_model_curve": "computational",
+        "published_reinforcement_model_curve": "computational",
+        "mixed_published_experiment_model": "mixed",
         "virtual_candidate": "virtual",
         "虚拟候选": "virtual",
         "证据": "evidence",
@@ -637,6 +706,14 @@ def _base_record(
             profile, profile["quality_status"]
         ),
         "target_origin": _target_origin(profile),
+        "record_role": (
+            "source_aggregate" if granularity == "source" else
+            "virtual_candidate" if granularity == "candidate" else
+            "evidence_group" if granularity == "evidence_group" else
+            "property_observation"
+        ),
+        "method_family": "",
+        "fidelity_level": "",
         "candidate_id": "",
         "raw_sample_key": raw_key,
         "material_formula_key": "",
@@ -703,6 +780,7 @@ def _tabular_record(
         "material_grade",
         "resolved_material_grade",
         "formulation_id",
+        "material_ids",
     )
     specimen = _first(row, "试样键", "试样ID", "record_id", "试样或家族组", "工况或试样")
     instance_key = _first(row, "instance_key")
@@ -759,10 +837,38 @@ def _tabular_record(
     )
     record.update(
         {
-            "task": _first(row, "试验类型", "protocol", "record_kind", "数据角色", "modality") or profile["task"],
+            "task": _first(
+                row,
+                "试验类型",
+                "protocol",
+                "record_kind",
+                "数据角色",
+                "modality",
+                "scientific_task",
+            ) or profile["task"],
             "target_origin": _target_origin(
                 profile,
                 _first(row, "target_origin", "data_origin", "来源类型", "数据来源类型"),
+            ),
+            "method_family": (
+                "experiment"
+                if str(row.get("data_origin", "")).startswith("experimental_")
+                else "published_continuum_model"
+                if row.get("data_origin") == "published_continuum_model_curve"
+                else "published_reinforcement_model"
+                if row.get("data_origin") == "published_reinforcement_model_curve"
+                else "mixed_experiment_model"
+                if row.get("data_origin") == "mixed_published_experiment_model"
+                else _first(row, "method_family")
+            ),
+            "fidelity_level": (
+                "experimental_processed"
+                if str(row.get("data_origin", "")).startswith("experimental_")
+                else "published_model"
+                if str(row.get("data_origin", "")).startswith("published_")
+                else "mixed_experiment_and_published_model"
+                if row.get("data_origin") == "mixed_published_experiment_model"
+                else _first(row, "fidelity_level")
             ),
             "candidate_id": _first(
                 row,
@@ -770,6 +876,7 @@ def _tabular_record(
                 "mapped_candidate_id",
                 "formulation_id",
                 "体系或路径",
+                "material_ids",
             ),
             "material_formula_key": material,
             "specimen_key": specimen if granularity in {"specimen", "curve", "scalar"} else "",
@@ -786,7 +893,11 @@ def _tabular_record(
             "curve_count": 1 if granularity == "curve" else 0,
             "scalar_count": 1 if granularity == "scalar" else scalar_count,
             "point_count": point_count or 0,
-            "numeric_value_count": numeric_count or 0,
+            "numeric_value_count": (
+                point_count * 2
+                if source == "第九批实验_糖填充超分子聚氨酯"
+                else numeric_count or 0
+            ),
             "dedup_status": "精确重复隔离" if "duplicate" in " ".join(str(v) for v in row.values()).lower() and status == "隔离" else profile["dedup_status"],
             "source_locator": f"{_to_relative(path)}#row={index + 2}",
             "audit_basis": _to_relative(path),
@@ -868,6 +979,352 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
     return records
 
 
+def _canonical_polymer_structure(smiles: str) -> str:
+    """Return one cross-source RDKit identity for a polymer repeat unit."""
+
+    source = str(smiles).strip()
+    if not source:
+        raise ValueError("计算性质记录缺少结构")
+    with rdBase.BlockLogs():
+        molecule = Chem.MolFromSmiles(source)
+    if molecule is None:
+        raise ValueError(f"计算性质记录含不可解析结构: {source}")
+    return Chem.MolToSmiles(
+        molecule, canonical=True, isomericSmiles=True
+    )
+
+
+def _global_structure_family_key(canonical_structure: str) -> str:
+    digest = hashlib.sha256(canonical_structure.encode("utf-8")).hexdigest()
+    return f"global_polymer_structure_{digest[:24]}"
+
+
+def _finite_numeric_text(value: Any, *, context: str) -> str:
+    text = str(value).strip()
+    try:
+        number = float(text)
+    except ValueError as exc:
+        raise ValueError(f"{context}不是数值: {text}") from exc
+    if not math.isfinite(number):
+        raise ValueError(f"{context}不是有限数值: {text}")
+    return text
+
+
+POLYOMICS_MD_PROPERTIES = {
+    "density",
+    "Rg",
+    "self-diffusion",
+    "Cp",
+    "Cv",
+    "compressibility",
+    "isentropic_compressibility",
+    "bulk_modulus",
+    "isentropic_bulk_modulus",
+    "volume_expansion",
+    "linear_expansion",
+    "r2",
+    "static_dielectric_const",
+    "dielectric_const_dc",
+    "nematic_order_parameter",
+}
+POLYOMICS_NEMD_PROPERTIES = {
+    "thermal_conductivity",
+    "thermal_diffusivity",
+    "TC_ke",
+    "TC_pe",
+    "TC_pair",
+    "TC_bond",
+    "TC_angle",
+    "TC_dihed",
+    "TC_improper",
+    "TC_kspace",
+    "TC_fix",
+}
+POLYOMICS_MD_DERIVED_PROPERTIES = {
+    "Scaled Rg",
+    "sp_ced",
+    "sp_total",
+    "sp_vdw",
+    "sp_ele",
+    "sp_ele_short",
+    "sp_ele_long",
+}
+
+
+def _polyomics_method(property_name: str, row: dict[str, str]) -> tuple[str, str, str]:
+    if property_name in POLYOMICS_MD_PROPERTIES:
+        family = "MD"
+        fidelity = "all_atom_MD"
+        preset = row.get("preset_eq_ver", "")
+    elif property_name in POLYOMICS_NEMD_PROPERTIES:
+        family = "NEMD"
+        fidelity = "all_atom_NEMD"
+        preset = row.get("preset_tc_ver", "")
+    elif property_name in POLYOMICS_MD_DERIVED_PROPERTIES:
+        family = "MD-derived"
+        fidelity = "all_atom_MD_derived"
+        preset = row.get("preset_sp_ver", "")
+    else:
+        # Tg、折射率、Abbe 数和动态介电量依赖来源定义的多阶段协议；
+        # 在没有逐字段方法证明时不把它们冒充为单一 DFT 或 MD 观测。
+        family = "computational-protocol"
+        fidelity = "source_native_multistage_protocol"
+        preset = (
+            row.get("preset_tg_ver", "")
+            if property_name == "tg"
+            else row.get("preset_eq_ver", "")
+        )
+    detail = _joined(
+        f"PolyOmics source-native field={property_name}",
+        f"qm_method={row.get('qm_method', '')}",
+        f"forcefield={row.get('forcefield', '')}",
+        f"preset={preset}",
+        f"RadonPy={row.get('RadonPy_ver', '')}",
+        f"LAMMPS={row.get('LAMMPS_ver', '')}",
+    )
+    return family, detail, fidelity
+
+
+def _polyomics_record_role(property_name: str) -> str:
+    if property_name.startswith("TC_") or property_name in {
+        "Scaled Rg",
+        "sp_ced",
+        "sp_vdw",
+        "sp_ele",
+        "sp_ele_short",
+        "sp_ele_long",
+    }:
+        return "computational_feature_or_mechanistic_reference"
+    return "computational_target"
+
+
+def _gold_c_computational_value_rows(
+    profiles: list[dict[str, Any]], identities: dict[str, SourceIdentity]
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Materialize normalized source values, not a final training dataset."""
+
+    profile_by_directory = {
+        profile["source_directory"]: profile for profile in profiles
+    }
+    radon_directory = "第九批计算_RadonPy_PI1070"
+    polyomics_directory = "第九批计算_PolyOmics"
+    required = {radon_directory, polyomics_directory}
+    missing = required - profile_by_directory.keys()
+    if missing:
+        raise ValueError(f"Gold-C数值长表缺少来源画像: {sorted(missing)}")
+
+    rows: list[dict[str, Any]] = []
+    radon_path = RADONPY_SOURCE_DIR / "PU计算观测清单.tsv"
+    radon_identity = identities[radon_directory]
+    radon_ceiling = float(profile_by_directory[radon_directory]["weight_ceiling"])
+    for source_row in _read_tsv(radon_path):
+        canonical = _canonical_polymer_structure(source_row["smiles"])
+        method_family = source_row["method_family"]
+        fidelity = {
+            "DFT": "DFT",
+            "MD": "all_atom_MD",
+            "NEMD": "all_atom_NEMD",
+            "DFT+MD derived": "DFT_MD_derived",
+        }.get(method_family)
+        if fidelity is None:
+            raise ValueError(f"RadonPy未知方法族: {method_family}")
+        property_name = source_row["property_name"]
+        unit = source_row.get("unit", "").strip() or RADONPY_BASE_UNITS.get(
+            property_name, ""
+        )
+        if not unit:
+            unit = "source_native_unit_unresolved"
+        source_record_id = source_row["monomer_ID"]
+        simulation_basis = _joined(
+            canonical,
+            source_row.get("temperature_K", ""),
+            source_row.get("pressure_atm", ""),
+            source_row.get("degree_of_polymerization", ""),
+            source_row.get("chain_count", ""),
+            source_row.get("source_commit", ""),
+        )
+        simulation_digest = hashlib.sha256(
+            simulation_basis.encode("utf-8")
+        ).hexdigest()[:24]
+        rows.append(
+            {
+                "source_id": radon_identity.source_id,
+                "source_record_id": source_record_id,
+                "observation_id": source_row["observation_id"],
+                "canonical_structure": canonical,
+                "global_structure_family_key": _global_structure_family_key(
+                    canonical
+                ),
+                "simulation_key": f"radonpy_simulation_{simulation_digest}",
+                "property_name": property_name,
+                "value": _finite_numeric_text(
+                    source_row["value"],
+                    context=source_row["observation_id"],
+                ),
+                "unit": unit,
+                "unit_status": (
+                    "source_native_unit_unresolved"
+                    if unit == "source_native_unit_unresolved"
+                    else "source_unit_preserved"
+                ),
+                "method_family": method_family,
+                "method_detail": source_row["method_detail"],
+                "fidelity_level": fidelity,
+                "temp": source_row.get("temperature_K", ""),
+                "press": source_row.get("pressure_atm", ""),
+                "gold_admission_status": "admitted_reference",
+                "property_admission_status": "admitted_reference",
+                "source_validation_status": "source_audit_admitted",
+                "record_role": source_row["record_role"],
+                "potential_weight_ceiling": radon_ceiling,
+                "current_weight_materialized": "false",
+                "training_weight": "",
+                "source_locator": (
+                    "PI1070.csv#"
+                    f"monomer_ID={source_record_id};field={property_name}"
+                ),
+                "citation_keys": ";".join(radon_identity.citation_keys),
+            }
+        )
+
+    polyomics_path = POLYOMICS_SOURCE_DIR / "PU计算参考.tsv"
+    polyomics_identity = identities[polyomics_directory]
+    polyomics_ceiling = float(
+        profile_by_directory[polyomics_directory]["weight_ceiling"]
+    )
+    for source_row in _read_tsv(polyomics_path):
+        canonical = _canonical_polymer_structure(
+            source_row["canonical_component_smiles"]
+        )
+        if canonical != source_row["canonical_component_smiles"]:
+            raise ValueError(
+                "PolyOmics规范结构在Gold-C长表复算时发生漂移: "
+                f"{source_row['source_record_id']}"
+            )
+        run_admission = source_row["gold_admission_status"]
+        run_ceiling = min(
+            polyomics_ceiling,
+            float(source_row["potential_weight_ceiling"]),
+        )
+        for property_name in POLYOMICS_PROPERTY_FIELDS:
+            raw_value = source_row.get(property_name, "").strip()
+            if not raw_value:
+                continue
+            unit = RADONPY_BASE_UNITS.get(
+                property_name, "source_native_unit_unresolved"
+            )
+            property_admission = (
+                source_row["thermal_target_admission"]
+                if property_name == "thermal_conductivity"
+                else run_admission
+            )
+            if unit == "source_native_unit_unresolved":
+                property_admission = "conditional_reference"
+            property_ceiling = (
+                min(run_ceiling, 0.10)
+                if property_admission == "conditional_reference"
+                else run_ceiling
+            )
+            method_family, method_detail, fidelity = _polyomics_method(
+                property_name, source_row
+            )
+            rows.append(
+                {
+                    "source_id": polyomics_identity.source_id,
+                    "source_record_id": source_row["source_record_id"],
+                    "observation_id": (
+                        f"{source_row['record_id']}:{property_name}"
+                    ),
+                    "canonical_structure": canonical,
+                    "global_structure_family_key": (
+                        _global_structure_family_key(canonical)
+                    ),
+                    "simulation_key": source_row["simulation_key"],
+                    "property_name": property_name,
+                    "value": _finite_numeric_text(
+                        raw_value,
+                        context=(
+                            f"{source_row['source_record_id']}:{property_name}"
+                        ),
+                    ),
+                    "unit": unit,
+                    "unit_status": (
+                        "source_native_unit_unresolved"
+                        if unit == "source_native_unit_unresolved"
+                        else "mapped_from_RadonPy_common_field"
+                    ),
+                    "method_family": method_family,
+                    "method_detail": method_detail,
+                    "fidelity_level": fidelity,
+                    "temp": source_row.get("temp", ""),
+                    "press": source_row.get("press", ""),
+                    "gold_admission_status": run_admission,
+                    "property_admission_status": property_admission,
+                    "source_validation_status": (
+                        source_row["thermal_status"]
+                        if property_name == "thermal_conductivity"
+                        else source_row["equilibrium_status"]
+                    ),
+                    "record_role": _polyomics_record_role(property_name),
+                    "potential_weight_ceiling": property_ceiling,
+                    "current_weight_materialized": "false",
+                    "training_weight": "",
+                    "source_locator": (
+                        f"{source_row['source_locator']};field={property_name}"
+                    ),
+                    "citation_keys": ";".join(
+                        polyomics_identity.citation_keys
+                    ),
+                }
+            )
+
+    expected_counts = {
+        radon_identity.source_id: 440,
+        polyomics_identity.source_id: 209_905,
+    }
+    actual_counts = Counter(row["source_id"] for row in rows)
+    if actual_counts != expected_counts:
+        raise AssertionError(
+            f"Gold-C计算数值数量漂移: {dict(actual_counts)}"
+        )
+    radon_structures = {
+        row["global_structure_family_key"]
+        for row in rows
+        if row["source_id"] == radon_identity.source_id
+    }
+    polyomics_structures = {
+        row["global_structure_family_key"]
+        for row in rows
+        if row["source_id"] == polyomics_identity.source_id
+    }
+    overlapping_structures = radon_structures & polyomics_structures
+    overlapping_polyomics_records = {
+        row["source_record_id"]
+        for row in rows
+        if row["source_id"] == polyomics_identity.source_id
+        and row["global_structure_family_key"] in overlapping_structures
+    }
+    if len(overlapping_structures) != 11 or len(overlapping_polyomics_records) != 58:
+        raise AssertionError(
+            "RadonPy/PolyOmics跨源结构重合漂移: "
+            f"structures={len(overlapping_structures)}, "
+            f"polyomics_records={len(overlapping_polyomics_records)}"
+        )
+    metadata = {
+        "artifact_role": "normalized_computational_value_reference",
+        "artifact_status": "reference_only_not_final_gold_c_or_training_dataset",
+        "path": _to_relative(OUTPUT_GOLD_C_VALUES),
+        "row_count": len(rows),
+        "source_value_counts": dict(actual_counts),
+        "cross_source_overlap_structure_count": len(overlapping_structures),
+        "cross_source_overlap_polyomics_record_count": len(
+            overlapping_polyomics_records
+        ),
+        "current_weight_materialized": False,
+    }
+    return rows, metadata
+
+
 def _computational_records(profile: dict[str, Any], identity: SourceIdentity, path: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for index, row in enumerate(_read_tsv(path)):
@@ -888,6 +1345,31 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
             level,
         )
         record = _base_record(profile, identity, granularity, raw_key or f"row:{index + 2}", index)
+        source_material_key = _first(
+            row,
+            "体系或路径",
+            "system_id",
+            "monomer_ID",
+            "material_id",
+            "smiles",
+        )
+        source_candidate_key = _first(
+            row,
+            "candidate_id",
+            "mapped_candidate_id",
+            "system_id",
+            "体系或路径",
+        )
+        if not source_candidate_key and row.get("monomer_ID"):
+            source_candidate_key = _joined(identity.source_id, row["monomer_ID"])
+        global_structure_key = ""
+        if (
+            profile["source_directory"] == "第九批计算_RadonPy_PI1070"
+            and row.get("smiles")
+        ):
+            global_structure_key = _global_structure_family_key(
+                _canonical_polymer_structure(row["smiles"])
+            )
         status = _record_status(profile, row)
         record.update(
             {
@@ -896,19 +1378,19 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
                     profile,
                     _first(row, "target_origin", "data_origin", "来源类型", "数据来源类型"),
                 ),
-                "candidate_id": _first(
-                    row,
-                    "candidate_id",
-                    "mapped_candidate_id",
-                    "system_id",
-                    "体系或路径",
-                ),
-                "material_formula_key": _first(row, "体系或路径", "system_id"),
-                "run_key": _first(row, "体系或路径", "system_id") if granularity == "run" else "",
+                "record_role": _first(row, "record_role")
+                or "computational_property_observation",
+                "method_family": _first(row, "method_family"),
+                "fidelity_level": _first(row, "fidelity_level")
+                or _first(row, "method_family"),
+                "candidate_id": global_structure_key or source_candidate_key,
+                "material_formula_key": source_material_key,
+                "run_key": source_material_key if granularity == "run" else "",
                 "curve_key": raw_key if granularity == "curve" else "",
                 "scalar_key": _first(row, "观测或计算", "property_name") if granularity == "scalar" else "",
-                "leakage_group_key": _first(row, "split_group")
-                or _joined(identity.source_family_id, _first(row, "体系或路径", "system_id"))
+                "leakage_group_key": global_structure_key
+                or _first(row, "split_group")
+                or _joined(identity.source_family_id, source_material_key)
                 or identity.source_family_id,
                 "leakage_key_status": "explicit_record_group",
                 "quality_status": status,
@@ -936,6 +1418,90 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
                 "_declared_gold_admission_status": _first(
                     row, "gold_admission_status", "admission_status"
                 ),
+            }
+        )
+        records.append(record)
+    return records
+
+
+def _polyomics_records(
+    profile: dict[str, Any], identity: SourceIdentity
+) -> list[dict[str, Any]]:
+    path = POLYOMICS_SOURCE_DIR / "PU计算参考.tsv"
+    if not path.exists():
+        return []
+    _register_input(path)
+    records: list[dict[str, Any]] = []
+    for index, row in enumerate(_read_tsv(path)):
+        raw_key = row["record_id"]
+        record = _base_record(profile, identity, "run", raw_key, index)
+        admission = row["gold_admission_status"]
+        if admission == "admitted_reference":
+            status = "降权"
+        elif admission == "conditional_reference":
+            status = "仅验证"
+        else:
+            raise ValueError(f"PolyOmics非法准入状态: {admission}")
+        present_properties = [
+            field
+            for field in POLYOMICS_PROPERTY_FIELDS
+            if str(row.get(field, "")).strip()
+        ]
+        property_count = len(present_properties)
+        conditional_property_count = sum(
+            admission == "conditional_reference"
+            or (
+                field == "thermal_conductivity"
+                and row["thermal_target_admission"] != "admitted_reference"
+            )
+            for field in present_properties
+        )
+        admitted_property_count = property_count - conditional_property_count
+        global_structure_key = _global_structure_family_key(
+            _canonical_polymer_structure(row["canonical_component_smiles"])
+        )
+        record.update(
+            {
+                "task": f"PolyOmics {row['class_scope']} DFT/MD多性质计算",
+                "target_origin": "computational",
+                "record_role": "computational_property_bundle",
+                "method_family": "DFT+MD multi-property bundle",
+                "fidelity_level": "source_native_multistage_protocol",
+                "candidate_id": global_structure_key,
+                "raw_sample_key": row["source_record_id"],
+                "material_formula_key": row["structure_key"],
+                "run_key": row["simulation_key"],
+                "leakage_group_key": global_structure_key,
+                "leakage_key_status": "explicit_record_group",
+                "quality_status": status,
+                "weight_ceiling": min(
+                    float(profile["weight_ceiling"]),
+                    0.10 if admission == "conditional_reference" else float(row["potential_weight_ceiling"]),
+                ),
+                "run_count": 1,
+                "scalar_count": admitted_property_count,
+                "numeric_value_count": property_count,
+                "dedup_status": (
+                    "来源内唯一结构首次出现"
+                    if row["independent_material_increment_within_source"] == "1"
+                    else "来源内结构重复；只增厚模拟工况或同类证据"
+                ),
+                "source_locator": row["source_locator"],
+                "audit_basis": _to_relative(path),
+                "decision_basis": _joined(
+                    row["class_scope"],
+                    f"equilibrium={row['equilibrium_status']}",
+                    f"thermal={row['thermal_target_admission']}",
+                ),
+                "notes": _joined(
+                    f"structure_key={row['structure_key']}",
+                    f"simulation_key={row['simulation_key']}",
+                    f"nonempty_properties={property_count}",
+                    f"admitted_properties={admitted_property_count}",
+                    f"conditional_properties={conditional_property_count}",
+                    "不是实验真值；训练权重尚未物化",
+                ),
+                "_declared_gold_admission_status": admission,
             }
         )
         records.append(record)
@@ -1107,6 +1673,8 @@ def _virtual_candidate_records(
         audit_basis = (
             _to_relative(SMIPOLY_CANDIDATE_INPUT)
             if candidate_source_id == "ds_smipoly_monomers"
+            else _to_relative(POLYUNIVERSE_DINCO_SUMMARY)
+            if candidate_source_id == POLYUNIVERSE_DINCO_SOURCE_ID
             else _to_relative(_audit_paths(profile)[0])
         )
         record = _base_record(
@@ -1117,19 +1685,28 @@ def _virtual_candidate_records(
                 "completeness": (
                     "structure_validated_role_rule_classified"
                     if candidate_source_id == "ds_smipoly_monomers"
+                    else "exact_diinco_structure_validated_and_tiered"
+                    if candidate_source_id == POLYUNIVERSE_DINCO_SOURCE_ID
                     else "fragment_structure_validated"
                 ),
                 "task": str(row["tpu_role"]),
                 "gold_layer": str(row["gold_layer"]),
                 "gold_admission_status": str(row["gold_admission_status"]),
+                "_declared_gold_admission_status": str(
+                    row["gold_admission_status"]
+                ),
                 "target_origin": str(row["data_origin"]),
+                "record_role": "virtual_candidate_reference",
+                "method_family": str(row["data_origin"]),
+                "fidelity_level": str(row["fidelity_level"]),
                 "candidate_id": candidate_id,
                 "raw_sample_key": str(row["source_record_id"]),
                 "material_formula_key": str(row["inchikey"]),
                 "leakage_group_key": _joined(
-                    identity.source_family_id, candidate_id
+                    "standard_inchikey_connectivity_family",
+                    str(row["inchikey"]).split("-", 1)[0],
                 ),
-                "leakage_key_status": "explicit_candidate",
+                "leakage_key_status": "explicit_candidate_family",
                 "quality_status": profile["quality_status"],
                 "weight_ceiling": float(
                     row["direct_property_supervision_weight_ceiling"]
@@ -1205,9 +1782,14 @@ def _build_manifest(
         scalar_path = base / "标量审计清单.tsv"
         if scalar_path.exists():
             records.extend(_scalar_records(profile, identity, scalar_path))
-        computation_path = base / "计算观测清单.tsv"
-        if computation_path.exists():
-            records.extend(_computational_records(profile, identity, computation_path))
+        for computation_filename in ("计算观测清单.tsv", "PU计算观测清单.tsv"):
+            computation_path = base / computation_filename
+            if computation_path.exists():
+                records.extend(
+                    _computational_records(profile, identity, computation_path)
+                )
+        if profile["source_directory"] == "第九批计算_PolyOmics":
+            records.extend(_polyomics_records(profile, identity))
         records.extend(_specific_records(profile, identity))
 
         if profile["source_directory"] == "Jagiellonian_硬段从头算MD":
@@ -1313,22 +1895,53 @@ def _build_manifest(
                 raw_key = row["archive_member"]
                 record = _base_record(profile, identity, "run", raw_key, index)
                 compound = row.get("compound_id", "")
-                status = "降权" if row.get("normal_termination_count") == "1" else "隔离"
+                scientific_status = row.get("scientific_status", "")
+                normal_termination_count = int(row.get("normal_termination_count") or 0)
+                error_termination_count = int(row.get("error_termination_count") or 0)
+                if (
+                    scientific_status == "computed_gold_verified"
+                    and normal_termination_count > 0
+                    and error_termination_count == 0
+                ):
+                    status = "降权"
+                    admission_status = "admitted_reference"
+                    potential_ceiling = float(profile["weight_ceiling"])
+                elif (
+                    scientific_status.startswith("computed_silver_")
+                    and normal_termination_count > 0
+                    and error_termination_count == 0
+                ):
+                    status = "仅验证"
+                    admission_status = "conditional_reference"
+                    potential_ceiling = (
+                        0.10
+                        if "small_negative_review" in scientific_status
+                        else 0.25
+                    )
+                else:
+                    status = "隔离"
+                    admission_status = "blocked"
+                    potential_ceiling = 0.0
                 record.update(
                     {
                         "task": row.get("calculation_level", "DFT计算输出"),
+                        "target_origin": "computational",
                         "material_formula_key": compound,
                         "run_key": raw_key,
                         "leakage_group_key": _joined(identity.source_family_id, compound),
                         "leakage_key_status": "explicit_record_group",
                         "quality_status": status,
-                        "weight_ceiling": profile["weight_ceiling"] if status == "降权" else 0.0,
+                        "weight_ceiling": potential_ceiling,
+                        "_declared_gold_admission_status": admission_status,
                         "run_count": 1,
                         "numeric_value_count": 1,
                         "source_locator": raw_key,
                         "audit_basis": _to_relative(path),
-                        "decision_basis": row.get("scientific_status", ""),
-                        "notes": "同一化合物的多计算层级/构象共享泄漏组，输出文件不是独立化学样本。",
+                        "decision_basis": scientific_status,
+                        "notes": (
+                            f"normal_termination_count={normal_termination_count}; "
+                            "同一化合物的多计算层级/构象共享泄漏组，输出文件不是独立化学样本。"
+                        ),
                     }
                 )
                 records.append(record)
@@ -1347,6 +1960,29 @@ def _build_manifest(
                 declared_admission = "evidence_only"
             elif declared_admission.startswith("blocked"):
                 declared_admission = "blocked"
+        if declared_admission == "evidence_only":
+            record["target_origin"] = "evidence"
+            record["quality_status"] = "仅验证"
+            record["weight_ceiling"] = 0.0
+        elif declared_admission == "blocked":
+            record["weight_ceiling"] = 0.0
+        if record["target_origin"] == "simulation_input":
+            record["record_role"] = "simulation_input"
+        elif record["target_origin"] == "evidence":
+            record["record_role"] = "evidence"
+        elif (
+            record["target_origin"]
+            in {
+                "computational",
+                "dft",
+                "aimd",
+                "md",
+                "coarse_grained_md",
+                "finite_element",
+            }
+            and record["record_role"] == "property_observation"
+        ):
+            record["record_role"] = "computational_property_observation"
         record["gold_layer"] = _gold_layer_for_target(
             profile, record["target_origin"]
         )
@@ -1404,6 +2040,55 @@ def _atomic_write_text(path: Path, text: str, *, encoding: str) -> None:
             handle.write(text)
             handle.flush()
             os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if file_descriptor >= 0:
+            os.close(file_descriptor)
+        if temporary.exists():
+            temporary.unlink()
+
+
+def _write_gzip_csv(
+    path: Path, columns: list[str], rows: Iterable[dict[str, Any]]
+) -> None:
+    """Atomically write a remotely stream-readable deterministic gzip CSV."""
+
+    _assert_safe_output(path)
+    file_descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        if _is_reparse_or_symlink(temporary) or not stat.S_ISREG(
+            temporary.lstat().st_mode
+        ):
+            raise ValueError(f"临时输出不是普通文件: {temporary}")
+        with os.fdopen(file_descriptor, "wb") as raw_handle:
+            file_descriptor = -1
+            with gzip.GzipFile(
+                filename="",
+                mode="wb",
+                compresslevel=9,
+                fileobj=raw_handle,
+                mtime=0,
+            ) as gzip_handle:
+                text_handle = io.TextIOWrapper(
+                    gzip_handle,
+                    encoding="utf-8",
+                    newline="",
+                )
+                writer = csv.DictWriter(
+                    text_handle,
+                    fieldnames=columns,
+                    extrasaction="raise",
+                    lineterminator="\n",
+                )
+                writer.writeheader()
+                writer.writerows(rows)
+                text_handle.flush()
+                text_handle.detach()
+            raw_handle.flush()
+            os.fsync(raw_handle.fileno())
         os.replace(temporary, path)
     finally:
         if file_descriptor >= 0:
@@ -1543,9 +2228,22 @@ def _build_summary(
             sorted(manifest_gold_admission_counts.items())
         ),
         "virtual_candidate_count": candidate_summary["candidate_count"],
-        "virtual_candidate_direct_building_block_count": candidate_summary[
+        "virtual_candidate_reference_count": candidate_summary["candidate_count"],
+        "virtual_candidate_priority1_structure_count": candidate_summary[
             "direct_building_block_count"
         ],
+        "virtual_candidate_direct_building_block_count": candidate_summary[
+            "screening_scope_counts"
+        ].get("direct_tpu_building_block", 0),
+        "virtual_candidate_synthesis_primary_count": candidate_summary[
+            "screening_scope_counts"
+        ].get("direct_tpu_building_block", 0),
+        "virtual_candidate_mixture_or_salt_reference_count": candidate_summary[
+            "screening_scope_counts"
+        ].get("mixture_or_salt_reference", 0),
+        "virtual_candidate_not_synthesis_candidate_count": candidate_summary[
+            "screening_scope_counts"
+        ].get("not_synthesis_candidate", 0),
         "virtual_candidate_functional_group_matched_count": candidate_summary[
             "functional_group_matched_count"
         ],
@@ -1592,16 +2290,20 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 69
-    assert summary["v0_2_source_directory_count"] == 61
-    assert summary["v0_2_independent_source_identity_count"] == 60
+    assert len(ledger) == 73
+    assert summary["v0_2_source_directory_count"] == 65
+    assert summary["v0_2_independent_source_identity_count"] == 64
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 68
+    assert summary["total_independent_source_contribution_count"] == 72
     assert summary["model_ready_record_count"] == 0
-    assert summary["virtual_candidate_count"] == 1485
-    assert summary["virtual_candidate_direct_building_block_count"] == 312
-    assert summary["virtual_candidate_functional_group_matched_count"] == 954
+    assert summary["virtual_candidate_count"] == 13544
+    assert summary["virtual_candidate_priority1_structure_count"] == 9631
+    assert summary["virtual_candidate_direct_building_block_count"] == 9490
+    assert summary["virtual_candidate_synthesis_primary_count"] == 9490
+    assert summary["virtual_candidate_mixture_or_salt_reference_count"] == 2579
+    assert summary["virtual_candidate_not_synthesis_candidate_count"] == 161
+    assert summary["virtual_candidate_functional_group_matched_count"] == 13013
     assert summary["virtual_candidate_unclassified_count"] == 531
     expected_layer_by_origin = {
         "实验": "Gold-E",
@@ -1617,13 +2319,13 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     virtual_candidates = [
         row for row in manifest if row["record_granularity"] == "candidate"
     ]
-    assert len(virtual_candidates) == 1485
-    assert len({row["candidate_id"] for row in virtual_candidates}) == 1485
+    assert len(virtual_candidates) == 13544
+    assert len({row["candidate_id"] for row in virtual_candidates}) == 13544
     assert all(row["gold_layer"] == "Gold-V" for row in virtual_candidates)
-    assert all(
-        row["gold_admission_status"] == "admitted_reference"
-        for row in virtual_candidates
-    )
+    assert Counter(row["gold_admission_status"] for row in virtual_candidates) == {
+        "admitted_reference": 10804,
+        "conditional_reference": 2740,
+    }
     assert all(float(row["weight_ceiling"]) == 0.0 for row in virtual_candidates)
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
@@ -1642,11 +2344,11 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     assert summary["major_experimental_curve_history_lower_bound"] == 1112
     assert summary["major_experimental_curve_point_lower_bound"] == 12258315
     assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1465
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2510
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2334
-    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9482024
-    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 370
-    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7747413
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2665
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2485
+    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9545156
+    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 701
+    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7862426
     strict_core_manifest = [
         row
         for row in manifest
@@ -1722,9 +2424,12 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
         )
         assert row["target_origin"]
         if row["quality_status"] == "隔离" and row["gold_layer"] != "Not-Gold":
-            assert row["gold_admission_status"] == "blocked"
+            assert row["gold_admission_status"] in {
+                "blocked",
+                "conditional_reference",
+            }
         assert float(row["weight_ceiling"]) >= 0
-        if row["quality_status"] in {"隔离", "仅验证"}:
+        if row["gold_admission_status"] in {"blocked", "evidence_only"}:
             assert float(row["weight_ceiling"]) == 0.0
         for field in ("specimen_count", "run_count", "curve_count", "scalar_count", "point_count", "numeric_value_count"):
             value = row[field]
@@ -1778,8 +2483,9 @@ def _write_report(
         f"| Gold参考来源分层 | E={summary['source_gold_layer_counts'].get('Gold-E', 0)} / C={summary['source_gold_layer_counts'].get('Gold-C', 0)} / V={summary['source_gold_layer_counts'].get('Gold-V', 0)} / 混合={summary['source_gold_layer_counts'].get('Gold-E+Gold-C', 0)} | 分层表示证据来源，不表示等权；实验、计算和虚拟候选不再混成一种真值 |",
         f"| Gold来源准入状态 | 正式参考={summary['source_gold_admission_status_counts'].get('admitted_reference', 0)} / 条件参考={summary['source_gold_admission_status_counts'].get('conditional_reference', 0)} / 阻断={summary['source_gold_admission_status_counts'].get('blocked', 0)} | 参考准入与训练权重独立；Gold-V可准入但实验性质监督权重仍为0 |",
         f"| 逐记录清单行 | {summary['manifest_row_count']:,} | 含来源聚合、逐试样、逐运行、逐曲线、逐标量和证据组；不是单一统计分母 |",
-        f"| 已物化 Gold-V 候选 | {summary['virtual_candidate_count']:,} | 全部通过 RDKit 结构解析、规范 SMILES 与 InChIKey 唯一性门；其中 {summary['virtual_candidate_direct_building_block_count']} 个命中直接 TPU/TPUU 构件规则，仍无性能真值 |",
-        f"| 有官能团角色建议/未分类候选 | {summary['virtual_candidate_functional_group_matched_count']:,}/{summary['virtual_candidate_unclassified_count']:,} | 角色来自版本化 SMARTS 规则，属于筛选建议而非商业可得性或实验可合成性证明 |",
+        f"| Gold-V 可靠结构参考 | {summary['virtual_candidate_reference_count']:,} | 均保留来源、规范结构与零监督权重；不是等量的可合成单体 |",
+        f"| 可合成单体主候选/混合盐参考/非合成候选 | {summary['virtual_candidate_synthesis_primary_count']:,}/{summary['virtual_candidate_mixture_or_salt_reference_count']:,}/{summary['virtual_candidate_not_synthesis_candidate_count']:,} | 混合盐与结构警示项保留在宽松参考层，但不计入可合成主候选；PolyUniverse按标准InChIKey连接度族同折 |",
+        f"| 有官能团角色建议/未分类参考 | {summary['virtual_candidate_functional_group_matched_count']:,}/{summary['virtual_candidate_unclassified_count']:,} | 角色来自版本化 SMARTS 规则，属于筛选建议而非商业可得性或实验可合成性证明 |",
         f"| 核心校准曲线/已审计点行 | {summary['strict_core_calibration_curve_count']} / {summary['strict_core_calibration_curve_point_row_count']:,} | 新增三源217条/913,608点行 + v0.1 Eom 16条/21,489点行；完整点对上限≤935,095，Eom试样链未闭合 |",
         f"| 严格核心键控试样/曲线/已审计点行 | {summary['strict_core_keyed_specimen_count']} / {summary['strict_core_keyed_curve_count']} / {summary['strict_core_keyed_curve_point_row_count']:,} | DRUM主核心148 + 低天花板28 + QUB 41；完整点对上限≤913,606 |",
         f"| 三个核心目录全部键控试样 | {summary['core_source_directory_keyed_specimen_count']} | DRUM 158 + 低天花板28 + QUB 41；含DRUM 10个桥接/外部/橡皮筋对照，仅作目录全范围盘点 |",
@@ -1860,6 +2566,7 @@ def _write_report(
             f"- 逐记录清单：`{_to_relative(OUTPUT_MANIFEST)}`",
             f"- JSON 总账：`{_to_relative(OUTPUT_JSON)}`",
             f"- Gold-V 候选结构：`{_to_relative(OUTPUT_CANDIDATES)}`",
+            f"- Gold-C 计算性能长表：`{_to_relative(OUTPUT_GOLD_C_VALUES)}`（规范化参考值，不是训练集）",
             "- 复算程序：`代码/生成数据总账.py`",
             "- 校验：`代码/测试/test_trainable_inventory.py`",
             "",
@@ -1895,16 +2602,35 @@ def main() -> None:
     _register_input(SMIPOLY_CLASSIFIER_PATH)
     _register_input(PURGEN_ARCHIVE)
     _register_input(PURGEN_AUDIT_SCRIPT_PATH)
+    _register_input(POLYUNIVERSE_DINCO_AUDIT_SCRIPT_PATH)
+    _register_input(POLYUNIVERSE_DINCO_SUMMARY)
+    _register_input(POLYUNIVERSE_DINCO_AUDIT)
+    _register_input(POLYUNIVERSE_DINCO_MAPPING)
+    for spec in POLYUNIVERSE_DINCO_FILE_SPECS:
+        _register_input(POLYUNIVERSE_DINCO_SOURCE_DIR / str(spec["name"]))
+    _register_input(POLYOMICS_AUDIT_SCRIPT_PATH)
+    _register_input(POLYOMICS_CSV_PATH)
     smipoly_candidate_rows = build_candidate_rows(SMIPOLY_CANDIDATE_INPUT)
     _, purgen_candidate_rows = build_purgen_fragment_rows(PURGEN_ARCHIVE)
-    candidate_rows = [*smipoly_candidate_rows, *purgen_candidate_rows]
+    existing_candidate_structures = {
+        str(row["canonical_smiles"])
+        for row in [*smipoly_candidate_rows, *purgen_candidate_rows]
+    }
+    polyuniverse_dinco_rows = build_polyuniverse_dinco_rows(
+        existing_candidate_structures
+    )
+    candidate_rows = [
+        *smipoly_candidate_rows,
+        *purgen_candidate_rows,
+        *polyuniverse_dinco_rows,
+    ]
     candidate_summary = summarize_candidates(candidate_rows)
     profiles = profile_config["profiles"]
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 61:
-        raise AssertionError(f"v0.2来源画像必须覆盖61个目录，当前为{len(profiles)}")
+    if len(profiles) != 65:
+        raise AssertionError(f"v0.2来源画像必须覆盖65个目录，当前为{len(profiles)}")
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
@@ -1928,6 +2654,9 @@ def main() -> None:
     manifest = _build_manifest(
         all_profiles, baseline_profiles, identities, ledger, candidate_rows
     )
+    gold_c_value_rows, gold_c_value_metadata = (
+        _gold_c_computational_value_rows(all_profiles, identities)
+    )
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
         ledger,
@@ -1939,13 +2668,17 @@ def main() -> None:
         configured_directories,
         backlog_directories,
     )
+    summary["gold_c_computational_value_long_table"] = gold_c_value_metadata
     _validate(ledger, manifest, summary)
+    _write_gzip_csv(
+        OUTPUT_GOLD_C_VALUES, GOLD_C_VALUE_COLUMNS, gold_c_value_rows
+    )
     _write_csv(OUTPUT_CANDIDATES, CANDIDATE_COLUMNS, candidate_rows)
     _write_csv(OUTPUT_LEDGER, LEDGER_COLUMNS, ledger)
-    _write_csv(OUTPUT_MANIFEST, MANIFEST_COLUMNS, manifest)
+    _write_gzip_csv(OUTPUT_MANIFEST, MANIFEST_COLUMNS, manifest)
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.7",
+        "artifact_version": "trainable-inventory-v0.2.9",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],
@@ -1953,7 +2686,12 @@ def main() -> None:
         "enums": {key: sorted(value) for key, value in ENUMS.items()},
         "summary": summary,
         "source_ledger": ledger,
-        "record_manifest": manifest,
+        "record_manifest_artifact": {
+            "path": _to_relative(OUTPUT_MANIFEST),
+            "format": "csv.gz",
+            "row_count": len(manifest),
+            "sha256": _sha256_file(OUTPUT_MANIFEST),
+        },
     }
     _atomic_write_text(
         OUTPUT_JSON,

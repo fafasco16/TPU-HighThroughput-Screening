@@ -13,7 +13,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "代码" / "审计" / "SMiPoly_TPU候选分类.py"
-OUTPUT = ROOT / "结果" / "Gold_候选.csv"
+PRODUCTION_OUTPUT = ROOT / "结果" / "Gold_候选.csv"
 
 
 def _load_module():
@@ -87,15 +87,29 @@ def test_known_reference_structures_receive_auditable_roles(candidate_rows):
     assert cadaverine["tpu_role"] == "diamine_chain_extender_candidate"
 
 
-def test_candidate_csv_is_byte_reproducible(candidate_rows):
+def test_candidate_csv_is_byte_reproducible_without_overwriting_integrated_gold(
+    candidate_rows, tmp_path
+):
     module = _load_module()
-    module.write_candidate_csv(candidate_rows)
-    first = hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
-    subprocess.run([sys.executable, str(SCRIPT)], cwd=ROOT, check=True)
-    second = hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
-    assert first == second
+    test_output = (
+        ROOT / "数据/临时/测试" / f"{tmp_path.name}_SMiPoly_候选.csv"
+    )
+    production_hash = hashlib.sha256(PRODUCTION_OUTPUT.read_bytes()).hexdigest()
+    try:
+        module.write_candidate_csv(candidate_rows, test_output)
+        first = hashlib.sha256(test_output.read_bytes()).hexdigest()
+        subprocess.run(
+            [sys.executable, str(SCRIPT), "--output", str(test_output)],
+            cwd=ROOT,
+            check=True,
+        )
+        second = hashlib.sha256(test_output.read_bytes()).hexdigest()
+        assert first == second
+        assert hashlib.sha256(PRODUCTION_OUTPUT.read_bytes()).hexdigest() == production_hash
 
-    with OUTPUT.open("r", encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    assert len(rows) == 1071
-    assert list(rows[0]) == module.CANDIDATE_COLUMNS
+        with test_output.open("r", encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        assert len(rows) == 1071
+        assert list(rows[0]) == module.CANDIDATE_COLUMNS
+    finally:
+        test_output.unlink(missing_ok=True)

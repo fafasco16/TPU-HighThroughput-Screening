@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.14
+policy_version: multi-fidelity-admission-weight-v0.2.16
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -46,7 +46,17 @@ reference_admission_modes:
     included_in_direct_supervision: false
     missing_fields_are_progressive: true
     preserve_raw_and_numeric_outputs: true
-    requirement: 来源可靠且可定位，计算/虚拟身份明确，体系或候选可辨，原始值及单位不被猜测；协议、适用域、不确定度或实验映射可后续补全。
+    requirement: 来源可靠且可定位，计算/虚拟身份明确，体系或候选可辨。性质观测必须保留原始值与来源声明单位且不得猜测；无科学输出的模拟输入只能以复现资产身份保留，不得计作计算性能观测。
+    record_role_gate:
+      property_observation:
+        numeric_value_required: true
+        source_declared_unit_or_explicit_unresolved_unit_required: true
+        counts_as_computational_performance_observation: true
+      simulation_input:
+        numeric_value_required: false
+        counts_as_computational_performance_observation: false
+        counts_toward_scalar_curve_or_point_labels: false
+        allowed_use: reproducibility_asset_only
     allowed_uses:
       - literature_prior
       - chemical_space_reference
@@ -54,6 +64,12 @@ reference_admission_modes:
       - representation_pretraining_after_rights_review
       - candidate_rescoring_after_task_gate
       - active_learning_pool
+    non_blocking_gaps:
+      - missing_training_or_redistribution_rights_evidence
+      - incomplete_protocol_or_convergence_metadata
+      - missing_experimental_mapping
+      - simulation_input_without_scientific_output
+    note: 上述缺口会把有效监督权重保持为0并限制用途；可靠模拟输入可作为Gold-C复现资产保留，但只有具有可审计科学输出的记录才能进入Gold-C计算性能观测数。
   blocked:
     included_in_gold_reference: false
     included_in_direct_supervision: false
@@ -386,7 +402,51 @@ curve_weighting:
   repeated_cycle_policy: retain_sequence_but_do_not_multiply_independent_sample_weight
   resampling_policy: resampling_changes_resolution_not_total_weight
 
+cross_source_equivalence_caps:
+  global_polymer_structure_qoi_maximum_total_weight: 0.20
+  grouping_key: [global_structure_family_key, property_name]
+  split_key: global_structure_family_key
+  duplicate_release_policy: 保留各来源与模拟工况作为可追溯增厚证据，但同一化学结构同一性质跨来源不增加化学覆盖度，且必须同折。
+  known_batch9_overlap_audit:
+    radonpy_polyomics_shared_structure_count: 11
+    polyomics_run_count_in_shared_structures: 58
+
 source_overrides:
+  - source_scope_key: scope_radonpy_pi1070_840dd4a
+    intended_use: pu_repeat_unit_dft_md_nemd_transfer_reference
+    base_weight_ceiling: 0.20
+    group_keys: [fixed_commit, global_structure_family_key, method_family, property_name]
+    split_group_keys: [global_structure_family_key]
+    task_specific_ceilings:
+      dft_descriptor: 0.20
+      equilibrium_md_property: 0.20
+      nemd_thermal_property: 0.20
+      segmented_tpu_direct_property: 0.00
+    note: polymer_class=11只证明聚氨酯重复单元，不证明分段TPU配方；440个数值保留方法、单位和工况，当前不物化权重。
+
+  - source_scope_key: polyomics_general_version
+    intended_use: polyurethane_and_polyurea_multifidelity_computational_reference
+    base_weight_ceiling: 0.20
+    group_keys: [dataset_revision, global_structure_family_key, simulation_key, property_name]
+    split_group_keys: [global_structure_family_key]
+    task_specific_ceilings:
+      purt_equilibrium_verified_property: 0.20
+      pura_adjacent_transfer_property: 0.10
+      thermal_conductivity_check_passed: 0.20
+      thermal_conductivity_check_failed_or_unchecked: 0.00
+      segmented_tpu_direct_property: 0.00
+    note: 逐性质门控；热导check_tc失败的有值记录仍在Gold-C条件参考中，但不得计入正式热导监督。UUID只标识来源运行，候选与拆分使用全局结构键。
+
+  - source_scope_key: scope_zenodo_12585902_polyuniverse_pu
+    intended_use: traceable_virtual_monomer_and_mixture_reference_pool
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, standard_inchikey, tautomer_family_key]
+    split_group_keys: [standard_inchikey_connectivity_family]
+    task_specific_ceilings:
+      direct_property_supervision: 0.00
+      candidate_ranking: 0.00
+    note: 单一组分二异氰酸酯可进入可合成候选主池；盐、混合物和非合成候选仍保留为Gold-V可靠参考，但不计入主候选数且不产生性质监督权重。
+
   - source_scope_key: scope_drum_05ek6k60_dataset
     intended_use: recyclable_tpuu_core_mechanics_and_chemistry
     base_weight_ceiling: 1.00

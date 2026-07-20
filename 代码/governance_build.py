@@ -483,8 +483,9 @@ def collect_computational_profiles(
         ),
         profile_polygraphmt(raw / "代码仓库镜像/PolyGraphMT/data/raw"),
         profile_polyomics(
-            raw / "外部数据/PolyOmics_general.csv",
-            raw / "外部数据/PolyOmics_PURT.csv",
+            raw
+            / "外部数据/新增开放数据/第九批计算_PolyOmics/general_polymers_with_sp_abbe_dynamic-dielectric.csv",
+            raw / "外部数据/新增开放数据/第九批计算_PolyOmics/PolyOmics_PURT.csv",
         ),
         profile_structure_candidates(
             raw / "基础数据/smipoly_monomers.csv",
@@ -512,7 +513,8 @@ def collect_exact_structure_overlap(
     return profile_exact_structure_overlaps(
         raw / "基础数据/PI1M_v2.csv",
         raw / "代码仓库镜像/ADEPT/SMILES.csv",
-        raw / "外部数据/PolyOmics_general.csv",
+        raw
+        / "外部数据/新增开放数据/第九批计算_PolyOmics/general_polymers_with_sp_abbe_dynamic-dielectric.csv",
         raw / "代码仓库镜像/PolyGraphMT/data/raw",
     )
 

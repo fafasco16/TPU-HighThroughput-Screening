@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc26
+rules_version: v0.2-asset-rules-2026-07-21-rc30
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -628,54 +628,6 @@ rules:
     model_readiness_status: ineligible
     release_status: not_assessed
     decision_basis: 黏度建模笔记本作为代码登记，不计实验样本。
-    review_required: false
-
-  - rule_id: external_polyomics_general
-    priority: 1100
-    path_regex: '^外部数据/PolyOmics_general\.csv$'
-    source_scope_key: polyomics_general_version
-    artifact_role: primary_data
-    data_stage: raw
-    material_scope_hint: computational_system
-    registration_status: discovered
-    availability_status: available
-    parse_status: not_attempted
-    scientific_admission_status: pending
-    model_readiness_status: not_assessed
-    release_status: not_assessed
-    decision_basis: PolyOmics general 是计算母库，只入库一次且不冒充实验标签。
-    review_required: true
-
-  - rule_id: external_polyomics_purt_subset
-    priority: 1100
-    path_regex: '^外部数据/PolyOmics_PURT\.csv$'
-    source_scope_key: polyomics_purt_partition
-    artifact_role: subset_view
-    data_stage: derived
-    material_scope_hint: computational_system
-    registration_status: discovered
-    availability_status: available
-    parse_status: not_attempted
-    scientific_admission_status: pending
-    model_readiness_status: not_assessed
-    release_status: not_assessed
-    decision_basis: PURT 是 general 母库可重建逻辑子集；其记录为单组分计算聚合物，名称不足以证明线性TPU材料域，不重复增加计算观测并保留人工域裁决。
-    review_required: true
-
-  - rule_id: external_polyomics_readme
-    priority: 1000
-    path_regex: '^外部数据/PolyOmics_README\.md$'
-    source_scope_key: polyomics_general_version
-    artifact_role: documentation
-    data_stage: metadata_only
-    material_scope_hint: computational_system
-    registration_status: discovered
-    availability_status: available
-    parse_status: not_applicable
-    scientific_admission_status: pending
-    model_readiness_status: ineligible
-    release_status: not_assessed
-    decision_basis: PolyOmics 本地来源与字段说明。
     review_required: false
 
   - rule_id: external_pu18_archive_mirror
@@ -4262,6 +4214,22 @@ rules:
     decision_basis: Zenodo CC BY 4.0官方文件；100万条规则生成PU结构及1500万个机器学习预测标签进入Gold-V候选与先验库，但不得当作实验真值。
     review_required: true
 
+  - rule_id: ninth_batch_polyuniverse_dinco_raw_csv
+    priority: 2410
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/(?:PubChem_diNCO|GDB-17_diNCO)\.csv$'
+    source_scope_key: scope_zenodo_12585902_polyuniverse_pu
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 同一Zenodo固定版本中的官方单体原件；逐行复算NCO/NCS、碎片、电荷与元素边界后，只有规范去重的exact-diNCO进入Gold-V正式或条件参考，文件名不作为结构标签。
+    review_required: true
+
   - rule_id: seventh_batch_polyuniverse_metadata
     priority: 2395
     path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/(?:Zenodo元数据\.json|来源与接入说明\.md)$'
@@ -4296,7 +4264,7 @@ rules:
 
   - rule_id: seventh_batch_polyuniverse_audit_outputs
     priority: 2380
-    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/(?:审计摘要\.json|列统计\.tsv|SMILES质量\.tsv|预测标签分布\.tsv|字段字典\.tsv|文件校验清单\.tsv)$'
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/(?:审计摘要\.json|列统计\.tsv|SMILES质量\.tsv|预测标签分布\.tsv|字段字典\.tsv|文件校验清单\.tsv|异氰酸酯单体审计摘要\.json|异氰酸酯单体审计清单\.tsv|异氰酸酯候选去重映射\.tsv)$'
     source_scope_key: scope_zenodo_12585902_polyuniverse_pu
     artifact_role: documentation
     data_stage: derived
@@ -4307,7 +4275,247 @@ rules:
     scientific_admission_status: admitted
     model_readiness_status: ineligible
     release_status: not_assessed
-    decision_basis: 百万行全量流式审计产物；100万规范p-SMILES唯一且均含两个通配点，15个预测列无缺失；反应物对同折、单位边界、OOD和物理一致性QA均显式冻结。
+    decision_basis: 百万行聚合物预测与21717条单体结构的全量审计产物；单体按严格SMARTS、碎片、电荷、元素和规范结构去重分层，反应物对/规范结构同折，单位边界、OOD和物理一致性QA均显式冻结。
+    review_required: true
+
+  - rule_id: ninth_batch_radonpy_pi1070_payload
+    priority: 2500
+    path_regex: '^外部数据/新增开放数据/第九批计算_RadonPy_PI1070/PI1070\.csv$'
+    source_scope_key: scope_radonpy_pi1070_840dd4a
+    artifact_role: computed_property_output
+    data_stage: raw
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 固定Git提交中的PI1070原始计算表；1077个唯一重复单元中11个polymer_class=11聚氨酯结构进入直接Gold-C，其余1066个只作通用聚合物迁移条件参考。
+    review_required: true
+
+  - rule_id: ninth_batch_radonpy_pi1070_source_evidence
+    priority: 2490
+    path_regex: '^外部数据/新增开放数据/第九批计算_RadonPy_PI1070/(?:README\.md|LICENSE|官方提交元数据\.json|官方树元数据\.json)$'
+    source_scope_key: scope_radonpy_pi1070_840dd4a
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 固定提交、树、README和BSD-3-Clause许可证证据；用于版本与权利闭包，不增加材料或观测计数。
+    review_required: false
+
+  - rule_id: ninth_batch_radonpy_pi1070_audit_outputs
+    priority: 2480
+    path_regex: '^外部数据/新增开放数据/第九批计算_RadonPy_PI1070/(?:来源元数据\.json|下载清单\.tsv|内容审计摘要\.json|字段审计清单\.tsv|全量行审计\.tsv|重复泄漏组\.tsv|PU重复单元清单\.tsv|PU计算观测清单\.tsv)$'
+    source_scope_key: scope_radonpy_pi1070_840dd4a
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 全量字段、缺失、结构、泄漏和PU子集观测的确定性审计输出；440条DFT/MD/NEMD观测共享11个材料组，统计摘要不作为独立训练样本。
+    review_required: true
+
+  - rule_id: ninth_batch_polyomics_payload
+    priority: 2520
+    path_regex: '^外部数据/新增开放数据/第九批计算_PolyOmics/general_polymers_with_sp_abbe_dynamic-dielectric\.csv$'
+    source_scope_key: polyomics_general_version
+    artifact_role: computed_property_output
+    data_stage: raw
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PolyOmics固定revision的官方全原子DFT/MD多性质主表；PURT/PURA按显式类别和质量门筛选，其余一般聚合物不冒充TPU。
+    review_required: true
+
+  - rule_id: ninth_batch_polyomics_source_evidence
+    priority: 2510
+    path_regex: '^外部数据/新增开放数据/第九批计算_PolyOmics/(?:官方版本元数据\.json|官方数据卡\.md|DOI元数据\.json|来源说明\.md|来源元数据\.json)$'
+    source_scope_key: polyomics_general_version
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 固定Hugging Face revision、DOI、CC BY 4.0数据卡与来源说明；只闭合版本和权利，不增加科学记录数。
+    review_required: false
+
+  - rule_id: ninth_batch_polyomics_purt_subset
+    priority: 2515
+    path_regex: '^外部数据/新增开放数据/第九批计算_PolyOmics/PolyOmics_PURT\.csv$'
+    source_scope_key: polyomics_purt_partition
+    artifact_role: subset_view
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: PURT是固定general主表的可重建逻辑子集；只作快速核验视图，不重复增加计算观测。
+    review_required: true
+
+  - rule_id: ninth_batch_polyomics_pu_reference
+    priority: 2505
+    path_regex: '^外部数据/新增开放数据/第九批计算_PolyOmics/PU计算参考\.tsv$'
+    source_scope_key: polyomics_general_version
+    artifact_role: subset_view
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 从固定主表确定性筛出的3384条PURT正式参考与3204条PURA-only条件参考；保留结构、模拟条件、质量检查和43项性质缺失状态。
+    review_required: true
+
+  - rule_id: ninth_batch_polyomics_audit_outputs
+    priority: 2500
+    path_regex: '^外部数据/新增开放数据/第九批计算_PolyOmics/(?:数据审计摘要\.json|下载清单\.tsv|字段覆盖\.tsv|PU结构重复组\.tsv)$'
+    source_scope_key: polyomics_general_version
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 95335行全量字段覆盖、类别、平衡、热导检查、结构和模拟键去重的确定性审计产物；不重复计为材料或观测。
+    review_required: true
+
+  - rule_id: ninth_batch_sheffield_payload
+    priority: 2540
+    path_regex: '^外部数据/新增开放数据/第九批实验_Sheffield_PU理性设计/Raw Data\.zip$'
+    source_scope_key: scope_sheffield_21510876_v1
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_foam
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Sheffield Figshare官方CC BY 4.0原始档案；40个实验批次经配方签名归并为39个唯一PU泡沫配方，文件和曲线数量不扩大材料数。
+    review_required: true
+
+  - rule_id: ninth_batch_sheffield_source_evidence
+    priority: 2530
+    path_regex: '^外部数据/新增开放数据/第九批实验_Sheffield_PU理性设计/(?:来源快照\.json|来源说明\.md|论文全文_PMC\.xml|论文元数据_Crossref\.json|许可_CC_BY_4\.0\.txt|原件校验清单\.tsv)$'
+    source_scope_key: scope_sheffield_21510876_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_foam
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: DOI、论文、版本、许可和原件MD5证据；用于来源闭包，不增加材料或性能记录数。
+    review_required: false
+
+  - rule_id: ninth_batch_sheffield_audit_outputs
+    priority: 2520
+    path_regex: '^外部数据/新增开放数据/第九批实验_Sheffield_PU理性设计/(?:内容审计摘要\.json|文件校验清单\.tsv|ZIP成员审计清单\.tsv|配方审计清单\.tsv|曲线审计清单\.tsv|标量审计清单\.tsv)$'
+    source_scope_key: scope_sheffield_21510876_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_foam
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 配方、动力学、泡孔、气流、密度、吸水和毛细输运的确定性审计视图；F05-13/F05-34共享配方组，Rockwool只作外部证据。
+    review_required: true
+
+  - rule_id: ninth_batch_sugar_filled_spu_official_opj
+    priority: 2540
+    path_regex: '^外部数据/新增开放数据/第九批实验_糖填充超分子聚氨酯/官方文件/[^/]+\.opj$'
+    source_scope_key: scope_mendeley_z4zy523b8c_v1
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Mendeley Data固定version 1的28个Origin工程原件，逐文件SHA-256已核验；CC BY-NC 3.0要求非商业隔离，文件数不计作材料数。
+    review_required: true
+
+  - rule_id: ninth_batch_sugar_filled_spu_readonly_exports
+    priority: 2535
+    path_regex: '^外部数据/新增开放数据/第九批实验_糖填充超分子聚氨酯/只读导出/[^/]+\.opj\.json$'
+    source_scope_key: scope_mendeley_z4zy523b8c_v1
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 固定解析器对28个OPJ的只读JSON导出；仅用于可复算图层、工作表和曲线引用，不作为独立材料或额外观测重复计权。
+    review_required: true
+
+  - rule_id: ninth_batch_sugar_filled_spu_source_evidence
+    priority: 2530
+    path_regex: '^外部数据/新增开放数据/第九批实验_糖填充超分子聚氨酯/(?:解析工具证据\.json|来源说明\.md|CC_BY_NC_3\.0_许可证据\.html|Crossref_论文元数据\.json|DataCite_元数据\.json|Elsevier_论文核心元数据\.xml|Mendeley_文件清单_v1\.json|Mendeley_元数据_v1\.json)$'
+    source_scope_key: scope_mendeley_z4zy523b8c_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 官方Mendeley v1、DataCite/Crossref/Elsevier快照、CC BY-NC 3.0条款和解析器提交共同闭合DOI、版本、论文关系、权利边界与复现环境。
+    review_required: true
+
+  - rule_id: ninth_batch_sugar_filled_spu_audit_outputs
+    priority: 2520
+    path_regex: '^外部数据/新增开放数据/第九批实验_糖填充超分子聚氨酯/(?:材料条件清单\.tsv|内容审计摘要\.json|曲线审计清单\.tsv|文件校验清单\.tsv|只读审计报告\.md|OPJ解析清单\.tsv)$'
+    source_scope_key: scope_mendeley_z4zy523b8c_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 确定性审计视图把9个材料条件、331条图层曲线引用、303条可解析曲线、207个唯一载荷和115013个点分开计数，并逐记录区分Gold-E、Gold-C及Gold-E+Gold-C。
     review_required: true
 
   - rule_id: local_backlog_4tu_audit_outputs

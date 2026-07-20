@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 import yaml
 
+from manifest import build_manifest_from_config
 from qc import QualityIssue
 from run_pipeline import build_full_manifest, build_from_manifest, load_manifest_csv, main
 from build_verification import BuildVerificationError
@@ -12,6 +13,7 @@ from governance_build import GovernanceBuildError
 
 
 FIXTURES = Path(__file__).parent / "夹具"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _write_config(root: Path) -> Path:
@@ -104,6 +106,46 @@ def test_manifest_loader_and_build_forward_frozen_rows(tmp_path, monkeypatch):
     assert result.snapshot_id == "snapshot_fixture"
     assert captured["root"] == tmp_path.resolve()
     assert captured["rows"] == loaded
+
+
+def test_committed_v01_compat_manifest_paths_and_registered_rows_match_config():
+    manifest_path = PROJECT_ROOT / "配置/清单/来源清单.csv"
+    config_path = PROJECT_ROOT / "配置/数据源.yaml"
+    committed = load_manifest_csv(PROJECT_ROOT, manifest_path)
+    configured = build_manifest_from_config(PROJECT_ROOT, config_path)
+
+    assert all((PROJECT_ROOT / row["raw_path"]).is_file() for row in committed)
+    committed_by_path = {row["raw_path"]: row for row in committed}
+    compared_columns = (
+        "source_id",
+        "original_filename",
+        "size_bytes",
+        "sha256",
+        "doi",
+        "url",
+        "accessed_at",
+        "license_spdx",
+        "access_restriction",
+        "evidence_grade",
+        "material_scope",
+        "status",
+        "notes",
+    )
+    for expected in configured:
+        actual = committed_by_path[expected["raw_path"]]
+        assert all(
+            str(actual[column]) == str(expected[column])
+            for column in compared_columns
+        )
+        if expected["source_id"] in {"source_polyomics_data", "ledger_source_034"}:
+            assert actual["source_file_id"] == expected["source_file_id"]
+
+    assert {
+        "数据/原始/外部数据/新增开放数据/第九批计算_PolyOmics/general_polymers_with_sp_abbe_dynamic-dielectric.csv",
+        "数据/原始/外部数据/新增开放数据/第九批计算_PolyOmics/PolyOmics_PURT.csv",
+        "数据/原始/外部数据/新增开放数据/第九批计算_PolyOmics/官方数据卡.md",
+        "数据/原始/外部数据/新增开放数据/第八批实验_TPU文献力学汇总/原始数据.xlsx",
+    } <= set(committed_by_path)
 
 
 def test_build_and_qc_cli_report_errors(tmp_path, capsys, monkeypatch):

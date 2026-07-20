@@ -16,7 +16,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
-    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.14"
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.16"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -174,6 +174,23 @@ def test_gold_reference_admission_includes_reliable_computational_and_virtual_da
     assert modes["conditional_reference"]["included_in_gold_reference"] is True
     assert modes["conditional_reference"]["included_in_direct_supervision"] is False
     assert modes["conditional_reference"]["missing_fields_are_progressive"] is True
+    assert {
+        "missing_training_or_redistribution_rights_evidence",
+        "incomplete_protocol_or_convergence_metadata",
+        "missing_experimental_mapping",
+        "simulation_input_without_scientific_output",
+    } <= set(modes["conditional_reference"]["non_blocking_gaps"])
+    roles = modes["conditional_reference"]["record_role_gate"]
+    assert roles["property_observation"][
+        "counts_as_computational_performance_observation"
+    ] is True
+    assert roles["simulation_input"][
+        "counts_as_computational_performance_observation"
+    ] is False
+    assert roles["simulation_input"][
+        "counts_toward_scalar_curve_or_point_labels"
+    ] is False
+    assert roles["simulation_input"]["allowed_use"] == "reproducibility_asset_only"
     assert "unrecoverable_source_lineage" in modes["blocked"]["only_for"]
     assert "prediction_disguised_as_experimental_truth" in modes["blocked"]["only_for"]
 
@@ -201,6 +218,9 @@ def test_every_source_override_resolves_to_a_declared_scope_and_mirror_is_zero()
 
     assert override_keys <= declared
     assert {
+        "scope_radonpy_pi1070_840dd4a",
+        "polyomics_general_version",
+        "scope_zenodo_12585902_polyuniverse_pu",
         "scope_drum_05ek6k60_dataset",
         "scope_drum_zf53w893_dataset",
         "scope_qub_83fdb865_dataset",
@@ -223,6 +243,24 @@ def test_every_source_override_resolves_to_a_declared_scope_and_mirror_is_zero()
         "scope_bath_00385_dataset",
         "scope_zenodo_21096098_dataset",
     } <= override_keys
+
+    caps = policy["cross_source_equivalence_caps"]
+    assert caps["global_polymer_structure_qoi_maximum_total_weight"] == 0.20
+    assert caps["grouping_key"] == ["global_structure_family_key", "property_name"]
+    assert caps["split_key"] == "global_structure_family_key"
+    assert caps["known_batch9_overlap_audit"] == {
+        "radonpy_polyomics_shared_structure_count": 11,
+        "polyomics_run_count_in_shared_structures": 58,
+    }
+    assert by_scope["scope_radonpy_pi1070_840dd4a"]["task_specific_ceilings"][
+        "segmented_tpu_direct_property"
+    ] == 0.0
+    assert by_scope["polyomics_general_version"]["task_specific_ceilings"][
+        "thermal_conductivity_check_failed_or_unchecked"
+    ] == 0.0
+    assert by_scope["scope_zenodo_12585902_polyuniverse_pu"][
+        "base_weight_ceiling"
+    ] == 0.0
     mirror = next(
         row
         for row in overrides

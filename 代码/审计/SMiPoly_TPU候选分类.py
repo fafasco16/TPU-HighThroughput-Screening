@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import os
 import stat
@@ -15,7 +16,7 @@ from rdkit.Chem import Descriptors, rdMolDescriptors
 
 ROOT = Path(__file__).resolve().parents[2]
 INPUT_PATH = ROOT / "数据" / "规范" / "chemical_candidate.parquet"
-OUTPUT_PATH = ROOT / "结果" / "Gold_候选.csv"
+OUTPUT_PATH = ROOT / "数据" / "临时" / "审计" / "SMiPoly_候选.csv"
 RULE_VERSION = "smipoly-rdkit-role-v1"
 
 CANDIDATE_COLUMNS = [
@@ -369,9 +370,19 @@ def write_candidate_csv(
             temporary.unlink()
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(
+        description="审计SMiPoly来源候选；不会覆盖综合Gold_候选.csv"
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=OUTPUT_PATH,
+        help="来源级候选CSV输出；必须位于项目目录内",
+    )
+    args = parser.parse_args(argv)
     rows = build_candidate_rows()
-    write_candidate_csv(rows)
+    write_candidate_csv(rows, args.output)
     print(summarize_candidates(rows))
 
 

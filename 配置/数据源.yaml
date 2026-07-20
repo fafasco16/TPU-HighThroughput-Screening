@@ -55,3 +55,59 @@ sources:
     material_scope: polyurethane_prepolymer
     status: review_required
     notes: 温度—黏度曲线；仓库未发现明确LICENSE，默认禁止公开再分发。
+
+  - source_id: source_polyomics_data
+    path: 数据/原始/外部数据/新增开放数据/第九批计算_PolyOmics/general_polymers_with_sp_abbe_dynamic-dielectric.csv
+    doi: 10.57967/hf/7475
+    url: https://huggingface.co/datasets/yhayashi1986/PolyOmics
+    accessed_at: "2026-07-18"
+    license_spdx: CC-BY-4.0
+    derivatives_allowed: true
+    redistribution_allowed: true
+    access_restriction: open
+    evidence_grade: computed_md
+    material_scope: generic_polymer
+    status: available
+    notes: 固定revision的PolyOmics官方DFT/MD多性质主表；科学准入与逐性质单位门由v0.2规则控制。
+
+  - source_id: source_polyomics_data
+    path: 数据/原始/外部数据/新增开放数据/第九批计算_PolyOmics/PolyOmics_PURT.csv
+    doi: 10.57967/hf/7475
+    url: https://huggingface.co/datasets/yhayashi1986/PolyOmics
+    accessed_at: "2026-07-18"
+    license_spdx: CC-BY-4.0
+    derivatives_allowed: true
+    redistribution_allowed: true
+    access_restriction: open
+    evidence_grade: derived
+    material_scope: generic_polymer
+    status: available
+    notes: 从同一固定主表可重建的PURT快速核验子集；不得重复增加计算观测。
+
+  - source_id: source_polyomics_data
+    path: 数据/原始/外部数据/新增开放数据/第九批计算_PolyOmics/官方数据卡.md
+    doi: 10.57967/hf/7475
+    url: https://huggingface.co/datasets/yhayashi1986/PolyOmics
+    accessed_at: "2026-07-18"
+    license_spdx: CC-BY-4.0
+    derivatives_allowed: true
+    redistribution_allowed: true
+    access_restriction: open
+    evidence_grade: derived
+    material_scope: generic_polymer
+    status: available
+    notes: 官方数据卡与许可证证据；不增加材料或性能记录数。
+
+  - source_id: ledger_source_034
+    path: 数据/原始/外部数据/新增开放数据/第八批实验_TPU文献力学汇总/原始数据.xlsx
+    doi: 10.17632/ftntxg4zdz.1
+    url: https://data.mendeley.com/datasets/ftntxg4zdz/1
+    accessed_at: "2026-07-18"
+    license_spdx: CC-BY-4.0
+    derivatives_allowed: true
+    redistribution_allowed: true
+    access_restriction: open
+    evidence_grade: measured_summary
+    material_scope: commercial_tpu
+    status: available
+    notes: 62条TPU文献/商业数据汇总；不是62个原始试样，按引用组防泄漏。
