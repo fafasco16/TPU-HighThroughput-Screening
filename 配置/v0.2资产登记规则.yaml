@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc20
+rules_version: v0.2-asset-rules-2026-07-21-rc23
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -3892,6 +3892,278 @@ rules:
     model_readiness_status: ineligible
     release_status: not_assessed
     decision_basis: 4材料、40个Prony项、112个完整输入和8个不完整CTE标记的审计视图；输入参数和图片不冒充性能标签。
+    review_required: true
+
+  - rule_id: seventh_batch_isohexide_pu_repository_archive
+    priority: 2400
+    path_regex: '^外部数据/新增开放数据/第七批计算_异山梨醇动态聚氨酯多尺度力学/poly-mech-props_d2d3229\.zip$'
+    source_scope_key: scope_github_poly_mech_props_d2d3229
+    artifact_role: supplementary_information
+    data_stage: raw
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 固定GitHub提交包含72个PU设计的DFT、xTB、经典MD和ReaxFF结构与数值结果；仓库无独立许可证，原档仅本地保存且不再分发。
+    review_required: true
+
+  - rule_id: seventh_batch_isohexide_pu_metadata
+    priority: 2390
+    path_regex: '^外部数据/新增开放数据/第七批计算_异山梨醇动态聚氨酯多尺度力学/(?:官方Crossref元数据\.json|GitHub仓库元数据\.json|GitHub提交元数据\.json|来源元数据\.json)$'
+    source_scope_key: scope_github_poly_mech_props_d2d3229
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方论文、仓库及固定提交元数据支撑来源、版本、方法和权利边界；元数据本身不增加观测。
+    review_required: true
+
+  - rule_id: seventh_batch_isohexide_pu_audit_outputs
+    priority: 2380
+    path_regex: '^外部数据/新增开放数据/第七批计算_异山梨醇动态聚氨酯多尺度力学/(?:内容审计摘要\.json|候选来源核验\.tsv|计算体系清单\.tsv|计算观测清单\.tsv|计算输入参数清单\.tsv|文件内容计数\.tsv|下载清单\.tsv)$'
+    source_scope_key: scope_github_poly_mech_props_d2d3229
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: computational_system
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 202条Gold-C观测按72个化学设计和方法归组；135230个数值点不作独立材料数，15m/s ReaxFF只用于高应变率代理任务。
+    review_required: true
+
+  - rule_id: seventh_batch_glass_fiber_pu_aging_archive
+    priority: 2400
+    path_regex: '^外部数据/新增开放数据/第七批实验_玻纤PU加速老化/jp5fztws54-1\.zip$'
+    source_scope_key: scope_mendeley_jp5fztws54_v1
+    artifact_role: supplementary_information
+    data_stage: raw
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Mendeley v1的CC BY 4.0原始包含6个3PB工作簿和17个DMA文本；作为热固性PU复合迁移数据，不冒充TPU核心。
+    review_required: true
+
+  - rule_id: seventh_batch_glass_fiber_pu_aging_metadata
+    priority: 2390
+    path_regex: '^外部数据/新增开放数据/第七批实验_玻纤PU加速老化/(?:官方元数据快照\.json|第七批候选源对比\.tsv|字段字典\.tsv)$'
+    source_scope_key: scope_mendeley_jp5fztws54_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方元数据冻结DOI、版本、作者、许可证和文件校验信息；候选比较及字段字典只作审计证据。
+    review_required: true
+
+  - rule_id: seventh_batch_glass_fiber_pu_aging_audit_outputs
+    priority: 2380
+    path_regex: '^外部数据/新增开放数据/第七批实验_玻纤PU加速老化/(?:内容审计摘要\.json|文件校验清单\.tsv|三点弯曲曲线审计清单\.tsv|DMA运行审计清单\.tsv)$'
+    source_scope_key: scope_mendeley_jp5fztws54_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_composite
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 29条唯一3PB曲线、9个精确重复出现及17条DMA温扫的确定性审计；全部运行按同一基础材料家族同折。
+    review_required: true
+
+  - rule_id: seventh_batch_purgen_archive
+    priority: 2400
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PUR-GEN片段库/PUR-GEN片段库\.zip$'
+    source_scope_key: scope_zenodo_11612378_purgen_fragments
+    artifact_role: supplementary_information
+    data_stage: raw
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: blocked
+    release_status: denied
+    decision_basis: 官方Zenodo片段归档提供414个2–4单元PU虚拟结构；数据集许可证未声明，原档仅作本地Gold-V参考。
+    review_required: true
+
+  - rule_id: seventh_batch_purgen_local_extraction
+    priority: 2395
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PUR-GEN片段库/解包内容/.+$'
+    source_scope_key: scope_zenodo_11612378_purgen_fragments
+    artifact_role: derived_duplicate
+    data_stage: raw
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: rejected
+    model_readiness_status: blocked
+    release_status: denied
+    decision_basis: ZIP的本地可重建解包副本，不增加来源、候选或样本计数；主审计直接读取固定归档。
+    review_required: false
+
+  - rule_id: seventh_batch_purgen_metadata
+    priority: 2390
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PUR-GEN片段库/官方Zenodo元数据\.json$'
+    source_scope_key: scope_zenodo_11612378_purgen_fragments
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: Zenodo API元数据冻结DOI、文件名、大小、MD5、作者和开放访问状态；开放访问不等于获得再分发或训练许可。
+    review_required: true
+
+  - rule_id: seventh_batch_purgen_audit_outputs
+    priority: 2380
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PUR-GEN片段库/(?:内容审计摘要\.json|片段审计清单\.tsv|文件校验清单\.tsv)$'
+    source_scope_key: scope_zenodo_11612378_purgen_fragments
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 414个结构全部通过RDKit解析且规范结构唯一；360行描述符连接关系一致，54个缺描述符片段保留缺失标记。
+    review_required: true
+
+  - rule_id: seventh_batch_spore_tpu_source_workbooks
+    priority: 2400
+    path_regex: '^外部数据/新增开放数据/第七批补充材料_孢子填充TPU/(?:源数据\.xlsx|补充数据1\.xlsx)$'
+    source_scope_key: scope_nature_spore_filled_tpu_source_data
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Nature Communications CC BY 4.0 Source Data；36条Elastollan BCF45 TPU拉伸曲线、144个原始力学标量及多模态辅助观测按配方和重复归组。
+    review_required: true
+
+  - rule_id: seventh_batch_spore_tpu_supplement
+    priority: 2395
+    path_regex: '^外部数据/新增开放数据/第七批补充材料_孢子填充TPU/补充信息\.pdf$'
+    source_scope_key: scope_nature_spore_filled_tpu_source_data
+    artifact_role: supplementary_information
+    data_stage: raw
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 31页补充信息闭合商业TPU牌号、孢子填料、熔融加工和Instron拉伸协议；PDF本身不增加样本。
+    review_required: true
+
+  - rule_id: seventh_batch_spore_tpu_metadata_and_audit
+    priority: 2390
+    path_regex: '^外部数据/新增开放数据/第七批补充材料_孢子填充TPU/(?:Crossref元数据\.json|来源说明\.md|文件校验清单\.tsv|内容审计摘要\.json|曲线审计清单\.tsv|标量审计清单\.tsv)$'
+    source_scope_key: scope_nature_spore_filled_tpu_source_data
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: linear_tpu
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 来源、许可、文件哈希及曲线/标量血缘的确定性审计视图；缺少SMILES时仅将分子结构任务权重置零，不排除配方工艺和力学任务。
+    review_required: true
+
+  - rule_id: seventh_batch_polyuniverse_raw_csv
+    priority: 2400
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/Polyurethane_1M_p\.csv$'
+    source_scope_key: scope_zenodo_12585902_polyuniverse_pu
+    artifact_role: model_output
+    data_stage: raw
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Zenodo CC BY 4.0官方文件；100万条规则生成PU结构及1500万个机器学习预测标签进入Gold-V候选与先验库，但不得当作实验真值。
+    review_required: true
+
+  - rule_id: seventh_batch_polyuniverse_metadata
+    priority: 2395
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/(?:Zenodo元数据\.json|来源与接入说明\.md)$'
+    source_scope_key: scope_zenodo_12585902_polyuniverse_pu
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方Zenodo元数据冻结DOI、作者、CC BY 4.0许可证、文件大小与MD5。
+    review_required: false
+
+  - rule_id: seventh_batch_polyuniverse_audit_code
+    priority: 2390
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/审计脚本\.py$'
+    source_scope_key: scope_zenodo_12585902_polyuniverse_pu
+    artifact_role: code
+    data_stage: derived
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 本地流式审计脚本；仅复现完整性、重复、SMILES可解析性和标签分布统计，不增加候选计数。
+    review_required: false
+
+  - rule_id: seventh_batch_polyuniverse_audit_outputs
+    priority: 2380
+    path_regex: '^外部数据/新增开放数据/第七批虚拟_PolyUniverse百万PU/(?:审计摘要\.json|列统计\.tsv|SMILES质量\.tsv|预测标签分布\.tsv|字段字典\.tsv|文件校验清单\.tsv)$'
+    source_scope_key: scope_zenodo_12585902_polyuniverse_pu
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: virtual_candidate
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 百万行全量流式审计产物；100万规范p-SMILES唯一且均含两个通配点，15个预测列无缺失；反应物对同折、单位边界、OOD和物理一致性QA均显式冻结。
     review_required: true
 
   - rule_id: local_backlog_4tu_audit_outputs

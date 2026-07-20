@@ -8,7 +8,9 @@
 |---|---|---|
 | `Gold-E` | 真实合成、制样和测试得到的 TPU/TPUU 数据 | 性能标定、最终验证 |
 | `Gold-C` | 可靠且可复现的 DFT、AIMD、MD、CGMD 数据 | 机理特征、预训练、低保真标签、复筛 |
-| `Gold-V` | 规则生成或模型生成的可合成候选 | 扩大化学空间、主动学习、候选排序 |
+| `Gold-V` | 来源可靠、结构可解析且生成/预测身份明确的虚拟候选 | 扩大化学空间、主动学习、候选排序 |
+
+`Gold-E+Gold-C` 只用于来源级聚合：表示同一来源同时含实验与计算证据；逐条目标仍按 `target_origin` 拆回 `Gold-E` 或 `Gold-C`，不会把两种真值混成一种标签。
 
 三类数据都可以进入参考范围。准入不是“一缺字段就全部删除”，而是根据任务建立 `completeness_score`、`fidelity_score` 和任务适用标志。真正不能接受的是来源不明、体系身份不明、方法不明，或把模型预测伪装成实验真值。
 
@@ -39,10 +41,10 @@ license
 data_origin              experimental / dft / md / virtual / prediction
 fidelity_level
 gold_layer               Gold-E / Gold-C / Gold-V / Gold-E+Gold-C
-gold_admission_status    admitted_reference / conditional_reference / blocked
+gold_admission_status    admitted_reference / conditional_reference / blocked / evidence_only
 ```
 
-`gold_admission_status` 与训练权重是两个维度：一条可追溯的虚拟候选可以正式进入 `Gold-V`，同时其直接实验性质监督权重仍为 0。当前机器总账已经在来源级和逐记录级写出这两个字段。
+`gold_admission_status` 与训练权重是两个维度：一条可追溯的虚拟候选可以正式进入 `Gold-V`，同时其直接实验性质监督权重仍为 0。科学准入与训练、再分发权利也是两个维度：许可证待复核的数据可以保留为本地科学参考，但不会因此自动获得训练或公开再分发许可。当前机器总账已经在来源级和逐记录级写出科学准入、来源许可状态和权重上限。
 
 ### 2.2 化学结构
 
@@ -188,7 +190,7 @@ uncertainty
 
 ### 2.8 虚拟候选字段
 
-`Gold-V` 的硬准入字段是候选身份、输入组分结构、生成/枚举方法与版本、约束规则、来源血缘和适用域。派生候选必须指向父候选；根候选记录生成种子或输入集合。以下字段可渐进补全，暂缺时保留空值并降低排序置信度：
+`Gold-V` 采用最小可靠性门，不把“已经证明可合成”作为统一硬门。硬条件只有：候选身份稳定、至少一种结构表示可解析、来源/版本/文件位置可追溯、生成或预测身份明确，以及没有把虚拟值冒充实验。反应规则、父候选、适用域和不确定度能取得时应记录；缺失时保留空值、降低排序置信度或限定用途，不机械删除整条候选。以下字段均为推荐字段，其中除身份、结构、来源和数据身份外可渐进补全：
 
 ```text
 candidate_id
@@ -204,7 +206,7 @@ applicability_domain
 generation_model_or_rule_version
 ```
 
-虚拟候选不必已有实验标签。它们用于生成候选空间和主动学习；经 DFT/MD 复筛或实验验证后，通过同一个 `candidate_id` 升级到 `Gold-C` 或 `Gold-E`。
+虚拟候选不必已有实验标签。它们用于生成候选空间和主动学习；经 DFT/MD 复筛或实验验证后，保留原 `Gold-V` 血缘，并通过同一个 `candidate_id` 关联新增的 `Gold-C` 或 `Gold-E` 观测，而不是覆盖原记录。
 
 ## 3. 权重如何处理
 

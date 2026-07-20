@@ -14,6 +14,17 @@ from typing import Any, Iterable
 
 import yaml
 
+from 审计.SMiPoly_TPU候选分类 import (
+    CANDIDATE_COLUMNS,
+    INPUT_PATH as SMIPOLY_CANDIDATE_INPUT,
+    build_candidate_rows,
+    summarize_candidates,
+)
+from 审计.第七批PURGEN虚拟片段 import (
+    ARCHIVE as PURGEN_ARCHIVE,
+    build_fragment_rows as build_purgen_fragment_rows,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_NEW = ROOT / "数据/原始" / "外部数据" / "新增开放数据"
@@ -25,7 +36,12 @@ OUTPUT_LEDGER = ROOT / "结果" / "数据规模总账.csv"
 OUTPUT_MANIFEST = ROOT / "结果" / "样本清单.csv"
 OUTPUT_JSON = ROOT / "结果" / "数据总账.json"
 OUTPUT_REPORT = ROOT / "结果" / "数据总账说明.md"
+OUTPUT_CANDIDATES = ROOT / "结果" / "Gold_候选.csv"
 SCRIPT_PATH = Path(__file__).resolve()
+SMIPOLY_CLASSIFIER_PATH = (
+    ROOT / "代码" / "审计" / "SMiPoly_TPU候选分类.py"
+)
+PURGEN_AUDIT_SCRIPT_PATH = ROOT / "代码" / "审计" / "第七批PURGEN虚拟片段.py"
 INPUT_FILES_READ: set[Path] = set()
 
 
@@ -131,6 +147,7 @@ MANIFEST_COLUMNS = [
 ENUMS = {
     "record_granularity": {
         "source",
+        "candidate",
         "specimen",
         "run",
         "curve",
@@ -661,7 +678,16 @@ def _tabular_record(
     else:
         granularity = "curve"
     raw_key = _joined(
-        _first(row, "curve_id", "曲线ID", "曲线或文件", "曲线或文件", "source_location", "来源"),
+        _first(
+            row,
+            "curve_id",
+            "curve_occurrence_id",
+            "run_id",
+            "曲线ID",
+            "曲线或文件",
+            "source_location",
+            "来源",
+        ),
         _first(row, "file", "source_file", "文件相对路径", "relative_path", "filename", "曲线"),
         _first(row, "sheet", "工作表", "source_location", "工况或试样", "试样标签"),
     )
@@ -679,10 +705,20 @@ def _tabular_record(
     )
     specimen = _first(row, "试样键", "试样ID", "record_id", "试样或家族组", "工况或试样")
     instance_key = _first(row, "instance_key")
+    if source == "第七批补充材料_孢子填充TPU":
+        specimen = _joined(row.get("formulation_id"), row.get("replicate_source_order"))
     if source == "SelfHealingTPU_4TU" and row.get("modality") == "mechanical" and instance_key:
         # 原始/愈合曲线属于同一物理试样；不能让曲线 record_id 把试样数翻倍。
         specimen = instance_key
-    curve = _first(row, "curve_id", "曲线ID", "曲线或文件", "曲线或文件", "record_id")
+    curve = _first(
+        row,
+        "curve_id",
+        "curve_occurrence_id",
+        "run_id",
+        "曲线ID",
+        "曲线或文件",
+        "record_id",
+    )
     scalar = _joined(
         _first(row, "record_kind", "observable", "reported_items", "y_observable"),
         _first(row, "source_location", "sheet", "工作表"),
@@ -697,6 +733,8 @@ def _tabular_record(
         "试样或家族组",
         "lineage_group",
     )
+    if source == "第七批补充材料_孢子填充TPU":
+        group = _joined(identity.source_family_id, row.get("formulation_id"))
     status = _record_status(profile, row)
     point_count = _sum_numbers(row, ("点数", "point_count", "usable_points", "机械原始点", "DIC点", "完整点"))
     numeric_count = _sum_numbers(row, ("direct_numeric_count", "derived_formula_count", "有限数值单元格"))
@@ -759,11 +797,14 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
             row.get("observable"),
             row.get("scalar_lineage_class"),
             row.get("record_id"),
+            row.get("scalar_id"),
             row.get("source_location"),
         )
         record = _base_record(profile, identity, "scalar", raw_key or f"row:{index + 2}", index)
         status = _record_status(profile, row)
         group = _first(row, "试样组", "试样ID", "split_group")
+        if profile["source_directory"] == "第七批补充材料_孢子填充TPU":
+            group = _joined(identity.source_family_id, row.get("formulation_id"))
         value = _number(row.get("value"))
         direct_numeric_count = _number(row.get("direct_numeric_result_count"))
         derived_numeric_count = _number(row.get("derived_numeric_result_count"))
@@ -771,7 +812,7 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
         scalar_count = int((direct_numeric_count or 0) + (derived_numeric_count or 0)) if has_grouped_count else 1
         record.update(
             {
-                "task": row.get("observable") or row.get("task_role") or profile["task"],
+                "task": row.get("observable") or row.get("metric") or row.get("task_role") or profile["task"],
                 "target_origin": _target_origin(
                     profile,
                     _first(row, "target_origin", "data_origin", "来源类型", "数据来源类型"),
@@ -783,9 +824,13 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
                     "formulation_id",
                 ),
                 "material_formula_key": _first(row, "来源", "formulation_id"),
-                "specimen_key": row.get("试样ID") or row.get("record_id", ""),
+                "specimen_key": row.get("试样ID")
+                or row.get("record_id")
+                or _joined(row.get("formulation_id"), row.get("replicate_source_order")),
                 "scalar_key": _joined(
-                    row.get("observable"), row.get("unit"), row.get("result_names")
+                    row.get("observable") or row.get("metric"),
+                    row.get("unit"),
+                    row.get("result_names"),
                 ),
                 "leakage_group_key": _joined(identity.source_family_id, group) if group else identity.source_family_id,
                 "leakage_key_status": "explicit_record_group" if group else "coarse_source_family",
@@ -807,8 +852,17 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
     records: list[dict[str, Any]] = []
     for index, row in enumerate(_read_tsv(path)):
         level = _first(row, "记录层级", "reduction_level")
-        granularity = "run" if any(token in level.lower() for token in ("run", "path", "trajectory", "system", "路径", "体系", "运行")) else "scalar"
-        raw_key = _first(row, "record_id") or _joined(
+        point_count = int(_number(row.get("point_count")) or 0)
+        if point_count > 1:
+            granularity = "curve"
+        elif any(
+            token in level.lower()
+            for token in ("run", "path", "trajectory", "system", "路径", "体系", "运行")
+        ):
+            granularity = "run"
+        else:
+            granularity = "scalar"
+        raw_key = _first(row, "observation_id", "record_id") or _joined(
             _first(row, "体系或路径", "system_id"),
             _first(row, "观测或计算", "property_name"),
             level,
@@ -831,6 +885,7 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
                 ),
                 "material_formula_key": _first(row, "体系或路径", "system_id"),
                 "run_key": _first(row, "体系或路径", "system_id") if granularity == "run" else "",
+                "curve_key": raw_key if granularity == "curve" else "",
                 "scalar_key": _first(row, "观测或计算", "property_name") if granularity == "scalar" else "",
                 "leakage_group_key": _first(row, "split_group")
                 or _joined(identity.source_family_id, _first(row, "体系或路径", "system_id"))
@@ -839,15 +894,25 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
                 "quality_status": status,
                 "weight_ceiling": _record_ceiling(profile, row, status),
                 "run_count": 1 if granularity == "run" else 0,
+                "curve_count": 1 if granularity == "curve" else 0,
                 "scalar_count": 1 if granularity == "scalar" else 0,
-                "numeric_value_count": 1
-                if _number(row.get("数值") or row.get("value")) is not None
-                else 0,
+                "point_count": point_count if granularity == "curve" else 0,
+                "numeric_value_count": (
+                    point_count
+                    if granularity == "curve"
+                    else 1
+                    if _number(row.get("数值") or row.get("value")) is not None
+                    else 0
+                ),
                 "source_locator": _first(row, "source_location")
                 or f"{_to_relative(path)}#row={index + 2}",
                 "audit_basis": _to_relative(path),
                 "decision_basis": _first(row, "准入状态", "训练权重状态", "decision"),
-                "notes": row.get("备注") or row.get("notes", ""),
+                "notes": _joined(
+                    f"method={_first(row, 'method_family')}",
+                    _first(row, "independence_note"),
+                    _first(row, "quality_note", "备注", "notes"),
+                ),
             }
         )
         records.append(record)
@@ -992,8 +1057,81 @@ def _specific_records(profile: dict[str, Any], identity: SourceIdentity) -> list
     return records
 
 
+def _virtual_candidate_records(
+    profiles: list[dict[str, Any]],
+    baseline_profiles: list[dict[str, Any]],
+    identities: dict[str, SourceIdentity],
+    candidate_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    candidate_profiles = [*baseline_profiles, *profiles]
+    profile_by_source_id: dict[str, dict[str, Any]] = {}
+    identity_by_source_id: dict[str, SourceIdentity] = {}
+    for profile in candidate_profiles:
+        identity = identities[profile["source_directory"]]
+        if identity.source_id in profile_by_source_id:
+            continue
+        profile_by_source_id[identity.source_id] = profile
+        identity_by_source_id[identity.source_id] = identity
+
+    records: list[dict[str, Any]] = []
+    for index, row in enumerate(candidate_rows):
+        candidate_id = str(row["candidate_id"])
+        candidate_source_id = str(row["source_id"])
+        if candidate_source_id not in profile_by_source_id:
+            raise ValueError(f"Gold-V候选缺少来源画像: {candidate_source_id}")
+        profile = profile_by_source_id[candidate_source_id]
+        identity = identity_by_source_id[candidate_source_id]
+        audit_basis = (
+            _to_relative(SMIPOLY_CANDIDATE_INPUT)
+            if candidate_source_id == "ds_smipoly_monomers"
+            else _to_relative(_audit_paths(profile)[0])
+        )
+        record = _base_record(
+            profile, identity, "candidate", candidate_id, index
+        )
+        record.update(
+            {
+                "completeness": (
+                    "structure_validated_role_rule_classified"
+                    if candidate_source_id == "ds_smipoly_monomers"
+                    else "fragment_structure_validated"
+                ),
+                "task": str(row["tpu_role"]),
+                "gold_layer": str(row["gold_layer"]),
+                "gold_admission_status": str(row["gold_admission_status"]),
+                "target_origin": str(row["data_origin"]),
+                "candidate_id": candidate_id,
+                "raw_sample_key": str(row["source_record_id"]),
+                "material_formula_key": str(row["inchikey"]),
+                "leakage_group_key": _joined(
+                    identity.source_family_id, candidate_id
+                ),
+                "leakage_key_status": "explicit_candidate",
+                "quality_status": profile["quality_status"],
+                "weight_ceiling": float(
+                    row["direct_property_supervision_weight_ceiling"]
+                ),
+                "source_locator": str(row["source_locator"]),
+                "audit_basis": audit_basis,
+                "decision_basis": str(row["role_basis"]),
+                "notes": _joined(
+                    f"screening_scope={row['screening_scope']}",
+                    f"role_confidence={row['role_confidence']}",
+                    f"fidelity={row['fidelity_level']}",
+                    "结构已验证；没有直接实验性能标签",
+                ),
+            }
+        )
+        records.append(record)
+    return records
+
+
 def _build_manifest(
-    profiles: list[dict[str, Any]], baseline_profiles: list[dict[str, Any]], identities: dict[str, SourceIdentity], ledger: list[dict[str, Any]]
+    profiles: list[dict[str, Any]],
+    baseline_profiles: list[dict[str, Any]],
+    identities: dict[str, SourceIdentity],
+    ledger: list[dict[str, Any]],
+    candidate_rows: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     profile_by_dir = {profile["source_directory"]: profile for profile in [*baseline_profiles, *profiles]}
     records: list[dict[str, Any]] = []
@@ -1020,10 +1158,21 @@ def _build_manifest(
         )
         records.append(record)
 
+    records.extend(
+        _virtual_candidate_records(
+            profiles, baseline_profiles, identities, candidate_rows
+        )
+    )
+
     for profile in profiles:
         identity = identities[profile["source_directory"]]
         base = _profile_base(profile)
-        for filename in ("曲线审计清单.tsv", "曲线解析清单.tsv"):
+        for filename in (
+            "曲线审计清单.tsv",
+            "曲线解析清单.tsv",
+            "三点弯曲曲线审计清单.tsv",
+            "DMA运行审计清单.tsv",
+        ):
             path = base / filename
             if not path.exists():
                 continue
@@ -1262,6 +1411,7 @@ def _major_pool_kpis(ledger_by_directory: dict[str, dict[str, Any]]) -> dict[str
 def _build_summary(
     ledger: list[dict[str, Any]],
     manifest: list[dict[str, Any]],
+    candidate_summary: dict[str, Any],
     audit_as_of_utc: str,
     input_fingerprint_sha256: str,
     input_file_count: int,
@@ -1352,6 +1502,20 @@ def _build_summary(
         "manifest_gold_admission_status_counts": dict(
             sorted(manifest_gold_admission_counts.items())
         ),
+        "virtual_candidate_count": candidate_summary["candidate_count"],
+        "virtual_candidate_direct_building_block_count": candidate_summary[
+            "direct_building_block_count"
+        ],
+        "virtual_candidate_functional_group_matched_count": candidate_summary[
+            "functional_group_matched_count"
+        ],
+        "virtual_candidate_unclassified_count": candidate_summary[
+            "unclassified_count"
+        ],
+        "virtual_candidate_role_counts": candidate_summary["role_counts"],
+        "virtual_candidate_screening_scope_counts": candidate_summary[
+            "screening_scope_counts"
+        ],
         "strict_core_calibration_curve_count": core_curve_count,
         "strict_core_calibration_curve_definition": "新增三套核心源中217条具有键控试样的校准曲线，加v0.1 Eom 16条可合法派生曲线；Eom 16条尚未闭合配方—独立试样链，因此233条不是同一composition-linked总体。",
         "strict_core_calibration_curve_point_row_count": strict_core_keyed_curve_point_row_count + v0_1_eom_eligible_curve_point_row_count,
@@ -1388,13 +1552,17 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 60
-    assert summary["v0_2_source_directory_count"] == 52
-    assert summary["v0_2_independent_source_identity_count"] == 51
+    assert len(ledger) == 65
+    assert summary["v0_2_source_directory_count"] == 57
+    assert summary["v0_2_independent_source_identity_count"] == 56
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 59
+    assert summary["total_independent_source_contribution_count"] == 64
     assert summary["model_ready_record_count"] == 0
+    assert summary["virtual_candidate_count"] == 1485
+    assert summary["virtual_candidate_direct_building_block_count"] == 312
+    assert summary["virtual_candidate_functional_group_matched_count"] == 954
+    assert summary["virtual_candidate_unclassified_count"] == 531
     expected_layer_by_origin = {
         "实验": "Gold-E",
         "模拟": "Gold-C",
@@ -1406,6 +1574,17 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
         assert row["gold_layer"] == expected_layer_by_origin[row["origin_kind"]]
         if row["gold_layer"] == "Gold-V" and row["quality_status"] != "隔离":
             assert row["gold_admission_status"] == "admitted_reference"
+    virtual_candidates = [
+        row for row in manifest if row["record_granularity"] == "candidate"
+    ]
+    assert len(virtual_candidates) == 1485
+    assert len({row["candidate_id"] for row in virtual_candidates}) == 1485
+    assert all(row["gold_layer"] == "Gold-V" for row in virtual_candidates)
+    assert all(
+        row["gold_admission_status"] == "admitted_reference"
+        for row in virtual_candidates
+    )
+    assert all(float(row["weight_ceiling"]) == 0.0 for row in virtual_candidates)
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
     assert summary["strict_core_keyed_curve_count"] == 217
@@ -1422,10 +1601,10 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     assert summary["selected_source_heterogeneous_specimen_or_run_arithmetic_pool"] == 1119
     assert summary["major_experimental_curve_history_lower_bound"] == 1112
     assert summary["major_experimental_curve_point_lower_bound"] == 12258315
-    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1354
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2380
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2222
-    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 8705042
+    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1390
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2471
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2304
+    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9150886
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 344
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7606461
     strict_core_manifest = [
@@ -1540,7 +1719,7 @@ def _write_report(
                 reference_texts.append(text)
 
     lines = [
-        "# TPU 数据库 v0.2：可训练样本清单与数据规模总账",
+        "# TPU 数据库 v0.2：多保真 Gold 清单与数据规模总账",
         "",
         "> 状态：`audit_inventory_only / training_blocked / weights_not_materialized`",
         f"> 生成方式：由 v0.1 冻结快照、v0.2 来源治理配置、{summary['v0_2_source_directory_count']} 个新增开放数据目录和 {summary['local_backlog_source_directory_count']} 个已审计既有力学目录的摘要与逐记录 TSV 确定性生成。",
@@ -1559,6 +1738,8 @@ def _write_report(
         f"| Gold参考来源分层 | E={summary['source_gold_layer_counts'].get('Gold-E', 0)} / C={summary['source_gold_layer_counts'].get('Gold-C', 0)} / V={summary['source_gold_layer_counts'].get('Gold-V', 0)} / 混合={summary['source_gold_layer_counts'].get('Gold-E+Gold-C', 0)} | 分层表示证据来源，不表示等权；实验、计算和虚拟候选不再混成一种真值 |",
         f"| Gold来源准入状态 | 正式参考={summary['source_gold_admission_status_counts'].get('admitted_reference', 0)} / 条件参考={summary['source_gold_admission_status_counts'].get('conditional_reference', 0)} / 阻断={summary['source_gold_admission_status_counts'].get('blocked', 0)} | 参考准入与训练权重独立；Gold-V可准入但实验性质监督权重仍为0 |",
         f"| 逐记录清单行 | {summary['manifest_row_count']:,} | 含来源聚合、逐试样、逐运行、逐曲线、逐标量和证据组；不是单一统计分母 |",
+        f"| 已物化 Gold-V 候选 | {summary['virtual_candidate_count']:,} | 全部通过 RDKit 结构解析、规范 SMILES 与 InChIKey 唯一性门；其中 {summary['virtual_candidate_direct_building_block_count']} 个命中直接 TPU/TPUU 构件规则，仍无性能真值 |",
+        f"| 有官能团角色建议/未分类候选 | {summary['virtual_candidate_functional_group_matched_count']:,}/{summary['virtual_candidate_unclassified_count']:,} | 角色来自版本化 SMARTS 规则，属于筛选建议而非商业可得性或实验可合成性证明 |",
         f"| 核心校准曲线/已审计点行 | {summary['strict_core_calibration_curve_count']} / {summary['strict_core_calibration_curve_point_row_count']:,} | 新增三源217条/913,608点行 + v0.1 Eom 16条/21,489点行；完整点对上限≤935,095，Eom试样链未闭合 |",
         f"| 严格核心键控试样/曲线/已审计点行 | {summary['strict_core_keyed_specimen_count']} / {summary['strict_core_keyed_curve_count']} / {summary['strict_core_keyed_curve_point_row_count']:,} | DRUM主核心148 + 低天花板28 + QUB 41；完整点对上限≤913,606 |",
         f"| 三个核心目录全部键控试样 | {summary['core_source_directory_keyed_specimen_count']} | DRUM 158 + 低天花板28 + QUB 41；含DRUM 10个桥接/外部/橡皮筋对照，仅作目录全范围盘点 |",
@@ -1637,6 +1818,7 @@ def _write_report(
             f"- 来源级总账：`{_to_relative(OUTPUT_LEDGER)}`",
             f"- 逐记录清单：`{_to_relative(OUTPUT_MANIFEST)}`",
             f"- JSON 总账：`{_to_relative(OUTPUT_JSON)}`",
+            f"- Gold-V 候选结构：`{_to_relative(OUTPUT_CANDIDATES)}`",
             "- 复算程序：`代码/生成数据总账.py`",
             "- 校验：`代码/测试/test_trainable_inventory.py`",
             "",
@@ -1668,12 +1850,20 @@ def main() -> None:
     INPUT_FILES_READ.clear()
     profile_config = _read_yaml(PROFILE_PATH)
     scope_config = _read_yaml(SCOPE_PATH)
+    _register_input(SMIPOLY_CANDIDATE_INPUT)
+    _register_input(SMIPOLY_CLASSIFIER_PATH)
+    _register_input(PURGEN_ARCHIVE)
+    _register_input(PURGEN_AUDIT_SCRIPT_PATH)
+    smipoly_candidate_rows = build_candidate_rows(SMIPOLY_CANDIDATE_INPUT)
+    _, purgen_candidate_rows = build_purgen_fragment_rows(PURGEN_ARCHIVE)
+    candidate_rows = [*smipoly_candidate_rows, *purgen_candidate_rows]
+    candidate_summary = summarize_candidates(candidate_rows)
     profiles = profile_config["profiles"]
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 52:
-        raise AssertionError(f"v0.2来源画像必须覆盖52个目录，当前为{len(profiles)}")
+    if len(profiles) != 57:
+        raise AssertionError(f"v0.2来源画像必须覆盖57个目录，当前为{len(profiles)}")
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
@@ -1694,11 +1884,14 @@ def main() -> None:
         raise AssertionError(f"已审计既有力学来源目录不存在: {missing_backlog}")
     identities = _resolve_source_identities(scope_config, all_profiles, baseline_profiles)
     ledger = _build_ledger(all_profiles, baseline_profiles, identities)
-    manifest = _build_manifest(all_profiles, baseline_profiles, identities, ledger)
+    manifest = _build_manifest(
+        all_profiles, baseline_profiles, identities, ledger, candidate_rows
+    )
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
         ledger,
         manifest,
+        candidate_summary,
         profile_config["audit_as_of_utc"],
         input_fingerprint_sha256,
         len(input_fingerprints),
@@ -1706,11 +1899,12 @@ def main() -> None:
         backlog_directories,
     )
     _validate(ledger, manifest, summary)
+    _write_csv(OUTPUT_CANDIDATES, CANDIDATE_COLUMNS, candidate_rows)
     _write_csv(OUTPUT_LEDGER, LEDGER_COLUMNS, ledger)
     _write_csv(OUTPUT_MANIFEST, MANIFEST_COLUMNS, manifest)
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.3",
+        "artifact_version": "trainable-inventory-v0.2.6",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],
