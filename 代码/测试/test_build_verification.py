@@ -254,8 +254,8 @@ def _text_lf_sha256(path: Path) -> str:
 
 
 def _write_v01_fixture(root: Path) -> Path:
-    raw = root / "01_原始数据" / "raw.csv"
-    output = root / "05_数据库快照" / "table.parquet"
+    raw = root / "数据/原始" / "raw.csv"
+    output = root / "数据/快照" / "table.parquet"
     pipeline = root / "代码" / "module.py"
     for path, payload in (
         (raw, b"raw\r\n"),
@@ -267,14 +267,14 @@ def _write_v01_fixture(root: Path) -> Path:
     snapshot = {
         "schema_version": "v0.1",
         "snapshot_id": "snapshot_3195c290d7dc2d44",
-        "input_hashes": [{"raw_path": "01_原始数据/raw.csv", "sha256": _sha256(raw)}],
+        "input_hashes": [{"raw_path": "数据/原始/raw.csv", "sha256": _sha256(raw)}],
         "outputs": {
             "table": {
-                "path": "05_数据库快照/table.parquet",
+                "path": "数据/快照/table.parquet",
                 "sha256": _sha256(output),
                 "size_bytes": output.stat().st_size,
             },
-            "duckdb": {"path": "05_数据库快照/cache.duckdb", "byte_reproducible": False},
+            "duckdb": {"path": "数据/快照/cache.duckdb", "byte_reproducible": False},
         },
         "pipeline": {
             "files": [
@@ -282,7 +282,7 @@ def _write_v01_fixture(root: Path) -> Path:
             ]
         },
     }
-    path = root / "05_数据库快照" / "TPU数据库_v0.1_快照.json"
+    path = root / "数据/快照" / "TPU数据库_v0.1_快照.json"
     path.write_text(json.dumps(snapshot, ensure_ascii=False), encoding="utf-8")
     return path
 

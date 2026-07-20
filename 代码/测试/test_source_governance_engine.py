@@ -37,8 +37,8 @@ from source_governance import (
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = ROOT / "配置" / "v0.2来源范围.yaml"
-CONTRACT_PATH = ROOT / "结构定义" / "v0.2来源治理合同.yaml"
-LEDGER_PATH = ROOT / "文档" / "TPU_数据来源与研究路线台账.md"
+CONTRACT_PATH = ROOT / "配置/结构定义" / "v0.2来源治理合同.yaml"
+LEDGER_PATH = ROOT / "文档" / "数据来源与参考文献.md"
 
 
 def _config() -> dict:
@@ -734,7 +734,7 @@ def test_optional_csl_fields_and_output_guards(tmp_path: Path):
     assert "https://doi.org" in first["csl_json"]
 
     with pytest.raises(SourceGovernanceError) as unsafe:
-        write_source_governance_outputs(build, tmp_path / "02_暂存数据")
+        write_source_governance_outputs(build, tmp_path / "数据/暂存")
     assert unsafe.value.code == "unsafe_output_root"
 
     missing_table = dict(build.tables)

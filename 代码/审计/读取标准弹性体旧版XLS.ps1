@@ -69,7 +69,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $projectRoot 'pyproject.toml') -Path
     throw "无法确认项目根目录：$projectRoot"
 }
 
-$sourceDirectory = Join-Path $projectRoot '01_原始数据\外部数据\新增开放数据\Zenodo_标准化弹性体表征'
+$sourceDirectory = Join-Path $projectRoot '数据/原始\外部数据\新增开放数据\Zenodo_标准化弹性体表征'
 $archivePath = Join-Path $sourceDirectory 'Melting.zip'
 $memberName = 'Melting/viscosity/Filaflex 60A.xls'
 $expectedArchiveSha256 = '9d902b31027a36f9e6a38e5fa5873dce289d0d0cad0088ab49458aa8b21adda4'

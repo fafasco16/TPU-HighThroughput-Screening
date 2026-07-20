@@ -1869,7 +1869,7 @@ def render_computational_admission_markdown(
     profiles: Iterable[ComputationalAdmissionProfile],
     *,
     overlap_profile: ExactStructureOverlapProfile | None = None,
-    ledger_link: str = "../TPU_数据来源与研究路线台账.md",
+    ledger_link: str = "../数据来源与参考文献.md",
 ) -> str:
     """Render a deterministic, citation-ready provisional admission report."""
 

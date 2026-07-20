@@ -33,7 +33,7 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_ROOT = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+DATA_ROOT = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 CAPTURE_DATE = "2026-07-20"
 USER_AGENT = "TPU-HighThroughput-Screening/0.2 (+research data acquisition)"
 EXPECTED_FILE_COUNT = 25

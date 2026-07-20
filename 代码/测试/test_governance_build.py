@@ -150,7 +150,7 @@ def _write_fake_source_outputs(build: SourceGovernanceBuild, output_root: Path):
 
 
 def _configure_fake_build(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    (tmp_path / "01_原始数据").mkdir(exist_ok=True)
+    (tmp_path / "数据/原始").mkdir(parents=True, exist_ok=True)
     paths = {
         name: tmp_path / f"{name}.txt"
         for name in (
@@ -168,7 +168,7 @@ def _configure_fake_build(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     asset_result = _asset_result(record)
     source_build = _source_build(record)
     monkeypatch.setattr(
-        module, "load_asset_rules", lambda path: SimpleNamespace(root_hint="01_原始数据")
+        module, "load_asset_rules", lambda path: SimpleNamespace(root_hint="数据/原始")
     )
     monkeypatch.setattr(module, "load_source_scope_config", lambda path: {})
     monkeypatch.setattr(
@@ -206,11 +206,11 @@ def _configure_fake_build(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     "relative",
     [
         ".",
-        "临时构建",
-        "临时构建/一层/二层",
-        "01_原始数据/构建",
-        "02_暂存数据/构建",
-        "05_数据库快照/构建",
+        "数据/临时/构建缓存",
+        "数据/临时/构建缓存/一层/二层",
+        "数据/原始/构建",
+        "数据/暂存/构建",
+        "数据/快照/构建",
         "../外部构建",
     ],
 )
@@ -223,9 +223,9 @@ def test_output_target_rejects_outside_deep_or_formal_paths(
 
 
 def test_output_target_accepts_new_target_and_rejects_any_existing_target(tmp_path: Path) -> None:
-    project, target = module.validate_output_target(tmp_path, "临时构建/构建A")
+    project, target = module.validate_output_target(tmp_path, "数据/临时/构建缓存/构建A")
     assert project == tmp_path.resolve()
-    assert target == (tmp_path / "临时构建/构建A").resolve()
+    assert target == (tmp_path / "数据/临时/构建缓存/构建A").resolve()
 
     target.mkdir(parents=True)
     with pytest.raises(module.GovernanceBuildError) as caught:
@@ -235,12 +235,13 @@ def test_output_target_accepts_new_target_and_rejects_any_existing_target(tmp_pa
 
 def test_output_target_and_project_file_fail_closed_on_missing_or_unsafe_paths(tmp_path: Path) -> None:
     with pytest.raises(module.GovernanceBuildError) as missing:
-        module.validate_output_target(tmp_path / "missing", "临时构建/x")
+        module.validate_output_target(tmp_path / "missing", "数据/临时/构建缓存/x")
     assert missing.value.code == "project_root_missing"
 
-    (tmp_path / "临时构建").write_text("not a directory", encoding="utf-8")
+    (tmp_path / "数据/临时").mkdir(parents=True)
+    (tmp_path / "数据/临时/构建缓存").write_text("not a directory", encoding="utf-8")
     with pytest.raises(module.GovernanceBuildError) as parent:
-        module.validate_output_target(tmp_path, "临时构建/x")
+        module.validate_output_target(tmp_path, "数据/临时/构建缓存/x")
     assert parent.value.code == "unsafe_output_parent"
     with pytest.raises(module.GovernanceBuildError) as document:
         module._project_file(tmp_path, "missing.yaml", label="fixture")
@@ -400,8 +401,8 @@ def test_dq_matimpute_counts_only_pue_derived_and_model_outputs() -> None:
 def test_atomic_build_is_deterministic_and_auditable(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    raw = tmp_path / "01_原始数据"
-    raw.mkdir()
+    raw = tmp_path / "数据/原始"
+    raw.mkdir(parents=True)
     asset_rules = tmp_path / "asset.yaml"
     source_scope = tmp_path / "source.yaml"
     contract_schema = tmp_path / "contract.yaml"
@@ -417,7 +418,7 @@ def test_atomic_build_is_deterministic_and_auditable(
     source_build = _source_build(record)
 
     monkeypatch.setattr(
-        module, "load_asset_rules", lambda path: SimpleNamespace(root_hint="01_原始数据")
+        module, "load_asset_rules", lambda path: SimpleNamespace(root_hint="数据/原始")
     )
     monkeypatch.setattr(module, "load_source_scope_config", lambda path: {})
     monkeypatch.setattr(
@@ -441,7 +442,7 @@ def test_atomic_build_is_deterministic_and_auditable(
 
     first = module.build_governance_database(
         tmp_path,
-        "临时构建/构建A",
+        "数据/临时/构建缓存/构建A",
         asset_rules_path=asset_rules,
         source_scope_path=source_scope,
         contract_schema_path=contract_schema,
@@ -451,7 +452,7 @@ def test_atomic_build_is_deterministic_and_auditable(
     )
     second = module.build_governance_database(
         tmp_path,
-        "临时构建/构建B",
+        "数据/临时/构建缓存/构建B",
         asset_rules_path=asset_rules,
         source_scope_path=source_scope,
         contract_schema_path=contract_schema,
@@ -471,7 +472,7 @@ def test_atomic_build_is_deterministic_and_auditable(
 def test_failed_build_does_not_publish_partial_target(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    (tmp_path / "01_原始数据").mkdir()
+    (tmp_path / "数据/原始").mkdir(parents=True)
     asset_rules = tmp_path / "asset.yaml"
     source_scope = tmp_path / "source.yaml"
     contract_schema = tmp_path / "contract.yaml"
@@ -483,7 +484,7 @@ def test_failed_build_does_not_publish_partial_target(
     for path in (contract_schema, enums, quality_rules, snapshot):
         path.write_text("test", encoding="utf-8")
     monkeypatch.setattr(
-        module, "load_asset_rules", lambda path: SimpleNamespace(root_hint="01_原始数据")
+        module, "load_asset_rules", lambda path: SimpleNamespace(root_hint="数据/原始")
     )
     monkeypatch.setattr(module, "load_source_scope_config", lambda path: {})
     monkeypatch.setattr(
@@ -501,7 +502,7 @@ def test_failed_build_does_not_publish_partial_target(
         "build_asset_registry",
         lambda root, config: (_ for _ in ()).throw(RuntimeError("boom")),
     )
-    target = tmp_path / "临时构建/失败构建"
+    target = tmp_path / "数据/临时/构建缓存/失败构建"
     with pytest.raises(RuntimeError, match="boom"):
         module.build_governance_database(
             tmp_path,
@@ -514,7 +515,7 @@ def test_failed_build_does_not_publish_partial_target(
             v01_snapshot_path=snapshot,
         )
     assert not target.exists()
-    assert not list((tmp_path / "临时构建").iterdir())
+    assert not list((tmp_path / "数据/临时/构建缓存").iterdir())
 
 
 def test_finished_build_audit_rejects_report_tampering(
@@ -522,7 +523,7 @@ def test_finished_build_audit_rejects_report_tampering(
 ) -> None:
     _asset, _source, _paths, kwargs = _configure_fake_build(tmp_path, monkeypatch)
     result = module.build_governance_database(
-        tmp_path, "临时构建/构建A", **kwargs
+        tmp_path, "数据/临时/构建缓存/构建A", **kwargs
     )
     report_path = result.output_root / "TPU数据库_v0.2_资产登记审计.json"
     original = json.loads(report_path.read_text(encoding="utf-8"))
@@ -575,7 +576,7 @@ def test_finished_build_audit_rejects_file_set_table_and_artifact_tampering(
 ) -> None:
     _asset, _source, _paths, kwargs = _configure_fake_build(tmp_path, monkeypatch)
     result = module.build_governance_database(
-        tmp_path, "临时构建/构建A", **kwargs
+        tmp_path, "数据/临时/构建缓存/构建A", **kwargs
     )
     extra = result.output_root / "extra.txt"
     extra.write_text("x", encoding="utf-8")
@@ -614,8 +615,8 @@ def test_compare_rejects_self_audit_byte_difference_and_logical_difference(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     _asset, _source, _paths, kwargs = _configure_fake_build(tmp_path, monkeypatch)
-    left = module.build_governance_database(tmp_path, "临时构建/A", **kwargs).output_root
-    right = module.build_governance_database(tmp_path, "临时构建/B", **kwargs).output_root
+    left = module.build_governance_database(tmp_path, "数据/临时/构建缓存/A", **kwargs).output_root
+    right = module.build_governance_database(tmp_path, "数据/临时/构建缓存/B", **kwargs).output_root
     report = right / "TPU数据库_v0.2_资产登记审计.json"
     payload = json.loads(report.read_text(encoding="utf-8"))
     report.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
@@ -648,7 +649,7 @@ def test_build_detects_raw_document_and_baseline_drift(
     calls = iter((asset_result, changed))
     monkeypatch.setattr(module, "build_asset_registry", lambda root, config: next(calls))
     with pytest.raises(module.GovernanceBuildError) as raw:
-        module.build_governance_database(tmp_path, "临时构建/raw-drift", **kwargs)
+        module.build_governance_database(tmp_path, "数据/临时/构建缓存/raw-drift", **kwargs)
     assert raw.value.code == "raw_input_drift"
 
     asset_result, _source, _paths, kwargs = _configure_fake_build(tmp_path, monkeypatch)
@@ -656,7 +657,7 @@ def test_build_detects_raw_document_and_baseline_drift(
     hashes = iter(({"x": "a" * 64}, {"x": "b" * 64}))
     monkeypatch.setattr(module, "_document_hashes", lambda documents: next(hashes))
     with pytest.raises(module.GovernanceBuildError) as documents:
-        module.build_governance_database(tmp_path, "临时构建/doc-drift", **kwargs)
+        module.build_governance_database(tmp_path, "数据/临时/构建缓存/doc-drift", **kwargs)
     assert documents.value.code == "input_document_drift"
 
     _configure_fake_build(tmp_path, monkeypatch)
@@ -669,7 +670,7 @@ def test_build_detects_raw_document_and_baseline_drift(
     )
     monkeypatch.setattr(module, "verify_v01_baseline", lambda project, snapshot: next(baseline_calls))
     with pytest.raises(module.GovernanceBuildError) as baseline:
-        module.build_governance_database(tmp_path, "临时构建/baseline-drift", **kwargs)
+        module.build_governance_database(tmp_path, "数据/临时/构建缓存/baseline-drift", **kwargs)
     assert baseline.value.code == "v01_baseline_drift"
 
 
@@ -683,7 +684,7 @@ def test_build_wraps_pre_and_post_baseline_failures(
         lambda *_: (_ for _ in ()).throw(BuildVerificationError("drift", "changed")),
     )
     with pytest.raises(module.GovernanceBuildError) as pre:
-        module.build_governance_database(tmp_path, "临时构建/pre", **kwargs)
+        module.build_governance_database(tmp_path, "数据/临时/构建缓存/pre", **kwargs)
     assert pre.value.code == "v01_baseline_pre_failed"
 
     _configure_fake_build(tmp_path, monkeypatch)
@@ -697,5 +698,5 @@ def test_build_wraps_pre_and_post_baseline_failures(
 
     monkeypatch.setattr(module, "verify_v01_baseline", post_failure)
     with pytest.raises(module.GovernanceBuildError) as post:
-        module.build_governance_database(tmp_path, "临时构建/post", **kwargs)
+        module.build_governance_database(tmp_path, "数据/临时/构建缓存/post", **kwargs)
     assert post.value.code == "v01_baseline_post_failed"

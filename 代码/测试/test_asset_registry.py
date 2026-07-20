@@ -28,8 +28,8 @@ from asset_registry import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PRODUCTION_RULES = PROJECT_ROOT / "配置" / "v0.2资产登记规则.yaml"
-PRODUCTION_ENUMS = PROJECT_ROOT / "结构定义" / "v0.2枚举.yaml"
-RAW_ROOT = PROJECT_ROOT / "01_原始数据"
+PRODUCTION_ENUMS = PROJECT_ROOT / "配置/结构定义" / "v0.2枚举.yaml"
+RAW_ROOT = PROJECT_ROOT / "数据/原始"
 
 
 def _rule(
@@ -69,7 +69,7 @@ def _document(*rules: dict[str, object]) -> dict[str, object]:
         "rules_version": "asset-rules-test-v1",
         "discovery_scope_key": "test-discovery-scope",
         "scan": {
-            "root_hint": "01_原始数据",
+            "root_hint": "数据/原始",
             "follow_symlinks": False,
             "prune_directory_names": [".git"],
             "path_normalization": "unicode_nfc_posix",
@@ -972,7 +972,7 @@ def test_real_disk_inventory_is_completely_and_unambiguously_classified_read_onl
     output = tmp_path / "v0.2全量资产登记.csv"
     write_registry_csv(output, result.records)
     assert output.exists()
-    assert not (PROJECT_ROOT / "清单" / "v0.2全量资产登记.csv").exists()
+    assert not (PROJECT_ROOT / "配置/清单" / "v0.2全量资产登记.csv").exists()
 
     roles = result.audit["role_counts"]
     frozen_v02_baseline_minimums = {

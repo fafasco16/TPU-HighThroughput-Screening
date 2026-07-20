@@ -121,8 +121,8 @@ _PIPELINE_CODE_FILES = (
 _PIPELINE_PROJECT_FILES = (
     "pyproject.toml",
     "uv.lock",
-    "结构定义/v0.1字段字典.yaml",
-    "结构定义/v0.1枚举.yaml",
+    "配置/结构定义/v0.1字段字典.yaml",
+    "配置/结构定义/v0.1枚举.yaml",
     "配置/数据源.yaml",
 )
 
@@ -284,7 +284,7 @@ def _normalize_adapter_options(
 
 
 def _validate_manifest_enums(root: Path, selected: pd.DataFrame) -> None:
-    enums = load_enums(root / "结构定义" / "v0.1枚举.yaml")["enums"]
+    enums = load_enums(root / "配置/结构定义" / "v0.1枚举.yaml")["enums"]
     for column, enum_name in (
         ("status", "source_status"),
         ("access_restriction", "access_restriction"),
@@ -1091,10 +1091,10 @@ def _write_qc(
     snapshot_id: str,
     issues: Sequence[QualityIssue],
 ) -> dict[str, dict[str, Any]]:
-    report_dir = root / "文档" / "质量报告"
+    report_dir = root / "结果"
     report_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = report_dir / "TPU数据库_v0.1_质量问题.csv"
-    json_path = report_dir / "TPU数据库_v0.1_质量问题.json"
+    csv_path = report_dir / "质量问题.csv"
+    json_path = report_dir / "质量问题.json"
     frame = issues_frame(issues).sort_values(
         ["severity", "rule_id", "table_name", "record_id"], kind="mergesort"
     )
@@ -1168,7 +1168,7 @@ def _write_field_coverage(
     root: Path,
     tables: Mapping[str, pd.DataFrame],
 ) -> dict[str, Any]:
-    path = root / "文档" / "质量报告" / "TPU数据库_v0.1_字段覆盖.csv"
+    path = root / "结果" / "字段覆盖.csv"
     path.parent.mkdir(parents=True, exist_ok=True)
     frame = field_coverage_frame(tables)
     frame.to_csv(
@@ -1236,7 +1236,7 @@ def build_database(
     layer_frames: dict[str, tuple[Path, pd.DataFrame, Sequence[str]]] = {}
     for name, frame in staging.items():
         layer_frames[f"staging_{name}"] = (
-            root / "02_暂存数据" / f"{name}.parquet",
+            root / "数据/暂存" / f"{name}.parquet",
             frame,
             ["record_id"],
         )
@@ -1251,12 +1251,12 @@ def build_database(
             "property_value": ["property_id"],
         }[name]
         layer_frames[f"normalized_{name}"] = (
-            root / "03_规范数据" / f"{name}.parquet",
+            root / "数据/规范" / f"{name}.parquet",
             frame,
             sort_keys,
         )
     layer_frames["derived_property"] = (
-        root / "04_派生数据" / "derived_property.parquet",
+        root / "数据/派生" / "derived_property.parquet",
         derived,
         ["derived_id"],
     )
@@ -1275,7 +1275,7 @@ def build_database(
             }[name]
         )
         layer_frames[name] = (
-            root / "04_派生数据" / f"{name}.parquet",
+            root / "数据/派生" / f"{name}.parquet",
             frame,
             key,
         )
@@ -1283,7 +1283,7 @@ def build_database(
     outputs: dict[str, dict[str, Any]] = {}
     row_counts: dict[str, int] = {}
     snapshot_tables: dict[str, Path] = {}
-    snapshot_dir = root / "05_数据库快照"
+    snapshot_dir = root / "数据/快照"
     snapshot_dir.mkdir(parents=True, exist_ok=True)
     for table_name, (layer_path, frame, sort_keys) in sorted(layer_frames.items()):
         layer_meta = write_parquet_deterministic(frame, layer_path, sort_keys)

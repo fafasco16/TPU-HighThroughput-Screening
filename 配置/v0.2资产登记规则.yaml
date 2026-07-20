@@ -4,7 +4,7 @@ rules_version: v0.2-asset-rules-2026-07-20-rc18
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
-  root_hint: 01_原始数据
+  root_hint: 数据/原始
   follow_symlinks: false
   prune_directory_names:
     - .git

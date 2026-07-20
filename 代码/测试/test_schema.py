@@ -42,8 +42,8 @@ def _enums():
 
 
 def test_project_schema_and_enums_load_from_chinese_paths():
-    schema = load_schema(ROOT / "结构定义" / "v0.1字段字典.yaml")
-    enums = load_enums(ROOT / "结构定义" / "v0.1枚举.yaml")
+    schema = load_schema(ROOT / "配置/结构定义" / "v0.1字段字典.yaml")
+    enums = load_enums(ROOT / "配置/结构定义" / "v0.1枚举.yaml")
     validate_schema_definition(schema, enums)
     assert schema["schema_version"] == "v0.1"
     assert "source_file" in schema["tables"]

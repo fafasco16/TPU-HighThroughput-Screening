@@ -20,7 +20,7 @@ def _write_config(root: Path) -> Path:
         "sources": [
             {
                 "source_id": "registered_source",
-                "path": "01_原始数据/基础数据/known.csv",
+                "path": "数据/原始/基础数据/known.csv",
                 "doi": "10.0000/example",
                 "url": "https://example.invalid/data",
                 "accessed_at": "2026-07-18",
@@ -42,15 +42,15 @@ def _write_config(root: Path) -> Path:
 
 
 def test_full_manifest_covers_registered_and_unregistered_files(tmp_path):
-    raw = tmp_path / "01_原始数据" / "基础数据"
+    raw = tmp_path / "数据/原始" / "基础数据"
     raw.mkdir(parents=True)
     (raw / "known.csv").write_text("id\n1\n", encoding="utf-8")
     (raw / "unknown.txt").write_text("local", encoding="utf-8")
-    (tmp_path / "01_原始数据" / "README.md").write_text(
+    (tmp_path / "数据/原始" / "README.md").write_text(
         "project-owned placeholder", encoding="utf-8"
     )
     config = _write_config(tmp_path)
-    output = tmp_path / "清单" / "来源清单.csv"
+    output = tmp_path / "配置/清单" / "来源清单.csv"
     rows = build_full_manifest(tmp_path, config, output)
     assert len(rows) == 2
     assert len({row["raw_path"] for row in rows}) == 2
@@ -64,7 +64,7 @@ def test_full_manifest_covers_registered_and_unregistered_files(tmp_path):
 
 
 def test_manifest_cli_uses_requested_paths(tmp_path, capsys, monkeypatch):
-    raw = tmp_path / "01_原始数据" / "基础数据"
+    raw = tmp_path / "数据/原始" / "基础数据"
     raw.mkdir(parents=True)
     (raw / "known.csv").write_text("id\n1\n", encoding="utf-8")
     config = _write_config(tmp_path)
@@ -77,11 +77,11 @@ def test_manifest_cli_uses_requested_paths(tmp_path, capsys, monkeypatch):
 
 
 def test_manifest_loader_and_build_forward_frozen_rows(tmp_path, monkeypatch):
-    raw = tmp_path / "01_原始数据" / "基础数据"
+    raw = tmp_path / "数据/原始" / "基础数据"
     raw.mkdir(parents=True)
     (raw / "known.csv").write_text("id\n1\n", encoding="utf-8")
     config = _write_config(tmp_path)
-    manifest_path = tmp_path / "清单" / "来源清单.csv"
+    manifest_path = tmp_path / "配置/清单" / "来源清单.csv"
     expected = build_full_manifest(tmp_path, config, manifest_path)
     loaded = load_manifest_csv(tmp_path, manifest_path)
     assert len(loaded) == len(expected) == 1
@@ -310,7 +310,7 @@ def test_governance_build_cli_forwards_all_frozen_inputs(
     def fake_build(project, output, **options):
         captured.update(project=project, output=output, options=options)
         return SimpleNamespace(
-            output_root=tmp_path / "临时构建/构建A",
+            output_root=tmp_path / "数据/临时/构建缓存/构建A",
             report={"input_count": 1607, "snapshot_logical_hash": "a" * 64},
         )
 
@@ -318,7 +318,7 @@ def test_governance_build_cli_forwards_all_frozen_inputs(
     arguments = [
         "governance-build",
         "--output-root",
-        "临时构建/构建A",
+        "数据/临时/构建缓存/构建A",
         "--asset-rules",
         "asset.yaml",
         "--source-scopes",
@@ -338,7 +338,7 @@ def test_governance_build_cli_forwards_all_frozen_inputs(
     assert payload["input_count"] == 1607
     assert captured == {
         "project": tmp_path,
-        "output": "临时构建/构建A",
+        "output": "数据/临时/构建缓存/构建A",
         "options": {
             "asset_rules_path": "asset.yaml",
             "source_scope_path": "source.yaml",

@@ -38,7 +38,7 @@ from source_governance import SourceGovernanceError
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE_CONFIG = Path("配置/数据源.yaml")
-DEFAULT_MANIFEST = Path("清单/来源清单.csv")
+DEFAULT_MANIFEST = Path("配置/清单/来源清单.csv")
 
 
 def build_full_manifest(
@@ -52,7 +52,7 @@ def build_full_manifest(
     registered_rows = build_manifest_from_config(root, config_path)
     generic_rows = build_manifest(
         root,
-        root / "01_原始数据",
+        root / "数据/原始",
         metadata={
             "source_id": "raw_vault_unregistered",
             "doi": "",
@@ -71,7 +71,7 @@ def build_full_manifest(
     generic_rows = [
         row
         for row in generic_rows
-        if row["raw_path"] != "01_原始数据/README.md"
+        if row["raw_path"] != "数据/原始/README.md"
     ]
     by_path = {str(row["raw_path"]): row for row in generic_rows}
     for row in registered_rows:

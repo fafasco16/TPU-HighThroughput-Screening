@@ -10,17 +10,17 @@ const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(SCRIPT_DIR, "..");
 const OUTPUT_PATH = path.join(
   PROJECT_ROOT,
-  "06_审核导出",
-  "TPU数据库_v0.1_审核目录.xlsx",
+  "结果",
+  "审核目录.xlsx",
 );
-const DEFAULT_PREVIEW_DIR = path.join(os.tmpdir(), "TPU数据库_v0.1_审核目录_预览");
+const DEFAULT_PREVIEW_DIR = path.join(os.tmpdir(), "TPU数据库审核目录_预览");
 
 const INPUTS = {
-  manifest: path.join(PROJECT_ROOT, "清单", "来源清单.csv"),
-  schema: path.join(PROJECT_ROOT, "结构定义", "v0.1字段字典.yaml"),
+  manifest: path.join(PROJECT_ROOT, "配置/清单", "来源清单.csv"),
+  schema: path.join(PROJECT_ROOT, "配置/结构定义", "v0.1字段字典.yaml"),
   sources: path.join(PROJECT_ROOT, "配置", "数据源.yaml"),
-  qualityDir: path.join(PROJECT_ROOT, "文档", "质量报告"),
-  snapshotDir: path.join(PROJECT_ROOT, "05_数据库快照"),
+  qualityDir: path.join(PROJECT_ROOT, "结果"),
+  snapshotDir: path.join(PROJECT_ROOT, "数据/快照"),
 };
 
 const COLORS = {
@@ -397,7 +397,7 @@ async function loadQualityIssues() {
     issues.push([
       reportsExist
         ? qualityFiles.map((filePath) => path.relative(PROJECT_ROOT, filePath).replaceAll("\\", "/")).join("；")
-        : "文档/质量报告",
+        : "结果",
       "info",
       reportsExist ? "NO_QUALITY_ISSUES" : "NO_ISSUES_FILE",
       "",
@@ -655,7 +655,7 @@ function populateSourceFiles(sheet, manifestRows) {
     row.source_id, row.source_file_id, row.raw_path, row.original_filename, row.size_bytes, row.sha256, row.doi,
     row.url, row.accessed_at, row.license_spdx, row.derivatives_allowed, row.redistribution_allowed,
     row.access_restriction, row.evidence_grade, row.material_scope, row.status, row.notes,
-    row.raw_path.split("/")[0] === "01_原始数据" && row.raw_path.split("/")[1]
+    row.raw_path.startsWith("数据/原始/") && row.raw_path.split("/")[2]
       ? row.raw_path.split("/")[1]
       : "其他",
     path.extname(row.original_filename).toLowerCase() || "[无扩展名]",
@@ -690,7 +690,7 @@ function populateFieldDictionary(sheet, fieldRows) {
   prepareSheet(
     sheet,
     "TPU 数据库 v0.1 字段字典",
-    "字段定义来自结构定义/v0.1字段字典.yaml；原始值与规范值应并存，所有规范记录必须保留来源定位。",
+    "字段定义来自配置/结构定义/v0.1字段字典.yaml；原始值与规范值应并存，所有规范记录必须保留来源定位。",
     "I",
   );
   sheet.getRange(`A4:I${finalRow}`).values = [headers, ...fieldRows];
@@ -732,7 +732,7 @@ function populateQuality(sheet, issues) {
   prepareSheet(
     sheet,
     "质量问题审核清单",
-    "自动汇总文档/质量报告中的 CSV/JSON；QC 零问题与尚未生成报告会分别明确标注。",
+    "自动汇总结果目录中的 CSV/JSON；QC 零问题与尚未生成报告会分别明确标注。",
     "I",
   );
   sheet.getRange(`A4:I${finalRow}`).values = [headers, ...issues];
@@ -833,10 +833,10 @@ async function main() {
   ]);
   const inventoryPaths = [INPUTS.manifest, INPUTS.schema, INPUTS.sources, ...reportFiles, ...snapshotFiles];
   const buildRows = [
-    ["构建器", "工作簿", "TPU数据库_v0.1_审核目录.xlsx", "由代码/build_catalog.mjs 使用 @oai/artifact-tool 构建"],
+    ["构建器", "工作簿", "审核目录.xlsx", "由代码/build_catalog.mjs 使用 @oai/artifact-tool 构建"],
     ["模式", "排序与计算", "确定性", "固定工作表顺序；记录、许可证、输入指纹按稳定键排序；不使用当前时间或随机数"],
     ["模式", "许可门控", "fail-closed", "UNKNOWN 或权利未确认的数据不得公开再分发"],
-    ["数据库快照", "JSON 文件数", snapshotFiles.length, snapshotFiles.length > 0 ? "读取 05_数据库快照/*.json" : "当前尚无快照 JSON"],
+    ["数据库快照", "JSON 文件数", snapshotFiles.length, snapshotFiles.length > 0 ? "读取 数据/快照/*.json" : "当前尚无快照 JSON"],
     ...(await inputInventory(inventoryPaths, rowCounts)),
   ];
 

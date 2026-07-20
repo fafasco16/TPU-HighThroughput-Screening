@@ -42,7 +42,7 @@ baseline_profiles:
     dedup_status: 已分组
     split_group_status: 粗粒度来源家族
     completeness: v0.1_frozen_source_aggregate
-    audit_basis: 05_数据库快照/TPU数据库_v0.1_快照.json
+    audit_basis: 数据/快照/TPU数据库_v0.1_快照.json
     notes: 1,083 条来源记录规范化为 1,071 个候选结构；候选不是实验性能标签。
     counts: {source_record_count: 1083, material_count: 1071, formulation_count: null, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
   - source_id: ds_pue326_dq
@@ -59,7 +59,7 @@ baseline_profiles:
     dedup_status: 已分组
     split_group_status: 已有母集家族键
     completeness: v0.1_frozen_source_aggregate
-    audit_basis: 05_数据库快照/TPU数据库_v0.1_快照.json
+    audit_basis: 数据/快照/TPU数据库_v0.1_快照.json
     notes: 326 行是同一母集的变换后辅助记录，原配方不可恢复，公开视图为 0 行。
     counts: {source_record_count: 326, material_count: null, formulation_count: null, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 326, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
   - source_id: ds_prepolymer_viscosity
@@ -76,7 +76,7 @@ baseline_profiles:
     dedup_status: 未见精确重复
     split_group_status: 配方键部分可用
     completeness: v0.1_frozen_source_aggregate
-    audit_basis: 05_数据库快照/TPU数据库_v0.1_快照.json
+    audit_basis: 数据/快照/TPU数据库_v0.1_快照.json
     notes: 39 个配方与 39 条温度—黏度曲线一一对应；许可未闭合。
     counts: {source_record_count: 39, material_count: 39, formulation_count: 39, batch_count: null, specimen_count: null, run_count: 39, curve_count_observed: 39, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 4559, point_count_candidate: 0, numeric_value_count: 4559, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
   - source_id: ds_eom_hbond_2021
@@ -93,7 +93,7 @@ baseline_profiles:
     dedup_status: 未见精确重复
     split_group_status: 需补配方—批次—试样链
     completeness: v0.1_frozen_source_aggregate
-    audit_basis: 05_数据库快照/TPU数据库_v0.1_快照.json
+    audit_basis: 数据/快照/TPU数据库_v0.1_快照.json
     notes: 53 条曲线与 19 个作者标量已冻结；当前仅 16 条拉伸曲线产生 48 个合法派生端点。
     counts: {source_record_count: 72, material_count: null, formulation_count: null, batch_count: null, specimen_count: null, run_count: 53, curve_count_observed: 53, curve_count_candidate: 53, scalar_count_observed: 19, scalar_count_candidate: 19, point_count_observed: 25972, point_count_candidate: 25972, numeric_value_count: 25991, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
 

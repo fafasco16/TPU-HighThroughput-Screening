@@ -1,7 +1,7 @@
 schema_version: v0.2
 config_version: source-scope-v0.2.9
 id_algorithm_version: uuid5-v1
-discovery_root: 01_原始数据
+discovery_root: 数据/原始
 root_scope_key: scope_project_root
 observed_at: "2026-07-20T01:50:33Z"
 asserted_by: tpu_source_curator
@@ -67,7 +67,7 @@ sources:
 
 scopes:
   # 项目根与非科研资产
-  - {source_scope_key: scope_project_root, source_key: source_project, parent_scope_key: null, scope_kind: collection, canonical_identifier: "project-scope:01_原始数据", version_label: discovery_v0.2, rights_evidence_state: evidence_missing}
+  - {source_scope_key: scope_project_root, source_key: source_project, parent_scope_key: null, scope_kind: collection, canonical_identifier: "project-scope:数据/原始", version_label: discovery_v0.2, rights_evidence_state: evidence_missing}
   - {source_scope_key: local_discovery_documentation, source_key: source_project, parent_scope_key: scope_project_root, scope_kind: collection, canonical_identifier: "project-scope:local-documentation", version_label: v0.2, rights_evidence_state: evidence_missing}
   - {source_scope_key: scope_project_readme, source_key: source_project, parent_scope_key: local_discovery_documentation, scope_kind: source_record, canonical_identifier: "project-file:README.md", version_label: v0.2, rights_evidence_state: evidence_missing}
   - {source_scope_key: scope_internal_plan, source_key: source_project, parent_scope_key: local_discovery_documentation, scope_kind: source_record, canonical_identifier: "project-file:TPU_开源数据库与建库方案.xlsx", version_label: v0.1_draft, rights_evidence_state: evidence_missing}

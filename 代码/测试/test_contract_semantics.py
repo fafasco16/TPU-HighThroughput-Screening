@@ -22,9 +22,9 @@ from record_identity import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_PATH = ROOT / "结构定义" / "v0.2来源治理合同.yaml"
-ENUM_PATH = ROOT / "结构定义" / "v0.2枚举.yaml"
-RULE_PATH = ROOT / "结构定义" / "v0.2质量规则.yaml"
+SCHEMA_PATH = ROOT / "配置/结构定义" / "v0.2来源治理合同.yaml"
+ENUM_PATH = ROOT / "配置/结构定义" / "v0.2枚举.yaml"
+RULE_PATH = ROOT / "配置/结构定义" / "v0.2质量规则.yaml"
 FIXTURES = Path(__file__).parent / "夹具"
 NOW = "2026-07-20T00:00:00+00:00"
 
@@ -360,7 +360,7 @@ def test_record_identity_qc_recomputes_json_digest_algorithm_and_uuid5():
 
 
 def test_locator_qc_recomputes_canonical_json_hash_and_type_shape():
-    payload = {"relative_path": "01_原始数据/data.csv"}
+    payload = {"relative_path": "数据/原始/data.csv"}
     canonical = canonical_identity_json(payload)
     row = {
         "source_locator_id": "locator-1",
@@ -372,7 +372,7 @@ def test_locator_qc_recomputes_canonical_json_hash_and_type_shape():
     contract.validate_locator_rows([row])
 
     broken = dict(row)
-    broken["locator_json"] = '{"relative_path": "01_原始数据/data.csv"}'
+    broken["locator_json"] = '{"relative_path": "数据/原始/data.csv"}'
     with pytest.raises(ContractValidationError):
         contract.validate_locator_rows([broken])
 

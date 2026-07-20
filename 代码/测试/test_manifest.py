@@ -61,7 +61,7 @@ def test_sha256_rejects_invalid_chunk_sizes(tmp_path, chunk_size):
 
 def test_manifest_paths_are_sorted_relative_posix_and_nested_git_is_pruned(tmp_path):
     project = tmp_path / "中文项目"
-    raw = project / "01_原始数据" / "外部数据"
+    raw = project / "数据/原始" / "外部数据"
     (raw / "子目录").mkdir(parents=True)
     (raw / "子目录" / "样品.csv").write_text("x,y\n1,2\n", encoding="utf-8")
     (raw / "根文件.txt").write_text("data", encoding="utf-8")
@@ -78,9 +78,9 @@ def test_manifest_paths_are_sorted_relative_posix_and_nested_git_is_pruned(tmp_p
     paths = [row["raw_path"] for row in rows]
     assert paths == sorted(paths)
     assert paths == [
-        "01_原始数据/外部数据/.gitignore",
-        "01_原始数据/外部数据/子目录/样品.csv",
-        "01_原始数据/外部数据/根文件.txt",
+        "数据/原始/外部数据/.gitignore",
+        "数据/原始/外部数据/子目录/样品.csv",
+        "数据/原始/外部数据/根文件.txt",
     ]
     assert all(not Path(path).is_absolute() and "\\" not in path for path in paths)
     assert all("/.git/" not in path.casefold() for path in paths)
@@ -105,7 +105,7 @@ def test_manifest_is_stable_and_file_id_changes_with_content(tmp_path):
 
 def test_manifest_handles_a_single_file_and_safely_parses_flags(tmp_path):
     project = tmp_path / "项目"
-    file_path = project / "01_原始数据" / "基础数据" / "样本.csv"
+    file_path = project / "数据/原始" / "基础数据" / "样本.csv"
     file_path.parent.mkdir(parents=True)
     file_path.write_text("value\n1\n", encoding="utf-8")
 
@@ -182,7 +182,7 @@ def test_manifest_excludes_git_pointer_files_and_direct_git_directories(tmp_path
 
 def test_build_manifest_from_config_supports_chinese_paths_and_writes_csv(tmp_path):
     project = tmp_path / "项目"
-    data = project / "01_原始数据" / "基础数据"
+    data = project / "数据/原始" / "基础数据"
     data.mkdir(parents=True)
     (data / "样品.csv").write_text("value\n1\n", encoding="utf-8")
     config = project / "配置" / "数据源.yaml"
@@ -193,7 +193,7 @@ def test_build_manifest_from_config_supports_chinese_paths_and_writes_csv(tmp_pa
                 "schema_version": "v0.1",
                 "sources": [
                     {
-                        "path": "01_原始数据/基础数据/样品.csv",
+                        "path": "数据/原始/基础数据/样品.csv",
                         **_metadata(notes="中文路径"),
                     }
                 ],
@@ -208,7 +208,7 @@ def test_build_manifest_from_config_supports_chinese_paths_and_writes_csv(tmp_pa
     assert len(rows) == 1
     assert rows[0]["notes"] == "中文路径"
 
-    output = project / "清单" / "来源清单.csv"
+    output = project / "配置/清单" / "来源清单.csv"
     write_manifest_csv(rows, output)
     with output.open("r", encoding="utf-8-sig", newline="") as stream:
         written = list(csv.DictReader(stream))

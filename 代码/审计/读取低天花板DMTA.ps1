@@ -4,7 +4,7 @@
 
 .DESCRIPTION
 脚本从自身位置推导项目根目录，并只允许访问固定的
-01_原始数据/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing
+数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing
 目录。Excel 工作簿始终以 ReadOnly 模式打开，不保存、不转换、不写入文件；结果仅以
 压缩 JSON 输出到标准输出，供同目录 DRUM_TPUU.py 消费。
 
@@ -36,7 +36,7 @@ $projectMarker = Join-Path $projectRoot 'pyproject.toml'
 if (-not (Test-Path -LiteralPath $projectMarker -PathType Leaf)) {
     throw "无法确认项目根目录（缺少 pyproject.toml）：$projectRoot"
 }
-$expectedDirectory = Join-Path $projectRoot '01_原始数据\外部数据\新增开放数据\DRUM_TPUU_低天花板\解包内容\Raw_Mechanical_Testing'
+$expectedDirectory = Join-Path $projectRoot '数据/原始\外部数据\新增开放数据\DRUM_TPUU_低天花板\解包内容\Raw_Mechanical_Testing'
 if (-not (Test-Path -LiteralPath $expectedDirectory -PathType Container)) {
     throw "缺少固定的低天花板机械原始数据目录：$expectedDirectory"
 }

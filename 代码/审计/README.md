@@ -1,106 +1,15 @@
-# 来源级可复现审计
+# 来源接入审计
 
-本目录保存新增开放数据的来源级审计程序。它们用于复算文件哈希、容器完整性、
-可解析记录、科学计数单位和准入边界，不创建训练集，也不把曲线点、模拟帧或重复
-导出解释为独立材料样本。
+本目录保存逐来源的只读审计程序。它们复算文件哈希、实体层级、曲线/标量数量、重复、单位和准入边界，不创建训练集。
 
-截至 2026-07-20，`01_原始数据/外部数据/新增开放数据/` 机械盘点为 46 个一级目录；
-其中 `PCL_GitLFS轨迹补采` 与 `Zenodo_PCL软段构象粗粒化MD` 属于同一 DOI/同一固定
-仓库树的载荷补采，因此对应 45 个独立来源身份，而不是 46 个独立科学来源。当前集中
-归档的脚本覆盖这 45 个来源身份。覆盖是指来源存在明确的
-版本与输入边界、只读复算程序、白名单输出、科学单位计数和连续双运行证据；它不表示
-所有来源都已获得非零权重。Bath、AGH、未解析专有格式、无标签图像、0 字节文件和
-镜像资产仍按各自硬门保持 0，训练、拆分和权重物化也仍未开启。
+共同要求：
 
-## 安全约束
+- 原始数据只读，路径统一位于 `数据/原始/`；
+- 曲线点、模拟帧和重复导出不计作独立材料；
+- 实验、DFT/MD 和虚拟候选保留各自来源与保真度；
+- 输出必须可重复构建，污染或许可不明记录进入隔离层；
+- 当前科学结论以 `文档/Gold数据集定义.md` 和 `文档/当前数据状态.md` 为准。
 
-- 项目根目录必须由脚本自身位置推导，不能依赖操作者的当前目录或本机绝对路径。
-- 原始科学文件只读；允许覆盖的文件必须是来源目录内显式白名单中的审计
-  `JSON/TSV`。既有解包副本只做逐字节验证，不重新解包或改写。
-- 审计输出拒绝符号链接/重解析目录，并通过同目录临时普通文件、落盘同步和原子替换
-  逐文件提交，避免异常中断留下被截断的 JSON/TSV。
-- 同一输入连续运行必须产生字节一致的审计文件。审计基准日属于协议版本，不写入
-  当前时间。
-- 审计结果位于 `01_原始数据/`，受 `.gitignore` 保护；GitHub 只保存本目录脚本、
-  机器治理配置和论文式来源台账。
+新增来源应优先扩展通用接入逻辑；只有格式确实特殊时才新增来源专用脚本。
 
-## 脚本与覆盖来源
-
-| 脚本 | 覆盖来源 | 主要检查 |
-|---|---|---|
-| `DRUM_TPUU.py` | DRUM 机械回收 TPUU、低天花板 TPUU | ZIP/解包一致性、批次—试样—曲线分层、拉伸/滞回/DMTA 计数与重复 |
-| `读取低天花板DMTA.ps1` | DRUM 低天花板 TPUU | 使用 Excel COM 只读解析四个旧版 XLS；由 `DRUM_TPUU.py` 调用 |
-| `新增开放数据六源.py` | Jagiellonian 硬段计算、TPU/SWCNT、动态 PU 泡沫、SND 导电轨迹、ScienceDB TPU/ANF、AGH 硬质泡沫 | 计算体系、工作簿、曲线、图像、访问限制和独立条件计数 |
-| `Figshare_化学辅助源.mjs` | SHPU、蓖麻油脂肪族 PU | 工作簿语义/公式/数值审计与 0 字节文件硬阻断 |
-| `共轭氨基甲酸酯玻璃体.py` | Zenodo 生物基共轭氨基甲酸酯玻璃体 | ZIP/解包一致性、逐试样汇总、松弛与热分析曲线、单位冲突隔离 |
-| `历史审计策略对齐.py` | DFT 解封剂、植物基泡沫老化、可打印 PU/PEDOT:PSS | 校验早期摘要哈希，只对齐统一权重上限、拆分键和策略权威性，不改写科学测量与计数 |
-| `新增开放数据核心与镜像.py` | QUB 生物基自修复 TPU、TPU95A TPMS 镜像 | 配方—曲线—点分层、跨文件曲线去重、半对 XY、与既有镜像逐字节折叠 |
-| `新增开放数据标准力学三源.py` | MaterialsCloud 商用泡沫、ScienceDB 微孔 PU、Texas 单纤维 | ZIP/解包一致性、试样—多模态绑定、实验/仿真与双传感器分层、纤维分段和 SEM 同组 |
-| `新增开放数据工作簿双源.py` | Mendeley SLS TPU、Figshare 热固 PU 回收 | 214 个 SLS 工作簿与 5 个 Figshare 工作簿只读复算；大 OOXML 逐行流式解析并在行结束后从父节点释放；金银级工艺映射、重复和负模量隔离 |
-| `读取SLS旧版XLS.ps1` | Mendeley SLS TPU 的 59 个旧版 XLS | Excel COM 只读解析，PowerShell 7 与 Windows PowerShell 5.1 兼容；不保存、不转换 |
-| `新增开放数据受限与专有格式两源.py` | Mendeley 超分子 PU、Bath 多牌号泡沫 | 官方清单逐文件闭合、可解析/未解析格式隔离、权利证据缺失硬阻断；不联网、不下载 Bath 工作簿 |
-| `新增开放数据第二批四源.py` | Zenodo 标准化弹性体、PU 微球复合材料、Figshare 高低速变形后松弛、Zenodo EOS TPU 1301 | 固定 11 个科学文件的哈希与 ZIP 硬门；材料—试样—通道—曲线—点复算；跨 Figure 血缘；实验/标定/有限元分层；禁止把采样点、网格分片和模拟时间步当独立样本 |
-| `读取标准弹性体旧版XLS.ps1` | Filaflex 60A 熔体黏度旧版 XLS | 从固定 ZIP 成员临时提取并核验成员哈希，Excel COM 只读复算 16 条多变量曲线、2,094 个同步点；不保存、不转换 |
-| `新增开放数据第三批Zenodo实验双源.py` | 商业 TPU 多材料打印传感、Tecoflex/NIC 药物复合 TPU | 官方清单闭包、曲线/标量/多模态表征分层、材料身份冲突与复制曲线隔离、物理试样数不确定时保持空值 |
-| `新增开放数据第三批Mendeley三源.py` | 商业 TPU 温度疲劳、FDM TPU 晶格/基材、TPU 实验—仿真曲线 | 试样级与协议级血缘、工作簿公式复算、TPV 类比层隔离、实验与低元数据仿真分层 |
-| `新增开放数据第三批模拟四源.py` | 反应型粗粒化聚脲、NIPU 反应路径、PCL 软段粗粒化、PTMO–MDI–BDO 冲击 MD | 输入/输出分离、Gaussian 驻点与路径聚合、TRR 帧级完整性、LAMMPS 协议和物理单位复算；无输出时监督权重为零 |
-| `审计PCL_GitLFS十轨迹.py` | PCL 软段粗粒化同源 Git LFS 十轨迹补采 | Git LFS OID/字节/固定树闭包、BZip2/TRR 载荷检查与无许可训练阻断；补采目录不增加来源身份 |
-| `新增开放数据第四批精选源.py` | Mendeley TPU 压缩打印 DOE、8 个 ACS Figshare 支持信息 | 184 个物理试样按 46 个相关家族登记（20 个圆柱体与 4 个实体立方体对照分离），1,292 个有效派生值与 4 个缓存伪零分开计数；33 个 PDF 表图证据组当前仅作表图/方法索引，尚无页码与框坐标，人工双录前不生成训练记录 |
-
-## 运行
-
-从项目根目录执行：
-
-```powershell
-$审计环境 = Join-Path ([System.IO.Path]::GetTempPath()) "TPU-来源审计-Python312"
-$审计Python = Join-Path $审计环境 "Scripts\python.exe"
-uv venv $审计环境 --python 3.12 --clear --no-project
-uv pip sync 代码\审计\requirements.lock --python $审计Python --require-hashes
-& $审计Python 代码\审计\DRUM_TPUU.py
-& $审计Python 代码\审计\新增开放数据六源.py
-& $审计Python 代码\审计\共轭氨基甲酸酯玻璃体.py
-& $审计Python 代码\审计\历史审计策略对齐.py
-& $审计Python 代码\审计\新增开放数据核心与镜像.py
-& $审计Python 代码\审计\新增开放数据标准力学三源.py
-& $审计Python 代码\审计\新增开放数据工作簿双源.py
-& $审计Python 代码\审计\新增开放数据受限与专有格式两源.py
-& $审计Python 代码\审计\新增开放数据第二批四源.py
-& $审计Python 代码\审计\新增开放数据第三批Zenodo实验双源.py
-& $审计Python 代码\审计\新增开放数据第三批Mendeley三源.py
-& $审计Python 代码\审计\新增开放数据第三批模拟四源.py
-& $审计Python 代码\审计\审计PCL_GitLFS十轨迹.py
-& $审计Python 代码\审计\新增开放数据第四批精选源.py
-```
-
-上述命令在系统临时目录重建审计专用环境；`uv venv --no-project` 不解析根项目，
-`uv pip sync --require-hashes` 则强制每个安装分发包与锁文件哈希匹配。因此，它不会修改
-根目录的 `.venv`、`pyproject.toml` 或 `uv.lock`。更新审计依赖时，使用 Python 3.12
-和当前 Windows 目标平台重新生成带分发包哈希的独立锁文件：
-
-```powershell
-uv pip compile 代码\审计\requirements.in --output-file 代码\审计\requirements.lock --python-version 3.12 --python-platform x86_64-pc-windows-msvc --generate-hashes --custom-compile-command "uv pip compile 代码\审计\requirements.in --output-file 代码\审计\requirements.lock --python-version 3.12 --python-platform x86_64-pc-windows-msvc --generate-hashes"
-```
-
-每次更新 `requirements.in` 或锁文件后，必须重新执行来源审计、连续双运行和全部输出
-SHA-256 比对；不能只凭依赖安装成功就宣称结果可复现。
-
-工作簿审计中的 `maximum_active_row_value_buffers` 只表示同时进行值解析的活动行缓冲，
-不是 XML 解析器底层分块预读行数。`completed_row_elements_retained_after_parse = 0`
-表示已完成行在解析结束后全部从父节点移除；这两个字段共同界定资源证据，不能简写成
-“XML 瞬时只缓存一行”。
-
-DRUM 旧版 `.xls` 与六源审计中的旧版 Excel 文件需要本机 Microsoft Excel；工作簿
-始终以只读模式打开且不保存。Figshare 脚本需要 Codex 工作区提供的
-`@oai/artifact-tool`；确认 Node 能直接解析该包后运行
-`node 代码\审计\Figshare_化学辅助源.mjs`。若常规模块解析找不到它，先把
-`ARTIFACT_TOOL_NODE_MODULES` 指向工作区依赖加载器返回的 `node_modules`，再运行
-同一命令；该内部运行时依赖不复制进仓库。当前实测环境为 Node `24.15.0`、
-`@oai/artifact-tool 2.8.24`，机器记录见[`审计环境.json`](审计环境.json)。由于该包
-来自 Codex 工作区而非本仓库锁文件，版本不同或迁移到非 Codex 环境时必须重新执行
-双运行哈希门禁，不能直接宣称跨环境字节复现。Python 审计依赖已由
-`代码/审计/requirements.lock` 独立固定，不进入根项目冻结依赖。
-
-最终科学准入、证据等级、泄漏组和未来权重上限以
-[`配置/v0.2多保真准入与权重策略.yaml`](../../配置/v0.2多保真准入与权重策略.yaml)
-及[`文档/质量报告/TPU数据库_v0.2_新增开放数据准入报告.md`](../../文档/质量报告/TPU数据库_v0.2_新增开放数据准入报告.md)
-为准；审计文件数量本身不是训练样本量。
+当前审计范围为 46 个一级目录、45 个独立来源身份；`PCL_GitLFS轨迹补采` 是既有 PCL 来源的同源载荷补采，不增加来源身份。详细计数统一从 `结果/数据总账.json` 读取。

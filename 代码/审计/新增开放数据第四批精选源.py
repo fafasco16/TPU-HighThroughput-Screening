@@ -36,7 +36,7 @@ from pypdf import PdfReader
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_ROOT = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+DATA_ROOT = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 AUDIT_DATE = "2026-07-20"
 AUDIT_VERSION = "1.2"
 

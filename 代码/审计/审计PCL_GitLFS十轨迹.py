@@ -22,7 +22,7 @@ from typing import BinaryIO
 
 
 项目根 = Path(__file__).resolve().parents[2]
-来源目录 = 项目根 / "01_原始数据" / "外部数据" / "新增开放数据"
+来源目录 = 项目根 / "数据/原始" / "外部数据" / "新增开放数据"
 原始归档目录 = 来源目录 / "Zenodo_PCL软段构象粗粒化MD"
 原始归档 = 原始归档目录 / "PCL_Supplementary_material_systematic_CG-v1.0_2.zip"
 补采目录 = 来源目录 / "PCL_GitLFS轨迹补采"

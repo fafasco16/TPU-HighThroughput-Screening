@@ -1,10 +1,10 @@
-﻿<#
+<#
 .SYNOPSIS
 只读解析 Mendeley SLS TPU 来源中的 59 个旧版 XLS 工作簿。
 
 .DESCRIPTION
 脚本从自身位置推导项目根目录，只允许读取固定的
-01_原始数据/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格
+数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格
 目录。Excel 工作簿始终以 ReadOnly 模式打开，不转换也不保存；脚本
 只把工作簿、工作表、有限数值单元格和试样曲线复算结果以压缩 JSON
 输出到标准输出，供同目录的《新增开放数据工作簿双源.py》消费。
@@ -79,7 +79,7 @@ if (-not (Test-Path -LiteralPath $projectMarker -PathType Leaf)) {
     throw "无法确认项目根目录（缺少 pyproject.toml）：$projectRoot"
 }
 
-$expectedDirectory = Join-Path $projectRoot '01_原始数据\外部数据\新增开放数据\Mendeley_SLS_TPU工艺力学\结构化表格'
+$expectedDirectory = Join-Path $projectRoot '数据/原始\外部数据\新增开放数据\Mendeley_SLS_TPU工艺力学\结构化表格'
 if (-not (Test-Path -LiteralPath $expectedDirectory -PathType Container)) {
     throw "缺少固定的 SLS 结构化表格目录：$expectedDirectory"
 }

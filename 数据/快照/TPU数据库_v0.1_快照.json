@@ -12,7 +12,7 @@
       "license_spdx": "CC-BY-4.0",
       "material_scope": "linear_tpu",
       "notes": "官方Source Data主文件；用于氢键、温度与力学曲线垂直切片。",
-      "raw_path": "01_原始数据/外部数据/TPU_HBond_2021_Source_Main.xlsx",
+      "raw_path": "数据/原始/外部数据/TPU_HBond_2021_Source_Main.xlsx",
       "redistribution_allowed": "True",
       "sha256": "A71E665B656D471A59EA814D44C12D73A7F7E9C2D1E23044FFB6DC4B572BF8C4",
       "source_file_id": "source_file_d55587eb3ef897f3",
@@ -29,7 +29,7 @@
       "license_spdx": "UNKNOWN",
       "material_scope": "polyurethane_prepolymer",
       "notes": "温度—黏度曲线；仓库未发现明确LICENSE，默认禁止公开再分发。",
-      "raw_path": "01_原始数据/代码仓库镜像/viscosity-modeling/ViscTempData.xlsx",
+      "raw_path": "数据/原始/代码仓库镜像/viscosity-modeling/ViscTempData.xlsx",
       "redistribution_allowed": "",
       "sha256": "BBEC41DA4FF3CAE1231686E5D219EC217AC53D85E0F5FC561E408E78FDAF7085",
       "source_file_id": "source_file_959d1ae6ea945038",
@@ -46,7 +46,7 @@
       "license_spdx": "UNKNOWN",
       "material_scope": "crosslinked_pue",
       "notes": "326行PUE基准母数据；DQ与MatImpute衍生版本必须共享lineage_family。",
-      "raw_path": "01_原始数据/代码仓库镜像/DQ/experiment/datasets/PUE.csv",
+      "raw_path": "数据/原始/代码仓库镜像/DQ/experiment/datasets/PUE.csv",
       "redistribution_allowed": "",
       "sha256": "E5D07B13764089579F90F16FDA6A70024D67C683F5BDD41591720F9474308040",
       "source_file_id": "source_file_a3796d4376b3d558",
@@ -63,7 +63,7 @@
       "license_spdx": "BSD-3-Clause",
       "material_scope": "virtual_candidate",
       "notes": "SMiPoly公开示例单体；只作为反应约束候选种子，不作为实验性能标签。",
-      "raw_path": "01_原始数据/基础数据/smipoly_monomers.csv",
+      "raw_path": "数据/原始/基础数据/smipoly_monomers.csv",
       "redistribution_allowed": "True",
       "sha256": "1E70860B89B492EB0E3272615DD7220B35719C6C770E1299269AEB359BE59713",
       "source_file_id": "source_file_799bf00de7641547",
@@ -95,7 +95,7 @@
         "value",
         "warnings"
       ],
-      "path": "04_派生数据/derived_property.parquet",
+      "path": "数据/派生/derived_property.parquet",
       "rows": 48,
       "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
       "size_bytes": 13315
@@ -103,11 +103,11 @@
     "duckdb": {
       "byte_reproducible": false,
       "content_basis": "snapshot_parquet_sha256_and_row_counts",
-      "path": "05_数据库快照/TPU数据库_v0.1.duckdb",
+      "path": "数据/快照/TPU数据库_v0.1.duckdb",
       "table_count": 25
     },
     "field_coverage_csv": {
-      "path": "文档/质量报告/TPU数据库_v0.1_字段覆盖.csv",
+      "path": "结果/字段覆盖.csv",
       "rows": 257,
       "sha256": "5CEF7F6886909F1B1C1C35EB8EEDC93374F52F34F1FA21517A7BBD014FAD9802",
       "size_bytes": 14720
@@ -154,7 +154,7 @@
         "table_role",
         "tpu_role"
       ],
-      "path": "03_规范数据/chemical_candidate.parquet",
+      "path": "数据/规范/chemical_candidate.parquet",
       "rows": 1071,
       "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
       "size_bytes": 143210
@@ -210,7 +210,7 @@
         "y_unit_canonical",
         "y_unit_raw"
       ],
-      "path": "03_规范数据/curve.parquet",
+      "path": "数据/规范/curve.parquet",
       "rows": 92,
       "sha256": "42035F8585242ED982AEF70E769842D73627FBC104E5E65A764ADD4627B7B203",
       "size_bytes": 35096
@@ -259,7 +259,7 @@
         "y_unit_raw",
         "y_value"
       ],
-      "path": "03_规范数据/curve_point.parquet",
+      "path": "数据/规范/curve_point.parquet",
       "rows": 30531,
       "sha256": "AD6E22C766F47B223D860D40B69EC094567857C2A86B4392A3444ACBE9579649",
       "size_bytes": 1477757
@@ -299,7 +299,7 @@
         "value_canonical",
         "value_raw"
       ],
-      "path": "03_规范数据/property_value.parquet",
+      "path": "数据/规范/property_value.parquet",
       "rows": 19,
       "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
       "size_bytes": 20492
@@ -351,7 +351,7 @@
         "split_group",
         "table_role"
       ],
-      "path": "03_规范数据/pue_transformed_auxiliary.parquet",
+      "path": "数据/规范/pue_transformed_auxiliary.parquet",
       "rows": 326,
       "sha256": "CE1D76E8173DB93EC340AEB4E41B7C2F45857D40EEBF8BC464B65C057355F564",
       "size_bytes": 70603
@@ -373,7 +373,7 @@
         "status",
         "url"
       ],
-      "path": "03_规范数据/source.parquet",
+      "path": "数据/规范/source.parquet",
       "rows": 4,
       "sha256": "B7A5A9D728CDDB7A2D68D36B26218D6FB8428CBE0AE3FAABC4B3E43D62F84E54",
       "size_bytes": 9331
@@ -401,10 +401,10 @@
         "status",
         "url"
       ],
-      "path": "03_规范数据/source_file.parquet",
+      "path": "数据/规范/source_file.parquet",
       "rows": 4,
-      "sha256": "F3BB88F72D0CAEB63141B8BA48D09D91440AE6F20EB725CE4847F4BE18D5B0B5",
-      "size_bytes": 13557
+      "sha256": "ED634AE78A98AD84142308DEA406A64EE0DC8E088FB9BA47D2F9F6EA13B0FB34",
+      "size_bytes": 13547
     },
     "public_chemical_candidate": {
       "columns": [
@@ -448,7 +448,7 @@
         "table_role",
         "tpu_role"
       ],
-      "path": "04_派生数据/public_chemical_candidate.parquet",
+      "path": "数据/派生/public_chemical_candidate.parquet",
       "rows": 1071,
       "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
       "size_bytes": 143210
@@ -504,7 +504,7 @@
         "y_unit_canonical",
         "y_unit_raw"
       ],
-      "path": "04_派生数据/public_curve.parquet",
+      "path": "数据/派生/public_curve.parquet",
       "rows": 53,
       "sha256": "F6E3450CAB7CEA4B0480F895BF56FFD58F13C4139DBFFE8537E99A383DB15220",
       "size_bytes": 31060
@@ -553,7 +553,7 @@
         "y_unit_raw",
         "y_value"
       ],
-      "path": "04_派生数据/public_curve_point.parquet",
+      "path": "数据/派生/public_curve_point.parquet",
       "rows": 25972,
       "sha256": "F69B5E84E2340CB33B04ED4F12BDEDB7B78B36AAAF43251BB8CBF53111081839",
       "size_bytes": 1271475
@@ -580,7 +580,7 @@
         "value",
         "warnings"
       ],
-      "path": "04_派生数据/public_derived_property.parquet",
+      "path": "数据/派生/public_derived_property.parquet",
       "rows": 48,
       "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
       "size_bytes": 13315
@@ -620,7 +620,7 @@
         "value_canonical",
         "value_raw"
       ],
-      "path": "04_派生数据/public_property_value.parquet",
+      "path": "数据/派生/public_property_value.parquet",
       "rows": 19,
       "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
       "size_bytes": 20492
@@ -672,7 +672,7 @@
         "split_group",
         "table_role"
       ],
-      "path": "04_派生数据/public_pue_transformed_auxiliary.parquet",
+      "path": "数据/派生/public_pue_transformed_auxiliary.parquet",
       "rows": 0,
       "sha256": "BD62921449CDF94C98C805C47474F0A99CF8CCD4C8FDA531D2A45FDBC0835D8D",
       "size_bytes": 19489
@@ -694,7 +694,7 @@
         "status",
         "url"
       ],
-      "path": "04_派生数据/public_source.parquet",
+      "path": "数据/派生/public_source.parquet",
       "rows": 2,
       "sha256": "1465F46F8B70AC947711A41823A5A49121208D58570FB4F661967104AB80A0E4",
       "size_bytes": 8928
@@ -722,21 +722,21 @@
         "status",
         "url"
       ],
-      "path": "04_派生数据/public_source_file.parquet",
+      "path": "数据/派生/public_source_file.parquet",
       "rows": 2,
-      "sha256": "4D0EE2BB159EA857E3C0C1CF13CF668C7D4A740278945503EE9A4CE217D2C851",
-      "size_bytes": 12929
+      "sha256": "87CA13189E2F874188A2A135AD058CB95894AE3C2B102311CCAE3FC82682F40A",
+      "size_bytes": 12919
     },
     "qc_csv": {
-      "path": "文档/质量报告/TPU数据库_v0.1_质量问题.csv",
+      "path": "结果/质量问题.csv",
       "rows": 2,
       "sha256": "50556D95DBAF991E4D3586EA30F866C22AF4399FE4478C2D9B39081B8BD49382",
       "size_bytes": 289
     },
     "qc_json": {
-      "path": "文档/质量报告/TPU数据库_v0.1_质量问题.json",
+      "path": "结果/质量问题.json",
       "rows": 2,
-      "sha256": "3721CD5086D2AA845FFE6B834A2BB1B7A09EFB5B48574034794D924ADFCA221D",
+      "sha256": "3C8396BC86983C3832F405D60C4EAC772A8BCFA488001984A50C65EC6FA27695",
       "size_bytes": 780
     },
     "snapshot_derived_property": {
@@ -761,7 +761,7 @@
         "value",
         "warnings"
       ],
-      "path": "05_数据库快照/derived_property.parquet",
+      "path": "数据/快照/derived_property.parquet",
       "rows": 48,
       "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
       "size_bytes": 13315
@@ -808,7 +808,7 @@
         "table_role",
         "tpu_role"
       ],
-      "path": "05_数据库快照/normalized_chemical_candidate.parquet",
+      "path": "数据/快照/normalized_chemical_candidate.parquet",
       "rows": 1071,
       "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
       "size_bytes": 143210
@@ -864,7 +864,7 @@
         "y_unit_canonical",
         "y_unit_raw"
       ],
-      "path": "05_数据库快照/normalized_curve.parquet",
+      "path": "数据/快照/normalized_curve.parquet",
       "rows": 92,
       "sha256": "42035F8585242ED982AEF70E769842D73627FBC104E5E65A764ADD4627B7B203",
       "size_bytes": 35096
@@ -913,7 +913,7 @@
         "y_unit_raw",
         "y_value"
       ],
-      "path": "05_数据库快照/normalized_curve_point.parquet",
+      "path": "数据/快照/normalized_curve_point.parquet",
       "rows": 30531,
       "sha256": "AD6E22C766F47B223D860D40B69EC094567857C2A86B4392A3444ACBE9579649",
       "size_bytes": 1477757
@@ -953,7 +953,7 @@
         "value_canonical",
         "value_raw"
       ],
-      "path": "05_数据库快照/normalized_property_value.parquet",
+      "path": "数据/快照/normalized_property_value.parquet",
       "rows": 19,
       "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
       "size_bytes": 20492
@@ -1005,7 +1005,7 @@
         "split_group",
         "table_role"
       ],
-      "path": "05_数据库快照/normalized_pue_transformed_auxiliary.parquet",
+      "path": "数据/快照/normalized_pue_transformed_auxiliary.parquet",
       "rows": 326,
       "sha256": "CE1D76E8173DB93EC340AEB4E41B7C2F45857D40EEBF8BC464B65C057355F564",
       "size_bytes": 70603
@@ -1027,7 +1027,7 @@
         "status",
         "url"
       ],
-      "path": "05_数据库快照/normalized_source.parquet",
+      "path": "数据/快照/normalized_source.parquet",
       "rows": 4,
       "sha256": "B7A5A9D728CDDB7A2D68D36B26218D6FB8428CBE0AE3FAABC4B3E43D62F84E54",
       "size_bytes": 9331
@@ -1055,10 +1055,10 @@
         "status",
         "url"
       ],
-      "path": "05_数据库快照/normalized_source_file.parquet",
+      "path": "数据/快照/normalized_source_file.parquet",
       "rows": 4,
-      "sha256": "F3BB88F72D0CAEB63141B8BA48D09D91440AE6F20EB725CE4847F4BE18D5B0B5",
-      "size_bytes": 13557
+      "sha256": "ED634AE78A98AD84142308DEA406A64EE0DC8E088FB9BA47D2F9F6EA13B0FB34",
+      "size_bytes": 13547
     },
     "snapshot_public_chemical_candidate": {
       "columns": [
@@ -1102,7 +1102,7 @@
         "table_role",
         "tpu_role"
       ],
-      "path": "05_数据库快照/public_chemical_candidate.parquet",
+      "path": "数据/快照/public_chemical_candidate.parquet",
       "rows": 1071,
       "sha256": "7E1AF905E16B3AFB5E1867E1C3FE664C50B0EEB65D6BF2CD2D1DAFDAE3C07C7F",
       "size_bytes": 143210
@@ -1158,7 +1158,7 @@
         "y_unit_canonical",
         "y_unit_raw"
       ],
-      "path": "05_数据库快照/public_curve.parquet",
+      "path": "数据/快照/public_curve.parquet",
       "rows": 53,
       "sha256": "F6E3450CAB7CEA4B0480F895BF56FFD58F13C4139DBFFE8537E99A383DB15220",
       "size_bytes": 31060
@@ -1207,7 +1207,7 @@
         "y_unit_raw",
         "y_value"
       ],
-      "path": "05_数据库快照/public_curve_point.parquet",
+      "path": "数据/快照/public_curve_point.parquet",
       "rows": 25972,
       "sha256": "F69B5E84E2340CB33B04ED4F12BDEDB7B78B36AAAF43251BB8CBF53111081839",
       "size_bytes": 1271475
@@ -1234,7 +1234,7 @@
         "value",
         "warnings"
       ],
-      "path": "05_数据库快照/public_derived_property.parquet",
+      "path": "数据/快照/public_derived_property.parquet",
       "rows": 48,
       "sha256": "F12D6DB2B2337E983544BF569B974238C315DDC03666B99B5F5F37EEB207689D",
       "size_bytes": 13315
@@ -1274,7 +1274,7 @@
         "value_canonical",
         "value_raw"
       ],
-      "path": "05_数据库快照/public_property_value.parquet",
+      "path": "数据/快照/public_property_value.parquet",
       "rows": 19,
       "sha256": "18570BE5697ACEC52F5C8456E64AD0A0AA218F552E6352EE01E83C468B540422",
       "size_bytes": 20492
@@ -1326,7 +1326,7 @@
         "split_group",
         "table_role"
       ],
-      "path": "05_数据库快照/public_pue_transformed_auxiliary.parquet",
+      "path": "数据/快照/public_pue_transformed_auxiliary.parquet",
       "rows": 0,
       "sha256": "BD62921449CDF94C98C805C47474F0A99CF8CCD4C8FDA531D2A45FDBC0835D8D",
       "size_bytes": 19489
@@ -1348,7 +1348,7 @@
         "status",
         "url"
       ],
-      "path": "05_数据库快照/public_source.parquet",
+      "path": "数据/快照/public_source.parquet",
       "rows": 2,
       "sha256": "1465F46F8B70AC947711A41823A5A49121208D58570FB4F661967104AB80A0E4",
       "size_bytes": 8928
@@ -1376,10 +1376,10 @@
         "status",
         "url"
       ],
-      "path": "05_数据库快照/public_source_file.parquet",
+      "path": "数据/快照/public_source_file.parquet",
       "rows": 2,
-      "sha256": "4D0EE2BB159EA857E3C0C1CF13CF668C7D4A740278945503EE9A4CE217D2C851",
-      "size_bytes": 12929
+      "sha256": "87CA13189E2F874188A2A135AD058CB95894AE3C2B102311CCAE3FC82682F40A",
+      "size_bytes": 12919
     },
     "snapshot_staging_hbond_audit": {
       "columns": [
@@ -1395,7 +1395,7 @@
         "source_locator",
         "status"
       ],
-      "path": "05_数据库快照/staging_hbond_audit.parquet",
+      "path": "数据/快照/staging_hbond_audit.parquet",
       "rows": 6,
       "sha256": "F4AE1DC1D2A8150819D6212A5FC2DE462DCEAB8966A6B6F95692A24BD077D5EA",
       "size_bytes": 7641
@@ -1421,7 +1421,7 @@
         "y_unit_raw",
         "y_value"
       ],
-      "path": "05_数据库快照/staging_hbond_curve_points.parquet",
+      "path": "数据/快照/staging_hbond_curve_points.parquet",
       "rows": 25972,
       "sha256": "E3013178D5253A8F22C77BA55D94ECC50DB52A4F7A57CEB1B77A3CF4A69339C9",
       "size_bytes": 1197601
@@ -1453,7 +1453,7 @@
         "y_unit",
         "y_unit_raw"
       ],
-      "path": "05_数据库快照/staging_hbond_curves.parquet",
+      "path": "数据/快照/staging_hbond_curves.parquet",
       "rows": 53,
       "sha256": "C404B43CA214D8B0B45007B815B976ABCDEAA8D90A93D97F065AC3271F4F4FF7",
       "size_bytes": 17457
@@ -1478,7 +1478,7 @@
         "source_locator",
         "unit_status"
       ],
-      "path": "05_数据库快照/staging_hbond_properties.parquet",
+      "path": "数据/快照/staging_hbond_properties.parquet",
       "rows": 19,
       "sha256": "2BC63D2B6FFE67D51EF59B3F17990E1C7BEA3994C40DF9234AE9D5279F427573",
       "size_bytes": 11504
@@ -1520,7 +1520,7 @@
         "source_locator",
         "split_group"
       ],
-      "path": "05_数据库快照/staging_pue_transformed.parquet",
+      "path": "数据/快照/staging_pue_transformed.parquet",
       "rows": 326,
       "sha256": "80F6F342BC2A5826DE54F97CD835BE5DC0960CCA2A5FB0FE367B8998EBFC2CA6",
       "size_bytes": 64521
@@ -1548,7 +1548,7 @@
         "source_record_id",
         "tpu_role"
       ],
-      "path": "05_数据库快照/staging_smipoly_chemical.parquet",
+      "path": "数据/快照/staging_smipoly_chemical.parquet",
       "rows": 1083,
       "sha256": "25DD8E9A517A504DC72DB32BB6F80481A546FFEBEB39CA60A47569052D674160",
       "size_bytes": 83299
@@ -1567,7 +1567,7 @@
         "source_locator",
         "status"
       ],
-      "path": "05_数据库快照/staging_viscosity_audit.parquet",
+      "path": "数据/快照/staging_viscosity_audit.parquet",
       "rows": 61,
       "sha256": "08F4D30312558328CF5A9978D311042C9B9517DB75343DC0F3AF7B3D7B8C7F81",
       "size_bytes": 8137
@@ -1593,7 +1593,7 @@
         "viscosity_unit",
         "viscosity_unit_raw"
       ],
-      "path": "05_数据库快照/staging_viscosity_curve_points.parquet",
+      "path": "数据/快照/staging_viscosity_curve_points.parquet",
       "rows": 4559,
       "sha256": "C8893B395C2E72C493A94579F95E9391BFB0C89DC76E5E272EF10C77362A929F",
       "size_bytes": 179759
@@ -1619,7 +1619,7 @@
         "viscosity_unit",
         "viscosity_unit_raw"
       ],
-      "path": "05_数据库快照/staging_viscosity_curves.parquet",
+      "path": "数据/快照/staging_viscosity_curves.parquet",
       "rows": 39,
       "sha256": "25C51349597281D0E6AE55A4537556B25FAC6A0B31D331411C5BDA64CEC6B208",
       "size_bytes": 12454
@@ -1638,7 +1638,7 @@
         "source_locator",
         "status"
       ],
-      "path": "02_暂存数据/hbond_audit.parquet",
+      "path": "数据/暂存/hbond_audit.parquet",
       "rows": 6,
       "sha256": "F4AE1DC1D2A8150819D6212A5FC2DE462DCEAB8966A6B6F95692A24BD077D5EA",
       "size_bytes": 7641
@@ -1664,7 +1664,7 @@
         "y_unit_raw",
         "y_value"
       ],
-      "path": "02_暂存数据/hbond_curve_points.parquet",
+      "path": "数据/暂存/hbond_curve_points.parquet",
       "rows": 25972,
       "sha256": "E3013178D5253A8F22C77BA55D94ECC50DB52A4F7A57CEB1B77A3CF4A69339C9",
       "size_bytes": 1197601
@@ -1696,7 +1696,7 @@
         "y_unit",
         "y_unit_raw"
       ],
-      "path": "02_暂存数据/hbond_curves.parquet",
+      "path": "数据/暂存/hbond_curves.parquet",
       "rows": 53,
       "sha256": "C404B43CA214D8B0B45007B815B976ABCDEAA8D90A93D97F065AC3271F4F4FF7",
       "size_bytes": 17457
@@ -1721,7 +1721,7 @@
         "source_locator",
         "unit_status"
       ],
-      "path": "02_暂存数据/hbond_properties.parquet",
+      "path": "数据/暂存/hbond_properties.parquet",
       "rows": 19,
       "sha256": "2BC63D2B6FFE67D51EF59B3F17990E1C7BEA3994C40DF9234AE9D5279F427573",
       "size_bytes": 11504
@@ -1763,7 +1763,7 @@
         "source_locator",
         "split_group"
       ],
-      "path": "02_暂存数据/pue_transformed.parquet",
+      "path": "数据/暂存/pue_transformed.parquet",
       "rows": 326,
       "sha256": "80F6F342BC2A5826DE54F97CD835BE5DC0960CCA2A5FB0FE367B8998EBFC2CA6",
       "size_bytes": 64521
@@ -1791,7 +1791,7 @@
         "source_record_id",
         "tpu_role"
       ],
-      "path": "02_暂存数据/smipoly_chemical.parquet",
+      "path": "数据/暂存/smipoly_chemical.parquet",
       "rows": 1083,
       "sha256": "25DD8E9A517A504DC72DB32BB6F80481A546FFEBEB39CA60A47569052D674160",
       "size_bytes": 83299
@@ -1810,7 +1810,7 @@
         "source_locator",
         "status"
       ],
-      "path": "02_暂存数据/viscosity_audit.parquet",
+      "path": "数据/暂存/viscosity_audit.parquet",
       "rows": 61,
       "sha256": "08F4D30312558328CF5A9978D311042C9B9517DB75343DC0F3AF7B3D7B8C7F81",
       "size_bytes": 8137
@@ -1836,7 +1836,7 @@
         "viscosity_unit",
         "viscosity_unit_raw"
       ],
-      "path": "02_暂存数据/viscosity_curve_points.parquet",
+      "path": "数据/暂存/viscosity_curve_points.parquet",
       "rows": 4559,
       "sha256": "C8893B395C2E72C493A94579F95E9391BFB0C89DC76E5E272EF10C77362A929F",
       "size_bytes": 179759
@@ -1862,7 +1862,7 @@
         "viscosity_unit",
         "viscosity_unit_raw"
       ],
-      "path": "02_暂存数据/viscosity_curves.parquet",
+      "path": "数据/暂存/viscosity_curves.parquet",
       "rows": 39,
       "sha256": "25C51349597281D0E6AE55A4537556B25FAC6A0B31D331411C5BDA64CEC6B208",
       "size_bytes": 12454
@@ -1901,7 +1901,7 @@
       },
       {
         "path": "代码/database_build.py",
-        "sha256_text_lf": "3E7212369860837B7CAE3A6455813A8404B865050DFDC8C8D7E0AF26A40CCACF"
+        "sha256_text_lf": "52181E451CEFFBCE09CD4A68CE06DC91A25DEB2CB21DF49C64EEA8332C1A1BE3"
       },
       {
         "path": "代码/ids.py",
@@ -1928,19 +1928,19 @@
         "sha256_text_lf": "0CF791DDB370855A36E1BB05C30217F338A85FF9FB0FB37494D264490E788077"
       },
       {
-        "path": "结构定义/v0.1字段字典.yaml",
+        "path": "配置/数据源.yaml",
+        "sha256_text_lf": "765766508D409FFCB4F95C1CF82BBCC160EAD4C0A52B7A5BF5858610AEA87F36"
+      },
+      {
+        "path": "配置/结构定义/v0.1字段字典.yaml",
         "sha256_text_lf": "0243B8E114D05ABFE1E90E4BD92CF04DDDDDEA4E9BEAF2D58812D039F88ACA22"
       },
       {
-        "path": "结构定义/v0.1枚举.yaml",
+        "path": "配置/结构定义/v0.1枚举.yaml",
         "sha256_text_lf": "4C07B38A744A674359C156F35AADC790F292D00726D2F465071758E75A4A97FE"
-      },
-      {
-        "path": "配置/数据源.yaml",
-        "sha256_text_lf": "0C766BFF51F833B1265F0E73158AC7CA81841E38B32FF07E9DD0B2DE44DB97A2"
       }
     ],
-    "pipeline_id": "pipeline_94e0bb066d425128",
+    "pipeline_id": "pipeline_405ab24db1cf331d",
     "pipeline_version": "tpu-db/0.1.1"
   },
   "quality": {
@@ -1980,5 +1980,5 @@
     "staging_viscosity_curves": 39
   },
   "schema_version": "v0.1",
-  "snapshot_id": "snapshot_3195c290d7dc2d44"
+  "snapshot_id": "snapshot_70ad15e95295f065"
 }

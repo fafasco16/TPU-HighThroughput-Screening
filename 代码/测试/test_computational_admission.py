@@ -796,9 +796,9 @@ def test_markdown_report_accepts_explicit_master_ledger_link(tmp_path):
     _write_csv(tmp_path / "A_DFT.csv", ["SMILES", "A"], [["A", "1"]])
     profile = profile_polygraphmt(tmp_path)
     report = render_computational_admission_markdown(
-        [profile], ledger_link="../../文档/TPU_数据来源与研究路线台账.md"
+        [profile], ledger_link="../../文档/数据来源与参考文献.md"
     )
-    assert "(../../文档/TPU_数据来源与研究路线台账.md)" in report
+    assert "(../../文档/数据来源与参考文献.md)" in report
 
 
 def test_markdown_report_rejects_blank_master_ledger_link(tmp_path):

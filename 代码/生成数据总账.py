@@ -16,14 +16,14 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_NEW = ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+RAW_NEW = ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 PROFILE_PATH = ROOT / "配置" / "v0.2可训练样本总账来源画像.yaml"
 SCOPE_PATH = ROOT / "配置" / "v0.2来源范围.yaml"
-SNAPSHOT_V01 = ROOT / "05_数据库快照" / "TPU数据库_v0.1_快照.json"
-OUTPUT_LEDGER = ROOT / "06_审核导出" / "TPU数据库_v0.2_数据规模总账.csv"
-OUTPUT_MANIFEST = ROOT / "06_审核导出" / "TPU数据库_v0.2_可训练样本清单.csv"
-OUTPUT_JSON = ROOT / "06_审核导出" / "TPU数据库_v0.2_可训练样本总账.json"
-OUTPUT_REPORT = ROOT / "文档" / "质量报告" / "TPU数据库_v0.2_可训练样本与数据规模总账.md"
+SNAPSHOT_V01 = ROOT / "数据/快照" / "TPU数据库_v0.1_快照.json"
+OUTPUT_LEDGER = ROOT / "结果" / "数据规模总账.csv"
+OUTPUT_MANIFEST = ROOT / "结果" / "样本清单.csv"
+OUTPUT_JSON = ROOT / "结果" / "数据总账.json"
+OUTPUT_REPORT = ROOT / "结果" / "数据总账说明.md"
 SCRIPT_PATH = Path(__file__).resolve()
 INPUT_FILES_READ: set[Path] = set()
 
@@ -142,6 +142,22 @@ BASELINE_SOURCE_KEY = {
     "ds_eom_hbond_2021": "source_eom_data",
 }
 
+LEGACY_LAYOUT_REPLACEMENTS = {
+    "01_原始数据/": "数据/原始/",
+    "02_暂存数据/": "数据/暂存/",
+    "03_规范数据/": "数据/规范/",
+    "04_派生数据/": "数据/派生/",
+    "05_数据库快照/": "数据/快照/",
+    "06_审核导出/": "结果/",
+}
+PATH_BEARING_MANIFEST_FIELDS = {
+    "raw_sample_key",
+    "run_key",
+    "curve_key",
+    "source_locator",
+    "audit_basis",
+}
+
 
 def _read_yaml(path: Path) -> dict[str, Any]:
     _register_input(path)
@@ -232,6 +248,15 @@ def _uid(*parts: Any) -> str:
 
 def _joined(*parts: Any) -> str:
     return "|".join(str(part).strip() for part in parts if part is not None and str(part).strip())
+
+
+def _normalize_layout_text(value: Any) -> Any:
+    if not isinstance(value, str):
+        return value
+    normalized = value.replace("\\", "/")
+    for legacy, current in LEGACY_LAYOUT_REPLACEMENTS.items():
+        normalized = normalized.replace(legacy, current)
+    return normalized
 
 
 @dataclass(frozen=True)
@@ -459,6 +484,7 @@ def _record_ceiling(profile: dict[str, Any], row: dict[str, Any], status: str) -
 def _base_record(
     profile: dict[str, Any], identity: SourceIdentity, granularity: str, raw_key: str, index: int
 ) -> dict[str, Any]:
+    raw_key = _normalize_layout_text(raw_key)
     leakage = identity.source_family_id
     return {
         "manifest_row_id": _uid(identity.source_scope_id, granularity, raw_key, index),
@@ -946,6 +972,9 @@ def _build_manifest(
                 )
                 records.append(record)
 
+    for record in records:
+        for field in PATH_BEARING_MANIFEST_FIELDS:
+            record[field] = _normalize_layout_text(record.get(field, ""))
     return records
 
 
@@ -1366,21 +1395,20 @@ def _write_report(
             f"- 来源级总账：`{_to_relative(OUTPUT_LEDGER)}`",
             f"- 逐记录清单：`{_to_relative(OUTPUT_MANIFEST)}`",
             f"- JSON 总账：`{_to_relative(OUTPUT_JSON)}`",
-            "- 复算程序：`代码/生成v0.2可训练样本总账.py`",
+            "- 复算程序：`代码/生成数据总账.py`",
             "- 校验：`代码/测试/test_trainable_inventory.py`",
             "",
             "## 7. 审计依据",
             "",
             "[A1] TPU 高通量筛选数据库与多保真研究工作流，`README.md`。",
             "",
-            "[A2] TPU 数据库 v0.2 新增开放数据准入报告，`文档/质量报告/TPU数据库_v0.2_新增开放数据准入报告.md`。",
+            "[A2] TPU 多保真 Gold 数据集定义，`文档/Gold数据集定义.md`。",
             "",
-            "[A3] TPU 数据库 v0.2 第二批四源深审报告，`文档/质量报告/TPU数据库_v0.2_第二批四源深审报告.md`。",
+            "[A3] TPU 数据库当前状态，`文档/当前数据状态.md`。",
             "",
-            "[A4] TPU 数据库 v0.2 第四批九源质量报告，`文档/质量报告/TPU数据库_v0.2_第四批九源质量报告.md`。",
+            "[A4] 数据来源与参考文献，`文档/数据来源与参考文献.md`。",
             "",
-            "[A5] TPU 数据库 v0.2 PCL Git LFS 十轨迹补采质量报告，`文档/质量报告/TPU数据库_v0.2_PCL_GitLFS十轨迹补采质量报告.md`。",
-            "[A6] TPU 数据库 v0.1 快照，`05_数据库快照/TPU数据库_v0.1_快照.json`。",
+            "[A5] TPU 数据库 v0.1 快照，`数据/快照/TPU数据库_v0.1_快照.json`。",
             "",
             "## 8. 数据来源参考文献",
             "",

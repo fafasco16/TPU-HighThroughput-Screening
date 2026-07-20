@@ -13,7 +13,7 @@ from quality_rules import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-RULES = ROOT / "结构定义/v0.2质量规则.yaml"
+RULES = ROOT / "配置/结构定义/v0.2质量规则.yaml"
 COLLECTED_TEST_IDS = _repository_test_index()
 
 

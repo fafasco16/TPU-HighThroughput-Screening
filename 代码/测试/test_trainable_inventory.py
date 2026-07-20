@@ -10,11 +10,11 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "代码" / "生成v0.2可训练样本总账.py"
-JSON_PATH = ROOT / "06_审核导出" / "TPU数据库_v0.2_可训练样本总账.json"
-LEDGER_PATH = ROOT / "06_审核导出" / "TPU数据库_v0.2_数据规模总账.csv"
-MANIFEST_PATH = ROOT / "06_审核导出" / "TPU数据库_v0.2_可训练样本清单.csv"
-REPORT_PATH = ROOT / "文档" / "质量报告" / "TPU数据库_v0.2_可训练样本与数据规模总账.md"
+SCRIPT = ROOT / "代码" / "生成数据总账.py"
+JSON_PATH = ROOT / "结果" / "数据总账.json"
+LEDGER_PATH = ROOT / "结果" / "数据规模总账.csv"
+MANIFEST_PATH = ROOT / "结果" / "样本清单.csv"
+REPORT_PATH = ROOT / "结果" / "数据总账说明.md"
 PROFILE_PATH = ROOT / "配置" / "v0.2可训练样本总账来源画像.yaml"
 OUTPUT_PATHS = (LEDGER_PATH, MANIFEST_PATH, JSON_PATH, REPORT_PATH)
 
@@ -119,6 +119,23 @@ def test_manifest_enums_unique_ids_and_leakage_keys_are_valid(inventory: dict):
     assert all(row["quality_status"] in enums["quality_status"] for row in manifest)
     assert all(str(row["leakage_group_key"]).strip() for row in manifest)
     assert all(str(row["audit_basis"]).strip() for row in manifest)
+
+
+def test_manifest_contains_no_legacy_layout_paths(inventory: dict):
+    legacy_prefixes = (
+        "01_原始数据/",
+        "02_暂存数据/",
+        "03_规范数据/",
+        "04_派生数据/",
+        "05_数据库快照/",
+        "06_审核导出/",
+    )
+    path_fields = ("raw_sample_key", "run_key", "curve_key", "source_locator", "audit_basis")
+
+    for row in inventory["record_manifest"]:
+        for field in path_fields:
+            value = str(row.get(field, "")).replace("\\", "/")
+            assert not any(prefix in value for prefix in legacy_prefixes), (field, value)
 
 
 def test_fdm_doe_and_pcl_counting_boundaries_are_not_inflated(inventory: dict):
@@ -269,7 +286,7 @@ def test_two_runs_are_byte_reproducible_atomic_and_reconciled(inventory: dict):
 def test_source_profile_covers_every_open_data_directory():
     profile = yaml.safe_load(PROFILE_PATH.read_text(encoding="utf-8"))
     configured = {row["source_directory"] for row in profile["profiles"]}
-    raw_root = ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+    raw_root = ROOT / "数据/原始" / "外部数据" / "新增开放数据"
     actual = {path.name for path in raw_root.iterdir() if path.is_dir()}
 
     assert len(profile["baseline_profiles"]) == 4

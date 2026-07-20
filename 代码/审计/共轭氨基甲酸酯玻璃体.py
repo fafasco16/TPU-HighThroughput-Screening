@@ -23,7 +23,7 @@ from pathlib import Path, PurePosixPath
 ROOT = Path(__file__).resolve().parents[2]
 DATASET_DIR = (
     ROOT
-    / "01_原始数据"
+    / "数据/原始"
     / "外部数据"
     / "新增开放数据"
     / "Zenodo_生物基共轭氨基甲酸酯玻璃体"

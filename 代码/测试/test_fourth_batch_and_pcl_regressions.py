@@ -9,7 +9,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-RAW = ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+RAW = ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 
 
 def _json(path: Path) -> dict[str, object]:

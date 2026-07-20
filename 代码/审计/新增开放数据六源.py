@@ -1,6 +1,6 @@
 """复现六个新增开放数据来源的正式内容审计。
 
-输入全部位于 ``01_原始数据/外部数据/新增开放数据``，程序只读原始文件，
+输入全部位于 ``数据/原始/外部数据/新增开放数据``，程序只读原始文件，
 仅覆盖本模块 ``OUTPUT_WHITELIST`` 中列出的现有审计 JSON/TSV。ZIP 只做路径、
 CRC 与既有解包副本的逐字节校验，不重新解包；旧版 XLS 通过本机 Excel COM
 以只读模式解析，不生成中间文件。
@@ -37,7 +37,7 @@ from pypdf import PdfReader
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_ROOT = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+DATA_ROOT = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 AUDIT_DATE = "2026-07-20"
 
 SOURCE_NAMES = (

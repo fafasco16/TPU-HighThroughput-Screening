@@ -40,11 +40,11 @@ const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "../..");
 const shpuDirectory = path.join(
   projectRoot,
-  "01_原始数据/外部数据/新增开放数据/Figshare_自愈离子胶黏PU源数据",
+  "数据/原始/外部数据/新增开放数据/Figshare_自愈离子胶黏PU源数据",
 );
 const castorDirectory = path.join(
   projectRoot,
-  "01_原始数据/外部数据/新增开放数据/Figshare_蓖麻油脂肪族PU化学性能",
+  "数据/原始/外部数据/新增开放数据/Figshare_蓖麻油脂肪族PU化学性能",
 );
 const shpuWorkbookPath = path.join(shpuDirectory, "Source Data.xlsx");
 const shpuMetadataPath = path.join(shpuDirectory, "官方元数据.json");

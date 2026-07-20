@@ -1,6 +1,6 @@
 """Atomic, deterministic integration build for the provisional TPU v0.2 registry.
 
-The builder is deliberately limited to a direct child of ``临时构建``.  It
+The builder is deliberately limited to a direct child of ``数据/临时/构建缓存``.  It
 never writes into the raw vault or any formal data layer, and it does not admit
 scientific observations or create a training split.
 """
@@ -64,11 +64,11 @@ from source_governance import (
 
 DEFAULT_ASSET_RULES = Path("配置/v0.2资产登记规则.yaml")
 DEFAULT_SOURCE_SCOPE_CONFIG = Path("配置/v0.2来源范围.yaml")
-DEFAULT_CONTRACT_SCHEMA = Path("结构定义/v0.2来源治理合同.yaml")
-DEFAULT_ENUMS = Path("结构定义/v0.2枚举.yaml")
-DEFAULT_QUALITY_RULES = Path("结构定义/v0.2质量规则.yaml")
-DEFAULT_V01_SNAPSHOT = Path("05_数据库快照/TPU数据库_v0.1_快照.json")
-SAFE_BUILD_DIRECTORY = "临时构建"
+DEFAULT_CONTRACT_SCHEMA = Path("配置/结构定义/v0.2来源治理合同.yaml")
+DEFAULT_ENUMS = Path("配置/结构定义/v0.2枚举.yaml")
+DEFAULT_QUALITY_RULES = Path("配置/结构定义/v0.2质量规则.yaml")
+DEFAULT_V01_SNAPSHOT = Path("数据/快照/TPU数据库_v0.1_快照.json")
+SAFE_BUILD_DIRECTORY = "数据/临时/构建缓存"
 
 TABLE_OUTPUTS: Mapping[str, tuple[str, tuple[str, ...]]] = {
     "asset_registry": (ASSET_OUTPUT_FILES[0], REGISTRY_COLUMNS),
@@ -114,7 +114,7 @@ def _is_reparse_point(path: Path) -> bool:
 def validate_output_target(
     project_root: str | Path, output_root: str | Path
 ) -> tuple[Path, Path]:
-    """Resolve a shallow, non-destructive build target under ``临时构建``."""
+    """Resolve a shallow, non-destructive build target under ``数据/临时/构建缓存``."""
 
     try:
         project = Path(project_root).resolve(strict=True)
@@ -131,11 +131,29 @@ def validate_output_target(
     if not candidate.is_absolute():
         candidate = project / candidate
     target = candidate.resolve(strict=False)
-    safe_parent = (project / SAFE_BUILD_DIRECTORY).resolve(strict=False)
+    safe_parent_path = project / SAFE_BUILD_DIRECTORY
+    current_parent = project
+    for component in Path(SAFE_BUILD_DIRECTORY).parts:
+        current_parent = current_parent / component
+        if current_parent.exists() and (
+            not current_parent.is_dir() or _is_reparse_point(current_parent)
+        ):
+            raise GovernanceBuildError(
+                "unsafe_output_parent",
+                "数据/临时/构建缓存路径包含不可用目录或重解析点",
+                path=str(current_parent),
+            )
+    safe_parent = safe_parent_path.resolve(strict=False)
+    if not safe_parent.is_relative_to(project):
+        raise GovernanceBuildError(
+            "unsafe_output_parent",
+            "数据/临时/构建缓存目录必须位于项目内部",
+            path=str(safe_parent),
+        )
     if target == safe_parent or target.parent != safe_parent or not target.name.strip():
         raise GovernanceBuildError(
             "unsafe_output_root",
-            "构建输出必须是项目“临时构建”目录下的一个直接子目录",
+            "构建输出必须是项目“数据/临时/构建缓存”目录下的一个直接子目录",
             project_root=str(project),
             output_root=str(target),
         )
@@ -143,7 +161,7 @@ def validate_output_target(
         not safe_parent.is_dir() or _is_reparse_point(safe_parent)
     ):
         raise GovernanceBuildError(
-            "unsafe_output_parent", "临时构建目录不是可用的真实目录", path=str(safe_parent)
+            "unsafe_output_parent", "数据/临时/构建缓存目录不是可用的真实目录", path=str(safe_parent)
         )
     if target.exists():
         raise GovernanceBuildError(
@@ -967,10 +985,10 @@ def build_governance_database(
         )
     source_config = load_source_scope_config(documents["source_scopes"])
 
-    target.parent.mkdir(parents=False, exist_ok=True)
+    target.parent.mkdir(parents=True, exist_ok=True)
     if not target.parent.is_dir() or _is_reparse_point(target.parent):
         raise GovernanceBuildError(
-            "unsafe_output_parent", "临时构建目录创建后不是可用的真实目录", path=str(target.parent)
+            "unsafe_output_parent", "数据/临时/构建缓存目录创建后不是可用的真实目录", path=str(target.parent)
         )
     lock_path = target.parent / f".{target.name}.lock"
     with _BuildLock(lock_path):
@@ -1002,7 +1020,7 @@ def build_governance_database(
                 render_computational_admission_markdown(
                     profiles,
                     overlap_profile=overlap_profile,
-                    ledger_link="../../文档/TPU_数据来源与研究路线台账.md",
+                    ledger_link="../../文档/数据来源与参考文献.md",
                 ),
             )
 

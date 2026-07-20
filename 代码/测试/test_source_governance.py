@@ -10,9 +10,9 @@ from contract import load_contract_bundle
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_PATH = ROOT / "结构定义" / "v0.2来源治理合同.yaml"
-ENUM_PATH = ROOT / "结构定义" / "v0.2枚举.yaml"
-RULE_PATH = ROOT / "结构定义" / "v0.2质量规则.yaml"
+SCHEMA_PATH = ROOT / "配置/结构定义" / "v0.2来源治理合同.yaml"
+ENUM_PATH = ROOT / "配置/结构定义" / "v0.2枚举.yaml"
+RULE_PATH = ROOT / "配置/结构定义" / "v0.2质量规则.yaml"
 HAS_CJK = re.compile(r"[\u3400-\u9fff]")
 
 REQUIRED_TABLES = {

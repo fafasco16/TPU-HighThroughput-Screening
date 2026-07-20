@@ -93,24 +93,24 @@ def _source_row(
 def _project(tmp_path: Path) -> tuple[Path, list[dict[str, object]], dict[str, dict[str, object]]]:
     root = tmp_path / "项目"
     for directory in (
-        "01_原始数据",
-        "02_暂存数据",
-        "03_规范数据",
-        "04_派生数据",
-        "05_数据库快照",
-        "文档/质量报告",
-        "结构定义",
+        "数据/原始",
+        "数据/暂存",
+        "数据/规范",
+        "数据/派生",
+        "数据/快照",
+        "结果",
+        "配置/结构定义",
     ):
         (root / directory).mkdir(parents=True, exist_ok=True)
     shutil.copyfile(
-        PROJECT_ROOT / "结构定义" / "v0.1枚举.yaml",
-        root / "结构定义" / "v0.1枚举.yaml",
+        PROJECT_ROOT / "配置/结构定义" / "v0.1枚举.yaml",
+        root / "配置/结构定义" / "v0.1枚举.yaml",
     )
 
-    smipoly_path = root / "01_原始数据" / "smipoly.csv"
-    pue_path = root / "01_原始数据" / "pue.csv"
-    hbond_path = root / "01_原始数据" / "hbond.xlsx"
-    viscosity_path = root / "01_原始数据" / "viscosity.xlsx"
+    smipoly_path = root / "数据/原始" / "smipoly.csv"
+    pue_path = root / "数据/原始" / "pue.csv"
+    hbond_path = root / "数据/原始" / "hbond.xlsx"
+    viscosity_path = root / "数据/原始" / "viscosity.xlsx"
     shutil.copyfile(FIXTURES / "smipoly_最小.csv", smipoly_path)
     shutil.copyfile(FIXTURES / "pue326_最小.csv", pue_path)
     _write_hbond(hbond_path)
@@ -120,7 +120,7 @@ def _project(tmp_path: Path) -> tuple[Path, list[dict[str, object]], dict[str, d
         _source_row(
             root,
             "ds_smipoly_monomers",
-            "01_原始数据/smipoly.csv",
+            "数据/原始/smipoly.csv",
             license_spdx="BSD-3-Clause",
             derivatives_allowed=True,
             redistribution_allowed=True,
@@ -130,7 +130,7 @@ def _project(tmp_path: Path) -> tuple[Path, list[dict[str, object]], dict[str, d
         _source_row(
             root,
             "ds_pue326_dq",
-            "01_原始数据/pue.csv",
+            "数据/原始/pue.csv",
             license_spdx="UNKNOWN",
             derivatives_allowed=None,
             redistribution_allowed=None,
@@ -140,7 +140,7 @@ def _project(tmp_path: Path) -> tuple[Path, list[dict[str, object]], dict[str, d
         _source_row(
             root,
             "ds_eom_hbond_2021",
-            "01_原始数据/hbond.xlsx",
+            "数据/原始/hbond.xlsx",
             license_spdx="CC-BY-4.0",
             derivatives_allowed=True,
             redistribution_allowed=True,
@@ -150,7 +150,7 @@ def _project(tmp_path: Path) -> tuple[Path, list[dict[str, object]], dict[str, d
         _source_row(
             root,
             "ds_prepolymer_viscosity",
-            "01_原始数据/viscosity.xlsx",
+            "数据/原始/viscosity.xlsx",
             license_spdx="UNKNOWN",
             derivatives_allowed=None,
             redistribution_allowed=None,
@@ -283,10 +283,10 @@ def test_normalized_records_use_v01_schema_and_declared_enums(tmp_path: Path):
     normalized = normalize_staging_tables(staging, selected)
 
     enums = yaml.safe_load(
-        (PROJECT_ROOT / "结构定义" / "v0.1枚举.yaml").read_text(encoding="utf-8")
+        (PROJECT_ROOT / "配置/结构定义" / "v0.1枚举.yaml").read_text(encoding="utf-8")
     )["enums"]
     fields = yaml.safe_load(
-        (PROJECT_ROOT / "结构定义" / "v0.1字段字典.yaml").read_text(
+        (PROJECT_ROOT / "配置/结构定义" / "v0.1字段字典.yaml").read_text(
             encoding="utf-8"
         )
     )

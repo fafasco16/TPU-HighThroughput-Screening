@@ -1,6 +1,6 @@
 """对两套 DRUM TPUU 原始数据执行可复现的只读内容审计。
 
-本脚本以自身路径推导项目根目录，只读取 ``01_原始数据`` 下两个既定来源。
+本脚本以自身路径推导项目根目录，只读取 ``数据/原始`` 下两个既定来源。
 唯一允许写入/覆盖的文件，是每个来源根目录内的以下四个审计产物：
 
 * ``内容审计摘要.json``
@@ -39,7 +39,7 @@ from openpyxl import load_workbook
 SCRIPT_PATH = Path(__file__).resolve()
 SCRIPT_DIR = SCRIPT_PATH.parent
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
-BASE = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+BASE = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 MECH_DIR = BASE / "DRUM_TPUU_机械回收"
 LOW_DIR = BASE / "DRUM_TPUU_低天花板"
 PS_DMTA = SCRIPT_DIR / "读取低天花板DMTA.ps1"

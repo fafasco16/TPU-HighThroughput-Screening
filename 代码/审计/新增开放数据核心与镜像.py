@@ -36,7 +36,7 @@ from typing import Any, Iterable
 SCRIPT_PATH = Path(__file__).resolve()
 SCRIPT_DIR = SCRIPT_PATH.parent
 PROJECT_ROOT = SCRIPT_PATH.parents[2]
-OPEN_DATA_ROOT = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+OPEN_DATA_ROOT = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 
 QUB_DIR = OPEN_DATA_ROOT / "QUB_生物基三重自修复TPU"
 QUB_ZIP = QUB_DIR / "MA_d4ma00289j_dataset.zip"
@@ -45,7 +45,7 @@ QUB_UNPACKED = QUB_DIR / "解压数据_只读"
 
 TPU95A_DIR = OPEN_DATA_ROOT / "Mendeley_TPU95A_TPMS应变率力学"
 TPU95A_PRIOR_DIR = (
-    PROJECT_ROOT / "01_原始数据" / "外部数据" / "力学曲线" / "TPU95A_2026"
+    PROJECT_ROOT / "数据/原始" / "外部数据" / "力学曲线" / "TPU95A_2026"
 )
 TPU95A_DATACITE = TPU95A_DIR / "官方DataCite元数据.json"
 TPU95A_FEA_MANIFEST = TPU95A_DIR / "官方FEA文件清单_仅登记未下载.json"

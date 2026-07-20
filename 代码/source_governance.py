@@ -291,11 +291,12 @@ _EVIDENCE_STATES = {
     "withdrawn",
 }
 _FORBIDDEN_OUTPUT_NAMES = {
-    "02_暂存数据",
-    "03_规范数据",
-    "04_派生数据",
-    "05_数据库快照",
-    "06_审核导出",
+    "原始",
+    "暂存",
+    "规范",
+    "派生",
+    "快照",
+    "结果",
 }
 
 
@@ -586,9 +587,9 @@ def validate_source_scope_config(config: Mapping[str, Any]) -> None:
             "id_algorithm_version must be the published uuid5-v1 contract",
             code="id_algorithm_version_invalid",
         )
-    if normalize_relative_path(config.get("discovery_root")) != "01_原始数据":
+    if normalize_relative_path(config.get("discovery_root")) != "数据/原始":
         _fail(
-            "discovery_root must be the project-relative 01_原始数据",
+            "discovery_root must be the project-relative 数据/原始",
             code="discovery_root_invalid",
         )
     observed_at = _nonempty(config.get("observed_at"), label="observed_at")

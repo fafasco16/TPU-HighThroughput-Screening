@@ -42,7 +42,7 @@ from openpyxl import load_workbook
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_ROOT = PROJECT_ROOT / "01_原始数据" / "外部数据" / "新增开放数据"
+DATA_ROOT = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 XLS_READER = Path(__file__).with_name("读取标准弹性体旧版XLS.ps1")
 AUDIT_DATE = "2026-07-20"
 AUDIT_VERSION = "1.0"
