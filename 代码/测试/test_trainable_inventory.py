@@ -38,13 +38,13 @@ def _sha256(path: Path) -> str:
 def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
     summary = inventory["summary"]
 
-    assert summary["ledger_source_scope_count"] == 65
-    assert summary["v0_2_source_directory_count"] == 57
-    assert summary["v0_2_independent_source_identity_count"] == 56
+    assert summary["ledger_source_scope_count"] == 69
+    assert summary["v0_2_source_directory_count"] == 61
+    assert summary["v0_2_independent_source_identity_count"] == 60
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
     assert summary["v0_1_frozen_baseline_source_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 64
+    assert summary["total_independent_source_contribution_count"] == 68
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_calibration_curve_point_row_count"] == 935_097
     assert summary["strict_core_calibration_complete_point_pair_upper_bound"] == 935_095
@@ -64,30 +64,30 @@ def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
 
     experimental = summary["known_origin_totals"]["experimental_only"]
     assert experimental["specimen_count"] == {
-        "value": 1390,
-        "known_source_scope_count": 18,
+        "value": 1465,
+        "known_source_scope_count": 21,
     }
     assert experimental["curve_count_observed"] == {
-        "value": 2471,
-        "known_source_scope_count": 32,
+        "value": 2510,
+        "known_source_scope_count": 35,
     }
     assert experimental["curve_count_candidate"] == {
-        "value": 2304,
-        "known_source_scope_count": 32,
+        "value": 2334,
+        "known_source_scope_count": 35,
     }
     assert experimental["point_count_observed"] == {
-        "value": 9_150_886,
-        "known_source_scope_count": 32,
+        "value": 9_482_024,
+        "known_source_scope_count": 35,
     }
 
     mixed = summary["known_origin_totals"]["mixed_experiment_and_simulation"]
     assert mixed["curve_count_observed"] == {
-        "value": 344,
-        "known_source_scope_count": 6,
+        "value": 370,
+        "known_source_scope_count": 7,
     }
     assert mixed["point_count_observed"] == {
-        "value": 7_606_461,
-        "known_source_scope_count": 5,
+        "value": 7_747_413,
+        "known_source_scope_count": 6,
     }
 
 
@@ -208,6 +208,157 @@ def test_sixth_batch_computational_sources_keep_fidelity_and_inputs_separate(inv
     assert fea["gold_admission_status"] == "conditional_reference"
     assert fea["scalar_count_candidate"] == 0
     assert fea["weight_ceiling"] == 0.0
+
+
+def test_batch8_tpu_literature_aggregates_enter_conditional_gold_reference(
+    inventory: dict,
+):
+    source = "第八批实验_TPU文献力学汇总"
+    ledger = {row["source_directory"]: row for row in inventory["source_ledger"]}
+    row = ledger[source]
+
+    assert row["canonical_identifier"] == "doi:10.17632/ftntxg4zdz.1"
+    assert row["gold_layer"] == "Gold-E"
+    assert row["gold_admission_status"] == "conditional_reference"
+    assert row["license_status"] == "allow_with_attribution"
+    assert row["source_record_count"] == 62
+    assert row["specimen_count"] == 0
+    assert row["formulation_count"] == 0
+    assert row["scalar_count_observed"] == 186
+    assert row["scalar_count_candidate"] == 186
+    assert row["evidence_group_count"] == 45
+
+    records = [
+        item for item in inventory["record_manifest"] if item["source_directory"] == source
+    ]
+    scalar_records = [item for item in records if item["record_granularity"] == "scalar"]
+    assert len(scalar_records) == 186
+    assert len({item["leakage_group_key"] for item in scalar_records}) == 45
+    assert all(item["target_origin"] == "experimental" for item in scalar_records)
+    assert all(item["gold_layer"] == "Gold-E" for item in scalar_records)
+    assert all(item["gold_admission_status"] == "conditional_reference" for item in scalar_records)
+    assert all(item["weight_ceiling"] == 0.0 for item in scalar_records)
+
+
+def test_batch8_copper_pu_pyrolysis_keeps_experiment_and_dft_as_multifidelity_reference(
+    inventory: dict,
+):
+    source = "第八批混合_PU铜调控热解多尺度"
+    ledger = {row["source_directory"]: row for row in inventory["source_ledger"]}
+    row = ledger[source]
+
+    assert row["canonical_identifier"] == "10.5281/zenodo.18414263"
+    assert row["gold_layer"] == "Gold-E+Gold-C"
+    assert row["gold_admission_status"] == "admitted_reference"
+    assert row["license_status"] == "allow_with_attribution"
+    assert row["material_count"] == 1
+    assert row["formulation_count"] == 0
+    assert row["specimen_count"] == 0
+    assert row["curve_count_observed"] == 26
+    assert row["scalar_count_observed"] == 411
+    assert row["scalar_count_candidate"] == 319
+    assert row["computational_system_count"] == 6
+    assert row["weight_ceiling"] == 0.25
+    assert set(row["citation_keys"].split(";")) == {
+        "ledger-138-zhang-2026-copper-pu-pyrolysis-data",
+        "ledger-139-zhang-2026-copper-pu-pyrolysis",
+    }
+
+    records = [
+        item for item in inventory["record_manifest"] if item["source_directory"] == source
+    ]
+    experimental = [item for item in records if item["target_origin"] == "experimental"]
+    computational = [item for item in records if item["target_origin"] == "computational"]
+    assert len(experimental) == 14
+    assert len(computational) == 14
+    assert sum(item["point_count"] for item in experimental) == 140_680
+    assert all(item["gold_layer"] == "Gold-E" for item in experimental)
+    assert all(item["gold_layer"] == "Gold-C" for item in computational)
+    assert all(
+        item["gold_admission_status"] == "conditional_reference"
+        for item in computational
+    )
+    assert all(item["specimen_count"] == 0 for item in records)
+    assert max(item["weight_ceiling"] for item in computational) == 0.15
+    assert any(
+        item["gold_admission_status"] == "conditional_reference"
+        for item in experimental
+    )
+
+
+def test_batch8_sls_tpu_lattice_keeps_real_replicates_without_inventing_formulations(
+    inventory: dict,
+):
+    source = "第八批实验_SLS_TPU晶格工艺"
+    ledger = {row["source_directory"]: row for row in inventory["source_ledger"]}
+    row = ledger[source]
+
+    assert row["canonical_identifier"] == "10.6084/m9.figshare.31550614.v1"
+    assert row["gold_layer"] == "Gold-E"
+    assert row["gold_admission_status"] == "admitted_reference"
+    assert row["material_count"] == 1
+    assert row["formulation_count"] == 0
+    assert row["specimen_count"] == 75
+    assert row["scalar_count_observed"] == 375
+    assert row["evidence_group_count"] == 25
+    assert row["weight_ceiling"] == 0.35
+    assert set(row["citation_keys"].split(";")) == {
+        "ledger-140-seong-2026-sls-tpu-lattice-data",
+        "ledger-141-seong-2026-sls-tpu-lattice",
+    }
+
+    records = [
+        item for item in inventory["record_manifest"] if item["source_directory"] == source
+    ]
+    scalars = [item for item in records if item["record_granularity"] == "scalar"]
+    assert len(scalars) == 375
+    assert len({item["specimen_key"] for item in scalars}) == 75
+    assert len({item["leakage_group_key"] for item in scalars}) == 25
+    assert sum(item["gold_admission_status"] == "admitted_reference" for item in scalars) == 300
+    assert sum(item["gold_admission_status"] == "conditional_reference" for item in scalars) == 75
+    assert sum(item["weight_ceiling"] == 0.15 for item in scalars) == 75
+    assert sum(item["weight_ceiling"] == 0.10 for item in scalars) == 75
+    assert max(item["weight_ceiling"] for item in scalars) == 0.35
+
+
+def test_batch8_nonisocyanate_phcu_keeps_six_formulations_and_multimodal_curves(
+    inventory: dict,
+):
+    source = "第八批实验_非异氰酸酯PHCU热塑性聚氨酯"
+    ledger = {row["source_directory"]: row for row in inventory["source_ledger"]}
+    row = ledger[source]
+
+    assert row["canonical_identifier"] == "10.17632/bvv43yk29c.1"
+    assert row["gold_layer"] == "Gold-E"
+    assert row["gold_admission_status"] == "admitted_reference"
+    assert row["scientific_role"] == "TPU核心"
+    assert row["license_status"] == "allow_with_attribution"
+    assert row["material_count"] == 6
+    assert row["formulation_count"] == 6
+    assert row["specimen_count"] == 0
+    assert row["curve_count_observed"] == 39
+    assert row["curve_count_candidate"] == 30
+    assert row["point_count_observed"] == 331_138
+    assert row["weight_ceiling"] == 0.60
+    assert set(row["citation_keys"].split(";")) == {
+        "ledger-142-shen-2018-nonisocyanate-phcu-data",
+        "ledger-143-shen-2018-nonisocyanate-phcu",
+        "ledger-144-zhang-2021-phcu-composition-semantics",
+    }
+
+    records = [
+        item for item in inventory["record_manifest"] if item["source_directory"] == source
+    ]
+    curves = [item for item in records if item["record_granularity"] == "curve"]
+    assert len(curves) == 39
+    assert sum(item["point_count"] for item in curves) == 331_138
+    assert len({item["material_formula_key"] for item in curves if item["material_formula_key"]}) == 6
+    assert sum(item["gold_admission_status"] == "admitted_reference" for item in curves) == 23
+    assert sum(item["gold_admission_status"] == "conditional_reference" for item in curves) == 7
+    assert sum(item["gold_admission_status"] == "evidence_only" for item in curves) == 9
+    assert sum(item["weight_ceiling"] == 0.60 for item in curves) == 6
+    assert sum(item["weight_ceiling"] == 0.55 for item in curves) == 6
+    assert all(item["target_origin"] == "experimental" for item in curves)
 
 
 def test_materialized_gold_v_candidates_are_unique_traceable_and_zero_weight(inventory: dict):
@@ -480,7 +631,7 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
     manifest_rows = _csv_rows(MANIFEST_PATH)
     report = REPORT_PATH.read_text(encoding="utf-8")
 
-    assert len(ledger_rows) == 65
+    assert len(ledger_rows) == 69
     assert len(manifest_rows) == inventory["summary"]["manifest_row_count"]
     for row in ledger_rows:
         assert row["source_scope_id"].strip()
@@ -513,8 +664,8 @@ def test_two_runs_are_byte_reproducible_atomic_and_reconciled(inventory: dict):
     report = REPORT_PATH.read_text(encoding="utf-8")
     assert payload["summary"]["audit_as_of_utc"] == "2026-07-21T14:00:00Z"
     assert len(payload["input_fingerprints"]) == payload["summary"]["input_file_count"]
-    assert len(ledger_rows) == len(payload["source_ledger"]) == 65
-    assert len(manifest_rows) == len(payload["record_manifest"]) == 5675
+    assert len(ledger_rows) == len(payload["source_ledger"]) == 69
+    assert len(manifest_rows) == len(payload["record_manifest"]) == 6307
     assert "| 严格核心键控试样/曲线/已审计点行 | 217 / 217 / 913,608 |" in report
     assert "| 当前模型就绪记录 | **0** |" in report
 
@@ -526,8 +677,44 @@ def test_source_profile_covers_every_open_data_directory():
     actual = {path.name for path in raw_root.iterdir() if path.is_dir()}
 
     assert len(profile["baseline_profiles"]) == 4
-    assert len(configured) == 57
+    assert len(configured) == 61
     assert configured == actual
     backlog = profile["local_backlog_profiles"]
     assert len(backlog) == 4
     assert all((ROOT / "数据/原始" / row["source_path"]).is_dir() for row in backlog)
+
+
+def test_source_profile_flow_mappings_do_not_silently_split_notes_on_commas():
+    profile = yaml.safe_load(PROFILE_PATH.read_text(encoding="utf-8"))
+    common_keys = {
+        "source_directory",
+        "task",
+        "origin_kind",
+        "scientific_role",
+        "quality_status",
+        "weight_ceiling",
+        "unit_status",
+        "license_status",
+        "dedup_status",
+        "split_group_status",
+        "completeness",
+        "audit_basis",
+        "notes",
+        "counts",
+    }
+    section_extra_keys = {
+        "baseline_profiles": {"source_id", "source_scope_id", "source_family_id"},
+        "profiles": {"audit_metrics"},
+        "local_backlog_profiles": {"source_path"},
+    }
+
+    for section, extra_keys in section_extra_keys.items():
+        for row in profile[section]:
+            assert set(row) <= common_keys | extra_keys, row.get("source_directory")
+
+    wide_rate = next(
+        row
+        for row in profile["profiles"]
+        if row["source_directory"] == "Mendeley_热可逆超分子PU宽应变率"
+    )
+    assert "35,919同步点" in wide_rate["notes"]

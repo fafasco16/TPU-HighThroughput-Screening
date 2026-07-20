@@ -1,5 +1,5 @@
 schema_version: v0.2
-profile_version: trainable-inventory-profile-v0.2.6
+profile_version: trainable-inventory-profile-v0.2.9
 profile_status: audit_inventory_only
 generated_training_view: false
 audit_as_of_utc: '2026-07-21T14:00:00Z'
@@ -116,7 +116,7 @@ profiles:
   - {source_directory: Figshare_PU高低速变形后应力松弛, task: PU温度/速率/松弛迁移, origin_kind: 混合, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.25, unit_status: 部分已解析, license_status: manual_review, dedup_status: 需进一步视图去重, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_record_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 108条曲线实例无物理试样ID；四个高密度视图占92%, counts: {source_record_count: 108, material_count: 2, formulation_count: null, batch_count: null, specimen_count: null, run_count: 38, curve_count_observed: 108, curve_count_candidate: 108, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 1459510, point_count_candidate: 1459510, numeric_value_count: 1459510, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Jagiellonian_硬段从头算MD, task: 硬段量化/AIMD表示与氢键机理, origin_kind: 模拟, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.15, unit_status: 坐标单位未解析, license_status: manual_review, dedup_status: 已核验, split_group_status: 体系协议键可用, completeness: source_aggregate_plus_system_records, audit_basis: 内容审计摘要.json;XYZ解析清单.tsv, notes: 4个体系仅可作拓扑/尺度不变表示，绝对几何QoI当前为0, counts: {source_record_count: 4, material_count: 0, formulation_count: 0, batch_count: 0, specimen_count: 0, run_count: 4, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 466, point_count_candidate: 0, numeric_value_count: 466, evidence_group_count: 0, computational_system_count: 4, source_identity_count_contribution: 1}}
   - {source_directory: MaterialsCloud_商用PU泡沫多轴断裂力学, task: PU泡沫多轴/DIC/断裂迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.30, unit_status: 已解析, license_status: manual_review, dedup_status: 同试样双通道已绑定, split_group_status: 试样键可用, completeness: source_aggregate_plus_grouped_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 37试样对应机器与DIC各37条，不能写成37配方, counts: {source_record_count: 74, material_count: 1, formulation_count: null, batch_count: 1, specimen_count: 37, run_count: 37, curve_count_observed: 74, curve_count_candidate: 74, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 54416, point_count_candidate: 54357, numeric_value_count: 54416, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
-  - {source_directory: Mendeley_热可逆超分子PU宽应变率, task: PU速率/松弛/DMA流变迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 部分已解析, license_status: manual_review, dedup_status: 同源伴随关系已登记, split_group_status: 粗粒度来源家族, completeness: source_aggregate_partial_parse, audit_basis: 内容审计摘要.json, notes: 19个直接采集与35,919同步点；24 OPJ/3 OPJU/1 MNOVA未解析，当前机械标签为0, counts: {source_record_count: 19, material_count: 1, formulation_count: 1, batch_count: null, specimen_count: null, run_count: 19, curve_count_observed: 19, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 35919, point_count_candidate: 0, numeric_value_count: 35919, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: Mendeley_热可逆超分子PU宽应变率, task: PU速率/松弛/DMA流变迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 部分已解析, license_status: manual_review, dedup_status: 同源伴随关系已登记, split_group_status: 粗粒度来源家族, completeness: source_aggregate_partial_parse, audit_basis: 内容审计摘要.json, notes: "19个直接采集与35,919同步点；24 OPJ/3 OPJU/1 MNOVA未解析，当前机械标签为0", counts: {source_record_count: 19, material_count: 1, formulation_count: 1, batch_count: null, specimen_count: null, run_count: 19, curve_count_observed: 19, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 35919, point_count_candidate: 0, numeric_value_count: 35919, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Mendeley_商业TPU温度疲劳多工况, task: 商业TPU温度/速率/疲劳与恢复, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.35, unit_status: 已解析, license_status: manual_review, dedup_status: 恢复曲线复用试样ID, split_group_status: 试样键可用, completeness: source_aggregate_plus_record_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 5个TPU牌号、190物理试样、196历史；另99条TPV历史只作类比, counts: {source_record_count: 196, material_count: 5, formulation_count: null, batch_count: null, specimen_count: 190, run_count: 196, curve_count_observed: 196, curve_count_candidate: 196, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 333492, point_count_candidate: 333492, numeric_value_count: 333492, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Mendeley_植物基PU泡沫温湿老化压缩, task: PU泡沫温湿老化/压缩/DIC迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.35, unit_status: 已解析, license_status: manual_review, dedup_status: 两组精确重复已分组, split_group_status: 试样键可用, completeness: source_aggregate_plus_record_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 90试样中默认88可用；同一未知配方不扩大化学空间, counts: {source_record_count: 90, material_count: 1, formulation_count: null, batch_count: 9, specimen_count: 90, run_count: 90, curve_count_observed: 90, curve_count_candidate: 88, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 360176, point_count_candidate: null, numeric_value_count: 360176, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Mendeley_FDM_TPU晶格与基材力学, task: FDM TPU晶格/基材力学迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.35, unit_status: 部分已解析, license_status: manual_review, dedup_status: 无完全重复曲线, split_group_status: 试样组键可用, completeness: source_aggregate_plus_curve_and_scalar_records, audit_basis: 内容审计摘要.json;曲线审计清单.tsv;标量审计清单.tsv, notes: 57条曲线和935条标量通过来源汇总选择；其余冲突或未选, counts: {source_record_count: 1282, material_count: 1, formulation_count: null, batch_count: null, specimen_count: 76, run_count: 76, curve_count_observed: 76, curve_count_candidate: 57, scalar_count_observed: 1206, scalar_count_candidate: 935, point_count_observed: 712240, point_count_candidate: null, numeric_value_count: 712240, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
@@ -158,6 +158,86 @@ profiles:
   - {source_directory: 第七批虚拟_PUR-GEN片段库, task: 可追溯聚氨酯虚拟片段结构枚举与候选空间扩展, origin_kind: 虚拟候选, scientific_role: 迁移, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 414个规范SMILES和InChIKey均唯一, split_group_status: 数据集DOI+规范结构同折, completeness: source_aggregate_plus_virtual_candidates, audit_basis: 内容审计摘要.json;片段审计清单.tsv;文件校验清单.tsv, notes: 414个2–4单元聚氨酯片段全部通过RDKit结构解析并进入Gold-V科学参考；54个片段缺描述符行且数据集未声明许可证，当前不物化训练权重且不公开原始文件，不作为实验性质真值。, counts: {source_record_count: 414, material_count: 0, formulation_count: 0, batch_count: 0, specimen_count: 0, run_count: 0, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: 第七批补充材料_孢子填充TPU, task: 孢子填充商业聚酯TPU配方—工艺—拉伸—降解多任务参考, origin_kind: 实验, scientific_role: TPU核心, quality_status: 入选, weight_ceiling: 0.80, unit_status: 已解析, license_status: allow_with_attribution, dedup_status: 36条配方重复曲线均有独立样本键, split_group_status: 论文DOI+孢子类型+添加量按配方同折, completeness: source_aggregate_plus_record_curves_scalars_and_formulations, audit_basis: 内容审计摘要.json;曲线审计清单.tsv;标量审计清单.tsv;文件校验清单.tsv, notes: BASF Elastollan BCF45聚酯TPU与WT/HST孢子0–1wt%共12条件×3重复；完整工艺与拉伸协议支持高权重配方/曲线任务，缺SMILES与硬段含量时分子结构任务权重为0。, counts: {source_record_count: 180, material_count: 12, formulation_count: 12, batch_count: null, specimen_count: 36, run_count: 36, curve_count_observed: 36, curve_count_candidate: 36, scalar_count_observed: 144, scalar_count_candidate: 144, point_count_observed: 280288, point_count_candidate: 280288, numeric_value_count: 560720, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: 第七批虚拟_PolyUniverse百万PU, task: 规则生成聚氨酯百万结构与机器学习多性质预测候选库, origin_kind: 虚拟候选, scientific_role: 迁移, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 部分已解析, license_status: allow_with_attribution, dedup_status: 1000000个RDKit规范p-SMILES均唯一且全部正好含两个聚合通配点, split_group_status: 数据集DOI+反应物对同折, completeness: source_aggregate_plus_virtual_prediction_reservoir, audit_basis: 审计摘要.json;列统计.tsv;SMILES质量.tsv;预测标签分布.tsv;字段字典.tsv, notes: 100万条规则生成PU结构与1500万个机器学习预测标签进入Gold-V科学参考；296670个唯一反应物对要求同折，703330行复用反应物对。YM/YS/BS仅按固定commit伴随脚本和数值尺度对官方Polyurethane_1M_p.csv建立派生换算，DC/PL/Eg仍未解析，PU气体预测属OOD；所有预测仍为零实验监督权重，物理冲突和负预测保留QA标志。, counts: {source_record_count: 1000000, material_count: 0, formulation_count: 0, batch_count: 0, specimen_count: 0, run_count: 0, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 15000000, scalar_count_candidate: 15000000, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 15000000, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - source_directory: 第八批实验_TPU文献力学汇总
+    task: TPU加工方式—Shore硬度—拉伸强度—断裂伸长率文献迁移参考
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 仅验证
+    weight_ceiling: 0.0
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: 62行无精确重复；同一引用的多行按45个引用组归并
+    split_group_status: 数据集DOI加引用文本哈希同折
+    completeness: source_aggregate_plus_literature_scalar_records
+    audit_basis: 内容审计摘要.json;标量审计清单.tsv;文件校验清单.tsv
+    notes: >-
+      62条FDM、SLS、MJF或注塑TPU文献/商业数据表汇总，含186个硬度、强度和伸长率数值；
+      没有原始试样、配方、牌号化学结构和完整测试协议，因此进入Gold-E条件参考并按45个引用组防泄漏，
+      后续经原论文解析后单任务权重上限可升至0.10–0.20，化学结构任务保持0。
+    counts:
+      {source_record_count: 62, material_count: 0, formulation_count: 0, batch_count: null, specimen_count: 0, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 186, scalar_count_candidate: 186, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 186, evidence_group_count: 45, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第八批混合_PU铜调控热解多尺度
+    task: 废聚氨酯铜配位热解实验—动力学—产物—DFT机理多保真参考
+    origin_kind: 混合
+    scientific_role: 迁移
+    quality_status: 降权
+    weight_ceiling: 0.25
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 曲线通道、动力学标量和DFT体系分别归组；重复展示块及派生差值不增加独立计数
+    split_group_status: 数据集DOI加单一商业PU基材同折；六个DFT分子状态与同源实验不得跨折冒充独立材料
+    completeness: source_aggregate_plus_experimental_curves_scalars_and_dft_observations
+    audit_basis: 内容审计摘要.json;实验曲线审计清单.tsv;计算观测清单.tsv;文件校验清单.tsv
+    notes: >-
+      一个商业聚氨酯漆包线基材的TGA/DTG、热解动力学、EDS、Py-GC/MS、FTIR与DFT反应路径/静电势联合数据；
+      可靠实验和计算结果分别进入Gold-E与Gold-C，用于热稳定性、降解机理和EHS迁移，不因缺SMILES、完整配方或力学标签而整体排除。
+      20摄氏度每分钟条件、950摄氏度上限、EDS元素标签、差值符号、路径数和FTIR横轴等工作簿—正文冲突均保留QA标志；
+      直接TPU力学监督权重固定为0，曲线点、静电势网格和同一体系的多方法动力学估计不得当独立材料样本计权。
+    counts:
+      {source_record_count: 439, material_count: 1, formulation_count: 0, batch_count: null, specimen_count: 0, run_count: 14, curve_count_observed: 26, curve_count_candidate: 26, scalar_count_observed: 411, scalar_count_candidate: 319, point_count_observed: 140952, point_count_candidate: 140947, numeric_value_count: 263503, evidence_group_count: 0, computational_system_count: 6, source_identity_count_contribution: 1}
+
+  - source_directory: 第八批实验_SLS_TPU晶格工艺
+    task: 商业TPU的SLS工艺—Kelvin晶格—坐垫性能逐试件迁移参考
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    weight_ceiling: 0.35
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 75个试件端点唯一；工况均值、MIN/MAX、绘图辅助列和跨表复制不重复计数
+    split_group_status: 同一SLS工况的3个重复同折；做材料外推时整个商业TPU加固定Kelvin几何来源同折
+    completeness: source_aggregate_plus_specimen_scalars_and_process_conditions
+    audit_basis: 内容审计摘要.json;标量审计清单.tsv;文件校验清单.tsv
+    notes: >-
+      25个L25工况乘3重复形成75个真实SLS试件，公开Load@25%、Load@65%、SAG、HLR和Weight共375条逐试件端点；
+      其中300条性能端点单位闭合并进入Gold-E正式参考，75条Weight因原文未声明单位进入条件参考。
+      数据只代表一个商业TPU01GR和固定Kelvin晶格，不是25种配方；用于工艺—性能迁移时来源上限0.35，
+      SAG因近似依赖两载荷降至0.15，Weight在单位闭合前至多0.10，SMILES或化学结构任务权重为0。
+      面能量密度LP除以SS和HD与含0.1毫米层厚的体积能量密度分别保存，禁止混用。
+    counts:
+      {source_record_count: 375, material_count: 1, formulation_count: 0, batch_count: null, specimen_count: 75, run_count: 75, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 375, scalar_count_candidate: 375, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 375, evidence_group_count: 25, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第八批实验_非异氰酸酯PHCU热塑性聚氨酯
+    task: 非异氰酸酯线性PHCU组成—拉伸—热稳定性—多模态表征核心参考
+    origin_kind: 实验
+    scientific_role: TPU核心
+    quality_status: 降权
+    weight_ceiling: 0.60
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 39条曲线按模态和PHCU配方归组；曲线点、二进制原件和同配方多模态记录不增加材料数
+    split_group_status: 数据集DOI加PHCU代码同折；六个同系列配方建议组留一或整系列留出，禁止点级随机划分
+    completeness: source_aggregate_plus_formulations_and_multimodal_curves
+    audit_basis: 内容审计摘要.json;曲线审计清单.tsv;配方审计清单.tsv;文件校验清单.tsv
+    notes: >-
+      六个PHCU10、20、30、40、50和70非异氰酸酯线性聚碳酸酯氨基甲酸酯配方，公开拉伸、TGA、GPC、NMR、FTIR、DSC和XRD原始数据；
+      30条数值曲线共331138个点进入Gold-E参考，另9条尚未解码或标签冲突的二进制曲线只作证据。
+      拉伸六曲线按顺序和论文范围推断到六配方，权重上限0.60；TGA上限0.55；GPC仅保留色谱曲线，不能伪造Mn或Mw。
+      DSC外部文件名与内部样品名存在三处冲突，未核对前监督权重为0；已知单体结构和HU摩尔比例可用于组成系列任务，
+      但没有唯一聚合物SMILES时精确结构—性能任务权重为0。
+    counts:
+      {source_record_count: 45, material_count: 6, formulation_count: 6, batch_count: null, specimen_count: 0, run_count: 30, curve_count_observed: 39, curve_count_candidate: 30, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 331138, point_count_candidate: 331138, numeric_value_count: 662276, evidence_group_count: 9, computational_system_count: 0, source_identity_count_contribution: 1}
 
 local_backlog_profiles:
   - source_directory: SelfHealingTPU_4TU

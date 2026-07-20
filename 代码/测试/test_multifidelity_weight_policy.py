@@ -16,7 +16,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
-    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.12"
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.14"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -37,6 +37,24 @@ def test_weight_bands_are_bounded_and_do_not_promote_predictions_or_inputs():
     assert bands["experimental_core_raw"]["maximum_weight"] == 1.0
     assert bands["dft_validated_mapping"]["maximum_weight"] < 1.0
     assert bands["experimental_transfer_raw"]["maximum_weight"] < 1.0
+
+
+def test_nonzero_ceiling_is_only_a_post_resolution_potential_not_current_weight():
+    policy = _load(POLICY_PATH)
+    semantics = policy["weight_ceiling_semantics"]
+
+    assert semantics["meaning"] == "potential_post_resolution_upper_bound"
+    assert semantics["is_current_training_weight"] is False
+    assert semantics["conditional_reference_effective_supervision_weight"] == 0.0
+    assert semantics["conditional_reference_may_keep_nonzero_potential_ceiling"] is True
+    assert {
+        "gold_admission_status_is_admitted_reference",
+        "task_specific_scientific_gate_passed",
+        "train_rights_action_allowed",
+        "leakage_safe_split_group_materialized",
+        "model_ready_is_true",
+        "current_weight_materialized_is_true",
+    } == set(semantics["mandatory_application_gate"])
 
 
 def test_curve_points_and_mirrors_cannot_multiply_independent_sample_weight():
@@ -131,9 +149,13 @@ def test_gold_reference_admission_includes_reliable_computational_and_virtual_da
     gold = policy["gold_layer_admission"]
 
     assert gold["Gold-C"]["experimental_mapping_required_for_reference_admission"] is False
+    assert gold["Gold-C"]["protocol_complete_required_for_conditional_reference"] is False
+    assert gold["Gold-C"]["conditional_reference_can_preserve_numeric_outputs"] is True
     assert {"dft", "md", "finite_element"} <= set(gold["Gold-C"]["admitted_origins"])
     assert "low_fidelity_label" in gold["Gold-C"]["allowed_without_experimental_mapping"]
     assert gold["Gold-V"]["experimental_label_required_for_reference_admission"] is False
+    assert gold["Gold-V"]["applicability_domain_required_for_conditional_reference"] is False
+    assert gold["Gold-V"]["uncertainty_required_for_conditional_reference"] is False
     assert "ml_prediction" in gold["Gold-V"]["admitted_origins"]
     assert gold["Gold-V"]["direct_experimental_property_supervision_weight"] == 0.0
     assert "active_learning" in gold["Gold-V"]["allowed_uses"]
@@ -147,6 +169,13 @@ def test_gold_reference_admission_includes_reliable_computational_and_virtual_da
     assert policy["future_weight_materialization"]["factors"]["q_mapping"][
         "simulation_candidate_exact_mapping"
     ] > 0.0
+
+    modes = policy["reference_admission_modes"]
+    assert modes["conditional_reference"]["included_in_gold_reference"] is True
+    assert modes["conditional_reference"]["included_in_direct_supervision"] is False
+    assert modes["conditional_reference"]["missing_fields_are_progressive"] is True
+    assert "unrecoverable_source_lineage" in modes["blocked"]["only_for"]
+    assert "prediction_disguised_as_experimental_truth" in modes["blocked"]["only_for"]
 
 
 def test_valid_derived_qoi_is_usable_without_becoming_an_independent_specimen():

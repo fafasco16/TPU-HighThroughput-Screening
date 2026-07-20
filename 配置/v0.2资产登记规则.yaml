@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc23
+rules_version: v0.2-asset-rules-2026-07-21-rc26
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -982,20 +982,164 @@ rules:
     decision_basis: 4TU 自修复 TPU 数据 deposit 原始容器。
     review_required: true
 
-  - rule_id: curve_tpu_literature
-    priority: 1000
-    path_regex: '^外部数据/力学曲线/TPU_literature_ftntxg4zdz/.+$'
+  - rule_id: batch8_tpu_literature
+    priority: 1500
+    path_regex: '^外部数据/新增开放数据/第八批实验_TPU文献力学汇总/.+$'
     source_scope_key: tpu_literature_ftntxg4zdz_deposit
     artifact_role: primary_data
     data_stage: raw
     material_scope_hint: linear_tpu
-    registration_status: discovered
+    registration_status: registered
     availability_status: available
-    parse_status: not_attempted
-    scientific_admission_status: pending
+    parse_status: parsed
+    scientific_admission_status: admitted_with_waiver
     model_readiness_status: not_assessed
     release_status: not_assessed
-    decision_basis: 文献图对应工作簿，需图表定位与测量协议核验。
+    decision_basis: 62条文献/数据表汇总记录按45个引用组同折；进入Gold-E条件参考，不冒充原始试样或化学结构标签。
+    review_required: true
+
+  - rule_id: batch8_copper_pu_pyrolysis_raw
+    priority: 2500
+    path_regex: '^外部数据/新增开放数据/第八批混合_PU铜调控热解多尺度/原始数据\.xlsx$'
+    source_scope_key: scope_zenodo_18414263_pu_pyrolysis
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_pyrolysis
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: CC BY 4.0官方工作簿同时包含实验热解/表征和DFT路径/静电势数据；按任务进入Gold-E与Gold-C，不把曲线点或计算网格当独立材料样本。
+    review_required: true
+
+  - rule_id: batch8_copper_pu_pyrolysis_metadata
+    priority: 2490
+    path_regex: '^外部数据/新增开放数据/第八批混合_PU铜调控热解多尺度/(?:来源快照\.json|只读深审报告\.md)$'
+    source_scope_key: scope_zenodo_18414263_pu_pyrolysis
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_pyrolysis
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方Zenodo元数据与只读深审报告冻结DOI、许可、散列、论文关联及工作簿—正文冲突。
+    review_required: false
+
+  - rule_id: batch8_copper_pu_pyrolysis_audit_outputs
+    priority: 2480
+    path_regex: '^外部数据/新增开放数据/第八批混合_PU铜调控热解多尺度/(?:内容审计摘要\.json|实验曲线审计清单\.tsv|计算观测清单\.tsv|文件校验清单\.tsv)$'
+    source_scope_key: scope_zenodo_18414263_pu_pyrolysis
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_pyrolysis
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 轻量可复算审计视图；保留曲线、标量、DFT体系、重复和协议冲突，不增加独立样本数。
+    review_required: true
+
+  - rule_id: batch8_sls_tpu_lattice_raw
+    priority: 2500
+    path_regex: '^外部数据/新增开放数据/第八批实验_SLS_TPU晶格工艺/(?:原始数据\.xlsx|补充材料\.docx)$'
+    source_scope_key: scope_figshare_31550614_sls_tpu_lattice
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: commercial_tpu
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Figshare CC BY 4.0工作簿和补充材料闭合75个真实试件、25个SLS工况及试验设计；商业TPU化学组成未知不影响工艺迁移层准入。
+    review_required: true
+
+  - rule_id: batch8_sls_tpu_lattice_metadata
+    priority: 2490
+    path_regex: '^外部数据/新增开放数据/第八批实验_SLS_TPU晶格工艺/来源快照\.json$'
+    source_scope_key: scope_figshare_31550614_sls_tpu_lattice
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: commercial_tpu
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方Figshare API快照冻结版本、作者、CC BY 4.0许可、12个文件清单、下载地址、大小与MD5。
+    review_required: false
+
+  - rule_id: batch8_sls_tpu_lattice_audit_outputs
+    priority: 2480
+    path_regex: '^外部数据/新增开放数据/第八批实验_SLS_TPU晶格工艺/(?:内容审计摘要\.json|标量审计清单\.tsv|文件校验清单\.tsv)$'
+    source_scope_key: scope_figshare_31550614_sls_tpu_lattice
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: commercial_tpu
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 375条逐试件端点的可复算去重视图；300条单位闭合正式参考，75条Weight因单位未声明保留为条件参考。
+    review_required: true
+
+  - rule_id: batch8_nonisocyanate_phcu_raw
+    priority: 2500
+    path_regex: '^外部数据/新增开放数据/第八批实验_非异氰酸酯PHCU热塑性聚氨酯/(?:data\.rar|解压原件/.+|只读导出/.+)$'
+    source_scope_key: scope_mendeley_bvv43yk29c_v1
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: linear_nipu
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: Mendeley CC BY 4.0官方压缩包、23个实验原件及只读Origin导出；六个PHCU配方按配方代码归组，曲线点不当独立样本。
+    review_required: true
+
+  - rule_id: batch8_nonisocyanate_phcu_metadata
+    priority: 2490
+    path_regex: '^外部数据/新增开放数据/第八批实验_非异氰酸酯PHCU热塑性聚氨酯/(?:Mendeley_元数据_v1\.json|Mendeley_文件夹_v1\.json|Mendeley_文件清单_v1\.json|只读审计报告\.md)$'
+    source_scope_key: scope_mendeley_bvv43yk29c_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: linear_nipu
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: not_assessed
+    decision_basis: 官方Mendeley元数据与深审报告冻结DOI、版本、CC BY 4.0许可、文件散列、论文关联和标签冲突。
+    review_required: false
+
+  - rule_id: batch8_nonisocyanate_phcu_audit_outputs
+    priority: 2480
+    path_regex: '^外部数据/新增开放数据/第八批实验_非异氰酸酯PHCU热塑性聚氨酯/(?:内容审计摘要\.json|曲线审计清单\.tsv|配方审计清单\.tsv|文件校验清单\.tsv)$'
+    source_scope_key: scope_mendeley_bvv43yk29c_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: linear_nipu
+    registration_status: registered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: not_assessed
+    decision_basis: 轻量可复算审计视图；拉伸/TGA与多模态表征按六个配方归组，DSC标签冲突和顺序推断显式保留。
     review_required: true
 
   - rule_id: curve_tpu95a_2026

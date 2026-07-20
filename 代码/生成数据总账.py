@@ -323,6 +323,7 @@ def _target_origin(profile: dict[str, Any], explicit: Any = None) -> str:
         "experiment": "experimental",
         "实验": "experimental",
         "computation": "computational",
+        "computed": "computational",
         "simulation": "computational",
         "模拟": "computational",
         "cgmd": "coarse_grained_md",
@@ -732,11 +733,23 @@ def _tabular_record(
         "specimen_family_id",
         "试样或家族组",
         "lineage_group",
+        "independent_condition_id",
     )
     if source == "第七批补充材料_孢子填充TPU":
         group = _joined(identity.source_family_id, row.get("formulation_id"))
     status = _record_status(profile, row)
-    point_count = _sum_numbers(row, ("点数", "point_count", "usable_points", "机械原始点", "DIC点", "完整点"))
+    point_count = _sum_numbers(
+        row,
+        (
+            "点数",
+            "point_count",
+            "usable_points",
+            "机械原始点",
+            "DIC点",
+            "完整点",
+            "observed_response_points",
+        ),
+    )
     numeric_count = _sum_numbers(row, ("direct_numeric_count", "derived_formula_count", "有限数值单元格"))
     scalar_count = (
         _number(row.get("direct_numeric_count")) or 0
@@ -779,6 +792,9 @@ def _tabular_record(
             "audit_basis": _to_relative(path),
             "decision_basis": _first(row, "准入结论", "准入状态", "decision", "quality_gate", "source_summary_state", "parse_state") or "来源级审计画像",
             "notes": _joined(_first(row, "备注", "anomaly", "decision_reason", "排除或降权原因"), _first(row, "manual_action")),
+            "_declared_gold_admission_status": _first(
+                row, "gold_admission_status", "admission_status"
+            ),
         }
     )
     if source.startswith("ACS_Figshare_"):
@@ -825,6 +841,7 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
                 ),
                 "material_formula_key": _first(row, "来源", "formulation_id"),
                 "specimen_key": row.get("试样ID")
+                or row.get("specimen_id")
                 or row.get("record_id")
                 or _joined(row.get("formulation_id"), row.get("replicate_source_order")),
                 "scalar_key": _joined(
@@ -842,6 +859,9 @@ def _scalar_records(profile: dict[str, Any], identity: SourceIdentity, path: Pat
                 "audit_basis": _to_relative(path),
                 "decision_basis": row.get("quality_gate") or row.get("decision", ""),
                 "notes": row.get("备注") or row.get("notes", ""),
+                "_declared_gold_admission_status": _first(
+                    row, "gold_admission_status", "admission_status"
+                ),
             }
         )
         records.append(record)
@@ -912,6 +932,9 @@ def _computational_records(profile: dict[str, Any], identity: SourceIdentity, pa
                     f"method={_first(row, 'method_family')}",
                     _first(row, "independence_note"),
                     _first(row, "quality_note", "备注", "notes"),
+                ),
+                "_declared_gold_admission_status": _first(
+                    row, "gold_admission_status", "admission_status"
                 ),
             }
         )
@@ -1170,6 +1193,7 @@ def _build_manifest(
         for filename in (
             "曲线审计清单.tsv",
             "曲线解析清单.tsv",
+            "实验曲线审计清单.tsv",
             "三点弯曲曲线审计清单.tsv",
             "DMA运行审计清单.tsv",
         ):
@@ -1311,11 +1335,27 @@ def _build_manifest(
 
     for record in records:
         profile = profile_by_dir[record["source_directory"]]
+        declared_admission = str(
+            record.pop("_declared_gold_admission_status", "") or ""
+        ).strip()
+        if declared_admission not in ENUMS["gold_admission_status"]:
+            if declared_admission.startswith("admitted"):
+                declared_admission = "admitted_reference"
+            elif declared_admission.startswith("conditional"):
+                declared_admission = "conditional_reference"
+            elif declared_admission.startswith("evidence_only"):
+                declared_admission = "evidence_only"
+            elif declared_admission.startswith("blocked"):
+                declared_admission = "blocked"
         record["gold_layer"] = _gold_layer_for_target(
             profile, record["target_origin"]
         )
-        record["gold_admission_status"] = _gold_admission_status(
-            profile, record["quality_status"], record["gold_layer"]
+        record["gold_admission_status"] = (
+            declared_admission
+            if declared_admission in ENUMS["gold_admission_status"]
+            else _gold_admission_status(
+                profile, record["quality_status"], record["gold_layer"]
+            )
         )
         for field in PATH_BEARING_MANIFEST_FIELDS:
             record[field] = _normalize_layout_text(record.get(field, ""))
@@ -1552,12 +1592,12 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 65
-    assert summary["v0_2_source_directory_count"] == 57
-    assert summary["v0_2_independent_source_identity_count"] == 56
+    assert len(ledger) == 69
+    assert summary["v0_2_source_directory_count"] == 61
+    assert summary["v0_2_independent_source_identity_count"] == 60
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 64
+    assert summary["total_independent_source_contribution_count"] == 68
     assert summary["model_ready_record_count"] == 0
     assert summary["virtual_candidate_count"] == 1485
     assert summary["virtual_candidate_direct_building_block_count"] == 312
@@ -1601,12 +1641,12 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     assert summary["selected_source_heterogeneous_specimen_or_run_arithmetic_pool"] == 1119
     assert summary["major_experimental_curve_history_lower_bound"] == 1112
     assert summary["major_experimental_curve_point_lower_bound"] == 12258315
-    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1390
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2471
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2304
-    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9150886
-    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 344
-    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7606461
+    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1465
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2510
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2334
+    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9482024
+    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 370
+    assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7747413
     strict_core_manifest = [
         row
         for row in manifest
@@ -1767,6 +1807,7 @@ def _write_report(
         "- `隔离`：重复、冲突、单位/许可/输出缺失或访问受阻；训练上限为 0。",
         "- `curve_count_candidate/scalar_count_candidate` 是科学候选数，不是模型就绪数；所有 `current_weight_materialized=false`。",
         "- `gold_layer` 区分 Gold-E 实验参考、Gold-C 计算参考和 Gold-V 虚拟候选；`gold_admission_status` 与训练权重独立，零训练权重不自动等于不准入参考集合。",
+        "- `weight_ceiling` 是缺口闭合后的潜在上限，不是当前权重；`conditional_reference` 即使保留非零潜在上限，其当前有效监督权重仍为0。只有 `gold_admission_status=admitted_reference`、任务/权利/防泄漏门通过、`model_ready=true` 且 `current_weight_materialized=true` 时才可进入损失函数。",
         "- `point_count`、模拟帧、数值单元格和 PDF 页数绝不增加独立材料、配方、批次或试样数。",
         "",
         "## 3. 来源级总账",
@@ -1862,8 +1903,8 @@ def main() -> None:
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 57:
-        raise AssertionError(f"v0.2来源画像必须覆盖57个目录，当前为{len(profiles)}")
+    if len(profiles) != 61:
+        raise AssertionError(f"v0.2来源画像必须覆盖61个目录，当前为{len(profiles)}")
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
@@ -1904,7 +1945,7 @@ def main() -> None:
     _write_csv(OUTPUT_MANIFEST, MANIFEST_COLUMNS, manifest)
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.6",
+        "artifact_version": "trainable-inventory-v0.2.7",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],

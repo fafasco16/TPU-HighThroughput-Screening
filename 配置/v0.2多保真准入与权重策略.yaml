@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.12
+policy_version: multi-fidelity-admission-weight-v0.2.14
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -34,6 +34,68 @@ principles:
     - raw_vs_aggregate
     - observation_vs_model_output
 
+# 参考准入采用渐进式门槛。可靠来源中的不完整计算或虚拟数据可以先进入
+# 条件参考层；缺失字段影响任务适用性和未来权重，不再默认删除整条记录。
+reference_admission_modes:
+  admitted_reference:
+    included_in_gold_reference: true
+    included_in_direct_supervision: task_gate_dependent
+    requirement: 来源、数据身份、体系/候选身份、方法或生成身份、数值定义与基本质量证据均可审计。
+  conditional_reference:
+    included_in_gold_reference: true
+    included_in_direct_supervision: false
+    missing_fields_are_progressive: true
+    preserve_raw_and_numeric_outputs: true
+    requirement: 来源可靠且可定位，计算/虚拟身份明确，体系或候选可辨，原始值及单位不被猜测；协议、适用域、不确定度或实验映射可后续补全。
+    allowed_uses:
+      - literature_prior
+      - chemical_space_reference
+      - mechanism_hypothesis
+      - representation_pretraining_after_rights_review
+      - candidate_rescoring_after_task_gate
+      - active_learning_pool
+  blocked:
+    included_in_gold_reference: false
+    included_in_direct_supervision: false
+    only_for:
+      - unrecoverable_source_lineage
+      - withdrawn_or_known_invalid_source
+      - material_or_candidate_identity_unrecoverable
+      - method_or_data_origin_unrecoverable
+      - value_definition_or_unit_unrecoverable
+      - prediction_disguised_as_experimental_truth
+      - unresolved_exact_duplicate_without_new_information
+
+source_reliability_levels:
+  R1:
+    description: 正式数据仓库或期刊官方补充材料，具有DOI/稳定版本、原件哈希和明确数据身份。
+    default_reference_mode: admitted_reference
+  R2:
+    description: 可回溯到同行评议论文、作者机构库或作者仓库固定版本，数据身份清楚但部分协议或字段待补。
+    default_reference_mode: conditional_reference
+  R3:
+    description: 可固定commit/版本且输入输出血缘可审计的预印本、代码仓库或方法数据；必须单独记录未同行评议和权利状态。
+    default_reference_mode: conditional_reference
+  R4:
+    description: 无法回溯原始来源、版本或数据身份的镜像、截图、二次转载或匿名文件。
+    default_reference_mode: blocked
+
+# 总账字段 weight_ceiling 是缺口闭合后的潜在上限，不是当前有效训练权重。
+# 下游不得只读取这个数值来选训练行，必须同时通过以下状态门。
+weight_ceiling_semantics:
+  meaning: potential_post_resolution_upper_bound
+  is_current_training_weight: false
+  conditional_reference_effective_supervision_weight: 0.0
+  conditional_reference_may_keep_nonzero_potential_ceiling: true
+  mandatory_application_gate:
+    - gold_admission_status_is_admitted_reference
+    - task_specific_scientific_gate_passed
+    - train_rights_action_allowed
+    - leakage_safe_split_group_materialized
+    - model_ready_is_true
+    - current_weight_materialized_is_true
+  fail_closed_rule: 任一门未通过时有效监督权重为0；潜在上限只用于记录补全后的规划，不可直接参与损失函数。
+
 # Gold 是“可追溯参考集合”，不是“全部等权真值”。可靠计算和虚拟候选可先
 # 进入对应层，是否用于某个监督任务及其权重由后续任务门单独决定。
 gold_layer_admission:
@@ -44,7 +106,10 @@ gold_layer_admission:
   Gold-C:
     admitted_origins: [dft, aimd, md, coarse_grained_md, finite_element]
     experimental_mapping_required_for_reference_admission: false
-    minimum_requirement: 体系、输入输出血缘、方法版本、协议、收敛或质量证据和适用域可审计。
+    protocol_complete_required_for_conditional_reference: false
+    conditional_reference_can_preserve_numeric_outputs: true
+    minimum_requirement: 来源可靠且可定位，体系与计算身份可辨，至少可确认方法类别、输出定义和原始单位；协议、收敛细节、适用域或实验映射缺失时进入条件参考，而不是删除。
+    admitted_reference_upgrade_requirement: 输入输出血缘、方法版本、主要协议、收敛或质量证据和适用域达到任务所需完整度。
     allowed_without_experimental_mapping:
       - mechanism_descriptor
       - representation_pretraining
@@ -57,8 +122,10 @@ gold_layer_admission:
       - final_candidate_validation
   Gold-V:
     admitted_origins: [reaction_rule_generated, enumeration, group_contribution, model_generated, ml_prediction]
-    minimum_requirement: 生成器或模型版本、输入结构、约束规则和适用域可追溯；不确定度在方法可提供时记录，父候选只对派生候选必填，根候选保留生成种子或输入集合。
+    minimum_requirement: 来源可靠且可定位，候选身份与至少一种结构表示可解析，规则生成或模型预测身份明确；缺少完整适用域、不确定度或父候选时进入条件参考并降低用途，不删除候选。
     experimental_label_required_for_reference_admission: false
+    applicability_domain_required_for_conditional_reference: false
+    uncertainty_required_for_conditional_reference: false
     allowed_uses: [chemical_space_enumeration, ranking, active_learning, acquisition_design, representation_pretraining]
     direct_experimental_property_supervision_weight: 0.0
     note: Gold-V中的预测值是候选证据而非实验真值；经可靠计算或实验验证后沿同一candidate_id升级，不重复建样本。
@@ -132,7 +199,7 @@ target_task_rules:
     highest_priority_origin: experimental
     acceptable_simulation_origin: [md, coarse_grained_md]
     simulation_role: calibrated_cross_scale_observation
-    note: 只有协议、链长、组成、平衡和实验Tg映射完整时，MD迁移率或密度转折才可进入低保真层。
+    note: 来源可靠且身份明确的MD迁移率或密度转折可进入Gold-C条件参考；只有协议、链长、组成、平衡和实验Tg映射达到任务要求时，才可作为Tg相关的直接低保真监督标签。
   - task_key: hydrogen_bond_and_deblocking_chemistry
     highest_priority_origin: [experimental, dft]
     acceptable_simulation_origin: [dft, md]
@@ -289,6 +356,9 @@ default_weight_bands:
     normalization_unit: asset
     rationale: 输入、代码和模型文件提供可复现性，不产生目标标签。
 
+# 下列零门只作用于未来任务训练权重；除“来源撤回/身份不可恢复”等参考阻断项外，
+# 不自动把可靠来源的原始记录从Gold条件参考层删除。
+hard_zero_conditions_scope: future_task_training_weight_only
 hard_zero_conditions:
   - mirror_duplicate
   - derived_duplicate_without_new_measurement
