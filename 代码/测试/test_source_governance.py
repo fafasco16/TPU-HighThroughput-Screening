@@ -566,7 +566,7 @@ def test_contract_semantic_hashes_are_deterministic_across_two_loads():
         "63bb1bcea8e5791e86368279956c1b0c30cc09da918a745da92fc1b31836433d"
     )
     assert first.document_hashes["enums"] == (
-        "35c236c8a45decf26e61cd79a2e97bd53b543141d96619a836f05a11b8508610"
+        "02b27cb5ad2a1f7e59b1a1c263d00780299b534f6cbf0e6670333a050a67085c"
     )
     assert first.document_hashes["rules"] == (
         "3e3859b683a14b8ff5d548f45b4cc067e08e906339ca2808c71d513c347db3d1"

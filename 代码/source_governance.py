@@ -800,9 +800,10 @@ def validate_source_scope_config(config: Mapping[str, Any]) -> None:
 
     citations = _mapping_list(config, "citations")
     numbers = [item.get("ledger_number") for item in citations]
-    if numbers != list(range(1, 53)):
+    expected_numbers = list(range(1, len(citations) + 1))
+    if not citations or numbers != expected_numbers:
         _fail(
-            "citations must preserve ledger numbers 1 through 52 in order",
+            "citations must use contiguous ledger numbers starting at 1 in order",
             code="citation_ledger_incomplete",
         )
     citation_index = _unique_index(citations, "citation_key", collection="citations")

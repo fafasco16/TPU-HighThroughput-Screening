@@ -15,7 +15,7 @@
 
 ## 2. 当前数据资产总览
 
-2026-07-19 完成资产盘点，2026-07-20 完成计算资产科学语义复算。`01_原始数据` 已分为基础数据、外部数据、代码仓库镜像和仅供参考四层。含隐藏文件的物理盘点为 1,790 个文件、722,184,970 字节，其中嵌套 `.git/**` 为 183 个文件、79,921,870 字节；按 v0.2 当前发现规则排除 `.git/**` 后为 1,607 个文件、642,263,100 字节。v0.1 清单仍冻结为 1,606 行、642,262,263 字节：它排除了 820 字节的根 README，且两个项目 README 此后合计增长 17 字节。上述数字是不同扫描范围/时间的证据，不能互相覆盖，后续必须由规则、输入哈希和清单双向对账动态生成。文件资产量不等于独立 TPU 配方数；真正可用于化学—性能主模型的高置信样品远少于文件数。完整复算口径见[全量资产预审报告](质量报告/TPU数据库_v0.2_全量资产预审报告.md)。
+2026-07-19 完成扩充前资产盘点，2026-07-20 完成计算资产科学语义复算与新增开放数据审计。扩充前基线为 1,790 个文件、722,184,970 字节；其中嵌套 `.git/**` 为 183 个文件、79,921,870 字节，排除后为 1,607 个文件、642,263,100 字节。扩充后的当前实时盘点为 8,394 个文件、2,636,593,419 字节；其中嵌套 `.git/**` 为 212 个文件、84,032,925 字节，按 v0.2 发现规则排除后为 8,182 个文件、2,552,560,494 字节。新增开放数据层单独包含 23 个来源目录、6,604 个文件、1,914,408,449 字节。v0.1 清单仍冻结为 1,606 行、642,262,263 字节：它是历史快照，不能被当前动态盘点覆盖。上述数字必须连同扫描范围和时间报告；文件资产量不等于独立 TPU 配方数，真正可用于化学—性能主模型的高置信样品远少于文件数。扩充前口径见[全量资产预审报告](质量报告/TPU数据库_v0.2_全量资产预审报告.md)，新增层逐来源复算见[新增开放数据准入报告](质量报告/TPU数据库_v0.2_新增开放数据准入报告.md)。
 
 ### 2.1 工作区原有文件
 
@@ -74,6 +74,12 @@ PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算�
 | `01_原始数据/外部数据/力学曲线/TPU_literature_ftntxg4zdz/TPU_literature_Fig18_Fig19.xlsx` | 热塑性聚氨酯力学文献数据库所附 Fig. 18/19 数值表；另有独立参考文献 RIS | CC BY 4.0 | 文献覆盖图、性能区间和后续逐文献追溯种子 | 只是图 18/19 的数值，不是完整配方—条件—曲线库；必须回到原论文核验 | [34] |
 | `01_原始数据/仅供参考/受限来源/DiMPU2025/source_data.xlsx` | 71 个工作表；金属–吡唑 PU 的工程/真实应力–应变、循环、DMA/流变、原位 SAXS 与 DFT 坐标 | CC BY-NC-ND 4.0 | 仅作内部机制比较和外部测试 | 不生成或公开派生训练集，不重新分发改编数据 | [29] |
 | `01_原始数据/仅供参考/受限来源/PUN2026/source_data.xlsx` | 实测 22 个工作表；动态解交联 PUN 的拉伸、循环、DMA、应力松弛及再加工曲线 | CC BY-NC-ND 4.0 | 仅作可修复、再加工和升级回收机制参照 | 热固性动态网络而非 TPU，且 ND 许可；不得并入公开派生数据集 | [30] |
+
+### 2.3.1 v0.2 新增开放数据审计
+
+2026-07-20 完成的新一轮扩充不再用“文件行数”代表样本数，而是分别登记研究、配方、合成批次、物理试样、曲线/采集、曲线点及计算体系—协议—种子。已落地的高价值增量包括：两套 DRUM 可回收 TPUU 数据（合计 30 个规范化材料代码、186 个试样键和 186 条力学/DMTA 曲线）、QUB 生物基自修复 TPU（4 个配方、41 个本体单调拉伸试样）、SLS 商业 TPU（75 个试验序列、350 个试样）、DFT 封端剂（24 个唯一科学体系、158 个正常终止输出）、硬段量化结构、TPU/SWCNT 热电复合、泡沫/纤维/器件及循环力学迁移数据。新增目录中的镜像、压缩包—解包副本、AppleDouble、公共仪器模板、模拟帧和同一试样循环均不增加独立化学样本数。
+
+本轮正式允许 DFT、AIMD、经典 MD、计算描述符和虚拟候选进入多保真数据库，但要求输出、方法、体系、协议、收敛和实验映射闭合。未来权重按证据质量、目标一致性、映射强度和独立性乘法衰减；核心 TPU/TPUU 实验为主标定，计算数据只作机理描述符或校准辅助，泡沫、热固 PU、复合材料、打印件和器件按任务迁移或外部验证。完整逐来源计数、限制、硬零清单和推荐路线见[《TPU 数据库 v0.2 新增开放数据准入报告》](质量报告/TPU数据库_v0.2_新增开放数据准入报告.md)，机器规则见[`v0.2多保真准入与权重策略.yaml`](../配置/v0.2多保真准入与权重策略.yaml)。
 
 ### 2.4 TPU 数据库 v0.1 首次可复现构建
 
@@ -415,6 +421,76 @@ PI1M、ADEPT、PolyOmics 和 PolyGraphMT 的六组 exact-string 交集及计算�
 [51] Chen, T.; Xu, J.; Wang, C.; Zhang, X.; Pei, X.; Wang, T.; Wang, Q. Shape-Memory Polyurethanes for Polar Wearables with Ultrasensitive Multi-Monitoring [Data set], version 2; Figshare, 2025. https://doi.org/10.6084/m9.figshare.30484481.v2.
 
 [52] Wu, C.-Q.; Chen, J.; Long, Q.-Y.; Sun, D.-X.; Qi, X.-D.; Yang, J.-H.; Wang, Y. Healable, Recyclable, and Ultra-Tough Waterborne Polyurethane Elastomer Achieved through High-Density Hydrogen Bonding Cross-Linking Strategy. *ACS Applied Materials & Interfaces* **2024**, *16* (46), 64333–64344. https://doi.org/10.1021/acsami.4c15188.
+
+[53] Pfau-Cloud, M. R.; Batiste, D. C.; Kim, H. J.; Ellison, C. J.; Hillmyer, M. A. Data for Alkyl Substituted Polycaprolactone Poly(Urethane-Urea)s as Mechanically-Competitive and Chemically-Recyclable Materials [Data set]; Data Repository for the University of Minnesota, 2024. https://doi.org/10.13020/05ek-6k60.
+
+[54] Batiste, D. C.; Pfau-Cloud, M. R.; Kim, H. J.; Ellison, C. J.; Hillmyer, M. A. Alkyl-Substituted Polycaprolactone Poly(urethane-urea)s as Mechanically Competitive and Chemically Recyclable Materials. *ACS Macro Letters* **2024**, *13* (11), 1449–1455. https://doi.org/10.1021/acsmacrolett.4c00474.
+
+[55] Meyersohn, M. S.; Block, A.; Bates, F. S.; Hillmyer, M. A. Supporting Information for Tackling the Thermodynamic Stability of Low-Ceiling Temperature Polymers in the Preparation of Tough and Chemically Recyclable Thermoplastic Polyurethane-Urea Elastomers [Data set]; Data Repository for the University of Minnesota, 2024. https://doi.org/10.13020/zf53-w893.
+
+[56] Meyersohn, M. S.; Block, A.; Bates, F. S.; Hillmyer, M. A. Tackling the Thermodynamic Stability of Low-Ceiling Temperature Polymers in the Preparation of Tough and Chemically Recyclable Thermoplastic Polyurethane-Urea Elastomers. *Macromolecules* **2024**, *57* (19), 9230–9240. https://doi.org/10.1021/acs.macromol.4c01431.
+
+[57] Jiang, H. Research on the Dynamic Compressibility of Polyurethane Microcellular Elastomer and its Application for Impact Resistance [Data set], version 1; Science Data Bank, 2024. https://doi.org/10.57760/sciencedb.j00189.00045.
+
+[58] Zhao, Z.-Y.; Jiang, H.; Li, X.-D.; Zhang, X.-D.; Su, X.; Zou, M.-S. Dynamic Compressibility of Polyurethane Microcellular Elastomer and Its Application for Impact Resistance. *Chinese Journal of Polymer Science* **2024**, *42* (8), 1185–1197. https://doi.org/10.1007/s10118-024-3134-4.
+
+[59] Ciobotaru, V. Modelling Mechanical Properties of Thermoplastic Polyurethanes through Laser Sintering Exposure for Replicating Micrometric Aortic Valve Membranes [Data set], version 1; Mendeley Data, 2023. https://doi.org/10.17632/wfsm6f9rbn.1.
+
+[60] Ciobotaru, V.; Batistella, M.; de Oliveira Emmer, E.; Clari, L.; Masson, A.; Decante, B.; Le Bret, E.; Lopez-Cuesta, J.-M.; Hascoët, S. Modelling Mechanical Properties of Thermoplastic Polyurethanes through Laser Sintering Exposure for Replicating Micrometric Aortic Valve Membranes. *Polymers* **2024**, *16* (7), 900. https://doi.org/10.3390/polym16070900.
+
+[61] Didovets, Y. Structure–Property Relationship between Hard Segments of Shape Memory Polyurethane Copolymers and Interchain Hydrogen Bonds: A Comprehensive Theoretical Study - Raw Data [Data set]; Jagiellonian University Repository, 2026. https://doi.org/10.57903/UJ/TYAPFM.
+
+[62] Didovets, Y.; Brela, M. Z. Structure–Property Relationship between Hard Segments of Shape Memory Polyurethane Copolymers and Interchain Hydrogen Bonds: A Comprehensive Theoretical Study. *The Journal of Physical Chemistry B* **2025**, *129* (40), 10504–10520. https://doi.org/10.1021/acs.jpcb.5c03305.
+
+[63] Krause, B.; Zimmerer, C. Raw Data for the Paper Nitrogen Content Governs Thermoelectric Performance in TPU/SWCNT Composites [Data set]; Zenodo, 2026. https://doi.org/10.5281/zenodo.20932248.
+
+[64] Zimmerer, C.; Krause, B. Nitrogen Content Governs Thermoelectric Performance in TPU/SWCNT Composites. *Preprints* **2026**, version 1. https://doi.org/10.20944/preprints202606.1342.v1.
+
+[65] Morrison, D. Temperature Dependent Dynamic Response of High-Density Polyurethane Foams [Data set], version 1; Mendeley Data, 2023. https://doi.org/10.17632/x6b72k59xn.1.
+
+[66] Ahmad, J. An Analysis of Screen-Printed Stretchable Conductive Tracks on Thermoplastic Polyurethane [Data set], version 1; Mid Sweden University/SND, 2019. https://doi.org/10.5878/tc7g-1056.
+
+[67] Zhang, S. 3D-Printed Multiscale Hierarchical Thermoplastic Polyurethane / Aramid Nanofiber Structures with Enhanced Energy Absorption via In-Situ Foaming Technology [Data set], version 1; Science Data Bank, 2025. https://doi.org/10.57760/sciencedb.26393.
+
+[68] Zakrzewska, P. Rigid Polyurethane Foams with Reduced Petrochemical Polyol Content [Data set], version 1; AGH University Dataverse, 2026. https://doi.org/10.58032/AGH/LKHZ6Q.
+
+[69] Zhu, Y.; Huang, Y.; Ye, S.; Deng, Y.; Chen, J.; Liu, Z.; Guo, X.; Zhu, Y. Atom-Economy Upcycling of Commodity Thermoset Polyurethane into Photocuring 3D Printing Resins Based on Selective Cleavage—Crosslink Strategy [Data set], version 1; Figshare, 2026. https://doi.org/10.6084/m9.figshare.31552786.v1.
+
+[70] Huang, Y.; Guo, X.; Deng, Y.; Ye, S.; Zhu, Y.; Liu, Z.; Chen, J.; Zhu, Y. Atom-Economy Upcycling of Commodity Thermoset Polyurethane into Photocuring 3D Printing Resins Based on Selective Cleavage–Crosslink Strategy. *Nature Communications* **2026**, *17*, 4151. https://doi.org/10.1038/s41467-026-70951-w.
+
+[71] Gao, D.; Thangavel, G.; Lee, J.; Lv, J.; Li, Y.; Ciou, J.-H.; Xiong, J.; Park, T.; Lee, P. S. Source Data.xlsx [Data set], version 1; Figshare, 2022. https://doi.org/10.6084/m9.figshare.21716516.v1.
+
+[72] Gao, D.; Thangavel, G.; Lee, J.; Lv, J.; Li, Y.; Ciou, J.-H.; Xiong, J.; Park, T.; Lee, P. S. A Supramolecular Gel-Elastomer System for Soft Iontronic Adhesives. *Nature Communications* **2023**, *14*, 1990. https://doi.org/10.1038/s41467-023-37535-4.
+
+[73] Uscategui, Y. L.; Díaz, L. E.; Valero, M. F. Effect of the Addition of Short Chain Polymers on the Chemical Structure, Mechanical, Thermal and Biological Properties of Polyurethanes Synthesized with Aliphatic Diisocyanates and Castor Oil [Data set], version 1; Figshare, 2021. https://doi.org/10.6084/m9.figshare.14279117.v1.
+
+[74] Uscátegui, Y. L.; Díaz, L. E.; Valero, M. F. Efecto de la Adición de Polímeros de Cadena Corta sobre la Estructura Química, Propiedades Mecánicas, Térmicas y Biológicas de Poliuretanos Sintetizados con Diisocianatos Alifáticos y Aceite de Higuerilla. *Química Nova* **2021**, *44* (1), 48–57. https://doi.org/10.21577/0100-4042.20170643.
+
+[75] Griggs, T. Dataset for A Bio-Based Thermoplastic Polyurethane with Triple Self-Healing Action for Wearable Technology and Smart Textiles [Data set]; Queen’s University Belfast, 2024. https://doi.org/10.17034/83fdb865-0ead-4c8b-81d2-59265a8810f3.
+
+[76] Griggs, T.; Ahmed, J.; Majd, H.; Edirisinghe, M.; Chen, B. A Bio-Based Thermoplastic Polyurethane with Triple Self-Healing Action for Wearable Technology and Smart Textiles. *Materials Advances* **2024**, *5* (15), 6210–6221. https://doi.org/10.1039/D4MA00289J.
+
+[77] Rafiq, R.; Zulueta, B.; Zucco, H.; Suresh, R.; Shoemaker, J. E.; Call, M.; Sheppard, D.; Cormack, G.; Keith, J. A.; Veser, G. Supporting Data: Bond Energy Descriptors Enable Machine Learning with Limited Data: Design of Capping Agents for Thermoplastic Polyurethane Recycling [Data set]; Zenodo, 2026. https://doi.org/10.5281/zenodo.17883052.
+
+[78] Cicoira, F.; Kim, J. Printable, Self-Healing and Recyclable PEDOT:PSS/Polyurethane Composites for Durable Bioelectronics [Data set]; Zenodo, 2026. https://doi.org/10.5281/zenodo.19609901.
+
+[79] Kim, J.; Cicoira, F. Printable, Self-Healing and Recyclable PEDOT:PSS/Polyurethane Composites for Durable Bioelectronics. *Materials Horizons* **2026**, *13* (13), 6517–6531. https://doi.org/10.1039/D6MH00177G.
+
+[80] Xu, C.; Daynes, S.; Das, R.; Kabaliuk, N. Strain Rate Dependent Mechanical Performance of 3D-Printed Elastically Isotropic TPMS-Based Lattices in Thermoplastic Polyurethane. *Virtual and Physical Prototyping* **2026**, *21* (1), e2662048. https://doi.org/10.1080/17452759.2026.2662048.
+
+[81] Rezaei, S.; Machado Junior, J. L.; Bilasse, M.; Othmani, Y.; Berthe, S.; Ehlinger, M. Dataset for Characterization of Fracture and Elastic Properties of Commercially Available Polyurethane Foam and Short Fiber Filled Epoxy for Bone Models [Data set]; Materials Cloud, 2026. https://doi.org/10.24435/materialscloud:VF-RY.
+
+[82] Rezaei, S.; Machado Junior, J. L.; Bilasse, M.; Othmani, Y.; Berthe, S.; Ehlinger, M. Characterization of Fracture and Elastic Properties of Commercially Available Polyurethane Foam and Short Fiber Filled Epoxy for Bone Substitutes. *SSRN* **2026**. https://doi.org/10.2139/ssrn.6755055.
+
+[83] Madariaga, A. Replication Data for: The Nonlinear Mechanics of Single Electrospun Polyurethane Fibers Under Wet and Dry Conditions [Data set]; Texas Data Repository, 2026. https://doi.org/10.18738/T8/ZYQ5Z1.
+
+[84] Pires da Silva, E. H. Aged PUF Compression Tests [Data set], version 3; Mendeley Data, 2023. https://doi.org/10.17632/2sp8fyvhfm.3.
+
+[85] Dams, B. Reprocell 500, Reprocell 300 and LD40 Polyurethane Foam Mechanical and Characterisation Tests October 2016–April 2017 [Data set]; University of Bath Research Data Archive, 2017. https://doi.org/10.15125/BATH-00385.
+
+[86] Beneš, H.; Sedlacek, O.; Kopilec, O.; Hodan, J. Dataset for Rigid Biobased Vinylogous Urethane Vitrimers from d-Isosorbide/Furfural-Derived Monomers [Data set], version 1.0; Zenodo, 2026. https://doi.org/10.5281/zenodo.21096098.
+
+[87] Kopilec, O.; Hodan, J.; Sedlacek, O.; Beneš, H. Rigid Biobased Vinylogous Urethane Vitrimers from d-Isosorbide/Furfural-Derived Monomers. *ACS Polymers Au* **2026**, Article ASAP. https://doi.org/10.1021/acspolymersau.6c00063.
 
 ## 10. 论文写作时的引用约定
 

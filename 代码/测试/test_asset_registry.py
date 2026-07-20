@@ -713,6 +713,112 @@ def test_production_rules_freeze_required_asset_layers(relative_path, role, stag
     )
 
 
+def test_new_source_audits_metadata_and_raw_observations_are_not_conflated():
+    config = load_asset_rules(PRODUCTION_RULES)
+    expected = {
+        "外部数据/新增开放数据/DRUM_TPUU_机械回收/内容审计摘要.json": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/DRUM_TPUU_低天花板/曲线审计清单.tsv": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Jagiellonian_硬段从头算MD/XYZ解析清单.tsv": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Jagiellonian_硬段从头算MD/解包内容/Optimized_geom__MDI_1x2_opt.xyz": (
+            "simulation_output",
+            "raw",
+            "partially_parsed",
+            "not_assessed",
+        ),
+        "外部数据/新增开放数据/Zenodo_TPU_SWCNT热电/官方Zenodo元数据.json": (
+            "documentation",
+            "metadata_only",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Zenodo_TPU_SWCNT热电/工作簿解析清单.tsv": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Zenodo_TPU_SWCNT热电/解包内容/Datasheet__example.pdf": (
+            "supplementary_information",
+            "raw",
+            "not_attempted",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Zenodo_TPU_SWCNT热电/解包内容/LightMicroscopy__example.tif": (
+            "supplementary_information",
+            "raw",
+            "not_attempted",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Zenodo_TPU_SWCNT热电/解包内容/TE__measurement.xls": (
+            "primary_data",
+            "raw",
+            "partially_parsed",
+            "not_assessed",
+        ),
+        "外部数据/新增开放数据/Mendeley_PU泡沫动态力学_精选表/内容审计摘要.json": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Mendeley_PU泡沫动态力学_精选表/HA_StressStrain.xlsx": (
+            "primary_data",
+            "raw",
+            "partially_parsed",
+            "not_assessed",
+        ),
+        "外部数据/新增开放数据/Figshare_自愈离子胶黏PU源数据/工作表解析清单.tsv": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+        "外部数据/新增开放数据/Figshare_蓖麻油脂肪族PU化学性能/内容审计摘要.json": (
+            "documentation",
+            "derived",
+            "parsed",
+            "ineligible",
+        ),
+    }
+
+    for relative_path, frozen in expected.items():
+        selected = classify_path(relative_path, config)
+        assert (
+            selected.artifact_role,
+            selected.data_stage,
+            selected.parse_status,
+            selected.model_readiness_status,
+        ) == frozen
+
+
+def test_zero_byte_castor_table_is_machine_blocked_until_verified_redownload():
+    selected = classify_path(
+        "外部数据/新增开放数据/Figshare_蓖麻油脂肪族PU化学性能/Table_1.xls",
+        load_asset_rules(PRODUCTION_RULES),
+    )
+
+    assert selected.artifact_role == "primary_data"
+    assert selected.availability_status == "unreachable"
+    assert selected.parse_status == "failed"
+    assert selected.scientific_admission_status == "rejected"
+    assert selected.model_readiness_status == "blocked"
+
+
 def test_model_and_computational_output_rules_are_strictly_separated_by_priority():
     config = load_asset_rules(PRODUCTION_RULES)
     expected = {
@@ -794,7 +900,7 @@ def test_real_disk_inventory_is_completely_and_unambiguously_classified_read_onl
     assert not (PROJECT_ROOT / "清单" / "v0.2全量资产登记.csv").exists()
 
     roles = result.audit["role_counts"]
-    assert roles == {
+    frozen_v02_baseline_minimums = {
         "code": 117,
         "computed_property_output": 1,
         "derived_duplicate": 1196,
@@ -810,4 +916,11 @@ def test_real_disk_inventory_is_completely_and_unambiguously_classified_read_onl
         "subset_view": 1,
         "supplementary_information": 13,
     }
+    assert sum(roles.values()) == len(result.records)
+    assert set(frozen_v02_baseline_minimums) <= set(roles)
+    assert all(
+        roles[role] >= minimum
+        for role, minimum in frozen_v02_baseline_minimums.items()
+    )
+    assert roles["excluded_non_domain"] == result.audit["excluded_count"]
     assert result.audit["duplicate_group_count"] > 0

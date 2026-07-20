@@ -118,10 +118,10 @@ def test_real_configuration_covers_required_scopes_and_all_ledger_citations():
 
     assert required <= scope_keys
     assert [item["ledger_number"] for item in config["citations"]] == list(
-        range(1, 53)
+        range(1, len(config["citations"]) + 1)
     )
     citation_keys = [item["citation_key"] for item in config["citations"]]
-    assert len(citation_keys) == len(set(citation_keys)) == 52
+    assert len(citation_keys) == len(set(citation_keys)) == len(config["citations"])
     roles = {
         role for item in config["citations"] for role in item["citation_roles"]
     }
@@ -145,7 +145,7 @@ def test_machine_citations_match_the_formal_markdown_reference_ledger_exactly():
         )
     }
 
-    assert set(ledger_entries) == set(range(1, 53))
+    assert set(ledger_entries) == set(range(1, len(config["citations"]) + 1))
     for citation in config["citations"]:
         number = citation["ledger_number"]
         assert citation["reference_text"] == ledger_entries[number]
@@ -429,7 +429,19 @@ def test_every_current_discovered_asset_resolves_and_reaches_configured_root():
     assert build.audit["source_chain_conflict_count"] == 0
     assert build.audit["automatic_allow_count"] == 0
     assert build.audit["source_locator_count"] == len(paths)
-    assert build.audit["derived_cross_source_relation_count"] == 85
+    scopes_by_key = {
+        item["source_scope_key"]: item for item in config["scopes"]
+    }
+    expected_cross_source_relations = sum(
+        item.get("parent_scope_key") is not None
+        and scopes_by_key[item["parent_scope_key"]]["source_key"]
+        != item["source_key"]
+        for item in config["scopes"]
+    )
+    assert (
+        build.audit["derived_cross_source_relation_count"]
+        == expected_cross_source_relations
+    )
 
 
 def test_rights_candidates_never_infer_allow_from_access_or_publication_license():
@@ -477,10 +489,11 @@ def test_ledger_citations_have_stable_keys_and_role_assignments():
 
     citations = first.tables["citation"]
     assignments = first.tables["citation_assignment"]
-    assert len(citations) == 52
+    expected_count = len(config["citations"])
+    assert len(citations) == expected_count
     assert citations == second.tables["citation"]
     assert assignments == second.tables["citation_assignment"]
-    assert len({item["citation_key"] for item in citations}) == 52
+    assert len({item["citation_key"] for item in citations}) == expected_count
     assert all(item["citation_key"].startswith("ledger-") for item in citations)
     assert {
         "dataset",
@@ -619,7 +632,12 @@ def test_configuration_and_build_fail_closed_negative_matrix(tmp_path: Path):
     invalid(lambda c: c["path_mappings"][0].__setitem__("priority", -1), "path_mapping_invalid")
     invalid(lambda c: c["path_mappings"][0].__setitem__("match_type", "glob"), "path_mapping_invalid")
     invalid(lambda c: c["path_mappings"][0].__setitem__("source_scope_key", "missing"), "path_mapping_scope_unknown")
-    invalid(lambda c: c["path_mappings"][0].__setitem__("pattern", "README.md/"), "path_mapping_invalid")
+    invalid(
+        lambda c: next(
+            item for item in c["path_mappings"] if item["mapping_id"] == "root_readme"
+        ).__setitem__("pattern", "README.md/"),
+        "path_mapping_invalid",
+    )
     invalid(lambda c: c["citations"][-1].__setitem__("ledger_number", 99), "citation_ledger_incomplete")
     invalid(lambda c: c["citations"][0].__setitem__("citation_key", "bad"), "citation_key_invalid")
     invalid(lambda c: c["citations"][0].__setitem__("target_scope_key", "missing"), "citation_target_unknown")

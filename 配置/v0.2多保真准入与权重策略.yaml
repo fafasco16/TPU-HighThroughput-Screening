@@ -1,0 +1,487 @@
+schema_version: v0.2
+policy_version: multi-fidelity-admission-weight-v0.2.6
+policy_status: design_only
+training_enabled: false
+training_split_created: false
+training_weight_materialized: false
+effective_after: null
+
+# 本文件只冻结后续训练视图的权重边界，不创建训练集，也不改变原始观测事实。
+# “权重上限”不是数据质量分数；正式权重必须在目标性质、适用域和分组切分确定后再物化。
+principles:
+  minimum_lineage_granularity: formulation_batch_specimen_curve
+  independent_weight_unit: specimen
+  curve_points_are_samples: false
+  files_are_samples: false
+  repeated_measurements_increase_formula_count: false
+  source_mirror_increases_sample_count: false
+  model_predictions_are_ground_truth: false
+  simulation_inputs_have_target_weight: false
+  simulation_frames_are_samples: false
+  simulation_restarts_are_independent_without_seed_evidence: false
+  normalize_within_curve: true
+  normalize_within_specimen: true
+  group_before_split:
+    - source_family
+    - study
+    - synthesis_batch
+    - formulation
+    - specimen
+    - exact_structure
+  required_separation:
+    - experimental_vs_computational
+    - core_tpu_vs_transfer_domain
+    - raw_vs_aggregate
+    - observation_vs_model_output
+
+source_override_key_semantics:
+  group_keys: 观测身份、血缘和组内归一维度；不得直接解释为训练拆分键。
+  split_group_keys: 更粗粒度的泄漏阻断键；同键全部观测必须进入同一数据折。
+  split_group_keys_required_before_materialization: true
+  infer_split_group_from_group_keys: false
+  missing_split_group_action: block_weight_and_split_materialization
+
+# 这里只冻结未来物化算法的结构；当前不计算任何逐观测权重。
+future_weight_materialization:
+  formula: "W_obs = I_hard_gate * W_effective_ceiling * q_evidence * q_target * q_mapping * q_independence"
+  hard_gate_values: [0, 1]
+  factor_range: [0.0, 1.0]
+  clipping_range: [0.0, 1.0]
+  ceiling_resolution:
+    - task_specific_source_override
+    - source_override
+    - default_fidelity_band
+  ceiling_semantics: 最具体的任务—来源上限优先；没有覆盖时逐级回退，任何上限均不得超过1.0。默认带的minimum_weight只是候选设计区间下端，不是强制地板，质量因子和硬门可以把最终权重降至0。
+  factors:
+    q_evidence:
+      Q1: 1.00
+      Q2: 0.85
+      Q3: 0.65
+      Q4: 0.40
+      Q5: 0.00
+    q_target:
+      same_qoi_same_definition: 1.00
+      same_qoi_calibrated_domain_shift: 0.75
+      calibrated_cross_scale_descriptor: 0.60
+      representation_or_pretraining_only: 0.25
+      out_of_scope: 0.00
+    q_mapping:
+      direct_specimen_observation: 1.00
+      formulation_condition_aggregate: 0.75
+      simulation_experiment_calibrated_pair: 0.70
+      study_level_or_commercial_grade_only: 0.45
+      no_auditable_mapping: 0.00
+    q_independence:
+      unique_formulation_batch_specimen: 1.00
+      same_specimen_replicate_or_cycle_before_group_normalization: 1.00
+      valid_derived_qoi_with_complete_lineage: 1.00
+      resampled_or_duplicate_copy: 0.00
+  cap_order:
+    - apply_hard_zero
+    - resolve_most_specific_effective_ceiling
+    - multiply_quality_factors
+    - normalize_within_curve
+    - normalize_within_specimen
+    - record_effective_sample_size_by_formulation_condition
+    - apply_preregistered_task_source_balance_if_needed
+  forbidden_shortcuts:
+    - infer_weight_from_row_count
+    - infer_weight_from_file_count
+    - infer_weight_from_curve_point_count
+    - infer_weight_from_simulation_frame_count
+    - promote_prediction_to_ground_truth
+
+target_task_rules:
+  - task_key: tensile_curve_and_toughness
+    highest_priority_origin: experimental
+    acceptable_core_scope: [linear_tpu, thermoplastic_polyurethane_urea]
+    simulation_role: mechanism_descriptor_or_regularizer
+    note: 宏观韧性、强度、伸长和循环耗散必须由试样级实验主导；模拟不得直接冒充整条宏观曲线。
+  - task_key: glass_transition_and_phase_mobility
+    highest_priority_origin: experimental
+    acceptable_simulation_origin: [md, coarse_grained_md]
+    simulation_role: calibrated_cross_scale_observation
+    note: 只有协议、链长、组成、平衡和实验Tg映射完整时，MD迁移率或密度转折才可进入低保真层。
+  - task_key: hydrogen_bond_and_deblocking_chemistry
+    highest_priority_origin: [experimental, dft]
+    acceptable_simulation_origin: [dft, md]
+    simulation_role: molecular_descriptor
+    note: DFT键能、局域电荷和氢键能可进入结构描述符层，但需保留泛函、基组、构象和收敛状态。
+  - task_key: morphology_and_hard_segment_ordering
+    highest_priority_origin: [experimental, md]
+    acceptable_simulation_origin: [md, coarse_grained_md]
+    simulation_role: morphology_descriptor
+    note: 形貌任务按唯一体系—协议—种子聚合，帧数只提高统计精度，不增加独立样本权重。
+
+simulation_aggregation:
+  independent_unit: unique_system_protocol_seed
+  maximum_total_weight_per_unique_system_protocol_seed: 1.0
+  maximum_total_weight_per_exact_molecular_system_qoi_across_protocols_and_conformers: 1.0
+  maximum_total_weight_per_formulation_or_system_across_seeds: 1.0
+  trajectory_frames_change_resolution_not_total_weight: true
+  restart_requires_new_seed_and_independent_equilibration: true
+  multiple_seeds_increase_precision_not_chemical_coverage: true
+  uncertainty_rule: 多种子或多构象先聚合为体系级均值与不确定度；不能各自作为等权化学样本跨越体系总上限。
+  minimum_reproducibility_fields_by_method:
+    common:
+      - molecular_system_identity
+      - composition_and_chain_length
+      - software_and_version
+      - input_output_lineage
+      - convergence_or_quality_evidence
+    dft:
+      - electronic_structure_method
+      - functional_and_basis_set_or_plane_wave_cutoff
+      - dispersion_and_solvation_settings_if_applicable
+      - charge_and_multiplicity
+      - geometry_conformer_and_calculation_type
+      - scf_and_geometry_convergence_evidence
+    md_or_aimd:
+      - force_field_or_electronic_structure_method_version
+      - boundary_conditions
+      - ensemble_and_thermostat_barostat_if_applicable
+      - equilibration_protocol
+      - production_protocol_and_timestep
+      - random_seed_if_stochastic
+      - convergence_or_stationarity_evidence
+  applicability_rule: 方法专属字段只在科学上适用时强制；确定性DFT不因缺少随机种子或MD系综字段被误阻断，MD/AIMD则必须记录适用的系综、平衡、生产段和随机性证据。
+  experimental_calibration_required_for_primary_computational_use: true
+
+derived_qoi_handling:
+  valid_requirements:
+    - parent_curve_lineage
+    - quantity_definition
+    - unit
+    - derivation_algorithm_and_version
+    - integration_or_fit_bounds
+    - qc_status
+  standalone_target_factor: 1.0
+  independent_sample_increment: 0
+  joint_use_with_parent_curve: same_specimen_loss_budget_or_explicit_multitask_objective
+  duplicate_or_resampled_copy_factor: 0.0
+  note: 韧性、滞后面积、模量等可复算QoI是合法任务标签；它们不增加独立试样数，与母曲线联合使用时不得形成双重监督放大。
+
+default_weight_bands:
+  - policy_key: experimental_core_raw
+    origin_kind: experimental
+    scientific_use_class: primary_experimental
+    required_scope: core_tpu
+    minimum_weight: 0.80
+    maximum_weight: 1.00
+    normalization_unit: specimen
+    rationale: 配方、批次、试样、性质、单位、条件和血缘完整的TPU原始实验是主任务参考层。
+
+  - policy_key: experimental_core_published_aggregate
+    origin_kind: experimental
+    scientific_use_class: primary_experimental
+    required_scope: core_tpu
+    reduction_level: aggregate
+    minimum_weight: 0.45
+    maximum_weight: 0.65
+    normalization_unit: formulation_condition
+    rationale: 论文汇总值丢失重复与曲线内信息，保留但低于原始试样数据。
+
+  - policy_key: experimental_transfer_raw
+    origin_kind: experimental
+    scientific_use_class: auxiliary
+    required_scope: transfer_domain
+    minimum_weight: 0.15
+    maximum_weight: 0.35
+    normalization_unit: specimen_or_curve
+    rationale: 泡沫、热固、交联、复合物和器件数据只支持迁移学习或表征预训练，不直接主导线性TPU终点。
+
+  - policy_key: dft_validated_mapping
+    origin_kind: dft
+    scientific_use_class: primary_computational
+    required_scope: mapped_same_qoi_or_calibrated_descriptor
+    minimum_weight: 0.30
+    maximum_weight: 0.50
+    normalization_unit: unique_molecular_system_and_method
+    rationale: 方法完整、收敛通过且与实验标签有可审计映射的DFT可进入多保真视图，但不等价于宏观实验真值。
+
+  - policy_key: dft_unmapped_descriptor
+    origin_kind: dft
+    scientific_use_class: auxiliary
+    required_scope: cross_scale_descriptor
+    minimum_weight: 0.10
+    maximum_weight: 0.25
+    normalization_unit: unique_molecular_system_and_method
+    rationale: 未完成同一QoI校准的键能、轨道或电荷仅作跨尺度描述符。
+
+  - policy_key: md_or_aimd_validated
+    origin_kind: md
+    scientific_use_class: primary_computational
+    required_scope: protocol_complete_and_mapped
+    minimum_weight: 0.20
+    maximum_weight: 0.40
+    normalization_unit: unique_system_protocol_seed
+    rationale: 力场或从头算协议、平衡、生产段、独立种子和输出完整时，才可作为计算层观测。
+
+  - policy_key: group_contribution_or_virtual_candidate
+    origin_kind: group_contribution
+    scientific_use_class: representation
+    minimum_weight: 0.00
+    maximum_weight: 0.15
+    normalization_unit: unique_structure_method_version
+    rationale: 用于候选排序、表示学习或先验，不作为实验性能标签。
+
+  - policy_key: model_prediction
+    origin_kind: ml_prediction
+    scientific_use_class: audit_only
+    minimum_weight: 0.00
+    maximum_weight: 0.00
+    normalization_unit: prediction_lineage
+    rationale: 模型预测可保存用于审计、蒸馏研究或主动学习，但默认不回灌为真值。
+
+  - policy_key: simulation_input_or_code
+    artifact_roles: [simulation_input, code, model_artifact]
+    minimum_weight: 0.00
+    maximum_weight: 0.00
+    normalization_unit: asset
+    rationale: 输入、代码和模型文件提供可复现性，不产生目标标签。
+
+hard_zero_conditions:
+  - mirror_duplicate
+  - derived_duplicate_without_new_measurement
+  - source_file_without_scientific_observation
+  - apple_double_or_operating_system_metadata
+  - parser_failed_or_unsupported
+  - missing_property_definition
+  - missing_unit_without_recoverable_evidence
+  - declared_unit_or_scale_conflict_unresolved
+  - coordinate_scale_undeclared_for_absolute_geometry_qoi
+  - simulation_not_converged
+  - simulation_input_without_output
+  - model_output_used_as_ground_truth
+  - rights_blocked_for_training
+  - withdrawn_source
+
+curve_weighting:
+  point_loss_rule: each_curve_loss_is_mean_over_valid_points
+  specimen_loss_rule: each_specimen_is_mean_over_its_curves
+  formulation_loss_rule: retain_independent_specimens_and_report_effective_sample_size
+  maximum_total_weight_per_specimen: 1.0
+  formulation_condition_total_cap: task_specific_not_materialized
+  independent_specimens_increase_statistical_precision: true
+  independent_specimens_increase_chemical_space: false
+  repeated_cycle_policy: retain_sequence_but_do_not_multiply_independent_sample_weight
+  resampling_policy: resampling_changes_resolution_not_total_weight
+
+source_overrides:
+  - source_scope_key: scope_drum_05ek6k60_dataset
+    intended_use: recyclable_tpuu_core_mechanics_and_chemistry
+    base_weight_ceiling: 1.00
+    group_keys: [dataset_doi, polymer_series, formulation, synthesis_batch, specimen]
+    split_group_keys: [dataset_doi, polymer_series, formulation]
+    subdomain_weight_ceilings:
+      water_extended_tpuu_core_experimental_curve: 1.00
+      14bdo_linear_tpu_published_curve: 0.65
+      thermoset_pu_control: 0.25
+      commercial_elastollan_control: 0.15
+      rubber_band_non_domain_control: 0.00
+    note: 可机械竞争且可化学回收的热塑性聚氨酯-脲接近核心域；14BDO线性TPU为单条发表汇总对照，保留较高但非试样级权重；热固PU、商业牌号和橡皮筋分别降权。观测身份保留批次和试样，但默认拆分按DOI、聚合物系列与配方成组，避免同一配方的不同批次跨折。
+
+  - source_scope_key: scope_drum_zf53w893_dataset
+    intended_use: low_ceiling_tpuu_core_mechanics_and_recyclability
+    base_weight_ceiling: 1.00
+    group_keys: [dataset_doi, polymer_backbone, formulation, synthesis_batch, specimen]
+    split_group_keys: [dataset_doi, polymer_backbone, formulation]
+    note: 低天花板温度聚合物TPUU可进入核心化学—力学—回收任务；同一配方的不同批次、多温度、多模态与原始仪器目录必须同组。
+
+  - source_scope_key: scope_qub_83fdb865_dataset
+    intended_use: core_tpu_mechanics_and_self_healing
+    base_weight_ceiling: 1.00
+    group_keys: [dataset_doi, formulation, synthesis_batch]
+    split_group_keys: [dataset_doi, formulation]
+    note: 四种线性TPU配方和41个拉伸试样可进入核心实验候选；默认按DOI与配方拆分，批次和试样只保留作观测身份；接触角等表征单独成任务。
+
+  - source_scope_key: scope_zenodo_17883052_dataset
+    intended_use: dft_descriptor_with_experimental_deblocking_mapping
+    base_weight_ceiling: 0.50
+    group_keys: [dataset_doi, molecular_identity, dft_method, experimental_label_source]
+    split_group_keys: [dataset_doi, molecular_identity]
+    task_specific_ceilings:
+      experimental_tdeblock_label: 1.00
+      experimentally_mapped_dft_qoi_or_calibrated_descriptor: 0.50
+      unmapped_cross_scale_dft_descriptor: 0.25
+      gaussian_input_unconverged_or_unparsed_output: 0.00
+    note: 实验Tdeblock标签属于独立实验保真层，上限1.00；Gaussian任务按真实分子与方法计数，只有与实验解封温度完成可审计映射的DFT输出可使用0.50上限，未映射描述符上限0.25。所有方法、荷电态、加合物与构象按molecular_identity同折，配套表、输入和输出不能重复形成标签。
+
+  - source_scope_key: scope_jagiellonian_tyapfm_dataset
+    intended_use: hard_segment_aimd_cross_scale
+    base_weight_ceiling: 0.15
+    group_keys: [dataset_doi, hard_segment_system, protocol, trajectory_seed]
+    split_group_keys: [dataset_doi, hard_segment_system]
+    future_ceiling_after_full_trajectory_audit: 0.30
+    task_specific_ceilings:
+      current_element_topology_or_scale_invariant_representation: 0.15
+      current_absolute_distance_geometry_or_hydrogen_bond_qoi: 0.00
+      future_validated_aimd_after_protocol_unit_convergence_and_seed_audit: 0.30
+    note: 当前只落地四个优化结构且XYZ未声明坐标单位；元素拓扑或尺度不变表示上限0.15，绝对距离、几何和氢键QoI硬置零。约3.58 GB完整轨迹取得并完成单位、协议、收敛与种子审计后，验证过的AIMD任务才可上调至0.30。
+
+  - source_scope_key: scope_zenodo_20932248_dataset
+    intended_use: commercial_tpu_swcnt_thermoelectric_transfer
+    base_weight_ceiling: 0.45
+    group_keys: [dataset_doi, tpu_grade, swcnt_loading, processing_batch, specimen]
+    split_group_keys: [dataset_doi, tpu_grade, swcnt_loading, processing_batch]
+    task_specific_ceilings:
+      thermoelectric_application: 0.60
+      infrared_representation: 0.25
+      image_representation: 0.15
+      neat_tpu_mechanics_transfer: 0.20
+    note: 三种商业TPU与SWCNT复合材料只支持热电、FTIR和加工迁移；复合填料主导的性能不回灌为纯TPU终性能。
+
+  - source_scope_key: scope_mendeley_x6b72k59xn_v1
+    intended_use: open_cell_pu_foam_temperature_rate_transfer
+    base_weight_ceiling: 0.25
+    group_keys: [dataset_doi, foam_grade, temperature, strain_rate, specimen]
+    split_group_keys: [dataset_doi, foam_grade, temperature, strain_rate]
+    note: 高应变率开孔PU泡沫是速率—温度迁移层；当前应力、应变和吸能单位证据未闭合，所有单位相关性能标签触发硬门并取零，0.25仅是补齐单位与试样映射后的来源迁移上限；同一试样曲线点和本构拟合输出均不增加配方数。
+
+  - source_scope_key: scope_snd_2024_267_v1
+    intended_use: tpu_substrate_conductive_track_cyclic_transfer
+    base_weight_ceiling: 0.40
+    group_keys: [dataset_doi, tpu_substrate, conductive_ink, track_geometry, specimen]
+    split_group_keys: [dataset_doi, tpu_substrate, conductive_ink, track_geometry]
+    task_specific_ceilings:
+      conductive_track_application: 0.40
+      cross_property_transfer: 0.20
+      neat_tpu_mechanics: 0.00
+    note: 目标主要是导电轨迹而非TPU本征力学，只用于器件循环与失效迁移。
+
+  - source_scope_key: scope_sciencedb_26393_v1
+    intended_use: morphology_reference_without_numeric_labels
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, image_identity]
+    split_group_keys: [dataset_doi, figure_group, specimen_id_after_manual_mapping]
+    future_ceiling_after_manual_labels_and_larger_legal_image_corpus: 0.15
+    task_specific_ceilings:
+      current_noncommercial_visual_representation: 0.00
+      energy_absorption_scalar: 0.00
+      neat_tpu_mechanics: 0.00
+    note: 当前19张可读取且哈希唯一的TPU/芳纶图像没有可审计数值标签、标尺或试样映射，数量也不足以独立预训练；只作定性形貌证据和人工标注候选，当前所有任务权重为零。
+
+  - source_scope_key: scope_agh_lkhz6q_v1
+    intended_use: request_required_rigid_pu_foam_candidate
+    base_weight_ceiling: 0.00
+    future_ceiling_after_access_and_full_audit: 0.25
+    group_keys: [dataset_doi, formulation, batch, specimen]
+    split_group_keys: [dataset_doi, formulation, batch]
+    note: 原始文件需要申请且尚未取得；只保存元数据，任何科学权重为零。未来0.25上限仅在取得合法访问、完成配方与试样映射、单位恢复、重复审计和训练动作权利裁决后可启用。
+
+  - source_scope_key: scope_mendeley_byjbmymyhh_v5
+    intended_use: supramolecular_pu_rate_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_doi, chemistry_system, acquisition_sequence]
+    split_group_keys: [dataset_doi, chemistry_system]
+    note: 单一超分子PU化学体系的多速率和表征曲线不能伪装成大量独立配方。
+
+  - source_scope_key: scope_mendeley_wfsm6f9rbn_v1
+    intended_use: commercial_tpu_sls_process_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_doi, material_grade, build_batch, specimen]
+    split_group_keys: [dataset_doi, material_grade, build_batch]
+    note: 过程—结构—力学迁移层；多张工作表和数值行不增加材料配方数。
+
+  - source_scope_key: scope_zenodo_19609901_dataset
+    intended_use: crosslinked_composite_self_healing_transfer
+    base_weight_ceiling: 0.25
+    group_keys: [dataset_doi, base_pu_batch, composite_formulation, processing_state, recycling_state, specimen_or_curve]
+    split_group_keys: [dataset_doi, base_pu_batch, composite_formulation]
+    note: 交联动态二硫键PU/PEDOT:PSS复合体系不是线性TPU核心域；统一策略上限0.25取代来源初审0.35建议，同一基础PU/复合配方的加工和回收状态必须同折。
+
+  - source_scope_key: scope_figshare_31552786_v1
+    intended_use: thermoset_pu_recycling_process_transfer
+    base_weight_ceiling: 0.25
+    group_keys: [dataset_doi, feedstock, deconstruction_condition, regenerated_formulation]
+    split_group_keys: [dataset_doi, feedstock]
+    note: 热固PU回收与升级工艺层；曲线点按条件归一，不把光谱点当样本。
+
+  - source_scope_key: scope_figshare_21716516_v1
+    intended_use: supramolecular_pu_iontronic_adhesive_transfer
+    base_weight_ceiling: 0.20
+    group_keys: [dataset_doi, shpu_chemistry_family, material_component, formulation, device_batch_or_figure_panel, specimen_or_device]
+    split_group_keys: [dataset_doi, shpu_chemistry_family, device_batch_or_figure_panel]
+    note: SHPU工作簿含18个图板、3个明确PE10/GY配方标签及材料—器件多任务数据；可迁移强韧、自愈和界面机制，但同一化学体系与器件批次/图板必须同折，工作表、数值点和器件工况不增加独立材料数，也不直接主导常规TPU配方终点。
+
+  - source_scope_key: scope_figshare_14279117_v1
+    intended_use: castor_aliphatic_crosslinked_pu_transfer
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, polyol, diisocyanate, short_chain_polymer, formulation]
+    split_group_keys: [dataset_doi, polyol, diisocyanate, short_chain_polymer, formulation]
+    future_ceiling_after_verified_nonempty_table_audit: 0.10
+    note: 当前Table_1.xls为0字节且官方文件端点未返回有效内容，权重硬置零；只有取得5632字节、MD5匹配的原表并完成解析后，才可作为远域交联生物医用PU辅助层。
+
+  - source_scope_key: scope_sciencedb_j00189_00045_dataset
+    intended_use: microcellular_pu_dynamic_mechanics_transfer
+    base_weight_ceiling: 0.30
+    group_keys: [dataset_doi, density_grade, specimen, test_mode]
+    split_group_keys: [dataset_doi, density_grade]
+    note: 微孔聚氨酯弹性体动态力学缺少完整化学身份，只作条件迁移层。
+
+  - source_scope_key: scope_tpu95a_mendeley_local_mirror
+    intended_use: duplicate_occurrence_audit
+    base_weight_ceiling: 0.00
+    group_keys: [canonical_content_sha256]
+    split_group_keys: [canonical_content_sha256]
+    note: 与既有TPU95A目录逐字节相同，增量科学样本为零。
+
+  - source_scope_key: scope_materialscloud_vf_ry_dataset
+    intended_use: commercial_rigid_pu_foam_multiaxial_transfer
+    base_weight_ceiling: 0.30
+    group_keys: [dataset_doi, material_grade, assumed_manufacturing_batch, test_type, direction, specimen]
+    split_group_keys: [dataset_doi, material_grade, assumed_manufacturing_batch]
+    note: 37个试样来自同一商业PCF20硬质泡沫牌号；RawData、DIC和图像必须按试样绑定，不等于37种化学配方。
+
+  - source_scope_key: scope_texas_zyq5z1_dataset
+    intended_use: single_electrospun_pu_fiber_environment_transfer
+    base_weight_ceiling: 0.30
+    group_keys: [dataset_doi, material_code, hydration_condition, test_date_batch, fiber_csv_id]
+    split_group_keys: [dataset_doi, material_code, hydration_condition, test_date_batch]
+    note: 38根纤维的646个加载/恢复分段属于重复测量；观测身份保留fiber_csv_id，默认按材料、湿润条件与测试日期批次成组，避免同批次不同纤维跨折；不直接映射块体TPU终性能。
+
+  - source_scope_key: scope_mendeley_2sp8fyvhfm_v3
+    intended_use: aged_vegetable_pu_foam_compression_transfer
+    base_weight_ceiling: 0.35
+    group_keys: [dataset_doi, material_family, temperature_rh, batch, direction, specimen]
+    split_group_keys: [dataset_doi, material_family, temperature_rh, batch]
+    note: 单一未知配方植物基PU泡沫的90个压缩试样；统一策略上限0.35取代来源初审0.4–1.0建议，重复TRA和跨温度重复DIC均隔离，整批或整温度成组评估。
+
+  - source_scope_key: scope_bath_00385_dataset
+    intended_use: metadata_only_commercial_pu_foam_multimodal_candidate
+    base_weight_ceiling: 0.00
+    group_keys: [dataset_doi, material_grade, batch, specimen]
+    split_group_keys: [dataset_doi, material_grade, batch]
+    future_task_specific_ceilings_after_written_reuse_permission_and_full_audit:
+      rigid_pu_foam_mechanical_transfer: 0.25
+      multimodal_representation_pretraining: 0.35
+    note: 原始文件未声明许可证，当前只保存元数据和官方MD5；取得书面复用许可且完成逐工作簿单位、试样、重复与权利审计前权重硬置零。上述0.25/0.35仅是全部条件闭合后的未来任务上限。
+
+  - source_scope_key: scope_zenodo_21096098_dataset
+    intended_use: vinylogous_urethane_vitrimer_dynamic_network_transfer
+    base_weight_ceiling: 0.20
+    group_keys: [dataset_doi, formulation, virgin_or_recycled, synthesis_batch, specimen_or_acquisition]
+    split_group_keys: [dataset_doi, formulation]
+    task_specific_ceilings:
+      fracture_stress_and_strain_with_valid_units: 0.20
+      dynamic_network_relaxation_and_thermal_transfer: 0.20
+      youngs_modulus_declared_unit_scale_conflict: 0.00
+      toughness_declared_unit_or_scale_conflict: 0.00
+    note: 该体系是交联共轭氨基甲酸酯玻璃体而非PU/TPU；只支持动态网络和循环利用迁移任务。观测身份保留原始/再生与试样，拆分必须按DOI+formulation把同配方原始/再生状态同折；模量与韧性单位冲突字段机器硬置零。
+
+materialization_gate:
+  required_before_training:
+    - frozen_target_property_definitions
+    - observation_level_origin_kind
+    - observation_level_reduction_level
+    - observation_level_scientific_use_class
+    - source_and_rights_decision_for_training
+    - explicit_source_level_split_group_keys
+    - formulation_batch_specimen_curve_lineage
+    - duplicate_and_equivalence_groups
+    - leakage_group_assignment
+    - simulation_system_qoi_and_cross_seed_weight_caps
+    - train_validation_test_split_by_group
+    - weight_sensitivity_analysis_plan
+  current_gate_status: not_ready
+  reason: 数据库仍在扩充与科学准入审计阶段；本策略只回答后续如何利用多保真数据。

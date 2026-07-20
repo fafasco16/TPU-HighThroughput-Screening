@@ -128,11 +128,17 @@ enums:
     - reference_only
   material_scope:
     - linear_tpu
+    - thermoplastic_polyurethane_urea
+    - polyurethane_elastomer
     - crosslinked_pue
     - waterborne_polyurethane
     - commercial_tpu
     - polyurethane_composite
     - polyurethane_foam
+    - thermoset_polyurethane
+    - supramolecular_polyurethane
+    - bio_based_polyurethane
+    - vinylogous_urethane_vitrimer
     - general_polymer
     - virtual_candidate
     - monomer_rule
