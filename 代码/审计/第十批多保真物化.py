@@ -91,6 +91,7 @@ COMPUTATIONAL_RECORD_COLUMNS = (
     "structure_identity_status",
     "global_structure_family_key",
     "simulation_key",
+    "split_group",
     "property_name",
     "value",
     "unit",
@@ -560,6 +561,7 @@ def iter_omg_gold_c_rows() -> Iterator[dict[str, Any]]:
                         ),
                         "global_structure_family_key": _global_polymer_key(canonical),
                         "simulation_key": f"OMG:{source_split}:{reaction_id}",
+                        "split_group": _global_polymer_key(canonical),
                         "property_name": property_name,
                         "value": value,
                         "unit": str(spec["unit"]),
@@ -625,6 +627,7 @@ def build_openpoly_gold_c_rows() -> list[dict[str, Any]]:
                 "simulation_key": (
                     f"OpenPoly:{spec['simulation_group']}:{row_id}"
                 ),
+                "split_group": _global_polymer_key(canonical),
                 "property_name": property_name,
                 "value": value,
                 "unit": spec["unit"],

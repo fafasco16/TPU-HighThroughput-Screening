@@ -1,5 +1,5 @@
 schema_version: v0.2
-profile_version: trainable-inventory-profile-v0.2.17
+profile_version: trainable-inventory-profile-v0.2.21
 profile_status: audit_inventory_only
 generated_training_view: false
 audit_as_of_utc: '2026-07-21T14:00:00Z'
@@ -440,6 +440,90 @@ profiles:
       也不直接监督线性TPU拉伸性能。GPLv3按Mendeley数据集页记录；软件代码、数值数据和训练/再分发边界在使用前仍需逐动作复核。
     counts:
       {source_record_count: 250, material_count: null, formulation_count: null, batch_count: null, specimen_count: 0, run_count: 1, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 9014, scalar_count_candidate: 9014, point_count_observed: 50, point_count_candidate: 50, numeric_value_count: 9014, evidence_group_count: 0, computational_system_count: 1, source_identity_count_contribution: 1}
+
+  - source_directory: 第十三批实验_日期籽油PU-PIR
+    task: 日期籽油生物基多元醇—刚性PU/PIR配方—机械—光谱—热分析迁移参考
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.60
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 45个来源数值序列呈现归并为36个唯一序列；9个重复呈现与14178个重复数值不重复物化，2982个标签冲突热分析值保留为条件参考
+    split_group_status: 同一论文家族全部同折并按5个最终配方分组；无试样或重复编号，禁止按101609个曲线/峰点随机拆分
+    completeness: source_aggregate_plus_5_formulations_36_unique_numeric_series_36_formulation_process_scalars
+    audit_basis: 内容审计摘要.json;文件校验清单.tsv;来源说明.md;代码/审计/第十三批日期籽油PU_PIR.py
+    notes: >-
+      Mendeley Data固定version 3的7个官方附件均通过字节数和SHA-256核验，形成5个S1至S5最终刚性PU-PIR配方；
+      36个唯一机械/光谱/热分析序列含101609个曲线或峰点，另有36个配方与过程标量。曲线点只提高同一配方观测的数值分辨率，
+      不增加材料数、试样数或独立来源数。机械68819点因轴单位与测试协议未闭合保留为条件参考；来源可靠性不因字段不全而被整源淘汰。
+      数据集为CC BY 4.0，关联论文为CC BY-NC 4.0，许可范围分别治理。0.60仅为未来门禁闭合后的潜在上限；当前训练权重为空且未创建划分。
+    counts:
+      {source_record_count: 72, material_count: 5, formulation_count: 5, batch_count: null, specimen_count: 0, run_count: 36, curve_count_observed: 45, curve_count_candidate: 36, scalar_count_observed: 36, scalar_count_candidate: 36, point_count_observed: 115787, point_count_candidate: 101609, numeric_value_count: 101645, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第十四批实验_PU汽车座椅
+    task: PU单层/多层汽车座椅IFD—松弛曲线—舒适性指标迁移参考
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.55
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 原始曲线DOI与汇总标量DOI属于同一论文和同一次实验活动；59个汇总值不作为第二批实验或额外重复，两个DOI合计只贡献1个来源身份
+    split_group_status: 9个来源标签体系各自同折；同体系IFD、松弛轨迹及汇总指标不得跨折，73596个曲线点禁止点级随机拆分
+    completeness: source_aggregate_plus_9_material_systems_18_curves_59_processed_scalars
+    audit_basis: 内容审计摘要.json;文件校验清单.tsv;来源说明.md;代码/审计/第十四批PU汽车座椅.py
+    notes: >-
+      两个Mendeley Data固定version 2记录均为CC BY 4.0并服务于同一篇论文；9个来源标签体系各有1条IFD和1条应力松弛轨迹，
+      共73596个曲线点，另有59个同族汇总标量。54个单位与语义闭合的舒适性/松弛汇总值为正式参考；IFD原件缺列名、松弛纵轴为未校准电压、
+      5个交联密度缺单位，故保留为条件参考而不删除。9个体系只有材料类别或坐垫标签，商品牌号、配方、几何和试样身份未闭合；
+      不能用于精确SMILES监督，也不能把电压称作绝对应力。0.55仅为未来潜在上限；当前训练权重为空且未创建划分。
+    counts:
+      {source_record_count: 77, material_count: 9, formulation_count: null, batch_count: null, specimen_count: null, run_count: 18, curve_count_observed: 18, curve_count_candidate: 18, scalar_count_observed: 59, scalar_count_candidate: 59, point_count_observed: 73596, point_count_candidate: 73596, numeric_value_count: 73655, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第十五批计算_多组分PU多尺度模拟
+    task: 多组分聚氨酯组成—微相结构—力学的DFT/全原子MD/反应型粗粒化多尺度参考
+    origin_kind: 模拟
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.30
+    unit_status: 部分已解析
+    license_status: manual_review
+    dedup_status: Table_S2的200_A初始盒与Table_S3_R1-1-H2重复结果已合并；粒子、初始盒和敏感性运行不扩增材料数
+    split_group_status: 10个粗粒化体系按全局结构家族键同折；13个运行和全部输入输出不得跨折
+    completeness: source_aggregate_plus_computational_systems_inputs_and_outputs
+    audit_basis: 内容审计摘要.json;文件校验清单.tsv;来源说明.md;代码/审计/第十五批多组分PU多尺度模拟.py
+    notes: >-
+      论文SI的Table S1--S3提供10个粗粒化材料体系、13个不重复模拟运行和115个可追溯数值；
+      其中68个为组成、粒子数或盒尺寸等输入描述符，只作上下文且潜在目标权重为0；47个为Rg、密度、残余反应位点和拉伸强度等计算输出，
+      34个正式、13个条件参考。来源把密度单位误排为g·mol-1，本库依据量纲与盒体积关系规范为g/cm3但保留条件标志。
+      原始轨迹、restart、完整力场和精确原子图未公开，不能把115个数值称作115次独立模拟或实验真值；CC BY-NC 4.0限制商业使用。
+    counts:
+      {source_record_count: 115, material_count: 10, formulation_count: 10, batch_count: null, specimen_count: 0, run_count: 13, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 115, scalar_count_candidate: 47, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 115, evidence_group_count: 3, computational_system_count: 10, source_identity_count_contribution: 1}
+
+  - source_directory: 第十六批实验_再生PU泡沫
+    task: 建筑拆除PU泡沫粉末再利用的配方—压缩—黏度—密度—导热多任务参考
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.40
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: RPUF3.0导热工作簿与RPUF0单元格内容完全重复并已隔离；压缩汇总值与原始曲线派生端点保留血缘而不重复计材料
+    split_group_status: 11个配方、59个压缩试样和全部同研究端点共享一个来源家族组；曲线点不得随机跨折
+    completeness: source_aggregate_plus_formulations_specimens_curves_scalars_and_protocol
+    audit_basis: 内容审计摘要.json;文件校验清单.tsv;来源说明.md;代码/审计/第十六批再生PU泡沫.py
+    notes: >-
+      Zenodo固定归档与论文共同闭合11个硬质/软质PU泡沫配方、59个压缩试样、10条黏度曲线和8个导热工作簿。
+      压缩原始数据有45922个观测点，按论文和UNE-EN ISO 604限定的0--27%形变保留13159点，并派生118个10%/25%端点；
+      加上581个黏度点、73个有效直接标量后形成13931条Gold-E记录，其中66条正式、13865条条件参考。
+      RPUF0第7个文件的西班牙语13列结构已按真实压缩应变列修复；来源可靠但属于发泡PU迁移域，不冒充线性TPU精确结构监督，当前训练权重为空。
+    counts:
+      {source_record_count: 77, material_count: 11, formulation_count: 11, batch_count: null, specimen_count: 59, run_count: 77, curve_count_observed: 69, curve_count_candidate: 69, scalar_count_observed: 192, scalar_count_candidate: 191, point_count_observed: 46503, point_count_candidate: 13740, numeric_value_count: 13931, evidence_group_count: 2, computational_system_count: 0, source_identity_count_contribution: 1}
 
 local_backlog_profiles:
   - source_directory: SelfHealingTPU_4TU

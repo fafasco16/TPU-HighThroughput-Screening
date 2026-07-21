@@ -7,6 +7,7 @@ import io
 import json
 import math
 import os
+import re
 import stat
 import tempfile
 from collections import Counter
@@ -95,6 +96,33 @@ from 审计.第十二批PUFoam import (
     audit as audit_batch12_pufoam,
     build_gold_c_rows as build_batch12_pufoam_gold_c_rows,
 )
+from 审计.第十三批日期籽油PU_PIR import (
+    LOCAL_METADATA_SNAPSHOTS as BATCH13_LOCAL_METADATA_SNAPSHOTS,
+    OFFICIAL_ATTACHMENTS as BATCH13_OFFICIAL_ATTACHMENTS,
+    SOURCE_DIR as BATCH13_DATE_SEED_SOURCE_DIR,
+    build_gold_e_rows as build_batch13_gold_e_rows,
+)
+from 审计.第十四批PU汽车座椅 import (
+    CURVE_SPECS as BATCH14_SEAT_CURVE_SPECS,
+    SUPPORT_FILES as BATCH14_SEAT_SUPPORT_FILES,
+    audit as audit_batch14_seat,
+    build_gold_e_rows as build_batch14_gold_e_rows,
+)
+from 审计.第十五批多组分PU多尺度模拟 import (
+    CROSSREF_METADATA_PATH as BATCH15_MULTISCALE_CROSSREF_METADATA,
+    EXPECTED_ROW_COUNT as BATCH15_MULTISCALE_GOLD_C_COUNT,
+    FIGSHARE_METADATA_PATH as BATCH15_MULTISCALE_FIGSHARE_METADATA,
+    GOLD_C_VALUE_COLUMNS as BATCH15_MULTISCALE_GOLD_C_COLUMNS,
+    PDF_PATH as BATCH15_MULTISCALE_PDF,
+    SOURCE_ID as BATCH15_MULTISCALE_SOURCE_ID,
+    build_rows as build_batch15_multiscale_rows,
+)
+from 审计.第十六批再生PU泡沫 import (
+    ARCHIVE_PATH as BATCH16_RECYCLED_ARCHIVE,
+    DATA_ROOT as BATCH16_RECYCLED_DATA_ROOT,
+    PDF_PATH as BATCH16_RECYCLED_PDF,
+    build_gold_e_rows as build_batch16_gold_e_rows,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -102,6 +130,7 @@ RAW_NEW = ROOT / "数据/原始" / "外部数据" / "新增开放数据"
 RAW_MECHANICAL = ROOT / "数据/原始" / "外部数据" / "力学曲线"
 PROFILE_PATH = ROOT / "配置" / "v0.2可训练样本总账来源画像.yaml"
 SCOPE_PATH = ROOT / "配置" / "v0.2来源范围.yaml"
+MULTIFIDELITY_POLICY_PATH = ROOT / "配置" / "v0.2多保真准入与权重策略.yaml"
 SNAPSHOT_V01 = ROOT / "数据/快照" / "TPU数据库_v0.1_快照.json"
 OUTPUT_LEDGER = ROOT / "结果" / "数据规模总账.csv"
 OUTPUT_MANIFEST = ROOT / "结果" / "样本清单.csv.gz"
@@ -130,6 +159,16 @@ BATCH11_EXISTING_SCALAR_SCRIPT_PATH = (
     ROOT / "代码" / "审计" / "第十一批既有实验标量物化.py"
 )
 BATCH12_PUFOAM_SCRIPT_PATH = ROOT / "代码" / "审计" / "第十二批PUFoam.py"
+BATCH13_DATE_SEED_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十三批日期籽油PU_PIR.py"
+)
+BATCH14_SEAT_SCRIPT_PATH = ROOT / "代码" / "审计" / "第十四批PU汽车座椅.py"
+BATCH15_MULTISCALE_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十五批多组分PU多尺度模拟.py"
+)
+BATCH16_RECYCLED_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十六批再生PU泡沫.py"
+)
 INPUT_FILES_READ: set[Path] = set()
 
 
@@ -142,6 +181,7 @@ GOLD_C_VALUE_COLUMNS = [
     "structure_identity_status",
     "global_structure_family_key",
     "simulation_key",
+    "split_group",
     "property_name",
     "value",
     "unit",
@@ -163,12 +203,35 @@ GOLD_C_VALUE_COLUMNS = [
 ]
 
 
+GOLD_E_OPTIONAL_OBSERVATION_COLUMNS = [
+    "curve_id",
+    "point_index",
+    "secondary_condition_name",
+    "secondary_condition_value",
+    "secondary_condition_unit",
+    "auxiliary_value_name",
+    "auxiliary_value",
+    "auxiliary_unit",
+    "sample_identity_status",
+    "global_structure_family_key",
+    "family_leakage_group",
+    "curve_points_are_independent_samples",
+    "duplicate_status",
+]
+
+
 GOLD_E_TABLE_COLUMNS = [
     "source_id",
     "source_scope_id",
     "source_family_id",
     *ACS_TABLE_RECORD_COLUMNS,
+    *GOLD_E_OPTIONAL_OBSERVATION_COLUMNS,
 ]
+GOLD_E_SOURCE_COLUMNS = [
+    *ACS_TABLE_RECORD_COLUMNS,
+    *GOLD_E_OPTIONAL_OBSERVATION_COLUMNS,
+]
+GOLD_E_SOURCE_COLUMN_SET = frozenset(GOLD_E_SOURCE_COLUMNS)
 
 
 COUNT_FIELDS = [
@@ -537,6 +600,43 @@ class SourceIdentity:
     references: tuple[str, ...]
 
 
+def _source_identity_from_scope(
+    scope_config: dict[str, Any],
+    scope_id: str,
+    *,
+    include_sibling_family_citations: bool,
+) -> SourceIdentity:
+    sources = {item["source_key"]: item for item in scope_config["sources"]}
+    scopes = {
+        item["source_scope_key"]: item for item in scope_config["scopes"]
+    }
+    scope = scopes[scope_id]
+    source = sources[scope["source_key"]]
+    family_key = source["source_family_key"]
+    matched_citations = [
+        item
+        for item in scope_config["citations"]
+        if item.get("source_key") == scope["source_key"]
+        or item.get("target_scope_key") == scope_id
+        or (
+            item.get("source_family_key") == family_key
+            and (
+                include_sibling_family_citations
+                or item.get("citation_type") == "article"
+            )
+        )
+    ]
+    return SourceIdentity(
+        source_id=scope["source_key"],
+        source_scope_id=scope_id,
+        source_family_id=family_key,
+        source_title=source["title"],
+        canonical_identifier=source["canonical_identifier"],
+        citation_keys=tuple(item["citation_key"] for item in matched_citations),
+        references=tuple(item["reference_text"] for item in matched_citations),
+    )
+
+
 def _resolve_source_identities(
     scope_config: dict[str, Any], profiles: list[dict[str, Any]], baseline_profiles: list[dict[str, Any]]
 ) -> dict[str, SourceIdentity]:
@@ -642,6 +742,19 @@ def _audit_paths(profile: dict[str, Any]) -> list[Path]:
 
 def _to_relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
+
+
+def _normalized_source_locator(
+    profile: dict[str, Any], source_locator: Any
+) -> str:
+    locator = str(source_locator).replace("\\", "/").lstrip("./")
+    if locator.startswith("数据/原始/"):
+        return locator
+    base = _to_relative(_profile_base(profile)).rstrip("/")
+    directory_prefix = f"{profile['source_directory']}/"
+    if locator.startswith(directory_prefix):
+        locator = locator[len(directory_prefix) :]
+    return f"{base}/{locator}"
 
 
 def _build_ledger(
@@ -1237,11 +1350,39 @@ def _governed_batch10_gold_c_rows(
         yield row
 
 
+def _validated_gold_c_rows(
+    rows: Iterable[dict[str, Any]],
+) -> Iterator[dict[str, Any]]:
+    for row in rows:
+        if not str(row.get("split_group", "")).strip():
+            raise AssertionError(
+                f"Gold-C缺少split_group: {row.get('observation_id', '')}"
+            )
+        if str(row.get("current_weight_materialized", "")).lower() != "false":
+            raise AssertionError(
+                "Gold-C提前物化当前权重: "
+                f"{row.get('observation_id', '')}"
+            )
+        if str(row.get("training_weight", "")).strip():
+            raise AssertionError(
+                f"Gold-C提前写入训练权重: {row.get('observation_id', '')}"
+            )
+        if (
+            str(row.get("record_role", "")).endswith("input_descriptor")
+            and float(row.get("potential_weight_ceiling", 0)) != 0.0
+        ):
+            raise AssertionError(
+                "Gold-C模拟输入不得具有目标权重上限: "
+                f"{row.get('observation_id', '')}"
+            )
+        yield row
+
+
 def _gold_c_computational_value_rows(
     profiles: list[dict[str, Any]],
     identities: dict[str, SourceIdentity],
     acs_table_rows: list[dict[str, Any]],
-) -> tuple[Iterable[dict[str, Any]], dict[str, Any]]:
+) -> tuple[Iterable[dict[str, Any]], dict[str, Any], dict[str, Any]]:
     """Materialize normalized source values, not a final training dataset."""
 
     profile_by_directory = {
@@ -1250,7 +1391,13 @@ def _gold_c_computational_value_rows(
     radon_directory = "第九批计算_RadonPy_PI1070"
     polyomics_directory = "第九批计算_PolyOmics"
     pufoam_directory = "第十二批计算_PUFoam"
-    required = {radon_directory, polyomics_directory, pufoam_directory}
+    multiscale_directory = "第十五批计算_多组分PU多尺度模拟"
+    required = {
+        radon_directory,
+        polyomics_directory,
+        pufoam_directory,
+        multiscale_directory,
+    }
     missing = required - profile_by_directory.keys()
     if missing:
         raise ValueError(f"Gold-C数值长表缺少来源画像: {sorted(missing)}")
@@ -1300,6 +1447,7 @@ def _gold_c_computational_value_rows(
                     canonical
                 ),
                 "simulation_key": f"radonpy_simulation_{simulation_digest}",
+                "split_group": _global_structure_family_key(canonical),
                 "property_name": property_name,
                 "value": _finite_numeric_text(
                     source_row["value"],
@@ -1386,6 +1534,7 @@ def _gold_c_computational_value_rows(
                         _global_structure_family_key(canonical)
                     ),
                     "simulation_key": source_row["simulation_key"],
+                    "split_group": _global_structure_family_key(canonical),
                     "property_name": property_name,
                     "value": _finite_numeric_text(
                         raw_value,
@@ -1455,6 +1604,9 @@ def _gold_c_computational_value_rows(
                     identity.source_family_id, source_row["sample_id"]
                 ),
                 "simulation_key": f"acs_published_md_{simulation_digest}",
+                "split_group": _global_named_system_family_key(
+                    identity.source_family_id, source_row["sample_id"]
+                ),
                 "property_name": source_row["property_name"],
                 "value": _finite_numeric_text(
                     source_row["value"], context=source_row["observation_id"]
@@ -1516,11 +1668,58 @@ def _gold_c_computational_value_rows(
         )
         rows.append(row)
 
+    multiscale_identity = identities[multiscale_directory]
+    if multiscale_identity.source_id != BATCH15_MULTISCALE_SOURCE_ID:
+        raise AssertionError(
+            "第十五批多尺度模拟来源ID漂移: "
+            f"{multiscale_identity.source_id}, "
+            f"expected={BATCH15_MULTISCALE_SOURCE_ID}"
+        )
+    multiscale_ceiling = float(
+        profile_by_directory[multiscale_directory]["weight_ceiling"]
+    )
+    multiscale_rows, multiscale_audit = build_batch15_multiscale_rows()
+    for source_row in multiscale_rows:
+        if source_row["source_id"] != multiscale_identity.source_id:
+            raise AssertionError(
+                "第十五批多尺度模拟数值来源ID漂移: "
+                f"{source_row['source_id']}"
+            )
+        row = dict(source_row)
+        row["citation_keys"] = ";".join(multiscale_identity.citation_keys)
+        row["potential_weight_ceiling"] = min(
+            float(row["potential_weight_ceiling"]), multiscale_ceiling
+        )
+        row["source_locator"] = (
+            "数据/原始/外部数据/新增开放数据/"
+            f"{multiscale_directory}/{row['source_locator']}"
+        )
+        rows.append(row)
+    multiscale_role_counts = Counter(
+        row["record_role"] for row in multiscale_rows
+    )
+    multiscale_input_count = sum(
+        count
+        for role, count in multiscale_role_counts.items()
+        if role.endswith("input_descriptor")
+    )
+    multiscale_output_count = sum(
+        count
+        for role, count in multiscale_role_counts.items()
+        if role.endswith("output")
+    )
+    if (multiscale_input_count, multiscale_output_count) != (68, 47):
+        raise AssertionError(
+            "第十五批输入/输出语义计数漂移: "
+            f"inputs={multiscale_input_count}, outputs={multiscale_output_count}"
+        )
+
     expected_existing_counts = {
         radon_identity.source_id: 440,
         polyomics_identity.source_id: 209_905,
         identities["ACS_Figshare_双相演化聚氨酯"].source_id: 5,
         pufoam_identity.source_id: BATCH12_PUFOAM_GOLD_C_COUNT,
+        multiscale_identity.source_id: BATCH15_MULTISCALE_GOLD_C_COUNT,
     }
     actual_counts = Counter(row["source_id"] for row in rows)
     if actual_counts != expected_existing_counts:
@@ -1576,17 +1775,26 @@ def _gold_c_computational_value_rows(
         "cross_source_overlap_polyomics_record_count": len(
             overlapping_polyomics_records
         ),
+        "batch15_multiscale_numeric_context_count": len(multiscale_rows),
+        "batch15_multiscale_input_descriptor_count": multiscale_input_count,
+        "batch15_multiscale_performance_output_count": multiscale_output_count,
         "current_weight_materialized": False,
     }
     # 第十批 OMG 的 1,191,900 行保持流式，避免百万个 26 列 dict 常驻内存。
-    return chain(
-        rows, _governed_batch10_gold_c_rows(profiles, identities)
-    ), metadata
+    return (
+        _validated_gold_c_rows(
+            chain(rows, _governed_batch10_gold_c_rows(profiles, identities))
+        ),
+        metadata,
+        multiscale_audit,
+    )
 
 
 def _gold_e_table_value_rows(
     materialized_table_rows: list[dict[str, Any]],
+    profiles: list[dict[str, Any]],
     identities: dict[str, SourceIdentity],
+    scope_config: dict[str, Any],
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     batch10_identity_expectations = {
         "第十批实验_ScienceDB643": BATCH10_SOURCE_SCIENCEDB,
@@ -1599,6 +1807,9 @@ def _gold_e_table_value_rows(
                 f"第十批Gold-E来源ID漂移: {directory}="
                 f"{actual_source_id}, expected={expected_source_id}"
             )
+    profile_by_directory = {
+        profile["source_directory"]: profile for profile in profiles
+    }
     rows: list[dict[str, Any]] = []
     for source_row in materialized_table_rows:
         if source_row["target_origin"] not in {
@@ -1608,21 +1819,69 @@ def _gold_e_table_value_rows(
             continue
         directory = str(source_row["source_directory"])
         identity = identities[directory]
-        row = {
-            "source_id": identity.source_id,
-            "source_scope_id": identity.source_scope_id,
-            "source_family_id": identity.source_family_id,
-            **source_row,
-        }
+        if directory == "第十四批实验_PU汽车座椅":
+            processed = (
+                "oh-2019-pu-seat-processed-v2"
+                in str(source_row.get("citation_keys", ""))
+            )
+            identity = _source_identity_from_scope(
+                scope_config,
+                (
+                    "scope_mendeley_pu_seat_processed_v2"
+                    if processed
+                    else "scope_mendeley_pu_seat_raw_v2"
+                ),
+                include_sibling_family_citations=False,
+            )
+        profile = profile_by_directory[directory]
+        unexpected_columns = set(source_row) - GOLD_E_SOURCE_COLUMN_SET
+        if unexpected_columns:
+            raise AssertionError(
+                f"Gold-E出现未治理字段: {sorted(unexpected_columns)}"
+            )
+        for column in GOLD_E_SOURCE_COLUMNS:
+            source_row.setdefault(column, "")
+        if source_row["record_kind"].endswith("curve_point"):
+            raw_record_id = str(source_row["source_record_id"])
+            point_match = re.search(r"\|point=(\d+)$", raw_record_id)
+            source_row["curve_id"] = source_row["curve_id"] or (
+                raw_record_id[: point_match.start()]
+                if point_match
+                else raw_record_id
+            )
+            if not source_row["point_index"]:
+                observation_match = re.search(
+                    r":(\d+)$", str(source_row["observation_id"])
+                )
+                source_row["point_index"] = (
+                    point_match.group(1)
+                    if point_match
+                    else observation_match.group(1)
+                    if observation_match
+                    else ""
+                )
+            source_row["curve_points_are_independent_samples"] = "false"
+        row = source_row
+        row["source_id"] = identity.source_id
+        row["source_scope_id"] = identity.source_scope_id
+        row["source_family_id"] = identity.source_family_id
         row["citation_keys"] = ";".join(identity.citation_keys)
-        row["source_locator"] = (
-            f"数据/原始/外部数据/新增开放数据/{directory}/"
-            f"{source_row['source_locator']}"
+        row["source_locator"] = _normalized_source_locator(
+            profile, source_row["source_locator"]
         )
         rows.append(row)
+    if any(not str(row["split_group"]).strip() for row in rows):
+        raise AssertionError("Gold-E存在空split_group")
+    if any(
+        str(row["current_weight_materialized"]).lower() != "false"
+        for row in rows
+    ):
+        raise AssertionError("Gold-E提前物化当前权重")
+    if any(str(row["training_weight"]).strip() for row in rows):
+        raise AssertionError("Gold-E提前写入训练权重")
     source_counts = Counter(row["source_id"] for row in rows)
     metadata = {
-        "artifact_role": "normalized_experimental_scalar_reference",
+        "artifact_role": "normalized_experimental_observation_reference",
         "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
         "path": _to_relative(OUTPUT_GOLD_E_TABLES),
         "row_count": len(rows),
@@ -2099,9 +2358,8 @@ def _materialized_table_manifest_records(
                 "weight_ceiling": float(row["potential_weight_ceiling"]),
                 "scalar_count": 1,
                 "numeric_value_count": 1 + uncertainty_count,
-                "source_locator": (
-                    f"数据/原始/外部数据/新增开放数据/{directory}/"
-                    f"{row['source_locator']}"
+                "source_locator": _normalized_source_locator(
+                    profile, row["source_locator"]
                 ),
                 "audit_basis": _to_relative(
                     ACS_TABLE_AUDIT_SCRIPT_PATH
@@ -2719,12 +2977,12 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 78
-    assert summary["v0_2_source_directory_count"] == 70
-    assert summary["v0_2_independent_source_identity_count"] == 69
+    assert len(ledger) == 82
+    assert summary["v0_2_source_directory_count"] == 74
+    assert summary["v0_2_independent_source_identity_count"] == 73
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 77
+    assert summary["total_independent_source_contribution_count"] == 81
     assert summary["model_ready_record_count"] == 0
     assert summary["virtual_candidate_count"] == 117629
     assert summary["virtual_candidate_priority1_structure_count"] == 9631
@@ -2757,16 +3015,22 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     }
     assert all(float(row["weight_ceiling"]) == 0.0 for row in virtual_candidates)
     gold_c_metadata = summary["gold_c_computational_value_long_table"]
-    assert gold_c_metadata["row_count"] == 1_415_788
+    assert gold_c_metadata["row_count"] == 1_415_903
     assert gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OMG] == 1_191_900
     assert (
         gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OPENPOLY]
         == 4_524
     )
+    assert (
+        gold_c_metadata["source_value_counts"][BATCH15_MULTISCALE_SOURCE_ID]
+        == 115
+    )
+    assert gold_c_metadata["batch15_multiscale_input_descriptor_count"] == 68
+    assert gold_c_metadata["batch15_multiscale_performance_output_count"] == 47
     gold_e_metadata = summary["gold_e_published_table_long_table"]
-    assert gold_e_metadata["row_count"] == 5_230
-    assert gold_e_metadata["admitted_reference_count"] == 2_756
-    assert gold_e_metadata["conditional_reference_count"] == 2_474
+    assert gold_e_metadata["row_count"] == 194_461
+    assert gold_e_metadata["admitted_reference_count"] == 14_040
+    assert gold_e_metadata["conditional_reference_count"] == 180_421
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
     assert summary["strict_core_keyed_curve_count"] == 217
@@ -2783,10 +3047,10 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     assert summary["selected_source_heterogeneous_specimen_or_run_arithmetic_pool"] == 1119
     assert summary["major_experimental_curve_history_lower_bound"] == 1112
     assert summary["major_experimental_curve_point_lower_bound"] == 12258315
-    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1465
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2665
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2485
-    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9545156
+    assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1524
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2797
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2608
+    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9781042
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 701
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7862426
     strict_core_manifest = [
@@ -3006,7 +3270,7 @@ def _write_report(
             f"- 逐记录清单：`{_to_relative(OUTPUT_MANIFEST)}`",
             f"- JSON 总账：`{_to_relative(OUTPUT_JSON)}`",
             f"- Gold-V 候选结构：`{_to_relative(OUTPUT_CANDIDATES)}`",
-            f"- Gold-E 已物化实验标量：`{_to_relative(OUTPUT_GOLD_E_TABLES)}`（逐试样、配方、工艺、动力学和实验汇总值，不是训练集）",
+            f"- Gold-E 已物化实验观测：`{_to_relative(OUTPUT_GOLD_E_TABLES)}`（曲线点、逐试样端点、配方、工艺、动力学和实验汇总值，不是训练集）",
             f"- Gold-C 计算性能长表：`{_to_relative(OUTPUT_GOLD_C_VALUES)}`（规范化参考值，不是训练集）",
             "- 复算程序：`代码/生成数据总账.py`",
             "- 校验：`代码/测试/test_trainable_inventory.py`",
@@ -3039,6 +3303,7 @@ def main() -> None:
     INPUT_FILES_READ.clear()
     profile_config = _read_yaml(PROFILE_PATH)
     scope_config = _read_yaml(SCOPE_PATH)
+    _register_input(MULTIFIDELITY_POLICY_PATH)
     _register_input(SMIPOLY_CANDIDATE_INPUT)
     _register_input(SMIPOLY_CLASSIFIER_PATH)
     _register_input(PURGEN_ARCHIVE)
@@ -3089,12 +3354,38 @@ def main() -> None:
         BATCH12_PUFOAM_CROSSREF_METADATA,
     ):
         _register_input(path)
+    _register_input(BATCH13_DATE_SEED_SCRIPT_PATH)
+    for filename in (
+        *BATCH13_OFFICIAL_ATTACHMENTS,
+        *BATCH13_LOCAL_METADATA_SNAPSHOTS,
+    ):
+        _register_input(BATCH13_DATE_SEED_SOURCE_DIR / filename)
+    _register_input(BATCH14_SEAT_SCRIPT_PATH)
+    for spec in (*BATCH14_SEAT_CURVE_SPECS, *BATCH14_SEAT_SUPPORT_FILES):
+        _register_input(spec.path)
+    for path in (
+        BATCH15_MULTISCALE_SCRIPT_PATH,
+        BATCH15_MULTISCALE_PDF,
+        BATCH15_MULTISCALE_FIGSHARE_METADATA,
+        BATCH15_MULTISCALE_CROSSREF_METADATA,
+        BATCH16_RECYCLED_SCRIPT_PATH,
+        BATCH16_RECYCLED_ARCHIVE,
+        BATCH16_RECYCLED_PDF,
+    ):
+        _register_input(path)
+    for path in sorted(BATCH16_RECYCLED_DATA_ROOT.rglob("*")):
+        if path.is_file():
+            _register_input(path)
     if tuple(BATCH10_COMPUTATIONAL_RECORD_COLUMNS) != tuple(
         GOLD_C_VALUE_COLUMNS
     ):
         raise AssertionError("第十批Gold-C字段与总账字段不一致")
     if tuple(BATCH12_PUFOAM_GOLD_C_COLUMNS) != tuple(GOLD_C_VALUE_COLUMNS):
         raise AssertionError("第十二批PUFoam Gold-C字段与总账字段不一致")
+    if tuple(BATCH15_MULTISCALE_GOLD_C_COLUMNS) != tuple(
+        GOLD_C_VALUE_COLUMNS
+    ):
+        raise AssertionError("第十五批多尺度模拟 Gold-C字段与总账字段不一致")
     batch10_materialization_audit = audit_batch10_materialization_inputs()
     acs_table_rows, acs_table_audit_summary = build_acs_table_records()
     batch10_gold_e_rows = build_batch10_gold_e_rows()
@@ -3102,9 +3393,24 @@ def main() -> None:
     batch11_gold_e_rows, batch11_existing_scalar_audit = (
         build_batch11_existing_scalar_records()
     )
+    batch13_gold_e_rows, batch13_date_seed_audit = build_batch13_gold_e_rows()
+    batch14_gold_e_rows = build_batch14_gold_e_rows()
+    batch14_seat_audit = audit_batch14_seat()
+    batch16_gold_e_rows, batch16_recycled_audit_raw = (
+        build_batch16_gold_e_rows()
+    )
+    batch16_recycled_audit = {
+        key: value
+        for key, value in batch16_recycled_audit_raw.items()
+        if not key.startswith("_")
+    }
+    del batch16_recycled_audit_raw
     gold_e_value_source_rows = [
         *materialized_table_rows,
         *batch11_gold_e_rows,
+        *batch13_gold_e_rows,
+        *batch14_gold_e_rows,
+        *batch16_gold_e_rows,
     ]
     smipoly_candidate_rows = build_candidate_rows(SMIPOLY_CANDIDATE_INPUT)
     _, purgen_candidate_rows = build_purgen_fragment_rows(PURGEN_ARCHIVE)
@@ -3142,8 +3448,10 @@ def main() -> None:
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 70:
-        raise AssertionError(f"v0.2来源画像必须覆盖70个目录，当前为{len(profiles)}")
+    if len(profiles) != 74:
+        raise AssertionError(
+            f"v0.2来源画像必须覆盖74个目录，当前为{len(profiles)}"
+        )
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
@@ -3172,13 +3480,27 @@ def main() -> None:
         candidate_rows,
         materialized_table_rows,
     )
-    gold_c_value_rows, gold_c_value_metadata = (
+    (
+        gold_c_value_rows,
+        gold_c_value_metadata,
+        batch15_multiscale_audit,
+    ) = (
         _gold_c_computational_value_rows(
             all_profiles, identities, acs_table_rows
         )
     )
     gold_e_table_rows, gold_e_table_metadata = _gold_e_table_value_rows(
-        gold_e_value_source_rows, identities
+        gold_e_value_source_rows,
+        all_profiles,
+        identities,
+        scope_config,
+    )
+    del (
+        gold_e_value_source_rows,
+        batch11_gold_e_rows,
+        batch13_gold_e_rows,
+        batch14_gold_e_rows,
+        batch16_gold_e_rows,
     )
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
@@ -3201,6 +3523,10 @@ def main() -> None:
         batch11_existing_scalar_audit
     )
     summary["batch12_pufoam_audit"] = audit_batch12_pufoam()
+    summary["batch13_date_seed_oil_pu_pir_audit"] = batch13_date_seed_audit
+    summary["batch14_pu_seat_audit"] = batch14_seat_audit
+    summary["batch15_multiscale_pu_audit"] = batch15_multiscale_audit
+    summary["batch16_recycled_pu_foam_audit"] = batch16_recycled_audit
     _validate(ledger, manifest, summary)
     _write_gzip_csv(
         OUTPUT_GOLD_C_VALUES,
@@ -3229,7 +3555,7 @@ def main() -> None:
     )
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.13",
+        "artifact_version": "trainable-inventory-v0.2.15",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],
@@ -3242,6 +3568,45 @@ def main() -> None:
             "format": "csv.gz",
             "row_count": len(manifest),
             "sha256": _sha256_file(OUTPUT_MANIFEST),
+        },
+        "gold_reference_artifacts": {
+            "Gold-V": {
+                "path": _to_relative(OUTPUT_CANDIDATES),
+                "format": "csv.gz",
+                "row_count": len(candidate_rows),
+                "sha256": _sha256_file(OUTPUT_CANDIDATES),
+                "artifact_role": "virtual_candidate_reference",
+            },
+            "Gold-C": {
+                "path": _to_relative(OUTPUT_GOLD_C_VALUES),
+                "format": "csv.gz",
+                "row_count": gold_c_value_metadata["row_count"],
+                "sha256": _sha256_file(OUTPUT_GOLD_C_VALUES),
+                "artifact_role": "computational_numeric_context_reference",
+                "batch15_input_descriptor_count": (
+                    gold_c_value_metadata[
+                        "batch15_multiscale_input_descriptor_count"
+                    ]
+                ),
+                "batch15_performance_output_count": (
+                    gold_c_value_metadata[
+                        "batch15_multiscale_performance_output_count"
+                    ]
+                ),
+            },
+            "Gold-E": {
+                "path": _to_relative(OUTPUT_GOLD_E_TABLES),
+                "format": "csv.gz",
+                "row_count": gold_e_table_metadata["row_count"],
+                "sha256": _sha256_file(OUTPUT_GOLD_E_TABLES),
+                "artifact_role": "experimental_observation_reference",
+                "admitted_reference_count": gold_e_table_metadata[
+                    "admitted_reference_count"
+                ],
+                "conditional_reference_count": gold_e_table_metadata[
+                    "conditional_reference_count"
+                ],
+            },
         },
     }
     _atomic_write_text(

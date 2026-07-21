@@ -23,6 +23,7 @@ REQUIRED_COLUMNS = {
     "structure_identity_status",
     "global_structure_family_key",
     "simulation_key",
+    "split_group",
     "property_name",
     "value",
     "unit",
@@ -33,6 +34,7 @@ REQUIRED_COLUMNS = {
     "press",
     "gold_admission_status",
     "property_admission_status",
+    "source_validation_status",
     "record_role",
     "potential_weight_ceiling",
     "current_weight_materialized",
@@ -51,6 +53,8 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
     source_counts: Counter[str] = Counter()
     source_admission_counts: Counter[tuple[str, str]] = Counter()
     method_counts: Counter[str] = Counter()
+    record_role_counts: Counter[tuple[str, str]] = Counter()
+    role_admission_counts: Counter[tuple[str, str, str]] = Counter()
     unit_status_counts: Counter[str] = Counter()
     unit_admission_counts: Counter[tuple[str, str]] = Counter()
     structure_keys: dict[str, set[str]] = defaultdict(set)
@@ -76,6 +80,10 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
                 (source_id, row["gold_admission_status"])
             ] += 1
             method_counts[row["method_family"]] += 1
+            record_role_counts[(source_id, row["record_role"])] += 1
+            role_admission_counts[
+                (source_id, row["record_role"], row["gold_admission_status"])
+            ] += 1
             unit_status_counts[row["unit_status"]] += 1
             unit_admission_counts[
                 (row["unit_status"], row["property_admission_status"])
@@ -96,12 +104,22 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
                     "process_system_identity_only"
                 )
                 assert key == "family_pufoam_generic_nco_oh_water_npentane"
+            elif source_id == "source_figshare_ma5c03283_si":
+                assert row["structure_identity_status"] == (
+                    "coarse_grained_component_family_only_exact_atomistic_graph_unresolved"
+                )
+                assert key.startswith("family_multicomponent_pu_")
             else:
                 assert row["structure_identity_status"] == (
                     "formulation_label_with_molar_ratio_link_no_single_smiles"
                 )
                 assert key.startswith("global_formulation_system_")
             assert row["simulation_key"]
+            assert row["split_group"]
+            if source_id == "source_mendeley_pufoam_v1":
+                assert row["split_group"] == row["simulation_key"]
+            else:
+                assert row["split_group"] == key
             assert row["unit"]
             assert row["method_detail"]
             assert row["fidelity_level"]
@@ -111,10 +129,18 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
             assert row["source_locator"]
             assert row["citation_keys"]
             ceiling = float(row["potential_weight_ceiling"])
-            if source_id == "source_mendeley_pufoam_v1":
+            if source_id in {
+                "source_mendeley_pufoam_v1",
+                "source_figshare_ma5c03283_si",
+            }:
                 assert 0 <= ceiling <= 0.30
             else:
                 assert 0 <= ceiling <= 0.25
+            if source_id == "source_figshare_ma5c03283_si":
+                if row["record_role"].endswith("input_descriptor"):
+                    assert ceiling == 0.0
+                else:
+                    assert row["record_role"].endswith("output")
             if source_id != "source_omg_batch10":
                 non_omg_observation_ids.add(row["observation_id"])
             if row["property_name"] == "thermal_conductivity":
@@ -137,6 +163,8 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
         "source_counts": source_counts,
         "source_admission_counts": source_admission_counts,
         "method_counts": method_counts,
+        "record_role_counts": record_role_counts,
+        "role_admission_counts": role_admission_counts,
         "unit_status_counts": unit_status_counts,
         "unit_admission_counts": unit_admission_counts,
         "structure_keys": structure_keys,
@@ -150,8 +178,8 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
 def test_gold_c_long_table_contains_real_finite_source_values(
     generated_gold_c: dict,
 ):
-    assert generated_gold_c["row_count"] == 1_415_788
-    assert generated_gold_c["non_omg_observation_id_count"] == 223_888
+    assert generated_gold_c["row_count"] == 1_415_903
+    assert generated_gold_c["non_omg_observation_id_count"] == 224_003
     assert generated_gold_c["source_counts"] == {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209_905,
@@ -159,6 +187,7 @@ def test_gold_c_long_table_contains_real_finite_source_values(
         "source_mendeley_pufoam_v1": 9_014,
         "source_omg_batch10": 1_191_900,
         "source_openpolymer_challenge_v1": 4_524,
+        "source_figshare_ma5c03283_si": 115,
     }
     assert {
         "DFT",
@@ -167,6 +196,7 @@ def test_gold_c_long_table_contains_real_finite_source_values(
         "MD-derived",
         "CFD-PBE-QMOM",
         "computational-protocol",
+        "DFT-AA-MD-reactive-CG",
     } <= set(generated_gold_c["method_counts"])
     assert (
         generated_gold_c["unit_status_counts"][
@@ -189,6 +219,38 @@ def test_gold_c_long_table_contains_real_finite_source_values(
     assert admissions[
         ("source_mendeley_pufoam_v1", "conditional_reference")
     ] == 4_721
+    assert admissions[
+        ("source_figshare_ma5c03283_si", "admitted_reference")
+    ] == 98
+    assert admissions[
+        ("source_figshare_ma5c03283_si", "conditional_reference")
+    ] == 17
+    roles = generated_gold_c["record_role_counts"]
+    assert sum(
+        count
+        for (source_id, role), count in roles.items()
+        if source_id == "source_figshare_ma5c03283_si"
+        and role.endswith("input_descriptor")
+    ) == 68
+    assert sum(
+        count
+        for (source_id, role), count in roles.items()
+        if source_id == "source_figshare_ma5c03283_si"
+        and role.endswith("output")
+    ) == 47
+    output_admissions = Counter()
+    for (source_id, role, admission), count in generated_gold_c[
+        "role_admission_counts"
+    ].items():
+        if (
+            source_id == "source_figshare_ma5c03283_si"
+            and role.endswith("output")
+        ):
+            output_admissions[admission] += count
+    assert output_admissions == {
+        "admitted_reference": 34,
+        "conditional_reference": 13,
+    }
 
 
 def test_polyomics_property_gate_preserves_failed_thermal_values_as_conditional(
@@ -301,7 +363,7 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
             "multifidelity_gold_c_reference_not_training_dataset"
         ),
         "path": "结果/Gold_C_计算性能.csv.gz",
-        "row_count": 1_415_788,
+        "row_count": 1_415_903,
         "source_value_counts": {
             radon_id: 440,
             polyomics_id: 209_905,
@@ -309,9 +371,13 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
             "source_mendeley_pufoam_v1": 9_014,
             "source_omg_batch10": 1_191_900,
             "source_openpolymer_challenge_v1": 4_524,
+            "source_figshare_ma5c03283_si": 115,
         },
         "cross_source_overlap_structure_count": 11,
         "cross_source_overlap_polyomics_record_count": 58,
+        "batch15_multiscale_numeric_context_count": 115,
+        "batch15_multiscale_input_descriptor_count": 68,
+        "batch15_multiscale_performance_output_count": 47,
         "current_weight_materialized": False,
     }
 

@@ -16,7 +16,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
-    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.17"
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.19"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -83,6 +83,7 @@ def test_observation_identity_keys_cannot_be_inferred_as_split_keys():
     policy = _load(POLICY_PATH)
     semantics = policy["source_override_key_semantics"]
 
+    assert semantics["gold_c_reference_view_split_group_materialized"] is True
     assert semantics["split_group_keys_required_before_materialization"] is True
     assert semantics["infer_split_group_from_group_keys"] is False
     assert semantics["missing_split_group_action"] == "block_weight_and_split_materialization"
@@ -249,6 +250,11 @@ def test_every_source_override_resolves_to_a_declared_scope_and_mirror_is_zero()
         "scope_mendeley_2sp8fyvhfm_v3",
         "scope_bath_00385_dataset",
         "scope_zenodo_21096098_dataset",
+        "scope_mendeley_xs78ch5jb7_v3",
+        "scope_mendeley_pu_seat_raw_v2",
+        "scope_mendeley_pu_seat_processed_v2",
+        "scope_figshare_ma5c03283_si",
+        "scope_zenodo_5713819_recycled_pu_foam",
     } <= override_keys
 
     caps = policy["cross_source_equivalence_caps"]
@@ -365,6 +371,51 @@ def test_every_source_override_resolves_to_a_declared_scope_and_mirror_is_zero()
     ] == 0.0
     assert vitrimer["task_specific_ceilings"][
         "toughness_declared_unit_or_scale_conflict"
+    ] == 0.0
+    date_seed = by_scope["scope_mendeley_xs78ch5jb7_v3"]
+    assert date_seed["base_weight_ceiling"] == 0.60
+    assert date_seed["split_group_keys"] == [
+        "publication_family",
+        "final_formulation",
+    ]
+    assert date_seed["task_specific_ceilings"][
+        "mechanical_curve_with_unresolved_axis_unit_or_protocol"
+    ] == 0.0
+
+    seat_raw = by_scope["scope_mendeley_pu_seat_raw_v2"]
+    seat_processed = by_scope["scope_mendeley_pu_seat_processed_v2"]
+    expected_seat_family = [
+        "scope_mendeley_pu_seat_raw_v2",
+        "scope_mendeley_pu_seat_processed_v2",
+    ]
+    assert seat_raw["shared_family_scope_keys"] == expected_seat_family
+    assert seat_processed["shared_family_scope_keys"] == expected_seat_family
+    assert seat_raw["split_group_keys"] == seat_processed["split_group_keys"] == [
+        "publication_family",
+        "material_system_label",
+    ]
+    assert seat_raw["task_specific_ceilings"][
+        "direct_absolute_stress_supervision"
+    ] == 0.0
+    assert seat_processed["task_specific_ceilings"][
+        "crosslink_density_with_missing_unit"
+    ] == 0.0
+
+    multiscale = by_scope["scope_figshare_ma5c03283_si"]
+    assert multiscale["base_weight_ceiling"] == 0.30
+    assert multiscale["split_group_keys"] == ["global_structure_family_key"]
+    assert multiscale["task_specific_ceilings"][
+        "simulation_input_descriptor"
+    ] == 0.0
+    assert multiscale["task_specific_ceilings"][
+        "inferred_density_unit_output"
+    ] == 0.15
+
+    recycled = by_scope["scope_zenodo_5713819_recycled_pu_foam"]
+    assert recycled["base_weight_ceiling"] == 0.40
+    assert recycled["split_group_keys"] == ["source_family"]
+    assert recycled["task_specific_ceilings"][
+        "duplicated_thermal_workbook_or_out_of_range_compression_point"
     ] == 0.0
 
 

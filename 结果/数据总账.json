@@ -1,6 +1,6 @@
 {
   "schema_version": "v0.2",
-  "artifact_version": "trainable-inventory-v0.2.13",
+  "artifact_version": "trainable-inventory-v0.2.15",
   "artifact_status": "audit_inventory_only",
   "count_semantics": {
     "source_record_count": "来源报告的记录/容器级科学条目；不等于独立样本。",
@@ -53,9 +53,29 @@
       "sha256": "9f19e846cf8d686bba7e95ce50abcc9d18bd803c6d5c7baccf69d19346b66211"
     },
     {
+      "path": "代码/审计/第十三批日期籽油PU_PIR.py",
+      "bytes": 64849,
+      "sha256": "de1b0a3583d128235f6be323a88fd34f709de3a7170350347f7cd657ae63d24f"
+    },
+    {
       "path": "代码/审计/第十二批PUFoam.py",
-      "bytes": 36435,
-      "sha256": "5c4db8e3f4aa1fb624be47e31bb31f39346f6f08fe70a0cbf91a326111780d3b"
+      "bytes": 36721,
+      "sha256": "819f4eeca4178ba8f63e259ae91edc56066e0e7371f188480200b1bc44ba3f24"
+    },
+    {
+      "path": "代码/审计/第十五批多组分PU多尺度模拟.py",
+      "bytes": 26980,
+      "sha256": "f3b9f91f4b3f94d624105e293743f9e1179ee9e46afbc7d41f24d8bb05f7a62f"
+    },
+    {
+      "path": "代码/审计/第十六批再生PU泡沫.py",
+      "bytes": 43040,
+      "sha256": "09d021dcd60ddde663866c72f6dec6977215343ec56445130c7a9ce401cf0787"
+    },
+    {
+      "path": "代码/审计/第十四批PU汽车座椅.py",
+      "bytes": 47328,
+      "sha256": "86d3d156d1b7370788893347017d85df332dbf61b453b6cc05f901cb2d6bcb96"
     },
     {
       "path": "代码/审计/第十批ACS表格物化.py",
@@ -69,13 +89,13 @@
     },
     {
       "path": "代码/审计/第十批多保真物化.py",
-      "bytes": 38550,
-      "sha256": "edf8c53afa70fd7a96742e1d0750a3e6ce52818fa1aa8d1181976109889c9549"
+      "bytes": 38703,
+      "sha256": "1e611b577816fb12c86010552fef0cad53d27b0e9d2101c28cb0608ca9c28b28"
     },
     {
       "path": "代码/生成数据总账.py",
-      "bytes": 149459,
-      "sha256": "64704b625d575d6a5d757bea15b5e8776a2568628d514b65ec3a6ed5aad13843"
+      "bytes": 163795,
+      "sha256": "4c87c7a08fc48b8ad87c22f3583e3baa114b01bf2de32186f2e616989c69ddf4"
     },
     {
       "path": "数据/原始/外部数据/力学曲线/Schwarz2022_EPU40/内容审计摘要.json",
@@ -1023,6 +1043,76 @@
       "sha256": "c22b90a6af9a002a5c364ac84a2a83c828031814f6d56608c17cd86a70694f95"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Mendeley_元数据_v3.json",
+      "bytes": 3001,
+      "sha256": "fe3ae38dbc9770b2b1f2279763cfd550a4b9292673d1915ca008b553de55d7d2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Mendeley_文件清单_v3.json",
+      "bytes": 5287,
+      "sha256": "1adc9b263048c8782280ee345a6516db2f3651da6628382bd5c818af277cfbd2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Mendeley_版本清单.json",
+      "bytes": 178,
+      "sha256": "7ad0760bceb197bbc8ccbc1a0cd754ee0b10d87bc7590e012c03b4f1f8812667"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supplemental data 1.xlsx",
+      "bytes": 155964,
+      "sha256": "62c1a42c2f0a7948b88b5a2f0e19a9f57dc01fdba132ccc941de66a3ceb2e19e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supplemental data 2.rar",
+      "bytes": 14231,
+      "sha256": "1c50a33431f289f2dc4751bb36f634adf7eacbbcfbee8c144314304d6298a1aa"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supplemental data 3.xlsx",
+      "bytes": 199570,
+      "sha256": "d5f7c380d5e7316b6b3841f268676cd4f3ef7e8b5577e3130bd8591dc33b0034"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supplemental data 4.xlsx",
+      "bytes": 265470,
+      "sha256": "5f5ad0c4f510962deada8f96360480189369183828129f6fc3d8fb49be04c700"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supplemental data 5.xlsx",
+      "bytes": 257708,
+      "sha256": "627374459dabeee633cbe401e22799f963e17d6b4558cb2ba4a189e20ca486e2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supplemental data 6.xlsx",
+      "bytes": 902298,
+      "sha256": "f3cf0a7058ffec498a9321ba2b5a93ccd13fe394bce40becac62e929e4b49ba2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Supporting Information.pdf",
+      "bytes": 1433624,
+      "sha256": "b1b21246555a02b1620356a748a908d936d1e02a1701acbc86c38f26799d18a3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/内容审计摘要.json",
+      "bytes": 24233,
+      "sha256": "800cc2f86d8e08ad99e7ab56aa404421a4806e97babf337f50ce29acb080658d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/文件校验清单.tsv",
+      "bytes": 2241,
+      "sha256": "06b58597fa386dca32456502a46623c1b956af51c2964ff6635a7ee4957a886d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/来源说明.md",
+      "bytes": 4384,
+      "sha256": "f8154fd12ff8773140e272490cb17f9fca3ada92da9fbe0b7bc7888fe12caefe"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/论文Crossref元数据.json",
+      "bytes": 21891,
+      "sha256": "65af1c1d7eafa24a522ee932e066fbc018714bf1d1135ae692fca9d8844a680a"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/PUFoam.tar.gz",
       "bytes": 8252834,
       "sha256": "64e0a24689b8b9dcb8046ed9b3730ae6666180991bc40f75971b69ef56b63b84"
@@ -1036,6 +1126,606 @@
       "path": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/论文Crossref元数据.json",
       "bytes": 8151,
       "sha256": "92b4afb7e000759c7267ffb928e6382c10d095b6405705acd5d1523e2f03b945"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/Figshare官方元数据.json",
+      "bytes": 9187,
+      "sha256": "400e3467ebb67e1130770330804d0f94b10e02e045e3430f03ac2399a939b685"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/内容审计摘要.json",
+      "bytes": 3345,
+      "sha256": "e0a4247107ee0abac167eb069097d7954f3e29d4eb58f150c4fe9a0714d61cda"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/多组分PU多尺度模拟补充数据.pdf",
+      "bytes": 1861266,
+      "sha256": "16b5847bcf222e9c54a5b1e566b82c65fa259e9764e90d85be01dda26167833d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/文件校验清单.tsv",
+      "bytes": 621,
+      "sha256": "00737c7e1ad4b975652c132d22e7b3613a0a1b11fee8c54f06769b4a80b85b4d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/来源说明.md",
+      "bytes": 2180,
+      "sha256": "48db019dd2e437e1d5f4b21296ca6c34cbb26febef95081d6ca19f6e90725d73"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/论文Crossref元数据.json",
+      "bytes": 8459,
+      "sha256": "31a5e57c095670b965f13889d0db42d2471ef6e5fb7da571d1bab90138141751"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/row data for _Sustainable insulating foams_3.rar",
+      "bytes": 3857900,
+      "sha256": "23d0c39729b2aabff631a64239ae0bda8377f2bfd47cce25b52dc96197204a78"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/内容审计摘要.json",
+      "bytes": 7369,
+      "sha256": "6f397685b7b0f139dde0da4cacd9b9aa9d5e4316102975fd7b821faf2b8d0509"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/PU foam CDW powder micrography 001.jpg",
+      "bytes": 2252449,
+      "sha256": "a53c18222646b1eeec69f98e14de95fb4214e33c3178c85deddf03066211f773"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/PU foam CDW_FTIR.txt",
+      "bytes": 71021,
+      "sha256": "4664203be93484d7a5dd938bf083bce7f4928a0f87f5d0d5ab2463ef604dcff6"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_1.csv",
+      "bytes": 76345,
+      "sha256": "8e1909603aa70cd18f43a27a67833982e050bda0bf0374a8f483ce056b688cde"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_10.csv",
+      "bytes": 75017,
+      "sha256": "669164a2f96d9d6a2e1c038ae46edc75dd061d1115c1053347781199f4d66117"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_11.csv",
+      "bytes": 76254,
+      "sha256": "f08532cc1ee6a0a92cc3e5d484ebede4711d27856fe5bc97335c711d12c7a744"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_2.csv",
+      "bytes": 80681,
+      "sha256": "0b5c3953e9f6ffef43d8e5d275e88ba4b5bd31e4d2945349452c05ce755f71e7"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_3.csv",
+      "bytes": 81438,
+      "sha256": "d98a2e892fe8cb82e66eae2696417d61b20b3dd2a0864ab85bcccd66ddff7612"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_4.csv",
+      "bytes": 80076,
+      "sha256": "22f3e9df2dd57a7c3f41d7bb0651a7afe69645b62405f6145edd6dcb16a8804e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_5.csv",
+      "bytes": 79140,
+      "sha256": "2f1408e49651b65cfb200ae8f45442d204013de75e5b0416cc698d4c1036d4da"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_6.csv",
+      "bytes": 78425,
+      "sha256": "07d43357b680e38320fe825e11b1a21a405ad5e4477272dd6caaaf3c0902e146"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_7.csv",
+      "bytes": 103755,
+      "sha256": "fc04fd01717fb33e3eefe90c47a4c34a283acd17f72f3f4bc05e410b199edd71"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_8.csv",
+      "bytes": 81476,
+      "sha256": "d28a9ab58a25f846cdc5629ed46469f6a23a9846e886f4803ce266f9c19fa09c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_compression_RawData/RPUF1_compression_Specimen_9.csv",
+      "bytes": 81171,
+      "sha256": "a5e9129d8c97c64b35b02a568a1af2906018372949110936ec2f82fb43eb98f1"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF00_thermal conductivity.xlsx",
+      "bytes": 9647,
+      "sha256": "ba11226f7651bf615c66643d9e9de058483d0f6cf8a2e52e3d72f18f69d40b50"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_compression_RawData/RPUF2_compression_Specimen_1.csv",
+      "bytes": 82497,
+      "sha256": "4389a9cf11a768aac6b34c1cddaa5090085004ee3c8a144d62e469ef8f12f0d6"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_compression_RawData/RPUF2_compression_Specimen_2.csv",
+      "bytes": 82663,
+      "sha256": "6cfbda510d54ef2e1aa0caa774cdec046dc14fd9ee15b18a10e9c8a12c3b58a7"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_compression_RawData/RPUF2_compression_Specimen_3.csv",
+      "bytes": 82972,
+      "sha256": "68945e70696121eba9695b1af58b78cd9aff2984fefbdee7870d343288439fdf"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_compression_RawData/RPUF2_compression_Specimen_4.csv",
+      "bytes": 82242,
+      "sha256": "76d44755333cfe093e93e59c1faec151c33b86e2bcebc930db1f313e756609c3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_compression_RawData/RPUF2_compression_Specimen_5.csv",
+      "bytes": 78475,
+      "sha256": "d7d11c4d2cd16ae26eec185d5a856fcf9ec73ed0954325f84f2397a55a912c48"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_compression_RawData/RPUF2_compression_Specimen_6.csv",
+      "bytes": 82085,
+      "sha256": "a6af4b019beedae39f65a5857579e46501b27f66548a29a70b07b933079c9505"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF15_thermal conductivity.xlsx",
+      "bytes": 10063,
+      "sha256": "fb0b2393ea2814cee05c97a89b1dde453089d470ce93ad06a8f3698a92a54968"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_compression_RawData/RPUF3_compression_Specimen_1.csv",
+      "bytes": 71028,
+      "sha256": "d6a654043110e28b390cd3e04bc0990c2bd8c4e20c728bc811710a2d37b05ad3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_compression_RawData/RPUF3_compression_Specimen_2.csv",
+      "bytes": 70436,
+      "sha256": "76d3f08c765b080cd582e302ec626180ebcfedf364f17675176d5af7632ea4c0"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_compression_RawData/RPUF3_compression_Specimen_3.csv",
+      "bytes": 70848,
+      "sha256": "687b467dc17f8a8d85caf61d8070b86384fbcb485e5ea716e443455489389bf3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_compression_RawData/RPUF3_compression_Specimen_4.csv",
+      "bytes": 65802,
+      "sha256": "04393cca7f6c5e695c6069a8e90154cd22b7e2b00be91be8701f761aecdc59f0"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_compression_RawData/RPUF3_compression_Specimen_5.csv",
+      "bytes": 64762,
+      "sha256": "287037080bde3211a25eb58dd4cc83f3b145d84cba951e8af3f892e48ab665eb"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_compression_RawData/RPUF3_compression_Specimen_6.csv",
+      "bytes": 67068,
+      "sha256": "0d0dd2db3fdc052284fe76d97956450fb47858d14cdce2366f5532468ceacbd1"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF30_thermal conductivity.xlsx",
+      "bytes": 9647,
+      "sha256": "87d57b1a3e15ab8304e71ed0f9acebe0ab3595a354e5d3dcfc1bf200fae32307"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_compression_RawData/RPUF4_compression_Specimen_1.csv",
+      "bytes": 80619,
+      "sha256": "6f2698aea7715215261454893e58a7ab3b1c6ece580ae900f70da74a80f043ec"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_compression_RawData/RPUF4_compression_Specimen_2.csv",
+      "bytes": 80184,
+      "sha256": "ea701ad49813b05a589ef01924928bf2ace29e1f7bf47b025b9d6730de89f4d4"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_compression_RawData/RPUF4_compression_Specimen_3.csv",
+      "bytes": 80883,
+      "sha256": "70648efc4f940943c27a6eb1f5f428d24c1062b8b159b6f091dc7ba5e0c8a59e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_compression_RawData/RPUF4_compression_Specimen_4.csv",
+      "bytes": 80915,
+      "sha256": "cc4e0bbc7d95a4a2a1ebf25c8d75b2a6ea61a5e97cba3294f9f77cfcc53cee11"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_compression_RawData/RPUF4_compression_Specimen_5.csv",
+      "bytes": 80743,
+      "sha256": "f6f273ef39b5d4cfe0eea87ad427fba0265c484d0ecbfc407eb670f7fb8f209f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_compression_RawData/RPUF4_compression_Specimen_6.csv",
+      "bytes": 81719,
+      "sha256": "a9acd157dd10bf1ccb89e6c890235fbb10a4b6d9e94a1a0858f466d6232c2aba"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF45_thermal conductivity.xlsx",
+      "bytes": 9668,
+      "sha256": "e77bc2dda8be82be92dc84c67969ef22fcbc5bf322f7cd6d06b93742db433409"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF60_compression_RawData/RPUF5_compression_Specimen_1.csv",
+      "bytes": 64523,
+      "sha256": "2567724d0cc1326b81c231793d128b885491d307561631dbcdf183a243788081"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF60_compression_RawData/RPUF5_compression_Specimen_2.csv",
+      "bytes": 68940,
+      "sha256": "c5240269da05a9d3d9a5fb354b77be07b083ce7eb055f16fe4fbbbb8e57bfb24"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF60_compression_RawData/RPUF5_compression_Specimen_3.csv",
+      "bytes": 61985,
+      "sha256": "e56008fbba827badcb23a435974f420e1d1b48cc0d53c1d6fd2a706a7a9e3536"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF60_compression_RawData/RPUF5_compression_Specimen_4.csv",
+      "bytes": 62958,
+      "sha256": "ec7c1dae0be6fcf4c1055bed3f001cfda901ca5e5ea8c5af3f35cf5710c2bd1a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF60_compression_RawData/RPUF5_compression_Specimen_5.csv",
+      "bytes": 65670,
+      "sha256": "6c48f85048e8a7cd783ad8d1704eb6e7329c1e3c3e43389090913bc6d311c2ae"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF60_compression_RawData/RPUF5_compression_Specimen_6.csv",
+      "bytes": 67159,
+      "sha256": "10476f7bfdd6fdc4310f1ea455e6567b93a28052ba379db4b068f9b86f9b1a33"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF_viscosity_RawData/RPUF00_viscosty.xlsx",
+      "bytes": 10799,
+      "sha256": "e971ad95716e4a6283d3cca8e0f9f6258132223e7f718941abe8e324a956783a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF_viscosity_RawData/RPUF15_viscosty.xlsx",
+      "bytes": 10891,
+      "sha256": "b54439a4f52cb276df4b359bbf8376001e38fcd3d4fc56f7eb7d399fe3119c53"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF_viscosity_RawData/RPUF30_viscosty.xlsx",
+      "bytes": 10810,
+      "sha256": "be0f0452805fa66a111ea9a1e06790a580460c24e9c8def5be31a1eefcd2b9f8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF_viscosity_RawData/RPUF45_viscosty.xlsx",
+      "bytes": 10828,
+      "sha256": "779ca5405fad8c28cd72a122cb304d63dee30a5fe6f6c7bc97bfe48db5254263"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/RPUF_viscosity_RawData/RPUF60_viscosty.xlsx",
+      "bytes": 10538,
+      "sha256": "17cf98c0dcea5121f192c611323769e1ffacb2d7a1e4cc0dfc09519fe27aedfa"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_compression_RawData/SPUF1_compression_Specimen__1.csv",
+      "bytes": 74615,
+      "sha256": "7a310a583287dfcaec3278234f5783c1bf5637be62e94601feca8e6ce2cf4e53"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_compression_RawData/SPUF1_compression_Specimen__2.csv",
+      "bytes": 70901,
+      "sha256": "c8610d5055f95307a971df05be83049e59b2588c4178ee025edd510580eda216"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_compression_RawData/SPUF1_compression_Specimen__3.csv",
+      "bytes": 74235,
+      "sha256": "bc4661bef1f72b5f890dd12f1202a32df5d7d4c75e0ec851cf6b9c41e5421ebc"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_compression_RawData/SPUF1_compression_Specimen__4.csv",
+      "bytes": 74216,
+      "sha256": "7a2629873968b4822ed2145c96e133474c707490d511fca8982f4e688c4db62a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_compression_RawData/SPUF1_compression_Specimen__5.csv",
+      "bytes": 74526,
+      "sha256": "3d797d7f0e20d2a20e1d4c0db5656f35f7777e76f05dbaa856bde2e0d72ad9d4"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_compression_RawData/SPUF1_compression_Specimen__6.csv",
+      "bytes": 74691,
+      "sha256": "f411cf99c85f0b1c8c36a54c6818e23f08640ebc2aacfb949ae32fc70298ea9d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF00_thermal conductivity.xlsx",
+      "bytes": 9601,
+      "sha256": "384567f65dd409a631a7a4df7a8422f587309bbdb7e3aae2cd58ab31578d5fcb"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_compression_RawData/SPUF2_compression_Specimen__1.csv",
+      "bytes": 75712,
+      "sha256": "86b0c26fc4ef1b63b3f009d068a639600137a712a9c7b64a49331fffb7cea4ad"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_compression_RawData/SPUF2_compression_Specimen__2.csv",
+      "bytes": 75815,
+      "sha256": "4b03132cd5b8d8075fd9a70c56e26f7a1e62c7c6ed172672e4b3abf1d8813455"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_compression_RawData/SPUF2_compression_Specimen__3.csv",
+      "bytes": 74876,
+      "sha256": "8dae83df45415a1b12f835c23c58254c242c545cbfa6ca0cb72d09d2fd355408"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_compression_RawData/SPUF2_compression_Specimen__4.csv",
+      "bytes": 75919,
+      "sha256": "b63f8701471d0221e0d86f77bb0ef1d584ea0a28f1654aa086422c0847710f64"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_compression_RawData/SPUF2_compression_Specimen__5.csv",
+      "bytes": 75028,
+      "sha256": "0d35273ec8640bf727e82c7d62692451f99e78e710d5f086d199f2befa9b75a8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_compression_RawData/SPUF2_compression_Specimen__6.csv",
+      "bytes": 76137,
+      "sha256": "1b1350ee52fcea6a537fac7af0a8884b7af2347c1479a24f98c18a8b96fa569d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF15_thermal conductivity.xlsx",
+      "bytes": 9575,
+      "sha256": "7ee615c412c123b93dfc6ff2759690a1a6e93b15af44ba85b7a99d4c5e1db426"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_compression_RawData/SPUF3_compression_Specimen__1.csv",
+      "bytes": 80725,
+      "sha256": "313ed76584a18ac891ddd931089f5fc1405bacf80e336db94b4c501e72838e9e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_compression_RawData/SPUF3_compression_Specimen__2.csv",
+      "bytes": 80535,
+      "sha256": "fef2612734f46034b79a0696ef7316666c306a64df53ab066c551d65e2061f70"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_compression_RawData/SPUF3_compression_Specimen__3.csv",
+      "bytes": 79349,
+      "sha256": "e830ea853cf7c2717bf5594fb7693569b876fe08ba29958d28274144a7b1d931"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_compression_RawData/SPUF3_compression_Specimen__4.csv",
+      "bytes": 80215,
+      "sha256": "c99294d0739067710076ee55042517d64ae2bf23260087040a07f7964ec63a1e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_compression_RawData/SPUF3_compression_Specimen__5.csv",
+      "bytes": 77797,
+      "sha256": "ea07e6ba178690b09de11e01f4faef93e581caf51c97f8af237f450570e28615"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_compression_RawData/SPUF3_compression_Specimen__6.csv",
+      "bytes": 77157,
+      "sha256": "dff87e14c0dad866a17e4bffc70c40a43a34ff6e0f58f779c710e4b45a62fa98"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF30_thermal conductivity.xlsx",
+      "bytes": 10061,
+      "sha256": "337168346a9319adaf4cff042a2658acc9b4fe013f2ce96de9e7de8543717d38"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_compression_RawData/SPUF4_compression_Specimen_1.csv",
+      "bytes": 78118,
+      "sha256": "60ba3e9c343b592fc4a66e4e91ab4397808a72d6d570063f21d8a6aef65bf97a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_compression_RawData/SPUF4_compression_Specimen_2.csv",
+      "bytes": 77604,
+      "sha256": "1e00eb85aca996a415ba3ef87be1f7e826f9d410236f82b0a1e0ceb8a6cd13f1"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_compression_RawData/SPUF4_compression_Specimen_3.csv",
+      "bytes": 79393,
+      "sha256": "f6e4babdb639d6c80e0d1950c6a4d90983b6693718b4611531e699ac9dd451ba"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_compression_RawData/SPUF4_compression_Specimen_4.csv",
+      "bytes": 78422,
+      "sha256": "ff68fb1bb8a64137327b77d102b0b156ad42eec126a911752455c8d2ecedb606"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_compression_RawData/SPUF4_compression_Specimen_5.csv",
+      "bytes": 78056,
+      "sha256": "4180fb6307e267d6e69caabc46a77d6176d95ee21757c944745e8f7177057046"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_compression_RawData/SPUF4_compression_Specimen_6.csv",
+      "bytes": 78867,
+      "sha256": "4d9ccd6d26c0a9c0e2ece041114b2e0124e171871c8e923462069d87a3eea72b"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF45_thermal conductivity.xlsx",
+      "bytes": 10060,
+      "sha256": "23f1b133e11babb952f8c472b777f2909dd380aed3cef6e17ccaf7c10704af08"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF_viscosity_RawData/SPUF00_viscosty.xlsx",
+      "bytes": 10774,
+      "sha256": "282f63c66496cf613e1e5c6c1cf6264f0ed2926341bd3c4e829b446ddeb13561"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF_viscosity_RawData/SPUF15_viscosty.xlsx",
+      "bytes": 10873,
+      "sha256": "233298b1188c3dd974305b97cf89be947e2c35d2d8d40638ab7b8799d12531f1"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF_viscosity_RawData/SPUF30_viscosty.xlsx",
+      "bytes": 10770,
+      "sha256": "1b19d84eb6bd97524a5287272f1933d0d62f6a43137fbd6c295a6780d36a7a7b"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF_viscosity_RawData/SPUF45_viscosty.xlsx",
+      "bytes": 10819,
+      "sha256": "b8137c40f7ec23eb648e2e928715eb7733b8a9ed21de0b58be712eadecd7c260"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/SPUF_viscosity_RawData/SPUF60_viscosty.xlsx",
+      "bytes": 10808,
+      "sha256": "06c75c7adf221a0cc61218f9c21299f5c031308c57a2468bd60aa57a0213fa6d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/rigid PU foam_FTIR.txt",
+      "bytes": 69147,
+      "sha256": "bed0bbdaf62e6320c3f9c1afc5b53a6d14e8989ff3bfa4f32050491e650763a3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/row data for _Sustainable insulating foams_3/soft PU foam_FTIR.txt",
+      "bytes": 69155,
+      "sha256": "5eb2d7d249512e078e478e11f1796671b5af986b61756e0cb9fb9c4d49afa3bb"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/文件校验清单.tsv",
+      "bytes": 21711,
+      "sha256": "d84b8272a717e7ef7dbbe0286d4dfef04beeefaa3fd897fe7aafcb2f792c46f2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/来源说明.md",
+      "bytes": 567,
+      "sha256": "4216f247873bf72beee88319520f1d9b4de4db386df52e46941f88ef6251d3b2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/论文_10.12688_openreseurope.13288.2.pdf",
+      "bytes": 1465953,
+      "sha256": "95e32ae80b63afdbf144b002099d4e546e5bb2dfb49aae406ca645df7c02c0e4"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Crossref_论文元数据.json",
+      "bytes": 15211,
+      "sha256": "8d3588f04033846b072a96d564a96e030f2c4f3b35d7ea67616967d01280ce30"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/DataCite_原始数据集_v2_元数据.json",
+      "bytes": 4057,
+      "sha256": "892cde54f3206021953f197ab89fcfbf52e1435b37e5ec08a74ebae2c17c6242"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/DataCite_汇总数据集_v2_元数据.json",
+      "bytes": 4098,
+      "sha256": "f808ae29289ada01766134191cf4d22b17287da297103eb9b042a55c8ed31ee1"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Hard55kgf20181112002.dat",
+      "bytes": 192101,
+      "sha256": "10d28df5e554a8769b5e84762a7a0219686bfedef39655df951d61c3f713320a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Hardness, IHF, MIF, SF, H.L., and S.R..xlsx",
+      "bytes": 9950,
+      "sha256": "e9d0bdbddefff3eda582655c2b53f704c3b59c6d788bd13b80bd16c1ec260fd7"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Memory55kgf20181112001.dat",
+      "bytes": 184550,
+      "sha256": "46cd23d482f22e0d81ca2c067fc867e29ec2b1d2a9be1020caaaf1a610be7693"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Mendeley_原始数据集_v2_官方元数据.json",
+      "bytes": 14959,
+      "sha256": "edd28f95abc6ed347adb91662644e3735b2b5e2213fd2766d467b9a639ff6969"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Mendeley_汇总数据集_v2_官方元数据.json",
+      "bytes": 2704,
+      "sha256": "48695c3509e090d13957e37050b5b00ce4c8643a849b3de99309af10a80e6042"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Mid55kgf20181113001.dat",
+      "bytes": 192719,
+      "sha256": "9e0d5ab104fae72ad97ec917d4eb2480d37a8c38f5b48e2a427bafacba36cc22"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Soft55kgf20181112001.dat",
+      "bytes": 193495,
+      "sha256": "e24ada261c62a1cb1c4d503a05817f59c6609d1d1322359dd0ca0ac2d60bd47d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Technogel55kgf20181115001.dat",
+      "bytes": 174461,
+      "sha256": "7a1c5197fec58fe69337ddb3f5018a0dcf43999ce0f2e8a0395f92d6bc5e1f6d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Type A20180909009.dat",
+      "bytes": 28952,
+      "sha256": "41e9dbacbe7cd0d93542044181f3e13602a8376d0e99586f0e614676c5bf5409"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Type B20180909003.dat",
+      "bytes": 28290,
+      "sha256": "f2868d9e3e0eeed1569179ee8bbe9d5c0cea3e1aeab10240f541556dc16ac5b0"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Type C20180909006.dat",
+      "bytes": 27360,
+      "sha256": "477242e13d32c02c71f2e24454fccb35b050a816bb01724e6b4ae968856f29c4"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/Type D20180909006.dat",
+      "bytes": 28000,
+      "sha256": "cb13e07206d4d8f99ddc100536e1d356b0a94d0be00856a0a87f133fda3d2bf4"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/TypeA55kgf20181113002.dat",
+      "bytes": 192531,
+      "sha256": "0873b083d89fa27f6d5c8d1c2f9a133405b5b9fc1c2421c7c662f731b4204da2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/TypeB55kgf20181114001.dat",
+      "bytes": 192407,
+      "sha256": "41c9c78c9733ca654820f3aaeee78763690e13c243c15db6a1ce0b22fddd6648"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/TypeC55kgf20181114001.dat",
+      "bytes": 191946,
+      "sha256": "2c03eefd6530fd5cbd0afde75f5dd75f71f292bf1c4cce918f8d1a60a57cbb62"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/TypeD55kgf20181115001.dat",
+      "bytes": 198101,
+      "sha256": "0b7ec5c97f5defb239843c661f72d2c2cb81bcf4ddc11cc878b534758f939c8b"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/hard only20180909003.dat",
+      "bytes": 23300,
+      "sha256": "dafceebf6660a4cb6589b24a3d9bfbbb1c22a3713539268716afb5a99fd50876"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/memory foam20180913003.dat",
+      "bytes": 23388,
+      "sha256": "488c43c4fbe00047c558aed69fed51f8437c5a3142f0801871fb793fa09fd6cb"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/mid only20180909006.dat",
+      "bytes": 23234,
+      "sha256": "a621681c4309ce0fc40c94854ef94b439d0920e3063c149d2197d74739c844b5"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/soft only20180909003.dat",
+      "bytes": 23243,
+      "sha256": "4b9ae57153d408097aa7aa2f0a5fb7db900fd35743d526b79c4ea4852cdcc764"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/technogel20180918001.txt",
+      "bytes": 20043,
+      "sha256": "739cc336346adf97da4c04f87349f2865075a672f33c36a9824ba6dc1b4c0c85"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/内容审计摘要.json",
+      "bytes": 23856,
+      "sha256": "f7aca07ae0b4a5510127fd14477fd13de4768b9b60b738a361ea9455b2376ba8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/文件校验清单.tsv",
+      "bytes": 2883,
+      "sha256": "cc1324bf970e56687d1f7b3998caf8c5a2e607b236bb9694ca76410efb14dd50"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/来源说明.md",
+      "bytes": 3132,
+      "sha256": "ed9bc671a1159ad4e1d35de861ce7fda0f7ea170e0c55fbd839e61e820eaaa9c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/论文官方预览.pdf",
+      "bytes": 78295,
+      "sha256": "56c711ef392b29d79945820f8519dd438d0408e469e8d7a3e86392b842db0d21"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/原始/PUE643_YM-TS-EB.csv",
@@ -1189,13 +1879,18 @@
     },
     {
       "path": "配置/v0.2可训练样本总账来源画像.yaml",
-      "bytes": 96239,
-      "sha256": "83b10ad3c43ebecdbe1f33eb794d88ad17416a1c60a53cd49b3c643ce4bd9ff1"
+      "bytes": 104308,
+      "sha256": "d22e2be679698f2ef425fe6b375a25a70bb130f41b5a325a00097b1cdc978aa1"
+    },
+    {
+      "path": "配置/v0.2多保真准入与权重策略.yaml",
+      "bytes": 58299,
+      "sha256": "d912864cb3569a562cef551bf6b23cdb02b531318cc87376fc51ba1aaebe2fee"
     },
     {
       "path": "配置/v0.2来源范围.yaml",
-      "bytes": 302726,
-      "sha256": "6d3a4ef1b353ba664c802ffbd2a142cdb718874e1f9dc5e4d04aa67729dd1800"
+      "bytes": 324545,
+      "sha256": "6290f24cc23691bde190bc269da3d538509404a6095d02780864395fb025b1ec"
     }
   ],
   "enums": {
@@ -1242,63 +1937,63 @@
   },
   "summary": {
     "audit_as_of_utc": "2026-07-21T14:00:00Z",
-    "input_file_count": 234,
-    "input_fingerprint_sha256": "7f14e04c0e63f48d95b8a04d06cf9649e7030c5a46a7c24bbcf05bccb05dc108",
+    "input_file_count": 373,
+    "input_fingerprint_sha256": "282562155bcc027ba8878012d5107aa556ac4c6d563c38aceafe97e150925d75",
     "training_enabled": false,
     "training_split_created": false,
     "training_weight_materialized": false,
     "model_ready_record_count": 0,
-    "v0_2_source_directory_count": 70,
-    "v0_2_independent_source_identity_count": 69,
+    "v0_2_source_directory_count": 74,
+    "v0_2_independent_source_identity_count": 73,
     "local_backlog_source_directory_count": 4,
     "local_backlog_independent_source_identity_count": 4,
     "v0_1_frozen_baseline_source_count": 4,
-    "ledger_source_scope_count": 78,
-    "total_independent_source_contribution_count": 77,
+    "ledger_source_scope_count": 82,
+    "total_independent_source_contribution_count": 81,
     "source_quality_status_counts": {
       "仅验证": 14,
       "入选": 5,
-      "降权": 50,
+      "降权": 54,
       "隔离": 9
     },
     "source_gold_layer_counts": {
-      "Gold-C": 15,
-      "Gold-E": 43,
+      "Gold-C": 16,
+      "Gold-E": 46,
       "Gold-E+Gold-C": 9,
       "Gold-V": 3,
       "Not-Gold": 8
     },
     "source_gold_admission_status_counts": {
-      "admitted_reference": 58,
+      "admitted_reference": 62,
       "blocked": 3,
       "conditional_reference": 9,
       "evidence_only": 8
     },
-    "manifest_row_count": 133329,
+    "manifest_row_count": 133333,
     "manifest_granularity_counts": {
       "candidate": 117629,
       "curve": 2223,
       "evidence_group": 40,
       "run": 6784,
       "scalar": 6353,
-      "source": 78,
+      "source": 82,
       "specimen": 222
     },
     "manifest_quality_status_counts": {
       "仅验证": 19166,
       "入选": 422,
-      "降权": 113429,
+      "降权": 113433,
       "隔离": 312
     },
     "manifest_gold_layer_counts": {
-      "Gold-C": 7796,
-      "Gold-E": 7464,
+      "Gold-C": 7797,
+      "Gold-E": 7467,
       "Gold-E+Gold-C": 369,
       "Gold-V": 117632,
       "Not-Gold": 68
     },
     "manifest_gold_admission_status_counts": {
-      "admitted_reference": 124264,
+      "admitted_reference": 124268,
       "blocked": 294,
       "conditional_reference": 8703,
       "evidence_only": 68
@@ -1378,20 +2073,20 @@
     "known_origin_totals": {
       "experimental_only": {
         "specimen_count": {
-          "value": 1465,
-          "known_source_scope_count": 23
+          "value": 1524,
+          "known_source_scope_count": 25
         },
         "curve_count_observed": {
-          "value": 2665,
-          "known_source_scope_count": 41
+          "value": 2797,
+          "known_source_scope_count": 44
         },
         "curve_count_candidate": {
-          "value": 2485,
-          "known_source_scope_count": 41
+          "value": 2608,
+          "known_source_scope_count": 44
         },
         "point_count_observed": {
-          "value": 9545156,
-          "known_source_scope_count": 41
+          "value": 9781042,
+          "known_source_scope_count": 44
         }
       },
       "mixed_experiment_and_simulation": {
@@ -1434,24 +2129,28 @@
       "artifact_role": "normalized_computational_value_reference",
       "artifact_status": "multifidelity_gold_c_reference_not_training_dataset",
       "path": "结果/Gold_C_计算性能.csv.gz",
-      "row_count": 1415788,
+      "row_count": 1415903,
       "source_value_counts": {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209905,
         "ledger_source_106": 5,
         "source_mendeley_pufoam_v1": 9014,
+        "source_figshare_ma5c03283_si": 115,
         "source_omg_batch10": 1191900,
         "source_openpolymer_challenge_v1": 4524
       },
       "cross_source_overlap_structure_count": 11,
       "cross_source_overlap_polyomics_record_count": 58,
+      "batch15_multiscale_numeric_context_count": 115,
+      "batch15_multiscale_input_descriptor_count": 68,
+      "batch15_multiscale_performance_output_count": 47,
       "current_weight_materialized": false
     },
     "gold_e_published_table_long_table": {
-      "artifact_role": "normalized_experimental_scalar_reference",
+      "artifact_role": "normalized_experimental_observation_reference",
       "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
       "path": "结果/Gold_E_实验表格.csv.gz",
-      "row_count": 5230,
+      "row_count": 194461,
       "source_value_counts": {
         "ledger_source_118": 143,
         "ledger_source_106": 95,
@@ -1463,10 +2162,14 @@
         "source_nature_spore_filled_tpu_source_data": 144,
         "source_sheffield_21510876_v1": 755,
         "source_figshare_31550614_sls_tpu_lattice": 375,
-        "ledger_source_034": 186
+        "ledger_source_034": 186,
+        "source_mendeley_xs78ch5jb7_v3": 101645,
+        "source_mendeley_pu_seat_raw_v2": 73596,
+        "source_mendeley_pu_seat_processed_v2": 59,
+        "source_zenodo_5713819_recycled_pu_foam": 13931
       },
-      "admitted_reference_count": 2756,
-      "conditional_reference_count": 2474,
+      "admitted_reference_count": 14040,
+      "conditional_reference_count": 180421,
       "current_weight_materialized": false
     },
     "acs_table_materialization_audit": {
@@ -1598,6 +2301,7 @@
           "structure_identity_status",
           "global_structure_family_key",
           "simulation_key",
+          "split_group",
           "property_name",
           "value",
           "unit",
@@ -1720,7 +2424,7 @@
       "training_weight_materialized": false
     },
     "batch12_pufoam_audit": {
-      "audit_version": "batch12-pufoam-v2",
+      "audit_version": "batch12-pufoam-v3",
       "source_id": "source_mendeley_pufoam_v1",
       "dataset_doi": "10.17632/62ggzx623g.1",
       "paper_doi": "10.1016/j.cpc.2017.03.010",
@@ -2097,6 +2801,7 @@
           "unresolved": 100
         },
         "simulation_key_count": 1,
+        "split_group_count": 1,
         "time_points_are_independent_systems": false,
         "current_weight_materialized": false
       },
@@ -2104,6 +2809,1129 @@
         "ledger-161-karimi-2017-pufoam-data",
         "ledger-162-karimi-2017-pufoam-paper"
       ]
+    },
+    "batch13_date_seed_oil_pu_pir_audit": {
+      "ftir": {
+        "unique_curve_count": 10,
+        "unique_point_count": 18660,
+        "dso_polyol_equals_monitoring_4h": true,
+        "foam_combined_table_exact_matches": {
+          "S1": true,
+          "S2": true,
+          "S3": true,
+          "S4": true,
+          "S5": true
+        },
+        "duplicate_series_presentations_excluded": 6,
+        "duplicate_numeric_values_excluded": 11196
+      },
+      "nmr": {
+        "spectrum_peak_list_count": 4,
+        "peak_count": 109,
+        "counts_by_spectrum": {
+          "nmr_1H_date_seed_oil": 25,
+          "nmr_13C_date_seed_oil": 34,
+          "nmr_1H_dso_polyol": 19,
+          "nmr_13C_dso_polyol": 31
+        },
+        "full_spectrum_arrays_deposited": false,
+        "stray_formula_excluded": "CNMR OF Date seed oil!O6:=---R19"
+      },
+      "thermal": {
+        "unique_curve_count": 12,
+        "unique_observation_count": 14021,
+        "counts_by_modality": {
+          "dta_signal": 2682,
+          "tga_mass_signal": 4331,
+          "dtg_mass_rate": 2682,
+          "dsc_heat_flow": 4326
+        },
+        "dso_polyol_tga_equals_s2_tga": true,
+        "identity_conflict_observation_count": 2982,
+        "duplicate_series_presentations_excluded": 3,
+        "duplicate_numeric_values_excluded": 2982,
+        "source_native_mass_units": [
+          "%",
+          "ug"
+        ],
+        "mass_values_normalized_or_converted": false
+      },
+      "mechanical": {
+        "curve_count": 10,
+        "paired_stress_strain_point_count": 68819,
+        "curve_point_counts": {
+          "tensile_s1": 1584,
+          "tensile_s2": 1244,
+          "tensile_s3": 1260,
+          "tensile_s4": 1026,
+          "tensile_s5": 907,
+          "compressive_s1": 14982,
+          "compressive_s2": 12588,
+          "compressive_s3": 9829,
+          "compressive_s4": 12656,
+          "compressive_s5": 12743
+        },
+        "internal_missing_value_count": 0,
+        "ragged_terminal_padding_blank_cells": 14011,
+        "x_axis_semantics": "strain_from_sheet_title",
+        "x_axis_unit": "unresolved",
+        "y_axis_semantics": "stress_from_sheet_title",
+        "y_axis_unit": "unresolved",
+        "protocol_status": "not_present_in_deposited_workbooks_or_supporting_information",
+        "replicate_status": "not_reported"
+      },
+      "formulation": {
+        "final_formulation_count": 5,
+        "source_reported_scalar_count": 36,
+        "admitted_reference_count": 16,
+        "conditional_reference_count": 20,
+        "actual_preparation_amount_unit_status": "water_and_pmdi_basis_unresolved",
+        "method_a_b_values_are_final_used_values": false
+      },
+      "gold_e_observation_count": 101645,
+      "curve_and_peak_observation_count": 101609,
+      "source_reported_scalar_count": 36,
+      "unique_numeric_series_count": 36,
+      "raw_numeric_series_presentations_before_dedup": 45,
+      "duplicate_series_presentations_excluded": 9,
+      "duplicate_numeric_values_excluded": 14178,
+      "gold_admission_status_counts": {
+        "conditional_reference": 90481,
+        "admitted_reference": 11164
+      },
+      "counts_by_property": {
+        "compressive_stress_signal": {
+          "observations": 62798,
+          "series": 5
+        },
+        "dsc_heat_flow": {
+          "observations": 4326,
+          "series": 1
+        },
+        "dso_polyol_share": {
+          "observations": 5,
+          "series": 0
+        },
+        "dta_signal": {
+          "observations": 2682,
+          "series": 3
+        },
+        "dtg_mass_rate": {
+          "observations": 2682,
+          "series": 3
+        },
+        "ftir_source_native_signal": {
+          "observations": 18660,
+          "series": 10
+        },
+        "isocyanate_index": {
+          "observations": 5,
+          "series": 0
+        },
+        "nco_content": {
+          "observations": 1,
+          "series": 0
+        },
+        "nmr_peak_chemical_shift": {
+          "observations": 109,
+          "series": 4
+        },
+        "pmdi_amount_used": {
+          "observations": 5,
+          "series": 0
+        },
+        "pmdi_required_method_a": {
+          "observations": 5,
+          "series": 0
+        },
+        "pmdi_required_method_b": {
+          "observations": 5,
+          "series": 0
+        },
+        "polyester_polyol_share": {
+          "observations": 5,
+          "series": 0
+        },
+        "tensile_stress_signal": {
+          "observations": 6021,
+          "series": 5
+        },
+        "tga_mass_signal": {
+          "observations": 4331,
+          "series": 5
+        },
+        "water_amount": {
+          "observations": 5,
+          "series": 0
+        }
+      },
+      "independent_final_formulations": 5,
+      "independent_material_families": 1,
+      "explicit_physical_specimen_count": 0,
+      "explicit_replicate_group_count": 0,
+      "curve_points_counted_as_independent_samples": 0,
+      "training_weight_materialized": false
+    },
+    "batch14_pu_seat_audit": {
+      "audit_version": "batch14-pu-multilayer-seat-v1",
+      "source_family": {
+        "source_family_key": "family_moon_2020_pu_multilayer_seat",
+        "dataset_doi_count": 2,
+        "datasets_are_independent": false,
+        "same_publication_family": true,
+        "publication_doi": "10.1007/s12239-020-0102-z",
+        "independent_experiment_campaign_count": 1,
+        "material_system_count": 9,
+        "split_group_count": 9,
+        "raw_curve_points_are_independent_samples": false,
+        "processed_scalars_are_independent_replicates": false
+      },
+      "metadata": {
+        "raw_dataset": {
+          "source_id": "source_mendeley_pu_seat_raw_v2",
+          "doi": "10.17632/wtfkgk8k8r.2",
+          "version": 2,
+          "published": "2019-07-15T04:15:27.132Z",
+          "file_count": 18,
+          "bytes": 1938121,
+          "license": "CC BY 4.0"
+        },
+        "processed_dataset": {
+          "source_id": "source_mendeley_pu_seat_processed_v2",
+          "doi": "10.17632/jr5fddz5yk.2",
+          "version": 2,
+          "published": "2019-07-15T04:16:04.707Z",
+          "file_count": 1,
+          "bytes": 9950,
+          "license": "CC BY 4.0"
+        },
+        "publication": {
+          "doi": "10.1007/s12239-020-0102-z",
+          "title": "Study on Seating Comfort of Polyurethane Multilayer Seat Cushions",
+          "authors": [
+            "Moon",
+            "Sinha",
+            "Kwak",
+            "Ha",
+            "Oh"
+          ],
+          "journal": "International Journal of Automotive Technology",
+          "volume": "21",
+          "issue": "5",
+          "pages": "1089-1095",
+          "official_preview_pages": 1
+        }
+      },
+      "input_identity": [
+        {
+          "filename": "soft only20180909003.dat",
+          "bytes": 23243,
+          "sha256": "4b9ae57153d408097aa7aa2f0a5fb7db900fd35743d526b79c4ea4852cdcc764",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "mid only20180909006.dat",
+          "bytes": 23234,
+          "sha256": "a621681c4309ce0fc40c94854ef94b439d0920e3063c149d2197d74739c844b5",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "hard only20180909003.dat",
+          "bytes": 23300,
+          "sha256": "dafceebf6660a4cb6589b24a3d9bfbbb1c22a3713539268716afb5a99fd50876",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "memory foam20180913003.dat",
+          "bytes": 23388,
+          "sha256": "488c43c4fbe00047c558aed69fed51f8437c5a3142f0801871fb793fa09fd6cb",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "technogel20180918001.txt",
+          "bytes": 20043,
+          "sha256": "739cc336346adf97da4c04f87349f2865075a672f33c36a9824ba6dc1b4c0c85",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Type A20180909009.dat",
+          "bytes": 28952,
+          "sha256": "41e9dbacbe7cd0d93542044181f3e13602a8376d0e99586f0e614676c5bf5409",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Type B20180909003.dat",
+          "bytes": 28290,
+          "sha256": "f2868d9e3e0eeed1569179ee8bbe9d5c0cea3e1aeab10240f541556dc16ac5b0",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Type C20180909006.dat",
+          "bytes": 27360,
+          "sha256": "477242e13d32c02c71f2e24454fccb35b050a816bb01724e6b4ae968856f29c4",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Type D20180909006.dat",
+          "bytes": 28000,
+          "sha256": "cb13e07206d4d8f99ddc100536e1d356b0a94d0be00856a0a87f133fda3d2bf4",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Soft55kgf20181112001.dat",
+          "bytes": 193495,
+          "sha256": "e24ada261c62a1cb1c4d503a05817f59c6609d1d1322359dd0ca0ac2d60bd47d",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Mid55kgf20181113001.dat",
+          "bytes": 192719,
+          "sha256": "9e0d5ab104fae72ad97ec917d4eb2480d37a8c38f5b48e2a427bafacba36cc22",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Hard55kgf20181112002.dat",
+          "bytes": 192101,
+          "sha256": "10d28df5e554a8769b5e84762a7a0219686bfedef39655df951d61c3f713320a",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Memory55kgf20181112001.dat",
+          "bytes": 184550,
+          "sha256": "46cd23d482f22e0d81ca2c067fc867e29ec2b1d2a9be1020caaaf1a610be7693",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Technogel55kgf20181115001.dat",
+          "bytes": 174461,
+          "sha256": "7a1c5197fec58fe69337ddb3f5018a0dcf43999ce0f2e8a0395f92d6bc5e1f6d",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "TypeA55kgf20181113002.dat",
+          "bytes": 192531,
+          "sha256": "0873b083d89fa27f6d5c8d1c2f9a133405b5b9fc1c2421c7c662f731b4204da2",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "TypeB55kgf20181114001.dat",
+          "bytes": 192407,
+          "sha256": "41c9c78c9733ca654820f3aaeee78763690e13c243c15db6a1ce0b22fddd6648",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "TypeC55kgf20181114001.dat",
+          "bytes": 191946,
+          "sha256": "2c03eefd6530fd5cbd0afde75f5dd75f71f292bf1c4cce918f8d1a60a57cbb62",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "TypeD55kgf20181115001.dat",
+          "bytes": 198101,
+          "sha256": "0b7ec5c97f5defb239843c661f72d2c2cb81bcf4ddc11cc878b534758f939c8b",
+          "role": "raw_curve"
+        },
+        {
+          "filename": "Hardness, IHF, MIF, SF, H.L., and S.R..xlsx",
+          "bytes": 9950,
+          "sha256": "e9d0bdbddefff3eda582655c2b53f704c3b59c6d788bd13b80bd16c1ec260fd7",
+          "role": "supporting_evidence"
+        },
+        {
+          "filename": "Mendeley_原始数据集_v2_官方元数据.json",
+          "bytes": 14959,
+          "sha256": "edd28f95abc6ed347adb91662644e3735b2b5e2213fd2766d467b9a639ff6969",
+          "role": "supporting_evidence"
+        },
+        {
+          "filename": "Mendeley_汇总数据集_v2_官方元数据.json",
+          "bytes": 2704,
+          "sha256": "48695c3509e090d13957e37050b5b00ce4c8643a849b3de99309af10a80e6042",
+          "role": "supporting_evidence"
+        },
+        {
+          "filename": "DataCite_原始数据集_v2_元数据.json",
+          "bytes": 4057,
+          "sha256": "892cde54f3206021953f197ab89fcfbf52e1435b37e5ec08a74ebae2c17c6242",
+          "role": "supporting_evidence"
+        },
+        {
+          "filename": "DataCite_汇总数据集_v2_元数据.json",
+          "bytes": 4098,
+          "sha256": "f808ae29289ada01766134191cf4d22b17287da297103eb9b042a55c8ed31ee1",
+          "role": "supporting_evidence"
+        },
+        {
+          "filename": "Crossref_论文元数据.json",
+          "bytes": 15211,
+          "sha256": "8d3588f04033846b072a96d564a96e030f2c4f3b35d7ea67616967d01280ce30",
+          "role": "supporting_evidence"
+        },
+        {
+          "filename": "论文官方预览.pdf",
+          "bytes": 78295,
+          "sha256": "56c711ef392b29d79945820f8519dd438d0408e469e8d7a3e86392b842db0d21",
+          "role": "supporting_evidence"
+        }
+      ],
+      "material_systems": [
+        {
+          "system_key": "soft_puf",
+          "source_label": "Soft",
+          "system_identity": "single-layer soft polyurethane foam",
+          "identity_status": "source_material_class_resolved_grade_and_recipe_undisclosed",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=soft_puf",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "mid_puf",
+          "source_label": "Mid",
+          "system_identity": "single-layer medium-hardness polyurethane foam",
+          "identity_status": "source_material_class_resolved_grade_and_recipe_undisclosed",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=mid_puf",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "hard_puf",
+          "source_label": "Hard",
+          "system_identity": "single-layer hard polyurethane foam",
+          "identity_status": "source_material_class_resolved_grade_and_recipe_undisclosed",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=hard_puf",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "memory_foam",
+          "source_label": "Memory foam",
+          "system_identity": "single-layer commercial PU-based memory foam",
+          "identity_status": "source_material_class_resolved_grade_and_recipe_undisclosed",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=memory_foam",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "technogel",
+          "source_label": "Technogel",
+          "system_identity": "single-layer commercial PU-based technogel",
+          "identity_status": "source_material_class_resolved_grade_and_recipe_undisclosed",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=technogel",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "multilayer_type_a",
+          "source_label": "Type A",
+          "system_identity": "multilayer PU seat cushion, source label Type A",
+          "identity_status": "multilayer_source_label_only_layer_mapping_not_in_deposit",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=multilayer_type_a",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "multilayer_type_b",
+          "source_label": "Type B",
+          "system_identity": "multilayer PU seat cushion, source label Type B",
+          "identity_status": "multilayer_source_label_only_layer_mapping_not_in_deposit",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=multilayer_type_b",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "multilayer_type_c",
+          "source_label": "Type C",
+          "system_identity": "multilayer PU seat cushion, source label Type C",
+          "identity_status": "multilayer_source_label_only_layer_mapping_not_in_deposit",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=multilayer_type_c",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        },
+        {
+          "system_key": "multilayer_type_d",
+          "source_label": "Type D",
+          "system_identity": "multilayer PU seat cushion, source label Type D",
+          "identity_status": "multilayer_source_label_only_layer_mapping_not_in_deposit",
+          "split_group": "family_moon_2020_pu_multilayer_seat|system=multilayer_type_d",
+          "ifd_curve_count": 1,
+          "stress_relaxation_curve_count": 1,
+          "is_independent_experiment_family": false
+        }
+      ],
+      "curves": {
+        "curve_file_count": 18,
+        "curve_count": 18,
+        "ifd_curve_count": 9,
+        "stress_relaxation_curve_count": 9,
+        "ifd_point_count": 6320,
+        "stress_relaxation_point_count": 67276,
+        "total_curve_point_count": 73596,
+        "source_numeric_axis_and_value_count": 147192,
+        "curve_summaries": [
+          {
+            "filename": "soft only20180909003.dat",
+            "system_key": "soft_puf",
+            "curve_kind": "ifd",
+            "points": 652,
+            "acquired_at": "2018.09.09 15:44",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.4570947477495,
+            "y_min": -0.0423728813559322,
+            "y_max": 56.7796610169491,
+            "peak_index": 328
+          },
+          {
+            "filename": "mid only20180909006.dat",
+            "system_key": "mid_puf",
+            "curve_kind": "ifd",
+            "points": 649,
+            "acquired_at": "2018.09.09 16:01",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.2701897545496,
+            "y_min": -0.0423728813559322,
+            "y_max": 86.3983050847458,
+            "peak_index": 326
+          },
+          {
+            "filename": "hard only20180909003.dat",
+            "system_key": "hard_puf",
+            "curve_kind": "ifd",
+            "points": 653,
+            "acquired_at": "2018.09.09 15:23",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.2718735833172,
+            "y_min": 0.0,
+            "y_max": 113.135593220339,
+            "peak_index": 326
+          },
+          {
+            "filename": "memory foam20180913003.dat",
+            "system_key": "memory_foam",
+            "curve_kind": "ifd",
+            "points": 654,
+            "acquired_at": "2018.09.13 16:33",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.2718735833172,
+            "y_min": -0.254237288135593,
+            "y_max": 156.737288135593,
+            "peak_index": 326
+          },
+          {
+            "filename": "technogel20180918001.txt",
+            "system_key": "technogel",
+            "curve_kind": "ifd",
+            "points": 558,
+            "acquired_at": "2018.09.18 14:37",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 26.2778317466486,
+            "y_min": -1.01694915254237,
+            "y_max": 851.35593220339,
+            "peak_index": 283
+          },
+          {
+            "filename": "Type A20180909009.dat",
+            "system_key": "multilayer_type_a",
+            "curve_kind": "ifd",
+            "points": 810,
+            "acquired_at": "2018.09.09 16:52",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.1607408846578,
+            "y_min": 0.0,
+            "y_max": 101.186440677966,
+            "peak_index": 406
+          },
+          {
+            "filename": "Type B20180909003.dat",
+            "system_key": "multilayer_type_b",
+            "curve_kind": "ifd",
+            "points": 794,
+            "acquired_at": "2018.09.09 16:31",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.1607408846578,
+            "y_min": -0.0423728813559322,
+            "y_max": 52.1186440677966,
+            "peak_index": 406
+          },
+          {
+            "filename": "Type C20180909006.dat",
+            "system_key": "multilayer_type_c",
+            "curve_kind": "ifd",
+            "points": 766,
+            "acquired_at": "2018.09.09 19:03",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.1607408846578,
+            "y_min": -0.211864406779661,
+            "y_max": 158.389830508475,
+            "peak_index": 406
+          },
+          {
+            "filename": "Type D20180909006.dat",
+            "system_key": "multilayer_type_d",
+            "curve_kind": "ifd",
+            "points": 784,
+            "acquired_at": "2018.09.09 18:56",
+            "condition_name": "indentation_displacement",
+            "condition_unit": "mm",
+            "property_name": "indentation_force",
+            "unit": "kgf",
+            "x_min": 0.0,
+            "x_max": 30.1607408846578,
+            "y_min": -0.0423728813559322,
+            "y_max": 97.5423728813559,
+            "peak_index": 406
+          },
+          {
+            "filename": "Soft55kgf20181112001.dat",
+            "system_key": "soft_puf",
+            "curve_kind": "stress_relaxation",
+            "points": 7522,
+            "acquired_at": "2018.11.12 15:23",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7231.3,
+            "y_min": 0.00611400230777972,
+            "y_max": 1.74615905910189,
+            "peak_index": 322
+          },
+          {
+            "filename": "Mid55kgf20181113001.dat",
+            "system_key": "mid_puf",
+            "curve_kind": "stress_relaxation",
+            "points": 7492,
+            "acquired_at": "2018.11.13 11:12",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7228.3,
+            "y_min": 0.00611400230777972,
+            "y_max": 1.71192064617832,
+            "peak_index": 292
+          },
+          {
+            "filename": "Hard55kgf20181112002.dat",
+            "system_key": "hard_puf",
+            "curve_kind": "stress_relaxation",
+            "points": 7468,
+            "acquired_at": "2018.11.12 21:36",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7225.9,
+            "y_min": 0.00733680276933566,
+            "y_max": 1.71314344663988,
+            "peak_index": 268
+          },
+          {
+            "filename": "Memory55kgf20181112001.dat",
+            "system_key": "memory_foam",
+            "curve_kind": "stress_relaxation",
+            "points": 7469,
+            "acquired_at": "2018.11.12 23:38",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7226.0,
+            "y_min": 0.00855960323089161,
+            "y_max": 1.73393105448633,
+            "peak_index": 269
+          },
+          {
+            "filename": "Technogel55kgf20181115001.dat",
+            "system_key": "technogel",
+            "curve_kind": "stress_relaxation",
+            "points": 7379,
+            "acquired_at": "2018.11.15 17:19",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7217.0,
+            "y_min": 0.00122280046155594,
+            "y_max": 1.78406587341012,
+            "peak_index": 179
+          },
+          {
+            "filename": "TypeA55kgf20181113002.dat",
+            "system_key": "multilayer_type_a",
+            "curve_kind": "stress_relaxation",
+            "points": 7484,
+            "acquired_at": "2018.11.13 20:49",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7227.5,
+            "y_min": 0.00489120184622378,
+            "y_max": 1.71925744894766,
+            "peak_index": 284
+          },
+          {
+            "filename": "TypeB55kgf20181114001.dat",
+            "system_key": "multilayer_type_b",
+            "curve_kind": "stress_relaxation",
+            "points": 7505,
+            "acquired_at": "2018.11.14 19:31",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7229.6,
+            "y_min": 0.00489120184622378,
+            "y_max": 1.69969264156276,
+            "peak_index": 305
+          },
+          {
+            "filename": "TypeC55kgf20181114001.dat",
+            "system_key": "multilayer_type_c",
+            "curve_kind": "stress_relaxation",
+            "points": 7466,
+            "acquired_at": "2018.11.14 15:04",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7225.7,
+            "y_min": 0.00244560092311189,
+            "y_max": 1.73637665540944,
+            "peak_index": 266
+          },
+          {
+            "filename": "TypeD55kgf20181115001.dat",
+            "system_key": "multilayer_type_d",
+            "curve_kind": "stress_relaxation",
+            "points": 7491,
+            "acquired_at": "2018.11.15 11:43",
+            "condition_name": "elapsed_time",
+            "condition_unit": "s",
+            "property_name": "load_cell_signal_voltage",
+            "unit": "V",
+            "x_min": 0.1,
+            "x_max": 7228.2,
+            "y_min": 0.0,
+            "y_max": 1.73515385494788,
+            "peak_index": 291
+          }
+        ]
+      },
+      "processed_summary": {
+        "sheet": "Sheet1",
+        "headers": [
+          "IHF",
+          "MIF",
+          "SF",
+          "Hysters loss",
+          "Hardness",
+          "Stress relaxation",
+          "Crosslink density"
+        ],
+        "material_system_count": 9,
+        "scalar_count": 59,
+        "crosslink_density_count": 5,
+        "type_a_to_d_crosslink_density_missing_by_source": true
+      },
+      "lineage_crosschecks": {
+        "hardness_exact_kgf_times_9_8_header_matches": 6,
+        "hardness_within_1_newton_header_matches": 7,
+        "stress_relaxation_peak_to_terminal_max_abs_difference_percentage_points": 3.6350788211101914,
+        "stress_relaxation_abs_differences_percentage_points": {
+          "hard_puf": 1.4109850107065967,
+          "memory_foam": 1.2808885754584196,
+          "mid_puf": 1.3542857142858935,
+          "multilayer_type_a": 1.658833570412721,
+          "multilayer_type_b": 0.7419424460431685,
+          "multilayer_type_c": 2.2374647887324812,
+          "multilayer_type_d": 1.8340732910498758,
+          "soft_puf": 2.6634453781510494,
+          "technogel": 3.6350788211101914
+        }
+      },
+      "materialization": {
+        "gold_e_row_count": 73655,
+        "curve_point_row_count": 73596,
+        "processed_scalar_row_count": 59,
+        "property_counts": {
+          "crosslink_density": 5,
+          "hysteresis_loss": 9,
+          "indentation_force": 6320,
+          "indentation_hardness": 9,
+          "initial_hardness_factor": 9,
+          "load_cell_signal_voltage": 67276,
+          "modulus_irregularity_factor": 9,
+          "sag_factor": 9,
+          "stress_relaxation_fractional_loss": 9
+        },
+        "data_origin_counts": {
+          "experimental_processed_crosslink_density": 5,
+          "experimental_processed_summary_from_ifd": 45,
+          "experimental_processed_summary_from_stress_relaxation": 9,
+          "experimental_raw_curve": 73596
+        },
+        "gold_admission_status_counts": {
+          "admitted_reference": 54,
+          "conditional_reference": 73601
+        },
+        "observation_id_count": 73655,
+        "split_group_count": 9,
+        "current_weight_materialized": false,
+        "training_weight_nonempty_count": 0
+      },
+      "unit_and_protocol_boundaries": {
+        "ifd": "displacement mm and force kgf are inferred from the reversible indentation trajectory plus the processed kgf-to-N crosscheck; retain as conditional",
+        "stress_relaxation": "elapsed time is seconds; ordinate is uncalibrated load-cell voltage, not absolute force or stress; retain as conditional",
+        "processed_metrics": "IHF and SF are dimensionless; MIF, hysteresis loss and stress relaxation are percentages; hardness is N; these units are internally crosschecked",
+        "crosslink_density": "unit is absent from the workbook and public preview; preserve source value with unresolved unit and conditional status",
+        "full_protocol": "not present in the open one-page official preview or deposits"
+      },
+      "limitations": [
+        "No monomer, formulation, NCO/OH, density, geometry or specimen dimensions are deposited.",
+        "Type A-D layer identities and layer order are not present in the two data deposits.",
+        "Only one IFD and one stress-relaxation trace per source-labelled system are present; no replicate uncertainty can be estimated.",
+        "Stress-relaxation voltage lacks a force calibration and cannot be used as absolute stress.",
+        "The processed workbook omits units; crosslink-density unit remains unresolved."
+      ]
+    },
+    "batch15_multiscale_pu_audit": {
+      "audit_version": "batch15-multicomponent-pu-multiscale-v1",
+      "source_id": "source_figshare_ma5c03283_si",
+      "supplement_doi": "10.1021/acs.macromol.5c03283.s001",
+      "article_doi": "10.1021/acs.macromol.5c03283",
+      "license": "CC BY-NC 4.0",
+      "record_count": 115,
+      "numeric_value_count": 115,
+      "numeric_context_count": 115,
+      "input_descriptor_count": 68,
+      "performance_output_count": 47,
+      "performance_output_admission_counts": {
+        "admitted_reference": 34,
+        "conditional_reference": 13
+      },
+      "unique_material_system_count": 10,
+      "unique_simulation_run_count": 13,
+      "split_group_count": 10,
+      "record_role_counts": {
+        "sensitivity_input_descriptor": 8,
+        "sensitivity_output": 17,
+        "simulation_input_descriptor": 60,
+        "simulation_output": 30
+      },
+      "admission_counts": {
+        "admitted_reference": 98,
+        "conditional_reference": 17
+      },
+      "unit_status_counts": {
+        "resolved_from_cubic_box_notation_and_source_note": 17,
+        "resolved_source_native": 81,
+        "source_unit_label_typographical_error_inferred_g_per_cm3": 17
+      },
+      "property_counts": {
+        "PDMS_to_PCDL_ratio": 10,
+        "coarse_grained_PCDL_site_count": 10,
+        "coarse_grained_PDMS_site_count": 10,
+        "coarse_grained_urea_site_count": 10,
+        "coarse_grained_urethane_site_count": 10,
+        "cubic_periodic_box_side_length": 10,
+        "final_cubic_box_side_length": 3,
+        "final_mass_density": 3,
+        "hard_to_soft_segment_ratio": 10,
+        "initial_cubic_box_side_length": 4,
+        "initial_mass_density": 4,
+        "mass_density": 10,
+        "radius_of_gyration": 13,
+        "residual_reactive_sites": 4,
+        "tensile_strength": 4
+      },
+      "verification": {
+        "verified_files": [
+          {
+            "file": "多组分PU多尺度模拟补充数据.pdf",
+            "bytes": 1861266,
+            "sha256": "16b5847bcf222e9c54a5b1e566b82c65fa259e9764e90d85be01dda26167833d"
+          },
+          {
+            "file": "Figshare官方元数据.json",
+            "bytes": 9187,
+            "sha256": "400e3467ebb67e1130770330804d0f94b10e02e045e3430f03ac2399a939b685"
+          },
+          {
+            "file": "论文Crossref元数据.json",
+            "bytes": 8459,
+            "sha256": "31a5e57c095670b965f13889d0db42d2471ef6e5fb7da571d1bab90138141751"
+          }
+        ],
+        "pdf_md5": "f203b4ac78b49c95c4264114598118cf",
+        "pdf_pages": 17,
+        "figshare_id": 31981709,
+        "supplement_doi": "10.1021/acs.macromol.5c03283.s001",
+        "article_doi": "10.1021/acs.macromol.5c03283",
+        "license": "CC BY-NC 4.0",
+        "verification": "matched_frozen_identity_metadata_and_all_table_row_anchors"
+      },
+      "deduplication": {
+        "table_s2_200a_corresponds_to_table_s3_r1_1_h2": true,
+        "duplicated_final_box_density_rg_rows_omitted": 3
+      },
+      "known_limitations": [
+        "only peer-reviewed SI tables are deposited; raw trajectories, restart files and force-field parameter files are absent",
+        "exact atomistic graph/SMILES is not recoverable from the tabulated CG component labels alone",
+        "the source prints density as g·mol-1; g/cm^3 normalization is inference-backed and therefore conditional",
+        "CC BY-NC 4.0 permits research reuse but imposes a non-commercial restriction",
+        "time frames, particles and sensitivity runs are not independent material systems"
+      ],
+      "training_weight_materialized": false
+    },
+    "batch16_recycled_pu_foam_audit": {
+      "audit_version": "batch16-recycled-pu-foam-v2",
+      "source": {
+        "dataset_doi": "10.5281/zenodo.5713819",
+        "article_doi": "10.12688/openreseurope.13288.2",
+        "license": "CC BY 4.0",
+        "archive_md5": "1b1f47244417b72e3553ec76cf9d751e",
+        "archive_sha256": "23d0c39729b2aabff631a64239ae0bda8377f2bfd47cce25b52dc96197204a78",
+        "pdf_sha256": "95e32ae80b63afdbf144b002099d4e546e5bb2dfb49aae406ca645df7c02c0e4",
+        "pdf_pages": 21,
+        "extracted_file_count": 81,
+        "extracted_bytes": 7161867,
+        "extracted_aggregate_sha256": "e6c1eb48c0f588edc53a0767eb2526ae15ea9aac60641bcd5a107b5322fd2655",
+        "peer_review_status": "two_approved_with_reservations_two_not_approved"
+      },
+      "counts": {
+        "formulation_count": 11,
+        "foam_type_count": 2,
+        "physical_specimen_file_count": 59,
+        "experimental_run_container_count": 77,
+        "curve_count_observed": 69,
+        "curve_count_candidate": 69,
+        "point_count_observed": 46503,
+        "point_count_candidate": 13740,
+        "direct_scalar_count_observed": 74,
+        "direct_scalar_count_candidate": 73,
+        "valid_derived_scalar_count": 118,
+        "gold_e_numeric_row_count": 13931,
+        "source_identity_count_contribution": 1
+      },
+      "admission_counts": {
+        "conditional_reference": 13865,
+        "admitted_reference": 66
+      },
+      "compression": {
+        "file_count": 59,
+        "observed_point_count": 45922,
+        "valid_curve_count": 59,
+        "candidate_point_count": 13159,
+        "derived_endpoint_count": 118,
+        "alternate_language_schema_files": [
+          "RPUF1_compression_Specimen_7.csv"
+        ],
+        "excluded_insufficient_strain_files": [],
+        "aggregate_reproduction": {
+          "RPUF_0": {
+            "valid_raw_curve_count": 11,
+            "raw_curve_mean_10pct_kpa": 123.68233961041399,
+            "article_table_10pct_kpa": 123.7,
+            "absolute_difference_10pct_kpa": 0.01766038958601257,
+            "raw_curve_mean_25pct_kpa": 213.49514542118246,
+            "article_table_25pct_kpa": 213.5,
+            "absolute_difference_25pct_kpa": 0.004854578817543143
+          },
+          "RPUF_1.5": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 88.35136287299446,
+            "article_table_10pct_kpa": 88.4,
+            "absolute_difference_10pct_kpa": 0.048637127005548564,
+            "raw_curve_mean_25pct_kpa": 175.98920781392522,
+            "article_table_25pct_kpa": 176.0,
+            "absolute_difference_25pct_kpa": 0.01079218607478083
+          },
+          "RPUF_3.0": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 79.29193061958573,
+            "article_table_10pct_kpa": 79.3,
+            "absolute_difference_10pct_kpa": 0.008069380414269745,
+            "raw_curve_mean_25pct_kpa": 173.0443298908623,
+            "article_table_25pct_kpa": 173.0,
+            "absolute_difference_25pct_kpa": 0.04432989086228645
+          },
+          "RPUF_4.5": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 67.5859754078466,
+            "article_table_10pct_kpa": 67.6,
+            "absolute_difference_10pct_kpa": 0.014024592153390358,
+            "raw_curve_mean_25pct_kpa": 130.3100253916564,
+            "article_table_25pct_kpa": 130.3,
+            "absolute_difference_25pct_kpa": 0.010025391656398597
+          },
+          "RPUF_6.0": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 62.48094887003932,
+            "article_table_10pct_kpa": 62.5,
+            "absolute_difference_10pct_kpa": 0.019051129960679702,
+            "raw_curve_mean_25pct_kpa": 149.64487005359453,
+            "article_table_25pct_kpa": 149.7,
+            "absolute_difference_25pct_kpa": 0.055129946405457986
+          },
+          "SPUF_0": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 12.190541610931446,
+            "article_table_10pct_kpa": 12.2,
+            "absolute_difference_10pct_kpa": 0.009458389068553785,
+            "raw_curve_mean_25pct_kpa": 17.353143667434715,
+            "article_table_25pct_kpa": 17.4,
+            "absolute_difference_25pct_kpa": 0.046856332565283765
+          },
+          "SPUF_1.5": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 14.830602258548579,
+            "article_table_10pct_kpa": 14.8,
+            "absolute_difference_10pct_kpa": 0.03060225854857812,
+            "raw_curve_mean_25pct_kpa": 24.485006887970247,
+            "article_table_25pct_kpa": 24.5,
+            "absolute_difference_25pct_kpa": 0.014993112029753064
+          },
+          "SPUF_3.0": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 11.25000404352892,
+            "article_table_10pct_kpa": 11.3,
+            "absolute_difference_10pct_kpa": 0.049995956471081016,
+            "raw_curve_mean_25pct_kpa": 20.050270677867758,
+            "article_table_25pct_kpa": 20.1,
+            "absolute_difference_25pct_kpa": 0.04972932213224368
+          },
+          "SPUF_4.5": {
+            "valid_raw_curve_count": 6,
+            "raw_curve_mean_10pct_kpa": 13.164223754261188,
+            "article_table_10pct_kpa": 13.2,
+            "absolute_difference_10pct_kpa": 0.035776245738810886,
+            "raw_curve_mean_25pct_kpa": 23.02289363328036,
+            "article_table_25pct_kpa": 23.0,
+            "absolute_difference_25pct_kpa": 0.022893633280361314
+          }
+        }
+      },
+      "viscosity": {
+        "curve_count": 10,
+        "point_count": 581,
+        "points_per_curve": {
+          "RPUF_0": 60,
+          "RPUF_1.5": 60,
+          "RPUF_3.0": 60,
+          "RPUF_4.5": 60,
+          "RPUF_6.0": 41,
+          "SPUF_0": 60,
+          "SPUF_1.5": 60,
+          "SPUF_3.0": 60,
+          "SPUF_4.5": 60,
+          "SPUF_6.0": 60
+        }
+      },
+      "thermal_conductivity": {
+        "workbook_count": 8,
+        "candidate_endpoint_count": 7,
+        "duplicate_conflict": {
+          "excluded": "RPUF30_thermal conductivity.xlsx",
+          "duplicates": "RPUF00_thermal conductivity.xlsx",
+          "normalized_cell_content_sha256": "3416c00dd892078675da183a43afb721afa0a446535f968139ec7b5a8ddeb7cb"
+        },
+        "endpoints": {
+          "RPUF_0": {
+            "thermal_conductivity_w_mk": 0.02462,
+            "mean_temperature_c": 9.495,
+            "extraction": "last_stable_block_row_29"
+          },
+          "RPUF_1.5": {
+            "thermal_conductivity_w_mk": 0.02928,
+            "mean_temperature_c": 10.02,
+            "extraction": "results_table_row_50"
+          },
+          "RPUF_4.5": {
+            "thermal_conductivity_w_mk": 0.03242,
+            "mean_temperature_c": 10.010000000000002,
+            "extraction": "last_stable_block_row_33"
+          },
+          "SPUF_0": {
+            "thermal_conductivity_w_mk": 0.03767,
+            "mean_temperature_c": 10.02,
+            "extraction": "last_stable_block_row_33"
+          },
+          "SPUF_1.5": {
+            "thermal_conductivity_w_mk": 0.03383,
+            "mean_temperature_c": 10.010000000000002,
+            "extraction": "last_stable_block_row_30"
+          },
+          "SPUF_3.0": {
+            "thermal_conductivity_w_mk": 0.03498,
+            "mean_temperature_c": 10.02,
+            "extraction": "results_table_row_53"
+          },
+          "SPUF_4.5": {
+            "thermal_conductivity_w_mk": 0.03616,
+            "mean_temperature_c": 10.02,
+            "extraction": "results_table_row_50"
+          }
+        }
+      },
+      "article_tables": {
+        "formulation_component_rows": 39,
+        "apparent_density_rows": 9,
+        "compression_aggregate_rows": 18
+      },
+      "training_state": {
+        "current_weight_materialized": false,
+        "model_ready_record_count": 0,
+        "split_group_count": 1
+      }
     }
   },
   "source_ledger": [
@@ -5512,6 +7340,190 @@
       "notes": "Mendeley Data固定version 1的PUFoam归档通过8252834 bytes与SHA-256核验；归档含3822个成员、3452个普通文件、331个目录及39个根内相对符号链接， 审计器不解包而直接流式读取。唯一二维mixing-cup算例覆盖0至50 s；主查询表接入50×5=250个官方cellSource体积平均值， 以及时间1至50 s的52个OpenFOAM标量场均值/极值/总体标准差8764个，共9014个Gold-C过程数值。 论文以12组mixing-cup实验对模型的密度和温度进行比较验证，但这不等于全部52个场及其派生统计都获得逐字段实验验证；字段级准入、单位状态和潜在上限分别保存。 4293个单位与字段语义闭合值进入正式参考；4721个PBE矩、nodes/weights、Psi等物理语义未闭合值进入条件参考而不删除。 归档没有12套独立计算输入，故计算体系数严格为1；50个轨迹帧只提高过程分辨率。 通用NCO/OH/水与n-pentane工艺身份可用于发泡动力学、密度、泡群和过程窗口迁移；原料化学结构未闭合，不进入Gold-V结构监督， 也不直接监督线性TPU拉伸性能。GPLv3按Mendeley数据集页记录；软件代码、数值数据和训练/再分发边界在使用前仍需逐动作复核。"
     },
     {
+      "source_id": "source_mendeley_xs78ch5jb7_v3",
+      "source_scope_id": "scope_mendeley_xs78ch5jb7_v3",
+      "source_family_id": "family_date_seed_oil_rigid_pu_pir_2025",
+      "source_directory": "第十三批实验_日期籽油PU-PIR",
+      "source_title": "Novel bio-polyol synthesis based on date seed oil for low-density rigid polyurethane-polyisocyanurate foams",
+      "canonical_identifier": "10.17632/xs78ch5jb7.3",
+      "task": "日期籽油生物基多元醇—刚性PU/PIR配方—机械—光谱—热分析迁移参考",
+      "origin_kind": "实验",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 72,
+      "material_count": 5,
+      "formulation_count": 5,
+      "batch_count": null,
+      "specimen_count": 0,
+      "run_count": 36,
+      "curve_count_observed": 45,
+      "curve_count_candidate": 36,
+      "scalar_count_observed": 36,
+      "scalar_count_candidate": 36,
+      "point_count_observed": 115787,
+      "point_count_candidate": 101609,
+      "numeric_value_count": 101645,
+      "evidence_group_count": 0,
+      "computational_system_count": 0,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.6,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "部分已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "45个来源数值序列呈现归并为36个唯一序列；9个重复呈现与14178个重复数值不重复物化，2982个标签冲突热分析值保留为条件参考",
+      "split_group_status": "同一论文家族全部同折并按5个最终配方分组；无试样或重复编号，禁止按101609个曲线/峰点随机拆分",
+      "completeness": "source_aggregate_plus_5_formulations_36_unique_numeric_series_36_formulation_process_scalars",
+      "citation_keys": "ledger-165-taghvaei-nia-2024-date-seed-oil-pu-pir-data;ledger-166-taghvaei-nia-2025-date-seed-oil-pu-pir",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/文件校验清单.tsv;数据/原始/外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/来源说明.md;代码/审计/第十三批日期籽油PU_PIR.py",
+      "notes": "Mendeley Data固定version 3的7个官方附件均通过字节数和SHA-256核验，形成5个S1至S5最终刚性PU-PIR配方； 36个唯一机械/光谱/热分析序列含101609个曲线或峰点，另有36个配方与过程标量。曲线点只提高同一配方观测的数值分辨率， 不增加材料数、试样数或独立来源数。机械68819点因轴单位与测试协议未闭合保留为条件参考；来源可靠性不因字段不全而被整源淘汰。 数据集为CC BY 4.0，关联论文为CC BY-NC 4.0，许可范围分别治理。0.60仅为未来门禁闭合后的潜在上限；当前训练权重为空且未创建划分。"
+    },
+    {
+      "source_id": "source_mendeley_pu_seat_raw_v2",
+      "source_scope_id": "scope_mendeley_pu_seat_raw_v2",
+      "source_family_id": "family_moon_2020_pu_multilayer_seat",
+      "source_directory": "第十四批实验_PU汽车座椅",
+      "source_title": "Raw data for manuscript of Study on Seating Comfort of Polyurethane Multilayer Seat Cushions",
+      "canonical_identifier": "10.17632/wtfkgk8k8r.2",
+      "task": "PU单层/多层汽车座椅IFD—松弛曲线—舒适性指标迁移参考",
+      "origin_kind": "实验",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 77,
+      "material_count": 9,
+      "formulation_count": null,
+      "batch_count": null,
+      "specimen_count": null,
+      "run_count": 18,
+      "curve_count_observed": 18,
+      "curve_count_candidate": 18,
+      "scalar_count_observed": 59,
+      "scalar_count_candidate": 59,
+      "point_count_observed": 73596,
+      "point_count_candidate": 73596,
+      "numeric_value_count": 73655,
+      "evidence_group_count": 0,
+      "computational_system_count": 0,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.55,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "部分已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "原始曲线DOI与汇总标量DOI属于同一论文和同一次实验活动；59个汇总值不作为第二批实验或额外重复，两个DOI合计只贡献1个来源身份",
+      "split_group_status": "9个来源标签体系各自同折；同体系IFD、松弛轨迹及汇总指标不得跨折，73596个曲线点禁止点级随机拆分",
+      "completeness": "source_aggregate_plus_9_material_systems_18_curves_59_processed_scalars",
+      "citation_keys": "ledger-167-oh-2019-pu-seat-raw-data;ledger-168-oh-2019-pu-seat-processed-data;ledger-169-moon-2020-pu-seat-comfort",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/文件校验清单.tsv;数据/原始/外部数据/新增开放数据/第十四批实验_PU汽车座椅/来源说明.md;代码/审计/第十四批PU汽车座椅.py",
+      "notes": "两个Mendeley Data固定version 2记录均为CC BY 4.0并服务于同一篇论文；9个来源标签体系各有1条IFD和1条应力松弛轨迹， 共73596个曲线点，另有59个同族汇总标量。54个单位与语义闭合的舒适性/松弛汇总值为正式参考；IFD原件缺列名、松弛纵轴为未校准电压、 5个交联密度缺单位，故保留为条件参考而不删除。9个体系只有材料类别或坐垫标签，商品牌号、配方、几何和试样身份未闭合； 不能用于精确SMILES监督，也不能把电压称作绝对应力。0.55仅为未来潜在上限；当前训练权重为空且未创建划分。"
+    },
+    {
+      "source_id": "source_figshare_ma5c03283_si",
+      "source_scope_id": "scope_figshare_ma5c03283_si",
+      "source_family_id": "family_multicomponent_pu_multiscale_2026",
+      "source_directory": "第十五批计算_多组分PU多尺度模拟",
+      "source_title": "Supporting Information for Multiscale Simulation of Multicomponent Polyurethane Elastomers: Unraveling Composition-Dependent Microphase Separation Dynamics and Mechanical Properties",
+      "canonical_identifier": "10.1021/acs.macromol.5c03283.s001",
+      "task": "多组分聚氨酯组成—微相结构—力学的DFT/全原子MD/反应型粗粒化多尺度参考",
+      "origin_kind": "模拟",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-C",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 115,
+      "material_count": 10,
+      "formulation_count": 10,
+      "batch_count": null,
+      "specimen_count": 0,
+      "run_count": 13,
+      "curve_count_observed": 0,
+      "curve_count_candidate": 0,
+      "scalar_count_observed": 115,
+      "scalar_count_candidate": 47,
+      "point_count_observed": 0,
+      "point_count_candidate": 0,
+      "numeric_value_count": 115,
+      "evidence_group_count": 3,
+      "computational_system_count": 10,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.3,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "部分已解析",
+      "license_status": "manual_review",
+      "dedup_status": "Table_S2的200_A初始盒与Table_S3_R1-1-H2重复结果已合并；粒子、初始盒和敏感性运行不扩增材料数",
+      "split_group_status": "10个粗粒化体系按全局结构家族键同折；13个运行和全部输入输出不得跨折",
+      "completeness": "source_aggregate_plus_computational_systems_inputs_and_outputs",
+      "citation_keys": "ledger-163-meng-2026-multiscale-pu-si;ledger-164-meng-2026-multiscale-pu",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/文件校验清单.tsv;数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/来源说明.md;代码/审计/第十五批多组分PU多尺度模拟.py",
+      "notes": "论文SI的Table S1--S3提供10个粗粒化材料体系、13个不重复模拟运行和115个可追溯数值； 其中68个为组成、粒子数或盒尺寸等输入描述符，只作上下文且潜在目标权重为0；47个为Rg、密度、残余反应位点和拉伸强度等计算输出， 34个正式、13个条件参考。来源把密度单位误排为g·mol-1，本库依据量纲与盒体积关系规范为g/cm3但保留条件标志。 原始轨迹、restart、完整力场和精确原子图未公开，不能把115个数值称作115次独立模拟或实验真值；CC BY-NC 4.0限制商业使用。"
+    },
+    {
+      "source_id": "source_zenodo_5713819_recycled_pu_foam",
+      "source_scope_id": "scope_zenodo_5713819_recycled_pu_foam",
+      "source_family_id": "family_elorza_recycled_pu_foam",
+      "source_directory": "第十六批实验_再生PU泡沫",
+      "source_title": "Sustainable insulating foams based on recycled polyurethanes from construction and demolition wastes",
+      "canonical_identifier": "10.5281/zenodo.5713819",
+      "task": "建筑拆除PU泡沫粉末再利用的配方—压缩—黏度—密度—导热多任务参考",
+      "origin_kind": "实验",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 77,
+      "material_count": 11,
+      "formulation_count": 11,
+      "batch_count": null,
+      "specimen_count": 59,
+      "run_count": 77,
+      "curve_count_observed": 69,
+      "curve_count_candidate": 69,
+      "scalar_count_observed": 192,
+      "scalar_count_candidate": 191,
+      "point_count_observed": 46503,
+      "point_count_candidate": 13740,
+      "numeric_value_count": 13931,
+      "evidence_group_count": 2,
+      "computational_system_count": 0,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.4,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "RPUF3.0导热工作簿与RPUF0单元格内容完全重复并已隔离；压缩汇总值与原始曲线派生端点保留血缘而不重复计材料",
+      "split_group_status": "11个配方、59个压缩试样和全部同研究端点共享一个来源家族组；曲线点不得随机跨折",
+      "completeness": "source_aggregate_plus_formulations_specimens_curves_scalars_and_protocol",
+      "citation_keys": "ledger-170-elorza-2021-recycled-pu-foam-data;ledger-171-elorza-2021-recycled-pu-foam",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/文件校验清单.tsv;数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/来源说明.md;代码/审计/第十六批再生PU泡沫.py",
+      "notes": "Zenodo固定归档与论文共同闭合11个硬质/软质PU泡沫配方、59个压缩试样、10条黏度曲线和8个导热工作簿。 压缩原始数据有45922个观测点，按论文和UNE-EN ISO 604限定的0--27%形变保留13159点，并派生118个10%/25%端点； 加上581个黏度点、73个有效直接标量后形成13931条Gold-E记录，其中66条正式、13865条条件参考。 RPUF0第7个文件的西班牙语13列结构已按真实压缩应变列修复；来源可靠但属于发泡PU迁移域，不冒充线性TPU精确结构监督，当前训练权重为空。"
+    },
+    {
       "source_id": "source_4tu_data",
       "source_scope_id": "self_healing_tpu_4tu_deposit",
       "source_family_id": "family_4tu_self_healing",
@@ -5699,7 +7711,34 @@
   "record_manifest_artifact": {
     "path": "结果/样本清单.csv.gz",
     "format": "csv.gz",
-    "row_count": 133329,
-    "sha256": "e643ce5ffe233d6feb5d5dc461b11e675504b2d33a9623b06e8cbb00d45a7db6"
+    "row_count": 133333,
+    "sha256": "4d3123690dce8a5cc2d006de26e9b951374cc52b29c25ce4d0ec5ed15b1d9b62"
+  },
+  "gold_reference_artifacts": {
+    "Gold-V": {
+      "path": "结果/Gold_V_候选.csv.gz",
+      "format": "csv.gz",
+      "row_count": 117629,
+      "sha256": "f9d1b873b37f2c97252f9ae5806e9657a80bd35038b24d1f8beacb090c819900",
+      "artifact_role": "virtual_candidate_reference"
+    },
+    "Gold-C": {
+      "path": "结果/Gold_C_计算性能.csv.gz",
+      "format": "csv.gz",
+      "row_count": 1415903,
+      "sha256": "52fa91e8350da6000cec23c1d22839d2448cd77c7c40b76307dba4d7a8b8d025",
+      "artifact_role": "computational_numeric_context_reference",
+      "batch15_input_descriptor_count": 68,
+      "batch15_performance_output_count": 47
+    },
+    "Gold-E": {
+      "path": "结果/Gold_E_实验表格.csv.gz",
+      "format": "csv.gz",
+      "row_count": 194461,
+      "sha256": "0c708e5f161d09b184e047f1f3eec4f54e2a855d57306fceb3e95d493253a807",
+      "artifact_role": "experimental_observation_reference",
+      "admitted_reference_count": 14040,
+      "conditional_reference_count": 180421
+    }
   }
 }

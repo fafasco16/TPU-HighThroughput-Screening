@@ -71,13 +71,23 @@ def _sha256(path: Path) -> str:
 def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
     summary = inventory["summary"]
 
-    assert summary["ledger_source_scope_count"] == 78
-    assert summary["v0_2_source_directory_count"] == 70
-    assert summary["v0_2_independent_source_identity_count"] == 69
+    assert summary["ledger_source_scope_count"] == 82
+    assert summary["v0_2_source_directory_count"] == 74
+    assert summary["v0_2_independent_source_identity_count"] == 73
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
     assert summary["v0_1_frozen_baseline_source_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 77
+    assert summary["total_independent_source_contribution_count"] == 81
+    assert summary["manifest_row_count"] == 133_333
+    assert Counter(
+        row["gold_layer"] for row in inventory["record_manifest"]
+    ) == {
+        "Gold-E": 7_467,
+        "Gold-C": 7_797,
+        "Gold-E+Gold-C": 369,
+        "Gold-V": 117_632,
+        "Not-Gold": 68,
+    }
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_calibration_curve_point_row_count"] == 935_097
     assert summary["strict_core_calibration_complete_point_pair_upper_bound"] == 935_095
@@ -97,20 +107,20 @@ def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
 
     experimental = summary["known_origin_totals"]["experimental_only"]
     assert experimental["specimen_count"] == {
-        "value": 1465,
-        "known_source_scope_count": 23,
+        "value": 1524,
+        "known_source_scope_count": 25,
     }
     assert experimental["curve_count_observed"] == {
-        "value": 2665,
-        "known_source_scope_count": 41,
+        "value": 2797,
+        "known_source_scope_count": 44,
     }
     assert experimental["curve_count_candidate"] == {
-        "value": 2485,
-        "known_source_scope_count": 41,
+        "value": 2608,
+        "known_source_scope_count": 44,
     }
     assert experimental["point_count_observed"] == {
-        "value": 9_545_156,
-        "known_source_scope_count": 41,
+        "value": 9_781_042,
+        "known_source_scope_count": 44,
     }
 
     mixed = summary["known_origin_totals"]["mixed_experiment_and_simulation"]
@@ -899,7 +909,7 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
     manifest_rows = _csv_rows(MANIFEST_PATH)
     report = REPORT_PATH.read_text(encoding="utf-8")
 
-    assert len(ledger_rows) == 78
+    assert len(ledger_rows) == 82
     assert len(manifest_rows) == inventory["summary"]["manifest_row_count"]
     for row in ledger_rows:
         assert row["source_scope_id"].strip()
@@ -935,11 +945,11 @@ def test_pufoam_keeps_one_computational_system_without_inventing_material_identi
     assert row["current_weight_materialized"] is False
 
 
-def test_gold_e_scalars_are_materialized_as_multifidelity_reference(
+def test_gold_e_observations_are_materialized_as_multifidelity_reference(
     inventory: dict,
 ):
     rows = _csv_rows(GOLD_E_TABLE_PATH)
-    assert len(rows) == 5_230
+    assert len(rows) == 194_461
     assert Counter(row["source_id"] for row in rows) == {
         "ledger_source_118": 143,
         "ledger_source_106": 95,
@@ -952,16 +962,22 @@ def test_gold_e_scalars_are_materialized_as_multifidelity_reference(
         "source_sheffield_21510876_v1": 755,
         "source_figshare_31550614_sls_tpu_lattice": 375,
         "ledger_source_034": 186,
+        "source_mendeley_xs78ch5jb7_v3": 101_645,
+        "source_mendeley_pu_seat_raw_v2": 73_596,
+        "source_mendeley_pu_seat_processed_v2": 59,
+        "source_zenodo_5713819_recycled_pu_foam": 13_931,
     }
     assert Counter(row["gold_admission_status"] for row in rows) == {
-        "admitted_reference": 2_756,
-        "conditional_reference": 2_474,
+        "admitted_reference": 14_040,
+        "conditional_reference": 180_421,
     }
     assert all(row["current_weight_materialized"] == "false" for row in rows)
     assert all(row["training_weight"] == "" for row in rows)
     assert all(row["file_sha256"] and row["source_locator"] for row in rows)
     metadata = inventory["summary"]["gold_e_published_table_long_table"]
-    assert metadata["row_count"] == 5_230
+    assert metadata["row_count"] == 194_461
+    assert metadata["admitted_reference_count"] == 14_040
+    assert metadata["conditional_reference_count"] == 180_421
     assert metadata["current_weight_materialized"] is False
     assert inventory["summary"]["batch11_existing_experimental_scalar_audit"][
         "record_count"
@@ -977,6 +993,38 @@ def test_gold_e_scalars_are_materialized_as_multifidelity_reference(
         "Gold-E": 500,
         "Gold-C": 5,
     }
+
+
+def test_new_gold_e_observations_keep_curve_lineage_and_source_identity(
+    inventory: dict,
+):
+    rows = _csv_rows(GOLD_E_TABLE_PATH)
+    new_source_ids = {
+        "source_mendeley_xs78ch5jb7_v3",
+        "source_mendeley_pu_seat_raw_v2",
+        "source_mendeley_pu_seat_processed_v2",
+        "source_zenodo_5713819_recycled_pu_foam",
+    }
+    new_rows = [row for row in rows if row["source_id"] in new_source_ids]
+    assert len(new_rows) == 189_231
+    assert all(row["split_group"] for row in new_rows)
+    assert all(row["current_weight_materialized"] == "false" for row in new_rows)
+    assert all(row["training_weight"] == "" for row in new_rows)
+    assert all(
+        row["source_locator"].count(row["source_directory"]) == 1
+        for row in new_rows
+    )
+
+    curve_points = [
+        row for row in new_rows if row["record_kind"].endswith("curve_point")
+    ]
+    assert len(curve_points) == 188_836
+    assert all(row["curve_id"] for row in curve_points)
+    assert all(row["point_index"] for row in curve_points)
+    assert all(
+        row["curve_points_are_independent_samples"] == "false"
+        for row in curve_points
+    )
 
 
 def test_batch10_gold_e_keeps_targets_and_context_without_label_inflation(
@@ -1038,13 +1086,27 @@ def test_two_runs_are_byte_reproducible_atomic_and_reconciled(
     report = REPORT_PATH.read_text(encoding="utf-8")
     assert payload["summary"]["audit_as_of_utc"] == "2026-07-21T14:00:00Z"
     assert len(payload["input_fingerprints"]) == payload["summary"]["input_file_count"]
-    assert len(ledger_rows) == len(payload["source_ledger"]) == 78
+    assert len(ledger_rows) == len(payload["source_ledger"]) == 82
     manifest_artifact = payload["record_manifest_artifact"]
     assert manifest_artifact == {
         "path": "结果/样本清单.csv.gz",
         "format": "csv.gz",
         "row_count": len(manifest_rows),
         "sha256": _sha256(MANIFEST_PATH),
+    }
+    artifacts = payload["gold_reference_artifacts"]
+    assert artifacts["Gold-V"]["row_count"] == 117_629
+    assert artifacts["Gold-V"]["sha256"] == _sha256(CANDIDATE_PATH)
+    assert artifacts["Gold-C"]["row_count"] == 1_415_903
+    assert artifacts["Gold-C"]["sha256"] == _sha256(GOLD_C_VALUE_PATH)
+    assert artifacts["Gold-C"]["batch15_input_descriptor_count"] == 68
+    assert artifacts["Gold-C"]["batch15_performance_output_count"] == 47
+    assert artifacts["Gold-E"]["row_count"] == 194_461
+    assert artifacts["Gold-E"]["sha256"] == _sha256(GOLD_E_TABLE_PATH)
+    assert artifacts["Gold-E"]["admitted_reference_count"] == 14_040
+    assert artifacts["Gold-E"]["conditional_reference_count"] == 180_421
+    assert "配置/v0.2多保真准入与权重策略.yaml" in {
+        item["path"] for item in payload["input_fingerprints"]
     }
     assert JSON_PATH.stat().st_size < 1_000_000
     assert MANIFEST_PATH.stat().st_size < 10_000_000
@@ -1059,7 +1121,7 @@ def test_source_profile_covers_every_open_data_directory():
     actual = {path.name for path in raw_root.iterdir() if path.is_dir()}
 
     assert len(profile["baseline_profiles"]) == 4
-    assert len(configured) == 70
+    assert len(configured) == 74
     assert configured == actual
     backlog = profile["local_backlog_profiles"]
     assert len(backlog) == 4

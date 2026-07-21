@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.17
+policy_version: multi-fidelity-admission-weight-v0.2.19
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -149,6 +149,8 @@ gold_layer_admission:
 source_override_key_semantics:
   group_keys: 观测身份、血缘和组内归一维度；不得直接解释为训练拆分键。
   split_group_keys: 更粗粒度的泄漏阻断键；同键全部观测必须进入同一数据折。
+  gold_c_reference_view_split_group_materialized: true
+  gold_c_split_group_role: 预先声明的泄漏阻断键；当前仍未创建训练折或训练权重。
   split_group_keys_required_before_materialization: true
   infer_split_group_from_group_keys: false
   missing_split_group_action: block_weight_and_split_materialization
@@ -911,6 +913,70 @@ source_overrides:
       spectroscopy_or_porosity_support: 0.25
       wrong_thickness_reference_or_dependent_mean_std_formula: 0.00
     note: 正文可闭合商业TPU牌号和CNF质量分数，因此55条曲线与57个候选标量保留；六个错误厚度引用公式和由同一母数据生成的均值/标准差不重复计权。
+
+  - source_scope_key: scope_mendeley_xs78ch5jb7_v3
+    intended_use: rigid_biobased_pu_pir_multimodal_experimental_transfer
+    base_weight_ceiling: 0.60
+    group_keys: [dataset_doi, publication_family, final_formulation, numeric_series]
+    split_group_keys: [publication_family, final_formulation]
+    task_specific_ceilings:
+      resolved_ftir_tga_dsc_or_process_observation: 0.60
+      mechanical_curve_with_unresolved_axis_unit_or_protocol: 0.00
+      duplicate_presentation_or_label_conflict: 0.00
+      direct_linear_tpu_mechanics: 0.00
+    note: 可靠来源的101645条Gold-E观测全部保留，但101609个曲线/峰点只属于36个序列和5个配方；缺轴单位与协议的机械曲线仍可用于形状或表征迁移，当前不能形成量纲性能监督。
+
+  - source_scope_key: scope_mendeley_pu_seat_raw_v2
+    intended_use: polyurethane_seat_ifd_relaxation_curve_transfer
+    base_weight_ceiling: 0.55
+    group_keys: [publication_family, material_system_label, curve_type]
+    split_group_keys: [publication_family, material_system_label]
+    shared_family_scope_keys: [scope_mendeley_pu_seat_raw_v2, scope_mendeley_pu_seat_processed_v2]
+    task_specific_ceilings:
+      ifd_curve_with_unresolved_column_semantics: 0.00
+      uncalibrated_relaxation_voltage_curve: 0.00
+      curve_shape_or_time_dependence_representation: 0.25
+      direct_absolute_stress_supervision: 0.00
+    note: 原始曲线与汇总工作簿是同一实验家族；73596个点不得点级随机划分，未校准电压不得改名为应力，曲线形状只在明确的迁移任务中使用。
+
+  - source_scope_key: scope_mendeley_pu_seat_processed_v2
+    intended_use: polyurethane_seat_processed_comfort_scalar_transfer
+    base_weight_ceiling: 0.55
+    group_keys: [publication_family, material_system_label, processed_property]
+    split_group_keys: [publication_family, material_system_label]
+    shared_family_scope_keys: [scope_mendeley_pu_seat_raw_v2, scope_mendeley_pu_seat_processed_v2]
+    task_specific_ceilings:
+      resolved_processed_comfort_or_relaxation_scalar: 0.55
+      crosslink_density_with_missing_unit: 0.00
+      duplicate_target_from_raw_curve: 0.00
+      direct_linear_tpu_structure_property: 0.00
+    note: 59个汇总值只为同一9体系补充标签，不增加独立来源预算；54个单位与语义闭合值可作为迁移目标，5个交联密度缺单位值保持条件参考但当前权重为零。
+
+  - source_scope_key: scope_figshare_ma5c03283_si
+    intended_use: multicomponent_polyurethane_multiscale_computational_reference
+    base_weight_ceiling: 0.30
+    group_keys: [supplement_doi, global_structure_family_key, simulation_key, property_name]
+    split_group_keys: [global_structure_family_key]
+    task_specific_ceilings:
+      simulation_input_descriptor: 0.00
+      resolved_reactive_cg_output: 0.30
+      inferred_density_unit_output: 0.15
+      direct_experimental_or_quasistatic_tpu_supervision: 0.00
+    note: 115个SI表格数值进入Gold-C科学参考，其中68个组成、粒子数与盒尺寸是零目标权重输入，47个才是计算输出；计算结果无需逐条实验配对才可参考，但必须保留方法、体系、运行、单位推断和CC BY-NC限制。
+
+  - source_scope_key: scope_zenodo_5713819_recycled_pu_foam
+    intended_use: recycled_rigid_and_soft_pu_foam_experimental_transfer
+    base_weight_ceiling: 0.40
+    group_keys: [dataset_doi, source_family, formulation, specimen_or_run, property_name]
+    split_group_keys: [source_family]
+    task_specific_ceilings:
+      direct_formulation_density_or_thermal_scalar: 0.40
+      compression_endpoint_reproduced_from_valid_curve: 0.30
+      compression_curve_within_0_to_27_percent_strain: 0.25
+      viscosity_curve: 0.20
+      duplicated_thermal_workbook_or_out_of_range_compression_point: 0.00
+      direct_linear_tpu_structure_property: 0.00
+    note: 11个配方、59个压缩试样、10条黏度曲线和有效导热/配方标量形成13931条Gold-E记录；0--27%以外压缩点和重复导热工作簿只留证据，同研究全部记录共享一个来源家族拆分组。
 
 materialization_gate:
   required_before_training:

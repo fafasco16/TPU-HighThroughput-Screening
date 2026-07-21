@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc32
+rules_version: v0.2-asset-rules-2026-07-21-rc36
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -4900,4 +4900,292 @@ rules:
     model_readiness_status: ineligible
     release_status: denied
     decision_basis: 固定归档哈希、成员安全、唯一算例、时间/场计数、单位和分组边界的确定性审计；统计产物不是额外模拟体系。
+    review_required: true
+
+  - rule_id: thirteenth_batch_date_seed_oil_pu_pir_raw
+    priority: 2840
+    path_regex: '^外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/(?:Supplemental data [1-6]\.(?:xlsx|rar)|Supporting Information\.pdf)$'
+    source_scope_key: scope_mendeley_xs78ch5jb7_v3
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: rigid_pu_pir_biopolyol
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Mendeley Data version 3的7个官方附件按官方字节数和SHA-256逐文件核验；曲线点、峰点和工作表不扩增为独立材料或试样。
+    review_required: true
+
+  - rule_id: thirteenth_batch_date_seed_oil_pu_pir_metadata
+    priority: 2830
+    path_regex: '^外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/(?:Mendeley_(?:元数据_v3|文件清单_v3|版本清单)\.json|论文Crossref元数据\.json)$'
+    source_scope_key: scope_mendeley_xs78ch5jb7_v3
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: rigid_pu_pir_biopolyol
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 保存数据DOI、version 3、CC BY 4.0、官方附件清单与关联论文CC BY-NC 4.0证据；数据集与论文许可不互相替代。
+    review_required: true
+
+  - rule_id: thirteenth_batch_date_seed_oil_pu_pir_normalized
+    priority: 2820
+    path_regex: '^外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/Gold_E_实验观测长表\.tsv$'
+    source_scope_key: scope_mendeley_xs78ch5jb7_v3
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: rigid_pu_pir_biopolyol
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 5个最终配方形成101645条Gold-E观测，其中101609条为36个唯一序列内的曲线/峰点而非独立样本；正式与条件参考逐行标注，训练权重保持为空。
+    review_required: true
+
+  - rule_id: thirteenth_batch_date_seed_oil_pu_pir_audit
+    priority: 2810
+    path_regex: '^外部数据/新增开放数据/第十三批实验_日期籽油PU-PIR/(?:内容审计摘要\.json|文件校验清单\.tsv|来源说明\.md)$'
+    source_scope_key: scope_mendeley_xs78ch5jb7_v3
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: rigid_pu_pir_biopolyol
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 确定性记录附件、工作表、序列去重、样品标签冲突、单位/协议缺口和家族分组；审计统计不产生额外实验样本。
+    review_required: true
+
+  - rule_id: fourteenth_batch_pu_seat_raw_curves
+    priority: 2890
+    path_regex: '^外部数据/新增开放数据/第十四批实验_PU汽车座椅/[^/]+\.(?:dat|txt)$'
+    source_scope_key: scope_mendeley_pu_seat_raw_v2
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_multilayer_seat_comfort
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 原始数据集固定version 2的9条IFD与9条应力松弛文件；18条曲线和73596个轨迹点属于9个来源标签体系，不是18或73596种材料。
+    review_required: true
+
+  - rule_id: fourteenth_batch_pu_seat_processed_workbook
+    priority: 2880
+    path_regex: '^外部数据/新增开放数据/第十四批实验_PU汽车座椅/Hardness, IHF, MIF, SF, H\.L\., and S\.R\.\.xlsx$'
+    source_scope_key: scope_mendeley_pu_seat_processed_v2
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_multilayer_seat_comfort
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 汇总数据集固定version 2的唯一工作簿含59个同族汇总标量；它由同一次实验活动的原始曲线派生，不能重复计作第二个独立实验来源。
+    review_required: true
+
+  - rule_id: fourteenth_batch_pu_seat_raw_metadata
+    priority: 2870
+    path_regex: '^外部数据/新增开放数据/第十四批实验_PU汽车座椅/(?:Mendeley_原始数据集_v2_官方元数据\.json|DataCite_原始数据集_v2_元数据\.json|Crossref_论文元数据\.json|论文官方预览\.pdf)$'
+    source_scope_key: scope_mendeley_pu_seat_raw_v2
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_multilayer_seat_comfort
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 原始数据DOI、version 2、CC BY 4.0、论文DOI与开放预览构成来源、许可和方法证据；论文预览不被当作数值数据。
+    review_required: true
+
+  - rule_id: fourteenth_batch_pu_seat_processed_metadata
+    priority: 2860
+    path_regex: '^外部数据/新增开放数据/第十四批实验_PU汽车座椅/(?:Mendeley_汇总数据集_v2_官方元数据\.json|DataCite_汇总数据集_v2_元数据\.json)$'
+    source_scope_key: scope_mendeley_pu_seat_processed_v2
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_multilayer_seat_comfort
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 汇总数据DOI、version 2与CC BY 4.0的双通道官方元数据；其与原始数据共享论文家族和独立实验活动计数。
+    review_required: true
+
+  - rule_id: fourteenth_batch_pu_seat_normalized
+    priority: 2850
+    path_regex: '^外部数据/新增开放数据/第十四批实验_PU汽车座椅/Gold_E_实验观测长表\.tsv$'
+    source_scope_key: scope_mendeley_pu_seat_raw_v2
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: polyurethane_multilayer_seat_comfort
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 18条曲线的73596个点与59个同族汇总标量合并为73655条Gold-E观测；54条正式、73601条条件参考均保留来源和分组，训练权重为空。
+    review_required: true
+
+  - rule_id: fourteenth_batch_pu_seat_audit
+    priority: 2840
+    path_regex: '^外部数据/新增开放数据/第十四批实验_PU汽车座椅/(?:内容审计摘要\.json|文件校验清单\.tsv|来源说明\.md)$'
+    source_scope_key: scope_mendeley_pu_seat_raw_v2
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_multilayer_seat_comfort
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 确定性记录两个DOI同族、9个材料标签、单位与校准边界、曲线—汇总血缘及split_group；审计产物不增加材料或实验活动。
+    review_required: true
+
+  - rule_id: fifteenth_batch_multicomponent_pu_multiscale_raw
+    priority: 2940
+    path_regex: '^外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/多组分PU多尺度模拟补充数据\.pdf$'
+    source_scope_key: scope_figshare_ma5c03283_si
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: multicomponent_polyurethane_multiscale_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: ACS Figshare固定SI含Table S1--S3的10个粗粒化体系、13个不重复运行和115个表格数值；没有原始轨迹、restart或完整力场文件。
+    review_required: true
+
+  - rule_id: fifteenth_batch_multicomponent_pu_multiscale_metadata
+    priority: 2930
+    path_regex: '^外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/(?:Figshare官方元数据|论文Crossref元数据)\.json$'
+    source_scope_key: scope_figshare_ma5c03283_si
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: multicomponent_polyurethane_multiscale_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 固定支持信息DOI、论文DOI、作者、版本、文件身份与CC BY-NC 4.0非商业限制；元数据不生成数值样本。
+    review_required: true
+
+  - rule_id: fifteenth_batch_multicomponent_pu_multiscale_normalized
+    priority: 2920
+    path_regex: '^外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/Gold_C_计算观测长表\.tsv$'
+    source_scope_key: scope_figshare_ma5c03283_si
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: multicomponent_polyurethane_multiscale_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 115条Gold-C记录中68条为零目标权重输入上下文、47条为计算输出；密度单位推断项保留条件标志，训练权重和划分均为空。
+    review_required: true
+
+  - rule_id: fifteenth_batch_multicomponent_pu_multiscale_audit
+    priority: 2910
+    path_regex: '^外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/(?:内容审计摘要\.json|文件校验清单\.tsv|来源说明\.md)$'
+    source_scope_key: scope_figshare_ma5c03283_si
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: multicomponent_polyurethane_multiscale_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 锁定PDF哈希、页数、表格锚点、去重、输入输出角色、单位冲突与结构边界；审计产物不增加计算体系。
+    review_required: true
+
+  - rule_id: sixteenth_batch_recycled_pu_foam_raw_package
+    priority: 3040
+    path_regex: '^外部数据/新增开放数据/第十六批实验_再生PU泡沫/(?:row data for _Sustainable insulating foams_3\.rar|论文_10\.12688_openreseurope\.13288\.2\.pdf)$'
+    source_scope_key: scope_zenodo_5713819_recycled_pu_foam
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: recycled_polyurethane_foam_experiments
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Zenodo固定RAR和论文PDF共同提供原始仪器数据、配方、方法、有效形变区间和汇总值；原件哈希及官方MD5已冻结。
+    review_required: true
+
+  - rule_id: sixteenth_batch_recycled_pu_foam_extracted_raw
+    priority: 3030
+    path_regex: '^外部数据/新增开放数据/第十六批实验_再生PU泡沫/原始文件/.+$'
+    source_scope_key: scope_zenodo_5713819_recycled_pu_foam
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: recycled_polyurethane_foam_experiments
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 81个解包成员按相对路径、总字节数与聚合SHA-256核验；59个压缩试样、10个黏度工作簿、8个导热工作簿及光谱/图像均保持原始身份。
+    review_required: true
+
+  - rule_id: sixteenth_batch_recycled_pu_foam_normalized
+    priority: 3020
+    path_regex: '^外部数据/新增开放数据/第十六批实验_再生PU泡沫/(?:Gold_E_实验记录|压缩曲线点|黏度曲线点)\.tsv$'
+    source_scope_key: scope_zenodo_5713819_recycled_pu_foam
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: recycled_polyurethane_foam_experiments
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 59条压缩曲线的0--27%有效区间、10条黏度曲线、配方/密度/导热/汇总值和派生端点合并为13931条Gold-E记录；点级记录不得独立随机划分。
+    review_required: true
+
+  - rule_id: sixteenth_batch_recycled_pu_foam_audit
+    priority: 3010
+    path_regex: '^外部数据/新增开放数据/第十六批实验_再生PU泡沫/(?:内容审计摘要\.json|文件校验清单\.tsv|来源说明\.md)$'
+    source_scope_key: scope_zenodo_5713819_recycled_pu_foam
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: recycled_polyurethane_foam_experiments
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 确定性记录西班牙语13列压缩文件的真实应变列、有效形变边界、导热重复冲突、曲线端点复算及一个来源家族分组；审计统计不扩增材料。
     review_required: true

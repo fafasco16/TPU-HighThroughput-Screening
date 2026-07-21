@@ -120,11 +120,13 @@ def test_gold_c_固定计数_字段契约_唯一身份与单一模拟分组() ->
     assert len({row["observation_id"] for row in rows}) == len(rows)
     assert len({row["source_record_id"] for row in rows}) == len(rows)
     assert {row["simulation_key"] for row in rows} == {SIMULATION_KEY}
+    assert {row["split_group"] for row in rows} == {SIMULATION_KEY}
     assert {row["global_structure_family_key"] for row in rows} == {
         "family_pufoam_generic_nco_oh_water_npentane"
     }
     assert {row["source_id"] for row in rows} == {SOURCE_ID}
     assert payload["simulation_key_count"] == 1
+    assert payload["split_group_count"] == 1
     assert payload["time_points_are_independent_systems"] is False
 
     time_tokens = {

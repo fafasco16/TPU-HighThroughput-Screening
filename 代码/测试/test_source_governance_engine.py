@@ -123,6 +123,15 @@ def test_real_configuration_covers_required_scopes_and_all_ledger_citations():
         "scope_acs_figshare_31989433_v1",
         "scope_acs_figshare_32256977_v1",
         "scope_acs_figshare_32567339_v1",
+        "scope_mendeley_xs78ch5jb7_v3",
+        "scope_date_seed_oil_pu_pir_2025_publication",
+        "scope_mendeley_pu_seat_raw_v2",
+        "scope_mendeley_pu_seat_processed_v2",
+        "scope_moon_2020_pu_multilayer_seat_publication",
+        "scope_figshare_ma5c03283_si",
+        "scope_multicomponent_pu_multiscale_2026_publication",
+        "scope_zenodo_5713819_recycled_pu_foam",
+        "scope_recycled_pu_foam_2021_publication",
     }
 
     assert required <= scope_keys

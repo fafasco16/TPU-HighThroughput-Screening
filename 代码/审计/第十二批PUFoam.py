@@ -97,6 +97,7 @@ GOLD_C_VALUE_COLUMNS = (
     "structure_identity_status",
     "global_structure_family_key",
     "simulation_key",
+    "split_group",
     "property_name",
     "value",
     "unit",
@@ -450,6 +451,7 @@ def _base_row(
         "structure_identity_status": "process_system_identity_only",
         "global_structure_family_key": STRUCTURE_FAMILY_KEY,
         "simulation_key": SIMULATION_KEY,
+        "split_group": SIMULATION_KEY,
         "property_name": f"pufoam_{property_field}_{aggregation}",
         "value": _fmt(value),
         "unit": unit,
@@ -741,6 +743,9 @@ def _materialize() -> tuple[tuple[dict[str, str], ...], dict[str, Any]]:
         raise AuditBlocked("observation_id 不唯一")
     if len({row["source_record_id"] for row in rows}) != len(rows):
         raise AuditBlocked("source_record_id 不唯一")
+    split_groups = {row["split_group"] for row in rows}
+    if split_groups != {SIMULATION_KEY}:
+        raise AuditBlocked(f"PUFoam 拆分组漂移：{sorted(split_groups)}")
 
     unit_counts = Counter(row["unit"] for row in rows)
     unit_status_counts = Counter(row["unit_status"] for row in rows)
@@ -754,7 +759,7 @@ def _materialize() -> tuple[tuple[dict[str, str], ...], dict[str, Any]]:
         row["potential_weight_ceiling"] for row in rows
     )
     audit_payload: dict[str, Any] = {
-        "audit_version": "batch12-pufoam-v2",
+        "audit_version": "batch12-pufoam-v3",
         "source_id": SOURCE_ID,
         **metadata,
         "archive": {
@@ -798,6 +803,7 @@ def _materialize() -> tuple[tuple[dict[str, str], ...], dict[str, Any]]:
             "unit_counts": dict(sorted(unit_counts.items())),
             "unit_status_counts": dict(sorted(unit_status_counts.items())),
             "simulation_key_count": 1,
+            "split_group_count": len(split_groups),
             "time_points_are_independent_systems": False,
             "current_weight_materialized": False,
         },

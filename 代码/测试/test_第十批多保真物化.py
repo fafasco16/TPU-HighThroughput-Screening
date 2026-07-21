@@ -118,6 +118,7 @@ def test_omg_gold_c_is_reiterable_stream_with_full_counts(module) -> None:
             r"global_polymer_structure_[0-9a-f]{24}",
             row["global_structure_family_key"],
         )
+        assert row["split_group"] == row["global_structure_family_key"]
         assert ";field=" in row["source_locator"]
     assert total == 1_191_900
     assert len(source_records) == 47_676
@@ -150,6 +151,10 @@ def test_openpoly_gold_c_has_only_observed_md_labels(module) -> None:
             r"global_polymer_structure_[0-9a-f]{24}",
             row["global_structure_family_key"],
         )
+        for row in rows
+    )
+    assert all(
+        row["split_group"] == row["global_structure_family_key"]
         for row in rows
     )
 
