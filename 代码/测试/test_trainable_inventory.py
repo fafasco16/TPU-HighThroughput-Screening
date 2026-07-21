@@ -912,11 +912,11 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
     assert "https://doi.org/" in report
 
 
-def test_acs_published_tables_are_materialized_as_multifidelity_reference(
+def test_gold_e_scalars_are_materialized_as_multifidelity_reference(
     inventory: dict,
 ):
     rows = _csv_rows(GOLD_E_TABLE_PATH)
-    assert len(rows) == 2_600
+    assert len(rows) == 5_230
     assert Counter(row["source_id"] for row in rows) == {
         "ledger_source_118": 143,
         "ledger_source_106": 95,
@@ -924,17 +924,25 @@ def test_acs_published_tables_are_materialized_as_multifidelity_reference(
         "ledger_source_112": 45,
         "source_sciencedb_pue643_v1": 1_929,
         "source_zenodo_6406174": 171,
+        "ledger_source_093": 1_170,
+        "source_nature_spore_filled_tpu_source_data": 144,
+        "source_sheffield_21510876_v1": 755,
+        "source_figshare_31550614_sls_tpu_lattice": 375,
+        "ledger_source_034": 186,
     }
     assert Counter(row["gold_admission_status"] for row in rows) == {
-        "admitted_reference": 654,
-        "conditional_reference": 1_946,
+        "admitted_reference": 2_756,
+        "conditional_reference": 2_474,
     }
     assert all(row["current_weight_materialized"] == "false" for row in rows)
     assert all(row["training_weight"] == "" for row in rows)
     assert all(row["file_sha256"] and row["source_locator"] for row in rows)
     metadata = inventory["summary"]["gold_e_published_table_long_table"]
-    assert metadata["row_count"] == 2_600
+    assert metadata["row_count"] == 5_230
     assert metadata["current_weight_materialized"] is False
+    assert inventory["summary"]["batch11_existing_experimental_scalar_audit"][
+        "record_count"
+    ] == 2_630
 
     manifest_rows = [
         row

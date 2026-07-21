@@ -81,6 +81,10 @@ from 审计.第十批多保真物化 import (
     build_gold_e_rows as build_batch10_gold_e_rows,
     iter_gold_c_rows as iter_batch10_gold_c_rows,
 )
+from 审计.第十一批既有实验标量物化 import (
+    SPECS as BATCH11_EXISTING_SCALAR_SPECS,
+    build_records as build_batch11_existing_scalar_records,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -111,6 +115,9 @@ BATCH10_MATERIALIZATION_SCRIPT_PATH = (
 )
 BATCH10_OPENPOLY_AUDIT_SCRIPT_PATH = (
     ROOT / "代码" / "审计" / "第十批OpenPolymerChallenge.py"
+)
+BATCH11_EXISTING_SCALAR_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十一批既有实验标量物化.py"
 )
 INPUT_FILES_READ: set[Path] = set()
 
@@ -1571,7 +1578,7 @@ def _gold_e_table_value_rows(
         rows.append(row)
     source_counts = Counter(row["source_id"] for row in rows)
     metadata = {
-        "artifact_role": "normalized_experimental_published_table_reference",
+        "artifact_role": "normalized_experimental_scalar_reference",
         "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
         "path": _to_relative(OUTPUT_GOLD_E_TABLES),
         "row_count": len(rows),
@@ -2699,9 +2706,9 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
         == 4_524
     )
     gold_e_metadata = summary["gold_e_published_table_long_table"]
-    assert gold_e_metadata["row_count"] == 2_600
-    assert gold_e_metadata["admitted_reference_count"] == 654
-    assert gold_e_metadata["conditional_reference_count"] == 1_946
+    assert gold_e_metadata["row_count"] == 5_230
+    assert gold_e_metadata["admitted_reference_count"] == 2_756
+    assert gold_e_metadata["conditional_reference_count"] == 2_474
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
     assert summary["strict_core_keyed_curve_count"] == 217
@@ -2941,7 +2948,7 @@ def _write_report(
             f"- 逐记录清单：`{_to_relative(OUTPUT_MANIFEST)}`",
             f"- JSON 总账：`{_to_relative(OUTPUT_JSON)}`",
             f"- Gold-V 候选结构：`{_to_relative(OUTPUT_CANDIDATES)}`",
-            f"- Gold-E 已物化论文表格：`{_to_relative(OUTPUT_GOLD_E_TABLES)}`（配方、工艺和实验汇总值，不是训练集）",
+            f"- Gold-E 已物化实验标量：`{_to_relative(OUTPUT_GOLD_E_TABLES)}`（逐试样、配方、工艺、动力学和实验汇总值，不是训练集）",
             f"- Gold-C 计算性能长表：`{_to_relative(OUTPUT_GOLD_C_VALUES)}`（规范化参考值，不是训练集）",
             "- 复算程序：`代码/生成数据总账.py`",
             "- 校验：`代码/测试/test_trainable_inventory.py`",
@@ -3014,6 +3021,9 @@ def main() -> None:
         _register_input(path)
     for relative_name in BATCH10_OPENPOLY_FROZEN_FILES:
         _register_input(BATCH10_OPENPOLY_DIR / relative_name)
+    _register_input(BATCH11_EXISTING_SCALAR_SCRIPT_PATH)
+    for spec in BATCH11_EXISTING_SCALAR_SPECS.values():
+        _register_input(spec.path)
     if tuple(BATCH10_COMPUTATIONAL_RECORD_COLUMNS) != tuple(
         GOLD_C_VALUE_COLUMNS
     ):
@@ -3022,6 +3032,13 @@ def main() -> None:
     acs_table_rows, acs_table_audit_summary = build_acs_table_records()
     batch10_gold_e_rows = build_batch10_gold_e_rows()
     materialized_table_rows = [*acs_table_rows, *batch10_gold_e_rows]
+    batch11_gold_e_rows, batch11_existing_scalar_audit = (
+        build_batch11_existing_scalar_records()
+    )
+    gold_e_value_source_rows = [
+        *materialized_table_rows,
+        *batch11_gold_e_rows,
+    ]
     smipoly_candidate_rows = build_candidate_rows(SMIPOLY_CANDIDATE_INPUT)
     _, purgen_candidate_rows = build_purgen_fragment_rows(PURGEN_ARCHIVE)
     existing_candidate_structures = {
@@ -3094,7 +3111,7 @@ def main() -> None:
         )
     )
     gold_e_table_rows, gold_e_table_metadata = _gold_e_table_value_rows(
-        materialized_table_rows, identities
+        gold_e_value_source_rows, identities
     )
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
@@ -3112,6 +3129,9 @@ def main() -> None:
     summary["acs_table_materialization_audit"] = acs_table_audit_summary
     summary["batch10_multifidelity_materialization_audit"] = (
         batch10_materialization_audit
+    )
+    summary["batch11_existing_experimental_scalar_audit"] = (
+        batch11_existing_scalar_audit
     )
     _validate(ledger, manifest, summary)
     _write_gzip_csv(
@@ -3141,7 +3161,7 @@ def main() -> None:
     )
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.11",
+        "artifact_version": "trainable-inventory-v0.2.12",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],

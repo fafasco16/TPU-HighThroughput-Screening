@@ -1,6 +1,6 @@
 {
   "schema_version": "v0.2",
-  "artifact_version": "trainable-inventory-v0.2.11",
+  "artifact_version": "trainable-inventory-v0.2.12",
   "artifact_status": "audit_inventory_only",
   "count_semantics": {
     "source_record_count": "来源报告的记录/容器级科学条目；不等于独立样本。",
@@ -48,6 +48,11 @@
       "sha256": "803cac48108a8ee5f719dc2a7f1eff7f9171398e38de3436c13308248195f13e"
     },
     {
+      "path": "代码/审计/第十一批既有实验标量物化.py",
+      "bytes": 24736,
+      "sha256": "9f19e846cf8d686bba7e95ce50abcc9d18bd803c6d5c7baccf69d19346b66211"
+    },
+    {
       "path": "代码/审计/第十批ACS表格物化.py",
       "bytes": 42246,
       "sha256": "1c6b617d737ef38104c1474798399143f17421d9f8ddcc75b213e2b82a0228ec"
@@ -64,8 +69,8 @@
     },
     {
       "path": "代码/生成数据总账.py",
-      "bytes": 145885,
-      "sha256": "052c64283a1914e84f6477ffc34b1664c48de41fd13debbfec0640c8e44c4ba1"
+      "bytes": 146654,
+      "sha256": "e51769868ce6dc535f08a5558f33c4a8c950912d8f1e42cdc0d8242f2332843b"
     },
     {
       "path": "数据/原始/外部数据/力学曲线/Schwarz2022_EPU40/内容审计摘要.json",
@@ -1217,8 +1222,8 @@
   },
   "summary": {
     "audit_as_of_utc": "2026-07-21T14:00:00Z",
-    "input_file_count": 229,
-    "input_fingerprint_sha256": "779d8ae36516bf0cf5668e07ff2a1c894fe907e2ad2120b1a69fc9caf90bd3c9",
+    "input_file_count": 230,
+    "input_fingerprint_sha256": "2023eddb329fda550d1adb530e3e8e81a592c6f72cfb6e04ae68d9de2e8599c7",
     "training_enabled": false,
     "training_split_created": false,
     "training_weight_materialized": false,
@@ -1422,20 +1427,25 @@
       "current_weight_materialized": false
     },
     "gold_e_published_table_long_table": {
-      "artifact_role": "normalized_experimental_published_table_reference",
+      "artifact_role": "normalized_experimental_scalar_reference",
       "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
       "path": "结果/Gold_E_实验表格.csv.gz",
-      "row_count": 2600,
+      "row_count": 5230,
       "source_value_counts": {
         "ledger_source_118": 143,
         "ledger_source_106": 95,
         "ledger_source_110": 217,
         "ledger_source_112": 45,
         "source_sciencedb_pue643_v1": 1929,
-        "source_zenodo_6406174": 171
+        "source_zenodo_6406174": 171,
+        "ledger_source_093": 1170,
+        "source_nature_spore_filled_tpu_source_data": 144,
+        "source_sheffield_21510876_v1": 755,
+        "source_figshare_31550614_sls_tpu_lattice": 375,
+        "ledger_source_034": 186
       },
-      "admitted_reference_count": 654,
-      "conditional_reference_count": 1946,
+      "admitted_reference_count": 2756,
+      "conditional_reference_count": 2474,
       "current_weight_materialized": false
     },
     "acs_table_materialization_audit": {
@@ -1622,6 +1632,71 @@
           "notes"
         ]
       }
+    },
+    "batch11_existing_experimental_scalar_audit": {
+      "audit_version": "batch11-existing-experimental-scalars-v1",
+      "status": "pass",
+      "verified_inputs": [
+        {
+          "source_directory": "Mendeley_FDM_TPU晶格与基材力学",
+          "filename": "标量审计清单.tsv",
+          "rows": 1206,
+          "bytes": 623948,
+          "sha256": "b65142feaed3ab276f4f6870369e479730f3320de98fb1bfc1a51b4bb419cbcc",
+          "license": "CC BY 4.0",
+          "doi": "10.17632/dbzdkz95f8.1"
+        },
+        {
+          "source_directory": "第七批补充材料_孢子填充TPU",
+          "filename": "标量审计清单.tsv",
+          "rows": 144,
+          "bytes": 12206,
+          "sha256": "48dc8191c7630310a941bdc1e74eecfe2862f00d0a45a467c861f9115004517c",
+          "license": "CC BY 4.0",
+          "doi": "10.1038/s41467-024-47132-8"
+        },
+        {
+          "source_directory": "第九批实验_Sheffield_PU理性设计",
+          "filename": "标量审计清单.tsv",
+          "rows": 764,
+          "bytes": 312960,
+          "sha256": "bd9afe4642acd14769419b92862a9820458ed2a1b0ccc21f1154e5ae4c806f2c",
+          "license": "CC BY 4.0",
+          "doi": "10.15131/shef.data.21510876.v1"
+        },
+        {
+          "source_directory": "第八批实验_SLS_TPU晶格工艺",
+          "filename": "标量审计清单.tsv",
+          "rows": 375,
+          "bytes": 285447,
+          "sha256": "2cbe217252e422fd69dbac1af97d2039dd510ff341501a8efa89e876bad52a0a",
+          "license": "CC BY 4.0",
+          "doi": "10.6084/m9.figshare.31550614.v1"
+        },
+        {
+          "source_directory": "第八批实验_TPU文献力学汇总",
+          "filename": "标量审计清单.tsv",
+          "rows": 186,
+          "bytes": 120749,
+          "sha256": "a2e8f91b250a59b2d44eca9e93c1ed290501c92bd8473d63d195147fcc8e1b14",
+          "license": "CC BY 4.0",
+          "doi": "10.17632/ftntxg4zdz.1"
+        }
+      ],
+      "record_count": 2630,
+      "source_record_counts": {
+        "Mendeley_FDM_TPU晶格与基材力学": 1170,
+        "第七批补充材料_孢子填充TPU": 144,
+        "第九批实验_Sheffield_PU理性设计": 755,
+        "第八批实验_SLS_TPU晶格工艺": 375,
+        "第八批实验_TPU文献力学汇总": 186
+      },
+      "admission_counts": {
+        "admitted_reference": 2102,
+        "conditional_reference": 528
+      },
+      "training_split_materialized": false,
+      "training_weight_materialized": false
     }
   },
   "source_ledger": [
