@@ -356,10 +356,10 @@ def test_standard_mechanics_audit_fails_closed_if_excluded_sffe_appears():
 def test_audit_readme_declares_current_source_identity_coverage():
     text = (AUDIT_DIR / "README.md").read_text(encoding="utf-8")
 
-    assert "46 个一级目录" in text
-    assert "45 个独立来源身份" in text
-    assert "PCL_GitLFS轨迹补采" in text
-    assert "不增加来源身份" in text
+    assert "不在此处手工维护" in text
+    assert "结果/数据总账.json" in text
+    assert "按来源家族去重" in text
+    assert "不能因目录增加而重复计数" in text
     for filename in (
         "新增开放数据核心与镜像.py",
         "新增开放数据标准力学三源.py",

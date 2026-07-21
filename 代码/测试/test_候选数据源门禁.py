@@ -166,9 +166,11 @@ def test_downloader_only_selects_gate_approved_files_with_frozen_sha256() -> Non
     downloader = _load_downloader()
     selection = downloader.load_download_selection(REGISTRY, SOURCE_SCOPE)
 
-    # 两个A级候选已下载、校验并晋升到正式来源治理；候选下载器必须停止
-    # 把它们当作“净新增”重复下载。原始文件散列仍冻结在候选注册表中。
+    # 四个已下载A级候选均已晋升来源治理，不应重复下载。
     assert selection == {}
+    assert downloader.CANDIDATE_DIRECTORIES[
+        "mendeley_2026_iir_oh_low_permeability_pu"
+    ] == "第十八批实验_IIR-OH聚氨酯"
     payload = yaml.safe_load(REGISTRY.read_text(encoding="utf-8"))
     promoted = {
         row["candidate_id"]: row
@@ -177,13 +179,17 @@ def test_downloader_only_selects_gate_approved_files_with_frozen_sha256() -> Non
         in {
             "fisher_2020_pu_shape_memory_raw",
             "zenodo_3631551_lignin_tpu_blends",
+            "mendeley_2026_iir_oh_low_permeability_pu",
+            "mendeley_2024_aged_vegetable_puf_simulation",
         }
     }
     assert set(promoted) == {
         "fisher_2020_pu_shape_memory_raw",
         "zenodo_3631551_lignin_tpu_blends",
+        "mendeley_2026_iir_oh_low_permeability_pu",
+        "mendeley_2024_aged_vegetable_puf_simulation",
     }
-    assert sum(len(item["files"]) for item in promoted.values()) == 8
+    assert sum(len(item["files"]) for item in promoted.values()) == 10
     assert all(
         item["dedup"]["state"] == "existing_governance_source"
         and item["dedup"]["independent_source_contribution"] is False

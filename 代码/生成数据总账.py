@@ -10,6 +10,7 @@ import os
 import re
 import stat
 import tempfile
+import time
 from collections import Counter
 from dataclasses import dataclass
 from itertools import chain
@@ -123,6 +124,23 @@ from 审计.第十六批再生PU泡沫 import (
     PDF_PATH as BATCH16_RECYCLED_PDF,
     build_gold_e_rows as build_batch16_gold_e_rows,
 )
+from 审计.DRUM_TPUU import (
+    LOW_CURVE_AUDIT as BATCH17_DRUM_CURVE_AUDIT,
+    LOW_MATERIALIZED_FILE_SPECS as BATCH17_DRUM_FILE_SPECS,
+    LOW_MECHANICAL_DIR as BATCH17_DRUM_MECHANICAL_DIR,
+    build_low_ceiling_gold_e_rows as build_batch17_drum_gold_e_rows,
+)
+from 审计.第十八批IIR_OH聚氨酯 import (
+    ARCHIVE as BATCH18_IIR_OH_ARCHIVE,
+    build_gold_e_scalar_rows as build_batch18_iir_oh_gold_e_rows,
+)
+from 审计.第十九批老化植物基PU泡沫模拟 import (
+    ARCHIVE_PATH as BATCH19_AGED_PUF_ARCHIVE,
+    GOLD_C_VALUE_COLUMNS as BATCH19_AGED_PUF_GOLD_C_COLUMNS,
+    SOURCE_ID as BATCH19_AGED_PUF_SOURCE_ID,
+    audit as audit_batch19_aged_puf,
+    build_gold_c_rows as build_batch19_aged_puf_gold_c_rows,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -169,6 +187,11 @@ BATCH15_MULTISCALE_SCRIPT_PATH = (
 BATCH16_RECYCLED_SCRIPT_PATH = (
     ROOT / "代码" / "审计" / "第十六批再生PU泡沫.py"
 )
+BATCH17_DRUM_SCRIPT_PATH = ROOT / "代码" / "审计" / "DRUM_TPUU.py"
+BATCH18_IIR_OH_SCRIPT_PATH = ROOT / "代码" / "审计" / "第十八批IIR_OH聚氨酯.py"
+BATCH19_AGED_PUF_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十九批老化植物基PU泡沫模拟.py"
+)
 INPUT_FILES_READ: set[Path] = set()
 
 
@@ -204,6 +227,7 @@ GOLD_C_VALUE_COLUMNS = [
 
 
 GOLD_E_OPTIONAL_OBSERVATION_COLUMNS = [
+    "batch_id",
     "curve_id",
     "point_index",
     "secondary_condition_name",
@@ -1392,11 +1416,13 @@ def _gold_c_computational_value_rows(
     polyomics_directory = "第九批计算_PolyOmics"
     pufoam_directory = "第十二批计算_PUFoam"
     multiscale_directory = "第十五批计算_多组分PU多尺度模拟"
+    aged_puf_simulation_directory = "第十九批模拟_老化植物基PU泡沫"
     required = {
         radon_directory,
         polyomics_directory,
         pufoam_directory,
         multiscale_directory,
+        aged_puf_simulation_directory,
     }
     missing = required - profile_by_directory.keys()
     if missing:
@@ -1714,12 +1740,39 @@ def _gold_c_computational_value_rows(
             f"inputs={multiscale_input_count}, outputs={multiscale_output_count}"
         )
 
+    aged_puf_identity = identities[aged_puf_simulation_directory]
+    if aged_puf_identity.source_id != BATCH19_AGED_PUF_SOURCE_ID:
+        raise AssertionError(
+            "第十九批老化植物基PU泡沫模拟来源ID漂移: "
+            f"{aged_puf_identity.source_id}, expected={BATCH19_AGED_PUF_SOURCE_ID}"
+        )
+    aged_puf_ceiling = float(
+        profile_by_directory[aged_puf_simulation_directory]["weight_ceiling"]
+    )
+    aged_puf_rows = build_batch19_aged_puf_gold_c_rows()
+    for source_row in aged_puf_rows:
+        if source_row["source_id"] != aged_puf_identity.source_id:
+            raise AssertionError(
+                "第十九批老化植物基PU泡沫模拟数值来源ID漂移: "
+                f"{source_row['source_id']}"
+            )
+        row = dict(source_row)
+        row["potential_weight_ceiling"] = min(
+            float(row["potential_weight_ceiling"]), aged_puf_ceiling
+        )
+        row["source_locator"] = (
+            "数据/原始/外部数据/新增开放数据/"
+            f"{aged_puf_simulation_directory}/{row['source_locator']}"
+        )
+        rows.append(row)
+
     expected_existing_counts = {
         radon_identity.source_id: 440,
         polyomics_identity.source_id: 209_905,
         identities["ACS_Figshare_双相演化聚氨酯"].source_id: 5,
         pufoam_identity.source_id: BATCH12_PUFOAM_GOLD_C_COUNT,
         multiscale_identity.source_id: BATCH15_MULTISCALE_GOLD_C_COUNT,
+        aged_puf_identity.source_id: 19_340,
     }
     actual_counts = Counter(row["source_id"] for row in rows)
     if actual_counts != expected_existing_counts:
@@ -1778,6 +1831,10 @@ def _gold_c_computational_value_rows(
         "batch15_multiscale_numeric_context_count": len(multiscale_rows),
         "batch15_multiscale_input_descriptor_count": multiscale_input_count,
         "batch15_multiscale_performance_output_count": multiscale_output_count,
+        "batch19_aged_puf_compact_scalar_count": len(aged_puf_rows),
+        "batch19_aged_puf_admission_counts": dict(
+            Counter(row["gold_admission_status"] for row in aged_puf_rows)
+        ),
         "current_weight_materialized": False,
     }
     # 第十批 OMG 的 1,191,900 行保持流式，避免百万个 26 列 dict 常驻内存。
@@ -2698,6 +2755,20 @@ def _assert_safe_output(path: Path) -> None:
             raise ValueError(f"拒绝覆盖非普通文件或重解析点: {target}")
 
 
+def _replace_atomic_output(temporary: Path, path: Path) -> None:
+    """Replace an output, tolerating short-lived Windows scanner locks."""
+
+    attempts = 30 if os.name == "nt" else 1
+    for attempt in range(attempts):
+        try:
+            os.replace(temporary, path)
+            return
+        except PermissionError:
+            if attempt + 1 == attempts:
+                raise
+            time.sleep(min(0.1 * (attempt + 1), 1.0))
+
+
 def _atomic_write_text(path: Path, text: str, *, encoding: str) -> None:
     _assert_safe_output(path)
     file_descriptor, temporary_name = tempfile.mkstemp(
@@ -2712,7 +2783,7 @@ def _atomic_write_text(path: Path, text: str, *, encoding: str) -> None:
             handle.write(text)
             handle.flush()
             os.fsync(handle.fileno())
-        os.replace(temporary, path)
+        _replace_atomic_output(temporary, path)
     finally:
         if file_descriptor >= 0:
             os.close(file_descriptor)
@@ -2776,7 +2847,7 @@ def _write_gzip_csv(
                 text_handle.detach()
             raw_handle.flush()
             os.fsync(raw_handle.fileno())
-        os.replace(temporary, path)
+        _replace_atomic_output(temporary, path)
     finally:
         if file_descriptor >= 0:
             os.close(file_descriptor)
@@ -2977,12 +3048,12 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 82
-    assert summary["v0_2_source_directory_count"] == 74
-    assert summary["v0_2_independent_source_identity_count"] == 73
+    assert len(ledger) == 84
+    assert summary["v0_2_source_directory_count"] == 76
+    assert summary["v0_2_independent_source_identity_count"] == 74
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 81
+    assert summary["total_independent_source_contribution_count"] == 82
     assert summary["model_ready_record_count"] == 0
     assert summary["virtual_candidate_count"] == 117629
     assert summary["virtual_candidate_priority1_structure_count"] == 9631
@@ -3015,7 +3086,7 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     }
     assert all(float(row["weight_ceiling"]) == 0.0 for row in virtual_candidates)
     gold_c_metadata = summary["gold_c_computational_value_long_table"]
-    assert gold_c_metadata["row_count"] == 1_415_903
+    assert gold_c_metadata["row_count"] == 1_435_243
     assert gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OMG] == 1_191_900
     assert (
         gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OPENPOLY]
@@ -3027,10 +3098,15 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     )
     assert gold_c_metadata["batch15_multiscale_input_descriptor_count"] == 68
     assert gold_c_metadata["batch15_multiscale_performance_output_count"] == 47
+    assert gold_c_metadata["source_value_counts"][BATCH19_AGED_PUF_SOURCE_ID] == 19_340
+    assert gold_c_metadata["batch19_aged_puf_admission_counts"] == {
+        "admitted_reference": 19_305,
+        "conditional_reference": 35,
+    }
     gold_e_metadata = summary["gold_e_published_table_long_table"]
-    assert gold_e_metadata["row_count"] == 194_461
-    assert gold_e_metadata["admitted_reference_count"] == 14_040
-    assert gold_e_metadata["conditional_reference_count"] == 180_421
+    assert gold_e_metadata["row_count"] == 305_108
+    assert gold_e_metadata["admitted_reference_count"] == 124_564
+    assert gold_e_metadata["conditional_reference_count"] == 180_544
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
     assert summary["strict_core_keyed_curve_count"] == 217
@@ -3048,9 +3124,9 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     assert summary["major_experimental_curve_history_lower_bound"] == 1112
     assert summary["major_experimental_curve_point_lower_bound"] == 12258315
     assert summary["known_origin_totals"]["experimental_only"]["specimen_count"]["value"] == 1524
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2797
-    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2608
-    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 9781042
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_observed"]["value"] == 2955
+    assert summary["known_origin_totals"]["experimental_only"]["curve_count_candidate"]["value"] == 2759
+    assert summary["known_origin_totals"]["experimental_only"]["point_count_observed"]["value"] == 12831885
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["curve_count_observed"]["value"] == 701
     assert summary["known_origin_totals"]["mixed_experiment_and_simulation"]["point_count_observed"]["value"] == 7862426
     strict_core_manifest = [
@@ -3371,11 +3447,19 @@ def main() -> None:
         BATCH16_RECYCLED_SCRIPT_PATH,
         BATCH16_RECYCLED_ARCHIVE,
         BATCH16_RECYCLED_PDF,
+        BATCH17_DRUM_SCRIPT_PATH,
+        BATCH17_DRUM_CURVE_AUDIT,
+        BATCH18_IIR_OH_SCRIPT_PATH,
+        BATCH18_IIR_OH_ARCHIVE,
+        BATCH19_AGED_PUF_SCRIPT_PATH,
+        BATCH19_AGED_PUF_ARCHIVE,
     ):
         _register_input(path)
     for path in sorted(BATCH16_RECYCLED_DATA_ROOT.rglob("*")):
         if path.is_file():
             _register_input(path)
+    for filename in sorted(BATCH17_DRUM_FILE_SPECS):
+        _register_input(BATCH17_DRUM_MECHANICAL_DIR / filename)
     if tuple(BATCH10_COMPUTATIONAL_RECORD_COLUMNS) != tuple(
         GOLD_C_VALUE_COLUMNS
     ):
@@ -3386,6 +3470,8 @@ def main() -> None:
         GOLD_C_VALUE_COLUMNS
     ):
         raise AssertionError("第十五批多尺度模拟 Gold-C字段与总账字段不一致")
+    if tuple(BATCH19_AGED_PUF_GOLD_C_COLUMNS) != tuple(GOLD_C_VALUE_COLUMNS):
+        raise AssertionError("第十九批老化植物基PU泡沫 Gold-C字段与总账字段不一致")
     batch10_materialization_audit = audit_batch10_materialization_inputs()
     acs_table_rows, acs_table_audit_summary = build_acs_table_records()
     batch10_gold_e_rows = build_batch10_gold_e_rows()
@@ -3399,6 +3485,12 @@ def main() -> None:
     batch16_gold_e_rows, batch16_recycled_audit_raw = (
         build_batch16_gold_e_rows()
     )
+    batch17_drum_gold_e_rows, batch17_drum_audit = (
+        build_batch17_drum_gold_e_rows()
+    )
+    batch18_iir_oh_gold_e_rows, batch18_iir_oh_audit = (
+        build_batch18_iir_oh_gold_e_rows()
+    )
     batch16_recycled_audit = {
         key: value
         for key, value in batch16_recycled_audit_raw.items()
@@ -3411,6 +3503,8 @@ def main() -> None:
         *batch13_gold_e_rows,
         *batch14_gold_e_rows,
         *batch16_gold_e_rows,
+        *batch17_drum_gold_e_rows,
+        *batch18_iir_oh_gold_e_rows,
     ]
     smipoly_candidate_rows = build_candidate_rows(SMIPOLY_CANDIDATE_INPUT)
     _, purgen_candidate_rows = build_purgen_fragment_rows(PURGEN_ARCHIVE)
@@ -3448,9 +3542,9 @@ def main() -> None:
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 74:
+    if len(profiles) != 76:
         raise AssertionError(
-            f"v0.2来源画像必须覆盖74个目录，当前为{len(profiles)}"
+            f"v0.2来源画像必须覆盖76个目录，当前为{len(profiles)}"
         )
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
@@ -3501,6 +3595,8 @@ def main() -> None:
         batch13_gold_e_rows,
         batch14_gold_e_rows,
         batch16_gold_e_rows,
+        batch17_drum_gold_e_rows,
+        batch18_iir_oh_gold_e_rows,
     )
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
@@ -3527,6 +3623,11 @@ def main() -> None:
     summary["batch14_pu_seat_audit"] = batch14_seat_audit
     summary["batch15_multiscale_pu_audit"] = batch15_multiscale_audit
     summary["batch16_recycled_pu_foam_audit"] = batch16_recycled_audit
+    summary["batch17_drum_low_ceiling_tpuu_audit"] = batch17_drum_audit
+    summary["batch18_iir_oh_polyurethane_audit"] = batch18_iir_oh_audit
+    summary["batch19_aged_vegetable_puf_simulation_audit"] = (
+        audit_batch19_aged_puf()
+    )
     _validate(ledger, manifest, summary)
     _write_gzip_csv(
         OUTPUT_GOLD_C_VALUES,
@@ -3555,7 +3656,7 @@ def main() -> None:
     )
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.15",
+        "artifact_version": "trainable-inventory-v0.2.18",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],

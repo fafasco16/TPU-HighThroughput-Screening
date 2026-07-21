@@ -1,7 +1,7 @@
 schema_version: v0.2
-registry_version: candidate-registry-v0.1
+registry_version: candidate-registry-v0.2
 registry_state: candidate_only
-observed_at: "2026-07-20T11:35:00+08:00"
+observed_at: "2026-07-21T17:10:00+08:00"
 asserted_by: tpu_source_curator
 training_split_created: false
 training_weight_materialized: false
@@ -24,6 +24,8 @@ allowed_rights_statuses_for_download:
   - open_noncommercial
 allowed_download_hosts:
   - ars.els-cdn.com
+  - data.mendeley.com
+  - prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com
   - zenodo.org
   - ora.ox.ac.uk
 
@@ -146,6 +148,92 @@ candidates:
     dedup: {state: existing_governance_source, matched_source_keys: [source_zenodo_3631551_lignin_tpu], matched_scope_keys: [scope_zenodo_3631551_lignin_tpu_dataset], independent_source_contribution: false}
     proposed_action: verify_existing_payload_and_continue_audit
     assessment_note: "开放单工作簿、体量小且补流变/热学缺口；木质素复合体系未来只作TPU复合材料迁移层。"
+
+  - candidate_id: mendeley_2026_iir_oh_low_permeability_pu
+    title: "Low-Permeability and Calcification-resistant Polyurethanes Based on Hydroxylated Butyl Rubber"
+    canonical_identifier: "doi:10.17632/wg3znh66bv.1"
+    publication_identifier: "doi:10.2139/ssrn.6767133"
+    publication_link_status: inferred_not_repository_linked_preprint
+    stable_url: "https://data.mendeley.com/datasets/wg3znh66bv/1"
+    repository: Mendeley Data
+    version_label: v1
+    publication_year: 2026
+    origin_kind: experiment
+    scientific_role: polyurethane_barrier_durability_transfer
+    material_scope: "IIR-OH软段与HDI/HMDI/MDI构成的低渗透抗钙化聚氨酯，并含医用PU70A对照"
+    chemistry_scope: [hydroxylated_butyl_rubber, HDI, HMDI, MDI, polyurethane]
+    property_scope: [tensile, cyclic_tensile, hydrolytic_aging, FTIR, GPC, gel_fraction, crosslink_density, water_vapor_permeability, oxygen_permeability, calcification, pressure_flow, long_cycle_durability]
+    reported_scale:
+      formulation_code_count_audited: 16
+      upstream_file_count: 207
+      upstream_uncompressed_bytes: 157552695
+      replicate_note: "拉伸覆盖三种异氰酸酯×五档代码；网络工作簿另有仅含溶胀/交联数据的MDI-1，共16个配方代码。2/4/6/8/10及1的计量语义仍须由正文闭合"
+    rights:
+      status: open_redistributable
+      license_spdx: CC-BY-4.0
+      evidence_url: "https://data.mendeley.com/public-api/datasets/wg3znh66bv/snapshot/1"
+    files:
+      - file_id: mendeley_zip_v1
+        upstream_name: wg3znh66bv-1.zip
+        size_bytes: 38825776
+        media_type: application/zip
+        checksum: "sha256:5224ae550be0c04022f0de02f03bd08f6ae39f2e6f84044fb8ec9e1cd5872e76"
+        download_url: "https://data.mendeley.com/public-api/zip/wg3znh66bv/download/1"
+    evidence_urls:
+      - "https://doi.org/10.17632/wg3znh66bv.1"
+      - "https://data.mendeley.com/public-api/datasets/wg3znh66bv/snapshot/1"
+      - "https://data.mendeley.com/public-api/datasets/wg3znh66bv/folders/1"
+      - "https://api.datacite.org/dois/10.17632/wg3znh66bv.1"
+      - "https://doi.org/10.2139/ssrn.6767133"
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 5, tpu_relevance: 4, gap_value: 5, reproducibility: 4}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_mendeley_wg3znh66bv_v1], matched_scope_keys: [scope_mendeley_wg3znh66bv_v1], independent_source_contribution: false}
+    proposed_action: continue_scalar_materialization_and_opju_semantic_closure
+    assessment_note: "已下载并审计：207个文件对应16个配方代码、151条去重曲线和3016301个去重曲线点；不能把文件或采样点当独立材料。仓库未官方绑定论文，SSRN只按高置信推断预印本记录；SPA/OPJU保留为审计资产。"
+
+  - candidate_id: mendeley_2024_aged_vegetable_puf_simulation
+    title: "Simulated Results for Aged Polyurethane Foam"
+    canonical_identifier: "doi:10.17632/n9h66xjk7y.1"
+    publication_identifier: "doi:10.1002/pen.27196"
+    stable_url: "https://data.mendeley.com/datasets/n9h66xjk7y/1"
+    repository: Mendeley Data
+    version_label: v1
+    publication_year: 2024
+    origin_kind: simulation
+    scientific_role: aged_pu_foam_multifidelity_transfer
+    material_scope: "一个植物基聚氨酯泡沫名义配方、两个发泡方向的Abaqus-UMAT Arrhenius老化压缩模拟"
+    chemistry_scope: [vegetable_based_polyurethane_foam, commercial_MDI, castor_oil_dominant_polyol]
+    property_scope: [compression_curve, aging_time, aging_temperature, expansion_direction]
+    reported_scale:
+      material_count: 1
+      formulation_count: 1
+      simulation_run_count: 4200
+      unique_condition_count: 3868
+      curve_point_count: 424200
+      replicate_note: "4200条RPT不是4200种材料；332条输入工况重复，另有1组数值曲线由6个不同工况共享"
+    rights:
+      status: open_redistributable
+      license_spdx: CC-BY-4.0
+      evidence_url: "https://data.mendeley.com/datasets/n9h66xjk7y/1"
+    files:
+      - file_id: mendeley_zip_v1
+        upstream_name: n9h66xjk7y-1.zip
+        size_bytes: 7042325
+        media_type: application/zip
+        checksum: "sha256:e672f248e43b5cd6d9173ec87612643749b2b7e59ef528975b64d82d69e27b02"
+        download_url: "https://data.mendeley.com/public-api/zip/n9h66xjk7y/download/1"
+    evidence_urls:
+      - "https://doi.org/10.17632/n9h66xjk7y.1"
+      - "https://data.mendeley.com/datasets/n9h66xjk7y/1"
+      - "https://api.datacite.org/dois/10.17632/n9h66xjk7y.1"
+      - "https://doi.org/10.1002/pen.27196"
+      - "https://doi.org/10.1002/pen.26725"
+      - "https://doi.org/10.17632/2sp8fyvhfm.3"
+    scores: {provenance: 5, rights: 5, file_access: 5, data_granularity: 5, tpu_relevance: 3, gap_value: 5, reproducibility: 3}
+    vetoes: []
+    dedup: {state: existing_governance_source, matched_source_keys: [source_mendeley_n9h66xjk7y_v1], matched_scope_keys: [scope_mendeley_n9h66xjk7y_v1], independent_source_contribution: false}
+    proposed_action: materialize_gold_c_compact_curve_descriptors
+    assessment_note: "已下载全量ZIP并完成数值审计；该数据是现有植物基PU泡沫实验家族的模型派生伴随源，不增加材料或配方数。可用于老化、方向性和压缩曲线多保真迁移，但不能直接监督线性TPU拉伸性能。"
 
   - candidate_id: existing_4tu_self_healing_tpu
     title: "Self-healing thermoplastic polyurethane 4TU data"

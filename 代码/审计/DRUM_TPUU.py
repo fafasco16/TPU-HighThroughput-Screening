@@ -35,6 +35,8 @@ from typing import Any, Iterable
 
 from openpyxl import load_workbook
 
+from 审计.第十批ACS表格物化 import RECORD_COLUMNS
+
 
 SCRIPT_PATH = Path(__file__).resolve()
 SCRIPT_DIR = SCRIPT_PATH.parent
@@ -194,6 +196,66 @@ DATASETS = {
         "license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
     },
 }
+
+
+LOW_GOLD_E_OPTIONAL_COLUMNS = (
+    "batch_id",
+    "curve_id",
+    "point_index",
+    "secondary_condition_name",
+    "secondary_condition_value",
+    "secondary_condition_unit",
+    "auxiliary_value_name",
+    "auxiliary_value",
+    "auxiliary_unit",
+    "sample_identity_status",
+    "global_structure_family_key",
+    "family_leakage_group",
+    "curve_points_are_independent_samples",
+    "duplicate_status",
+)
+LOW_MECHANICAL_DIR = LOW_DIR / "解包内容" / "Raw_Mechanical_Testing"
+LOW_CURVE_AUDIT = LOW_DIR / "曲线审计清单.tsv"
+LOW_MATERIALIZED_FILE_SPECS = {
+    "TPUU-C_hysteresis.csv": (
+        1_293_131,
+        "3a589865feb3248ba11d767fe1a345fecd24e4ffa24a7e194d434bfc3ae38ad8",
+    ),
+    "TPUU-C_tensile.csv": (
+        56_143,
+        "a3e6049dbba7def5fd3f37e4d8d4045b977a818ed567893f97dadefc222d770c",
+    ),
+    "TPUU-D_hysteresis.csv": (
+        1_616_402,
+        "0dde58a3db8dc663259d282feb1193b8987c2faee65d662a687db88cf6d8599f",
+    ),
+    "TPUU-D_tensile.csv": (
+        54_537,
+        "84fa631b586911c6fb2a7b53b9a2c7147615ef05e6389db7148bf57cbcec7137",
+    ),
+    "TPUU-R_hysteresis.csv": (
+        1_485_410,
+        "3ec1625d45bfc9f025ba1b70cb4b62878c0402d27f581d1e5e7d5135e1eca44d",
+    ),
+    "TPUU-R_tensile.csv": (
+        46_380,
+        "83fb582175300bdd21d8a440d1f96f24f21cf834ab830d100497fb6c0b44bce2",
+    ),
+    "TPUU-S_hysteresis.csv": (
+        1_179_193,
+        "d6dfd0840017caaf8ffce4a3aba4cd840aabffd4a5591dc685455c0074e4a30c",
+    ),
+    "TPUU-S_tensile.csv": (
+        63_079,
+        "8d4c3816735df5342f30bafc675506c6aa5f9557df6fd8843662eae312fc45e6",
+    ),
+}
+LOW_EXPECTED_TENSILE_CURVES = 20
+LOW_EXPECTED_CYCLIC_CURVES = 4
+LOW_EXPECTED_TENSILE_POINTS = 4_369
+LOW_EXPECTED_CYCLIC_POINTS = 105_912
+LOW_EXPECTED_RAW_POINTS = 110_281
+LOW_EXPECTED_DERIVED_SCALARS = 60
 
 
 def _is_relative_to(path: Path, parent: Path) -> bool:
@@ -653,9 +715,9 @@ class CurveAccumulator:
 def batch_from_text(text: str) -> tuple[str, str]:
     value = clean(text)
     patterns = [
-        r"\bMSM[-_ ]\d+[-_ ]\d+\b",
-        r"\bMRP[-_ ]\d+[-_ ]\d+[A-Za-z]?\b",
-        r"\bDCB[-_ ]?\d+[-_ ]\d+[A-Za-z]?\b",
+        r"(?<![A-Za-z0-9])MSM[-_ ]\d+[-_ ]\d+(?!\d)",
+        r"(?<![A-Za-z0-9])MRP[-_ ]\d+[-_ ]\d+[A-Za-z]?(?![A-Za-z0-9])",
+        r"(?<![A-Za-z0-9])DCB[-_ ]?\d+[-_ ]\d+[A-Za-z]?(?![A-Za-z0-9])",
     ]
     for pattern in patterns:
         match = re.search(pattern, value, re.I)
@@ -1404,6 +1466,439 @@ def build_summary(
             "输出": ["内容审计摘要.json", "文件校验清单.tsv", "曲线审计清单.tsv", "批次审计清单.tsv"],
         },
     }
+
+
+def _low_gold_e_base(**updates: Any) -> dict[str, Any]:
+    row: dict[str, Any] = {
+        column: "" for column in (*RECORD_COLUMNS, *LOW_GOLD_E_OPTIONAL_COLUMNS)
+    }
+    row.update(
+        {
+            "source_directory": LOW_DIR.name,
+            "target_origin": "experimental",
+            "data_origin": "source_raw_curve",
+            "reduction_level": "raw_point",
+            "fidelity_level": "direct_experimental_tpuu",
+            "gold_admission_status": "admitted_reference",
+            "mapping_status": (
+                "formulation_code_resolved_to_tpuu_family_exact_composition_pending"
+            ),
+            "current_weight_materialized": "false",
+            "training_weight": "",
+            "license": "CC0-1.0",
+            "citation_keys": (
+                "ledger-055-meyersohn-2024-low-ceiling-tpuu-data;"
+                "ledger-056-meyersohn-2024-low-ceiling-tpuu"
+            ),
+            "sample_identity_status": "instrument_specimen_label",
+            "curve_points_are_independent_samples": "false",
+            "duplicate_status": "unique_curve_payload",
+        }
+    )
+    row.update(updates)
+    return row
+
+
+def _low_curve_audit_index() -> dict[tuple[str, str, str], dict[str, Any]]:
+    curves, issues = audit_low_csv(DATASETS["低天花板"])
+    if issues:
+        raise RuntimeError(f"第十七批DRUM机械CSV审计出现问题: {issues}")
+    reconcile_batches(curves)
+    mark_curve_duplicates(curves)
+    selected = [
+        row
+        for row in curves
+        if row["试验类型"] in {"单轴拉伸", "循环滞回"}
+    ]
+    if Counter(row["试验类型"] for row in selected) != {
+        "单轴拉伸": LOW_EXPECTED_TENSILE_CURVES,
+        "循环滞回": LOW_EXPECTED_CYCLIC_CURVES,
+    }:
+        raise RuntimeError("第十七批DRUM曲线类型数量漂移")
+    if sum(int(row["点数"]) for row in selected) != LOW_EXPECTED_RAW_POINTS:
+        raise RuntimeError("第十七批DRUM曲线点数量漂移")
+    if any(int(row["曲线精确重复组大小"]) != 1 for row in selected):
+        raise RuntimeError("第十七批DRUM出现未治理的精确重复曲线")
+
+    with LOW_CURVE_AUDIT.open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as handle:
+        frozen = [
+            row
+            for row in csv.DictReader(handle, delimiter="\t")
+            if row["试验类型"] in {"单轴拉伸", "循环滞回"}
+        ]
+
+    def fingerprint(
+        row: dict[str, Any],
+    ) -> tuple[str, str, str, str, str, str, int, str]:
+        return (
+            PurePosixPath(str(row["文件相对路径"]).replace("\\", "/")).name,
+            str(row["试样标签"]),
+            str(row["试验类型"]),
+            str(row["配方键"]),
+            str(row["批次键"]),
+            str(row["泄漏分组键"]),
+            int(row["点数"]),
+            str(row["曲线SHA256"]),
+        )
+
+    if sorted(map(fingerprint, selected)) != sorted(map(fingerprint, frozen)):
+        raise RuntimeError("第十七批DRUM重算曲线与冻结审计清单不一致")
+    index = {
+        (
+            PurePosixPath(str(row["文件相对路径"]).replace("\\", "/")).name,
+            str(row["试样标签"]),
+            str(row["试验类型"]),
+        ): row
+        for row in selected
+    }
+    if len(index) != LOW_EXPECTED_TENSILE_CURVES + LOW_EXPECTED_CYCLIC_CURVES:
+        raise RuntimeError("第十七批DRUM曲线审计键不唯一")
+    return index
+
+
+def _low_curve_common(
+    *,
+    path: Path,
+    material: str,
+    sample: str,
+    test_type: str,
+    audit_row: dict[str, Any],
+) -> dict[str, str]:
+    kind = "tensile" if test_type == "单轴拉伸" else "cyclic-tensile"
+    curve_id = f"drum-low-ceiling:{material}:{sample}:{kind}"
+    batch_id = str(audit_row["批次键"])
+    split_group = f"{DATASETS['低天花板']['doi']}|{audit_row['配方键']}"
+    return {
+        "curve_id": curve_id,
+        "source_record_id": curve_id,
+        "formulation_id": material,
+        "batch_id": batch_id,
+        "sample_id": sample,
+        "split_group": split_group,
+        "family_leakage_group": split_group,
+        "global_structure_family_key": f"family_drum_low_ceiling_tpuu|{material}",
+        "file_sha256": sha256_file(path),
+    }
+
+
+def _low_tensile_rows(
+    path: Path,
+    audit_index: dict[tuple[str, str, str], dict[str, Any]],
+) -> tuple[list[dict[str, Any]], int, int]:
+    source_rows = read_csv(path)
+    if len(source_rows) < 4:
+        raise RuntimeError(f"第十七批DRUM拉伸CSV行数不足: {path.name}")
+    positions = header_positions(
+        tuple(source_rows[1]), ["Time", "Force", "Stroke", "Stress", "Strain"]
+    )
+    if len(positions) != 5:
+        raise RuntimeError(f"第十七批DRUM拉伸列组数量漂移: {path.name}")
+    material = path.name.split("_")[0]
+    output: list[dict[str, Any]] = []
+    curve_count = 0
+    derived_count = 0
+    for column_group, position in enumerate(positions, start=1):
+        sample = clean(source_rows[0][position])
+        if not sample:
+            raise RuntimeError(f"第十七批DRUM拉伸试样标签为空: {path.name}")
+        audit_row = audit_index[(path.name, sample, "单轴拉伸")]
+        common = _low_curve_common(
+            path=path,
+            material=material,
+            sample=sample,
+            test_type="单轴拉伸",
+            audit_row=audit_row,
+        )
+        points: list[tuple[float, float]] = []
+        digest = hashlib.sha256()
+        point_index = 0
+        for physical_row, raw in enumerate(source_rows[3:], start=4):
+            values = [
+                number(raw[index]) if index < len(raw) else None
+                for index in range(position, position + 5)
+            ]
+            if all(value is None for value in values):
+                continue
+            time_value, force_value, stroke_value, stress_value, strain_value = values
+            if stress_value is None or strain_value is None:
+                continue
+            if time_value is None or force_value is None or stroke_value is None:
+                raise RuntimeError(
+                    f"第十七批DRUM拉伸次要通道缺失: {path.name}:row={physical_row}"
+                )
+            point_index += 1
+            points.append((strain_value, stress_value))
+            digest.update(
+                f"{fmt_num(strain_value)},{fmt_num(stress_value)}\n".encode("ascii")
+            )
+            output.append(
+                _low_gold_e_base(
+                    **common,
+                    observation_id=f"{common['curve_id']}:point={point_index:06d}",
+                    record_kind="curve_point",
+                    property_name="tensile_stress",
+                    value=fmt_num(stress_value),
+                    unit="MPa",
+                    condition_name="tensile_strain",
+                    condition_value=fmt_num(strain_value),
+                    condition_unit="%",
+                    secondary_condition_name="elapsed_time",
+                    secondary_condition_value=fmt_num(time_value),
+                    secondary_condition_unit="s",
+                    method_or_test_protocol=(
+                        "Shimadzu AGS-X; room temperature; 50 mm/min; "
+                        "at least five dogbone replicates per formulation"
+                    ),
+                    protocol_status="source_protocol_and_axes_complete",
+                    potential_weight_ceiling="0.85",
+                    source_locator=(
+                        f"{path.relative_to(LOW_DIR).as_posix()}#row={physical_row};"
+                        f"column_group={column_group}"
+                    ),
+                    point_index=str(point_index),
+                    notes=(
+                        "原始单轴拉伸点；材料代码属于IPDI/水扩链TPUU，"
+                        "精确定量配方仍待正文映射。"
+                    ),
+                )
+            )
+        if point_index != int(audit_row["点数"]):
+            raise RuntimeError(
+                f"第十七批DRUM拉伸点数与审计不一致: {path.name}/{sample}"
+            )
+        if digest.hexdigest() != str(audit_row["曲线SHA256"]):
+            raise RuntimeError(
+                f"第十七批DRUM拉伸曲线哈希与审计不一致: {path.name}/{sample}"
+            )
+        if not points:
+            raise RuntimeError(f"第十七批DRUM拉伸曲线为空: {path.name}/{sample}")
+
+        stresses = [stress for _, stress in points]
+        strains = [strain for strain, _ in points]
+        toughness = sum(
+            (left_stress + right_stress)
+            * 0.5
+            * (right_strain - left_strain)
+            / 100.0
+            for (left_strain, left_stress), (right_strain, right_stress) in zip(
+                points, points[1:]
+            )
+            if right_strain >= left_strain
+        )
+        derived_specs = (
+            ("tensile_strength", max(stresses), "MPa"),
+            ("elongation_at_break", max(strains), "%"),
+            ("tensile_toughness", toughness, "MJ/m^3"),
+        )
+        for property_name, value, unit in derived_specs:
+            output.append(
+                _low_gold_e_base(
+                    **common,
+                    observation_id=f"{common['curve_id']}:derived={property_name}",
+                    record_kind="derived_scalar",
+                    property_name=property_name,
+                    value=fmt_num(value),
+                    unit=unit,
+                    data_origin="deterministically_derived_from_source_curve",
+                    reduction_level="derived",
+                    method_or_test_protocol=(
+                        "peak/max or trapezoidal integration of ordered source "
+                        "stress-strain points; strain converted from percent to fraction"
+                    ),
+                    fidelity_level="deterministic_curve_derived_experimental",
+                    protocol_status="source_protocol_complete_deterministic_derivation",
+                    potential_weight_ceiling="0.75",
+                    source_locator=(
+                        f"{path.relative_to(LOW_DIR).as_posix()}#sample={sample};"
+                        f"derived={property_name}"
+                    ),
+                    notes=(
+                        "与母曲线共享试样和泄漏组；派生端点不增加独立试样。"
+                    ),
+                )
+            )
+            derived_count += 1
+        curve_count += 1
+    return output, curve_count, derived_count
+
+
+def _low_hysteresis_rows(
+    path: Path,
+    audit_index: dict[tuple[str, str, str], dict[str, Any]],
+) -> tuple[list[dict[str, Any]], int]:
+    source_rows = read_csv(path)
+    if len(source_rows) < 4:
+        raise RuntimeError(f"第十七批DRUM循环CSV行数不足: {path.name}")
+    headers = [clean(value) for value in source_rows[1]]
+    required = {"Time", "Strain", "Stress", "Cycle"}
+    if not required.issubset(headers):
+        raise RuntimeError(f"第十七批DRUM循环字段漂移: {path.name}")
+    time_index = headers.index("Time")
+    strain_index = headers.index("Strain")
+    stress_index = headers.index("Stress")
+    cycle_index = headers.index("Cycle")
+    material = path.name.split("_")[0]
+    sample = clean(source_rows[0][0])
+    audit_row = audit_index[(path.name, sample, "循环滞回")]
+    common = _low_curve_common(
+        path=path,
+        material=material,
+        sample=sample,
+        test_type="循环滞回",
+        audit_row=audit_row,
+    )
+    output: list[dict[str, Any]] = []
+    digest = hashlib.sha256()
+    point_index = 0
+    for physical_row, raw in enumerate(source_rows[3:], start=4):
+        values = [number(raw[index]) if index < len(raw) else None for index in range(len(headers))]
+        if all(value is None for value in values):
+            continue
+        time_value = values[time_index]
+        strain_value = values[strain_index]
+        stress_value = values[stress_index]
+        cycle_value = values[cycle_index]
+        if stress_value is None or strain_value is None:
+            continue
+        if time_value is None or cycle_value is None:
+            raise RuntimeError(
+                f"第十七批DRUM循环次要通道缺失: {path.name}:row={physical_row}"
+            )
+        point_index += 1
+        digest.update(
+            f"{fmt_num(strain_value)},{fmt_num(stress_value)}\n".encode("ascii")
+        )
+        output.append(
+            _low_gold_e_base(
+                **common,
+                observation_id=f"{common['curve_id']}:point={point_index:06d}",
+                record_kind="curve_point",
+                property_name="cyclic_tensile_stress",
+                value=fmt_num(stress_value),
+                unit="kPa",
+                condition_name="tensile_strain",
+                condition_value=fmt_num(strain_value),
+                condition_unit="%",
+                secondary_condition_name="cycle_count",
+                secondary_condition_value=fmt_num(cycle_value),
+                secondary_condition_unit="dimensionless",
+                auxiliary_value_name="elapsed_time",
+                auxiliary_value=fmt_num(time_value),
+                auxiliary_unit="s",
+                method_or_test_protocol=(
+                    "Shimadzu AGS-X; 50% strain loading-unloading; 20 cycles; "
+                    "50 mm/min; source README declares Origin smoothing"
+                ),
+                data_origin="source_processed_experimental_curve",
+                fidelity_level="processed_experimental_tpuu_cyclic_curve",
+                protocol_status="source_declared_origin_smoothing_retained",
+                potential_weight_ceiling="0.65",
+                source_locator=(
+                    f"{path.relative_to(LOW_DIR).as_posix()}#row={physical_row}"
+                ),
+                point_index=str(point_index),
+                notes=(
+                    "来源明确声明使用Origin平滑；保留为同一试样的循环响应，"
+                    "不扩增为独立材料。"
+                ),
+            )
+        )
+    if point_index != int(audit_row["点数"]):
+        raise RuntimeError(f"第十七批DRUM循环点数与审计不一致: {path.name}")
+    if digest.hexdigest() != str(audit_row["曲线SHA256"]):
+        raise RuntimeError(f"第十七批DRUM循环曲线哈希与审计不一致: {path.name}")
+    return output, 1
+
+
+def build_low_ceiling_gold_e_rows() -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """物化低天花板TPUU的CSV力学曲线；DMTA旧XLS保留为待接入审计项。"""
+
+    actual_files = {path.name for path in LOW_MECHANICAL_DIR.glob("*.csv")}
+    if actual_files != set(LOW_MATERIALIZED_FILE_SPECS):
+        raise RuntimeError(
+            "第十七批DRUM机械CSV集合漂移: "
+            f"missing={sorted(set(LOW_MATERIALIZED_FILE_SPECS) - actual_files)}, "
+            f"extra={sorted(actual_files - set(LOW_MATERIALIZED_FILE_SPECS))}"
+        )
+    for filename, expected in LOW_MATERIALIZED_FILE_SPECS.items():
+        path = LOW_MECHANICAL_DIR / filename
+        actual = (path.stat().st_size, sha256_file(path))
+        if actual != expected:
+            raise RuntimeError(
+                f"第十七批DRUM原始文件漂移: {filename}; actual={actual}"
+            )
+
+    audit_index = _low_curve_audit_index()
+    rows: list[dict[str, Any]] = []
+    tensile_curves = cyclic_curves = derived_scalars = 0
+    for path in sorted(LOW_MECHANICAL_DIR.glob("*.csv")):
+        if path.name.endswith("_tensile.csv"):
+            source_rows, curve_count, derived_count = _low_tensile_rows(
+                path, audit_index
+            )
+            tensile_curves += curve_count
+            derived_scalars += derived_count
+        elif path.name.endswith("_hysteresis.csv"):
+            source_rows, curve_count = _low_hysteresis_rows(path, audit_index)
+            cyclic_curves += curve_count
+        else:
+            raise RuntimeError(f"第十七批DRUM出现未治理CSV: {path.name}")
+        rows.extend(source_rows)
+
+    point_count = sum(row["record_kind"] == "curve_point" for row in rows)
+    if (
+        tensile_curves,
+        cyclic_curves,
+        point_count,
+        derived_scalars,
+        len(rows),
+    ) != (
+        LOW_EXPECTED_TENSILE_CURVES,
+        LOW_EXPECTED_CYCLIC_CURVES,
+        LOW_EXPECTED_RAW_POINTS,
+        LOW_EXPECTED_DERIVED_SCALARS,
+        LOW_EXPECTED_RAW_POINTS + LOW_EXPECTED_DERIVED_SCALARS,
+    ):
+        raise RuntimeError("第十七批DRUM物化规模漂移")
+    if len({str(row["observation_id"]) for row in rows}) != len(rows):
+        raise RuntimeError("第十七批DRUM observation_id不唯一")
+    if any(str(row["training_weight"]) for row in rows):
+        raise RuntimeError("第十七批DRUM提前物化训练权重")
+    summary = {
+        "audit_version": "batch17-drum-low-ceiling-tpuu-v1",
+        "source_directory": LOW_DIR.name,
+        "dataset_doi": DATASETS["低天花板"]["doi"],
+        "article_doi": "10.1021/acs.macromol.4c01431",
+        "license": "CC0-1.0",
+        "material_count": 4,
+        "tensile_curve_count": tensile_curves,
+        "cyclic_curve_count": cyclic_curves,
+        "dmta_curve_count_audited_not_materialized": 4,
+        "raw_curve_point_count": point_count,
+        "derived_scalar_count": derived_scalars,
+        "gold_e_numeric_row_count": len(rows),
+        "admitted_reference_count": len(rows),
+        "conditional_reference_count": 0,
+        "source_file_count": len(LOW_MATERIALIZED_FILE_SPECS),
+        "source_file_sha256": {
+            filename: digest
+            for filename, (_, digest) in sorted(
+                LOW_MATERIALIZED_FILE_SPECS.items()
+            )
+        },
+        "known_gap": (
+            "4条DMTA温度扫描位于旧版XLS，已经审计但本批不依赖Excel COM"
+            "写入跨平台Gold-E长表"
+        ),
+        "training_state": {
+            "current_weight_materialized": False,
+            "training_split_created": False,
+            "model_ready_record_count": 0,
+        },
+    }
+    return rows, summary
 
 
 def validate_outputs(root: Path, file_rows: list[dict[str, Any]], curves: list[dict[str, Any]], batches: list[dict[str, Any]]) -> None:

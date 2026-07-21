@@ -37,11 +37,20 @@ DATA_ROOT = PROJECT_ROOT / "数据/原始" / "外部数据" / "新增开放数�
 REGISTRY = PROJECT_ROOT / "配置" / "候选数据源.yaml"
 SOURCE_SCOPE = PROJECT_ROOT / "配置" / "v0.2来源范围.yaml"
 GATE_SCRIPT = PROJECT_ROOT / "代码" / "审计" / "候选数据源门禁.py"
-CAPTURE_DATE = "2026-07-20"
+CAPTURE_DATE = "2026-07-21"
 USER_AGENT = "TPU-HighThroughput-Screening/0.5 (+research data acquisition)"
-ALLOWED_HOSTS = frozenset({"ars.els-cdn.com", "zenodo.org"})
+ALLOWED_HOSTS = frozenset(
+    {
+        "ars.els-cdn.com",
+        "data.mendeley.com",
+        "prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com",
+        "zenodo.org",
+    }
+)
 CANDIDATE_DIRECTORIES = {
     "fisher_2020_pu_shape_memory_raw": "DataInBrief_聚氨酯形状记忆多模态原始数据",
+    "mendeley_2026_iir_oh_low_permeability_pu": "第十八批实验_IIR-OH聚氨酯",
+    "mendeley_2024_aged_vegetable_puf_simulation": "第十九批模拟_老化植物基PU泡沫",
     "zenodo_3631551_lignin_tpu_blends": "Zenodo_木质素_TPU多模态数据",
 }
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -286,6 +295,9 @@ def _validate_magic(path: Path, spec: FileSpec) -> None:
     if spec.filename.lower().endswith(".xlsx"):
         if not prefix.startswith(b"PK\x03\x04"):
             raise AcquisitionBlocked(f"XLSX魔数不符：{spec.filename}")
+    elif spec.filename.lower().endswith(".zip"):
+        if not prefix.startswith((b"PK\x03\x04", b"PK\x05\x06", b"PK\x07\x08")):
+            raise AcquisitionBlocked(f"ZIP魔数不符：{spec.filename}")
     elif spec.filename.lower().endswith(".xml"):
         if not lower.startswith(b"<?xml"):
             raise AcquisitionBlocked(f"XML魔数不符：{spec.filename}")

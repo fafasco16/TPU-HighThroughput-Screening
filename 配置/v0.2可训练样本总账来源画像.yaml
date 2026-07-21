@@ -1,5 +1,5 @@
 schema_version: v0.2
-profile_version: trainable-inventory-profile-v0.2.21
+profile_version: trainable-inventory-profile-v0.2.24
 profile_status: audit_inventory_only
 generated_training_view: false
 audit_as_of_utc: '2026-07-21T14:00:00Z'
@@ -108,7 +108,7 @@ profiles:
   - {source_directory: ACS_Figshare_TPU退火硬段聚集, task: 退火—硬段聚集—性能证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 21 个退火温度—时间条件仅作证据, counts: {source_record_count: 3, material_count: null, formulation_count: null, batch_count: null, specimen_count: null, run_count: 21, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 3, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: AGH_低石化多元醇硬质PU泡沫, task: 生物基硬质PU泡沫候选元数据, origin_kind: 证据, scientific_role: 证据, quality_status: 隔离, weight_ceiling: 0.0, unit_status: 未解析, license_status: blocked_access, dedup_status: 未知, split_group_status: 粗粒度来源家族, completeness: metadata_only, audit_basis: 内容审计摘要.json, notes: 8/9 远端文件受限；本地测量单元为0, counts: {source_record_count: 1, material_count: null, formulation_count: null, batch_count: null, specimen_count: 0, run_count: 0, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 1, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Bath_多牌号PU泡沫多模态表征, task: 商业PU泡沫多模态迁移候选, origin_kind: 证据, scientific_role: 证据, quality_status: 隔离, weight_ceiling: 0.0, unit_status: 未解析, license_status: evidence_missing, dedup_status: 未知, split_group_status: 粗粒度来源家族, completeness: metadata_only, audit_basis: 内容审计摘要.json, notes: 3 个牌号、10 个远端XLSX；本地原始工作簿为0, counts: {source_record_count: 10, material_count: 3, formulation_count: null, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: null, curve_count_candidate: 0, scalar_count_observed: null, scalar_count_candidate: 0, point_count_observed: null, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 1, computational_system_count: 0, source_identity_count_contribution: 1}}
-  - {source_directory: DRUM_TPUU_低天花板, task: 低天花板TPUU力学/耗散/回收, origin_kind: 实验, scientific_role: TPU核心, quality_status: 入选, weight_ceiling: 1.0, unit_status: 已解析, license_status: manual_review, dedup_status: 已核验无曲线重复, split_group_status: 配方批次试样键完整, completeness: source_aggregate_plus_record_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 4个材料代码定量配方仍需正文/SI解码, counts: {source_record_count: 28, material_count: 4, formulation_count: 4, batch_count: 4, specimen_count: 28, run_count: 28, curve_count_observed: 28, curve_count_candidate: 28, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 113060, point_count_candidate: 113060, numeric_value_count: 679549, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: DRUM_TPUU_低天花板, task: 低天花板TPUU力学/耗散/回收, origin_kind: 实验, scientific_role: TPU核心, quality_status: 入选, weight_ceiling: 1.0, unit_status: 已解析, license_status: allow_with_attribution, dedup_status: 已核验无曲线重复, split_group_status: DOI+配方同折且批次/试样键完整, completeness: source_aggregate_plus_record_curves_and_materialized_gold_e, audit_basis: 内容审计摘要.json;曲线审计清单.tsv;代码/审计/DRUM_TPUU.py, notes: CC0 1.0来源已核验；4个材料代码定量配方仍需正文/SI解码；第17批已物化24条CSV曲线的110281个原始点及60个可复算端点，4条旧版XLS DMTA曲线2779点保留为已审计待接入, counts: {source_record_count: 28, material_count: 4, formulation_count: 4, batch_count: 4, specimen_count: 28, run_count: 28, curve_count_observed: 28, curve_count_candidate: 28, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 113060, point_count_candidate: 113060, numeric_value_count: 679549, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: DRUM_TPUU_机械回收, task: 可回收TPUU力学/耗散/回收, origin_kind: 实验, scientific_role: TPU核心, quality_status: 入选, weight_ceiling: 1.0, unit_status: 部分已解析, license_status: manual_review, dedup_status: 已核验无曲线重复, split_group_status: 配方批次试样键完整, completeness: source_aggregate_plus_record_curves, audit_basis: 内容审计摘要.json;曲线审计清单.tsv, notes: 148条核心TPUU曲线；9条对照/桥接曲线降权，1条橡皮筋对照置零, counts: {source_record_count: 158, material_count: 26, formulation_count: 26, batch_count: 27, specimen_count: 158, run_count: 158, curve_count_observed: 158, curve_count_candidate: 157, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 779948, point_count_candidate: null, numeric_value_count: 3140322, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Figshare_蓖麻油脂肪族PU化学性能, task: 生物基PU配方/性能候选, origin_kind: 证据, scientific_role: 证据, quality_status: 隔离, weight_ceiling: 0.0, unit_status: 未解析, license_status: manual_review, dedup_status: 未知, split_group_status: 粗粒度来源家族, completeness: metadata_only_broken_local_file, audit_basis: 内容审计摘要.json, notes: 目标Table_1.xls本地为0字节，不能伪造记录, counts: {source_record_count: 9, material_count: 0, formulation_count: 0, batch_count: 0, specimen_count: 0, run_count: 0, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 1, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: Figshare_热固PU原子经济升级回收, task: 热固PU解聚/再生/黏接迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.25, unit_status: 部分已解析, license_status: manual_review, dedup_status: 已建立跨表血缘, split_group_status: 粗粒度来源家族, completeness: source_aggregate_workbook, audit_basis: 数据审计摘要.json, notes: 数值单元不能当配方或试样；公开表主要是批次汇总, counts: {source_record_count: 28, material_count: 1, formulation_count: 3, batch_count: 3, specimen_count: null, run_count: 9, curve_count_observed: null, curve_count_candidate: null, scalar_count_observed: null, scalar_count_candidate: null, point_count_observed: null, point_count_candidate: null, numeric_value_count: 5423004, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
@@ -524,6 +524,51 @@ profiles:
       RPUF0第7个文件的西班牙语13列结构已按真实压缩应变列修复；来源可靠但属于发泡PU迁移域，不冒充线性TPU精确结构监督，当前训练权重为空。
     counts:
       {source_record_count: 77, material_count: 11, formulation_count: 11, batch_count: null, specimen_count: 59, run_count: 77, curve_count_observed: 69, curve_count_candidate: 69, scalar_count_observed: 192, scalar_count_candidate: 191, point_count_observed: 46503, point_count_candidate: 13740, numeric_value_count: 13931, evidence_group_count: 2, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第十八批实验_IIR-OH聚氨酯
+    task: IIR-OH软段聚氨酯的配方—网络—力学—阻隔—水解—抗钙化多任务迁移参考
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.55
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 207个文件只有204个唯一字节载荷；3条老化前曲线与基线拉伸精确重复，Tensile.xlsx两条曲线是原始TXT舍入副本，GPC工作簿与两个文本ARW是语义重复，均只计一次
+    split_group_status: 16个IIR-OH聚氨酯配方代码按数据集DOI与配方同折；同配方的拉伸、循环、网络、光谱、老化和阻隔观测不得跨折，3016301个去重曲线点不得点级随机划分
+    completeness: source_aggregate_plus_16_formulations_151_unique_curves_144_network_scalars_and_derived_tensile_endpoints
+    audit_basis: 来源元数据.json;内容审计摘要.json;曲线审计清单.tsv;文件校验清单.tsv;Gold_E_实验指标.tsv;代码/审计/第十八批IIR_OH聚氨酯.py
+    notes: >-
+      Mendeley Data固定version 1的ZIP为CC BY 4.0；207个成员包含HDI/HMDI/MDI三类二异氰酸酯与2/4/6/8/10五档代码，
+      形成15个有拉伸数据的配方、一个仅有网络数据的MDI-1配方及一个商用PU70A对照。审计得到158条可解析呈现曲线、去重后151条曲线和3016301个采样点；采样点只提高曲线分辨率，
+      不增加材料、配方或独立来源数。凝胶/交联密度工作簿给出96个明确最终标量与48个条件性m1/m0比值；54条唯一单调拉伸曲线可复算162个最大观测应力、
+      最大观测应变和记录末点前曲线面积。部分曲线终点仍承载，因此面积不命名为完整断裂韧性。FTIR、NMR、GPC、专有SPA/OPJU及两条同名MDI-2处理曲线保留条件参考；水氧透过率OPJU尚未可靠解析。
+      SSRN预印本与数据集的关系依据同题名和作者作高置信推断，但Mendeley元数据未官方绑定论文。0.55仅为未来任务门禁闭合后的潜在上限；当前不生成训练权重或划分。
+    counts:
+      {source_record_count: 207, material_count: 17, formulation_count: 16, batch_count: null, specimen_count: null, run_count: 151, curve_count_observed: 158, curve_count_candidate: 151, scalar_count_observed: 144, scalar_count_candidate: 144, point_count_observed: 3050843, point_count_candidate: 3016301, numeric_value_count: 3016607, evidence_group_count: 5, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第十九批模拟_老化植物基PU泡沫
+    task: 植物基PU泡沫温湿老化—方向—压缩响应的有限元多保真迁移
+    origin_kind: 模拟
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.25
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: 4200个运行归并为3868个唯一方向—老化时间—温度工况；332个重复工况不重复物化，另有6个不同工况共享同一舍入后数值曲线并显式保留冲突组
+    split_group_status: 模拟源与现有90个植物基PU泡沫实验试样属于同一来源家族，实验、模拟及所有方向/工况必须整体同折；424200个曲线点不得点级随机划分
+    completeness: source_aggregate_plus_4200_runs_3868_unique_conditions_and_19340_compact_gold_c_scalars
+    audit_basis: 内容审计摘要.json;文件校验清单.tsv;模拟运行清单.tsv;Gold_C_紧凑标量表.tsv;来源说明.md;代码/审计/第十九批老化植物基PU泡沫模拟.py
+    notes: >-
+      Mendeley Data固定version 1的ZIP为CC BY 4.0；4200条Abaqus RPT覆盖一个植物基PU泡沫名义配方、两个发泡方向、3--2999天和10--89摄氏度。
+      归档没有UMAT源码、输入文件、网格或求解配置，因此可作为实验锚定的本构有限元低保真参考，但不能宣称逐运行完全可复现，也不能直接监督线性TPU拉伸性能。
+      3868个唯一工况各物化0.1/0.5/1.0压缩对数应变处Mises应力、最大观测Mises应力和记录终点前能量密度5个描述符，共19340条Gold-C；
+      4193号运行缺最终步，其5条描述符进入条件参考；另有6个不同工况共享完全相同数值曲线，对应30条描述符也保留并降为条件参考，合计19305条正式、35条条件参考。
+      该源与10.17632/2sp8fyvhfm.3实验数据共用一个来源家族，不增加独立材料、配方或来源贡献数。
+      当前训练权重和划分均为空。
+    counts:
+      {source_record_count: 4202, material_count: 1, formulation_count: 1, batch_count: null, specimen_count: null, run_count: 4200, curve_count_observed: 4200, curve_count_candidate: 3868, scalar_count_observed: 19340, scalar_count_candidate: 19340, point_count_observed: 424200, point_count_candidate: 390668, numeric_value_count: 19340, evidence_group_count: 4, computational_system_count: 1, source_identity_count_contribution: 0}
 
 local_backlog_profiles:
   - source_directory: SelfHealingTPU_4TU

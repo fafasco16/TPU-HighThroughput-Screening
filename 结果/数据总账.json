@@ -1,6 +1,6 @@
 {
   "schema_version": "v0.2",
-  "artifact_version": "trainable-inventory-v0.2.15",
+  "artifact_version": "trainable-inventory-v0.2.18",
   "artifact_status": "audit_inventory_only",
   "count_semantics": {
     "source_record_count": "来源报告的记录/容器级科学条目；不等于独立样本。",
@@ -27,6 +27,11 @@
     "known_missing_direct_count": "已知应有但为空的直接响应数；不是零值，也不计入观测标量。"
   },
   "input_fingerprints": [
+    {
+      "path": "代码/审计/DRUM_TPUU.py",
+      "bytes": 84913,
+      "sha256": "ff9787ef7dc471fb6b6a0a766b4f6bb9ea5d4c9fe7552773947532eda5f308ed"
+    },
     {
       "path": "代码/审计/SMiPoly_TPU候选分类.py",
       "bytes": 13101,
@@ -58,6 +63,11 @@
       "sha256": "de1b0a3583d128235f6be323a88fd34f709de3a7170350347f7cd657ae63d24f"
     },
     {
+      "path": "代码/审计/第十九批老化植物基PU泡沫模拟.py",
+      "bytes": 44771,
+      "sha256": "815f63aeb4a96718dd439b61dd180a5afe13951a5f5ffba3c5f2802ffb1535db"
+    },
+    {
       "path": "代码/审计/第十二批PUFoam.py",
       "bytes": 36721,
       "sha256": "819f4eeca4178ba8f63e259ae91edc56066e0e7371f188480200b1bc44ba3f24"
@@ -68,14 +78,19 @@
       "sha256": "f3b9f91f4b3f94d624105e293743f9e1179ee9e46afbc7d41f24d8bb05f7a62f"
     },
     {
+      "path": "代码/审计/第十八批IIR_OH聚氨酯.py",
+      "bytes": 53507,
+      "sha256": "92c2c857185e90b190d663d008be933c7194e22222ad1e75dd4f9a753c4eb0fc"
+    },
+    {
       "path": "代码/审计/第十六批再生PU泡沫.py",
       "bytes": 43040,
       "sha256": "09d021dcd60ddde663866c72f6dec6977215343ec56445130c7a9ce401cf0787"
     },
     {
       "path": "代码/审计/第十四批PU汽车座椅.py",
-      "bytes": 47328,
-      "sha256": "86d3d156d1b7370788893347017d85df332dbf61b453b6cc05f901cb2d6bcb96"
+      "bytes": 47324,
+      "sha256": "fc2bc6272617f79285e91d2fffa6afc3f6954a79e8075fd5dda86a9685422e15"
     },
     {
       "path": "代码/审计/第十批ACS表格物化.py",
@@ -94,8 +109,8 @@
     },
     {
       "path": "代码/生成数据总账.py",
-      "bytes": 163795,
-      "sha256": "4c87c7a08fc48b8ad87c22f3583e3baa114b01bf2de32186f2e616989c69ddf4"
+      "bytes": 168154,
+      "sha256": "638c1e0318676167183c15ffc35d5bc7dd98eaa57d72aaa4b79bb5f17159bf2c"
     },
     {
       "path": "数据/原始/外部数据/力学曲线/Schwarz2022_EPU40/内容审计摘要.json",
@@ -316,6 +331,46 @@
       "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/曲线审计清单.tsv",
       "bytes": 23119,
       "sha256": "6c889703f4568552f8086bc43779cf194314dbde5734fb16816f5870be6abf80"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-C_hysteresis.csv",
+      "bytes": 1293131,
+      "sha256": "3a589865feb3248ba11d767fe1a345fecd24e4ffa24a7e194d434bfc3ae38ad8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-C_tensile.csv",
+      "bytes": 56143,
+      "sha256": "a3e6049dbba7def5fd3f37e4d8d4045b977a818ed567893f97dadefc222d770c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-D_hysteresis.csv",
+      "bytes": 1616402,
+      "sha256": "0dde58a3db8dc663259d282feb1193b8987c2faee65d662a687db88cf6d8599f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-D_tensile.csv",
+      "bytes": 54537,
+      "sha256": "84fa631b586911c6fb2a7b53b9a2c7147615ef05e6389db7148bf57cbcec7137"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-R_hysteresis.csv",
+      "bytes": 1485410,
+      "sha256": "3ec1625d45bfc9f025ba1b70cb4b62878c0402d27f581d1e5e7d5135e1eca44d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-R_tensile.csv",
+      "bytes": 46380,
+      "sha256": "83fb582175300bdd21d8a440d1f96f24f21cf834ab830d100497fb6c0b44bce2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-S_hysteresis.csv",
+      "bytes": 1179193,
+      "sha256": "d6dfd0840017caaf8ffce4a3aba4cd840aabffd4a5591dc685455c0074e4a30c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_Mechanical_Testing/TPUU-S_tensile.csv",
+      "bytes": 63079,
+      "sha256": "8d4c3816735df5342f30bafc675506c6aa5f9557df6fd8843662eae312fc45e6"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/内容审计摘要.json",
@@ -1113,6 +1168,36 @@
       "sha256": "65af1c1d7eafa24a522ee932e066fbc018714bf1d1135ae692fca9d8844a680a"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/Gold_C_紧凑标量表.tsv",
+      "bytes": 27432765,
+      "sha256": "d7df32670f7821c0a7694f33b688f92323acb3d4862872d1c2a34179f7303ed0"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/n9h66xjk7y-1.zip",
+      "bytes": 7042325,
+      "sha256": "e672f248e43b5cd6d9173ec87612643749b2b7e59ef528975b64d82d69e27b02"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/内容审计摘要.json",
+      "bytes": 6993,
+      "sha256": "95f760958d0bbc79c9f49992c59d2bb90b421b0515fe996cc216416c43a639de"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/文件校验清单.tsv",
+      "bytes": 776295,
+      "sha256": "1c42551de6c76e02612f543579e750a19b949ed35cf55a568873c48cec89b07f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/来源说明.md",
+      "bytes": 3901,
+      "sha256": "66b81df97516bbfad972013719de36567a2d3f5daa82f12791c5342c0c68240e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/模拟运行清单.tsv",
+      "bytes": 1766814,
+      "sha256": "7ed37e71556af4ddde62d4ebc4b7612f8cc756080f8a46bfa2bf509816912689"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/PUFoam.tar.gz",
       "bytes": 8252834,
       "sha256": "64e0a24689b8b9dcb8046ed9b3730ae6666180991bc40f75971b69ef56b63b84"
@@ -1156,6 +1241,36 @@
       "path": "数据/原始/外部数据/新增开放数据/第十五批计算_多组分PU多尺度模拟/论文Crossref元数据.json",
       "bytes": 8459,
       "sha256": "31a5e57c095670b965f13889d0db42d2471ef6e5fb7da571d1bab90138141751"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/Gold_E_实验指标.tsv",
+      "bytes": 369938,
+      "sha256": "d5ba33cc6c04673d7826846d095d7a43716892372b69274964232e6485a9df42"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/wg3znh66bv-1.zip",
+      "bytes": 38825776,
+      "sha256": "5224ae550be0c04022f0de02f03bd08f6ae39f2e6f84044fb8ec9e1cd5872e76"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/内容审计摘要.json",
+      "bytes": 9803,
+      "sha256": "a914774ce298dd0c864ed09cefee64273c2aa10131682fd5b09b0e622dc5d9e4"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/文件校验清单.tsv",
+      "bytes": 50601,
+      "sha256": "f41e560c36505b2193a87a1f59826d192a6b5ce8ba791cf91d9bc2b7ecd1f4fd"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/曲线审计清单.tsv",
+      "bytes": 47728,
+      "sha256": "a42cb36aa104193909b9ca5e2b960107d28af3c0d256d09b0bff0339b6df0d4e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/来源元数据.json",
+      "bytes": 1044,
+      "sha256": "c2118ff409852a623a56ea16dd0ec0587eb607095ab2c2522c41cd449f056c8b"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/第十六批实验_再生PU泡沫/row data for _Sustainable insulating foams_3.rar",
@@ -1879,18 +1994,18 @@
     },
     {
       "path": "配置/v0.2可训练样本总账来源画像.yaml",
-      "bytes": 104308,
-      "sha256": "d22e2be679698f2ef425fe6b375a25a70bb130f41b5a325a00097b1cdc978aa1"
+      "bytes": 109720,
+      "sha256": "a8f2e4b21eff29d800e779837c300dd878b04cb0f76d6d94761acb0ba0e9e82e"
     },
     {
       "path": "配置/v0.2多保真准入与权重策略.yaml",
-      "bytes": 58299,
-      "sha256": "d912864cb3569a562cef551bf6b23cdb02b531318cc87376fc51ba1aaebe2fee"
+      "bytes": 60688,
+      "sha256": "e634ea0e45445374052376391b7e7beeeab756dc3558d975d4f1d61fa8233ca9"
     },
     {
       "path": "配置/v0.2来源范围.yaml",
-      "bytes": 324545,
-      "sha256": "6290f24cc23691bde190bc269da3d538509404a6095d02780864395fb025b1ec"
+      "bytes": 334554,
+      "sha256": "5fdb593a0d11213f0b0d3103cd3637dac77d3d8cf08b7d7913599cb27ddf63cb"
     }
   ],
   "enums": {
@@ -1937,63 +2052,63 @@
   },
   "summary": {
     "audit_as_of_utc": "2026-07-21T14:00:00Z",
-    "input_file_count": 373,
-    "input_fingerprint_sha256": "282562155bcc027ba8878012d5107aa556ac4c6d563c38aceafe97e150925d75",
+    "input_file_count": 396,
+    "input_fingerprint_sha256": "896ea90f83685b078de74aba8896db3475bfb36f503b060bbd44c9adc5d54a72",
     "training_enabled": false,
     "training_split_created": false,
     "training_weight_materialized": false,
     "model_ready_record_count": 0,
-    "v0_2_source_directory_count": 74,
-    "v0_2_independent_source_identity_count": 73,
+    "v0_2_source_directory_count": 76,
+    "v0_2_independent_source_identity_count": 74,
     "local_backlog_source_directory_count": 4,
     "local_backlog_independent_source_identity_count": 4,
     "v0_1_frozen_baseline_source_count": 4,
-    "ledger_source_scope_count": 82,
-    "total_independent_source_contribution_count": 81,
+    "ledger_source_scope_count": 84,
+    "total_independent_source_contribution_count": 82,
     "source_quality_status_counts": {
       "仅验证": 14,
       "入选": 5,
-      "降权": 54,
+      "降权": 56,
       "隔离": 9
     },
     "source_gold_layer_counts": {
-      "Gold-C": 16,
-      "Gold-E": 46,
+      "Gold-C": 17,
+      "Gold-E": 47,
       "Gold-E+Gold-C": 9,
       "Gold-V": 3,
       "Not-Gold": 8
     },
     "source_gold_admission_status_counts": {
-      "admitted_reference": 62,
+      "admitted_reference": 64,
       "blocked": 3,
       "conditional_reference": 9,
       "evidence_only": 8
     },
-    "manifest_row_count": 133333,
+    "manifest_row_count": 133493,
     "manifest_granularity_counts": {
       "candidate": 117629,
-      "curve": 2223,
+      "curve": 2381,
       "evidence_group": 40,
       "run": 6784,
       "scalar": 6353,
-      "source": 82,
+      "source": 84,
       "specimen": 222
     },
     "manifest_quality_status_counts": {
       "仅验证": 19166,
       "入选": 422,
-      "降权": 113433,
+      "降权": 113593,
       "隔离": 312
     },
     "manifest_gold_layer_counts": {
-      "Gold-C": 7797,
-      "Gold-E": 7467,
+      "Gold-C": 7798,
+      "Gold-E": 7626,
       "Gold-E+Gold-C": 369,
       "Gold-V": 117632,
       "Not-Gold": 68
     },
     "manifest_gold_admission_status_counts": {
-      "admitted_reference": 124268,
+      "admitted_reference": 124428,
       "blocked": 294,
       "conditional_reference": 8703,
       "evidence_only": 68
@@ -2077,16 +2192,16 @@
           "known_source_scope_count": 25
         },
         "curve_count_observed": {
-          "value": 2797,
-          "known_source_scope_count": 44
+          "value": 2955,
+          "known_source_scope_count": 45
         },
         "curve_count_candidate": {
-          "value": 2608,
-          "known_source_scope_count": 44
+          "value": 2759,
+          "known_source_scope_count": 45
         },
         "point_count_observed": {
-          "value": 9781042,
-          "known_source_scope_count": 44
+          "value": 12831885,
+          "known_source_scope_count": 45
         }
       },
       "mixed_experiment_and_simulation": {
@@ -2129,13 +2244,14 @@
       "artifact_role": "normalized_computational_value_reference",
       "artifact_status": "multifidelity_gold_c_reference_not_training_dataset",
       "path": "结果/Gold_C_计算性能.csv.gz",
-      "row_count": 1415903,
+      "row_count": 1435243,
       "source_value_counts": {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209905,
         "ledger_source_106": 5,
         "source_mendeley_pufoam_v1": 9014,
         "source_figshare_ma5c03283_si": 115,
+        "source_mendeley_n9h66xjk7y_v1": 19340,
         "source_omg_batch10": 1191900,
         "source_openpolymer_challenge_v1": 4524
       },
@@ -2144,13 +2260,18 @@
       "batch15_multiscale_numeric_context_count": 115,
       "batch15_multiscale_input_descriptor_count": 68,
       "batch15_multiscale_performance_output_count": 47,
+      "batch19_aged_puf_compact_scalar_count": 19340,
+      "batch19_aged_puf_admission_counts": {
+        "admitted_reference": 19305,
+        "conditional_reference": 35
+      },
       "current_weight_materialized": false
     },
     "gold_e_published_table_long_table": {
       "artifact_role": "normalized_experimental_observation_reference",
       "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
       "path": "结果/Gold_E_实验表格.csv.gz",
-      "row_count": 194461,
+      "row_count": 305108,
       "source_value_counts": {
         "ledger_source_118": 143,
         "ledger_source_106": 95,
@@ -2166,10 +2287,12 @@
         "source_mendeley_xs78ch5jb7_v3": 101645,
         "source_mendeley_pu_seat_raw_v2": 73596,
         "source_mendeley_pu_seat_processed_v2": 59,
-        "source_zenodo_5713819_recycled_pu_foam": 13931
+        "source_zenodo_5713819_recycled_pu_foam": 13931,
+        "source_drum_zf53w893": 110341,
+        "source_mendeley_wg3znh66bv_v1": 306
       },
-      "admitted_reference_count": 14040,
-      "conditional_reference_count": 180421,
+      "admitted_reference_count": 124564,
+      "conditional_reference_count": 180544,
       "current_weight_materialized": false
     },
     "acs_table_materialization_audit": {
@@ -3932,6 +4055,522 @@
         "model_ready_record_count": 0,
         "split_group_count": 1
       }
+    },
+    "batch17_drum_low_ceiling_tpuu_audit": {
+      "audit_version": "batch17-drum-low-ceiling-tpuu-v1",
+      "source_directory": "DRUM_TPUU_低天花板",
+      "dataset_doi": "10.13020/zf53-w893",
+      "article_doi": "10.1021/acs.macromol.4c01431",
+      "license": "CC0-1.0",
+      "material_count": 4,
+      "tensile_curve_count": 20,
+      "cyclic_curve_count": 4,
+      "dmta_curve_count_audited_not_materialized": 4,
+      "raw_curve_point_count": 110281,
+      "derived_scalar_count": 60,
+      "gold_e_numeric_row_count": 110341,
+      "admitted_reference_count": 110341,
+      "conditional_reference_count": 0,
+      "source_file_count": 8,
+      "source_file_sha256": {
+        "TPUU-C_hysteresis.csv": "3a589865feb3248ba11d767fe1a345fecd24e4ffa24a7e194d434bfc3ae38ad8",
+        "TPUU-C_tensile.csv": "a3e6049dbba7def5fd3f37e4d8d4045b977a818ed567893f97dadefc222d770c",
+        "TPUU-D_hysteresis.csv": "0dde58a3db8dc663259d282feb1193b8987c2faee65d662a687db88cf6d8599f",
+        "TPUU-D_tensile.csv": "84fa631b586911c6fb2a7b53b9a2c7147615ef05e6389db7148bf57cbcec7137",
+        "TPUU-R_hysteresis.csv": "3ec1625d45bfc9f025ba1b70cb4b62878c0402d27f581d1e5e7d5135e1eca44d",
+        "TPUU-R_tensile.csv": "83fb582175300bdd21d8a440d1f96f24f21cf834ab830d100497fb6c0b44bce2",
+        "TPUU-S_hysteresis.csv": "d6dfd0840017caaf8ffce4a3aba4cd840aabffd4a5591dc685455c0074e4a30c",
+        "TPUU-S_tensile.csv": "8d4c3816735df5342f30bafc675506c6aa5f9557df6fd8843662eae312fc45e6"
+      },
+      "known_gap": "4条DMTA温度扫描位于旧版XLS，已经审计但本批不依赖Excel COM写入跨平台Gold-E长表",
+      "training_state": {
+        "current_weight_materialized": false,
+        "training_split_created": false,
+        "model_ready_record_count": 0
+      }
+    },
+    "batch18_iir_oh_polyurethane_audit": {
+      "audit_version": "batch18-iir-oh-pu-inventory-v2",
+      "dataset_doi": "10.17632/wg3znh66bv.1",
+      "license": "CC-BY-4.0",
+      "archive": {
+        "filename": "wg3znh66bv-1.zip",
+        "bytes": 38825776,
+        "sha256": "5224ae550be0c04022f0de02f03bd08f6ae39f2e6f84044fb8ec9e1cd5872e76",
+        "member_count": 207,
+        "uncompressed_bytes": 157552695,
+        "crc_status": "pass",
+        "path_safety_status": "pass"
+      },
+      "category_file_counts": {
+        "barrier_processed_project": 1,
+        "cyclic_tensile_raw": 6,
+        "ftir_curve_csv": 47,
+        "ftir_vendor_binary": 47,
+        "gpc_report": 2,
+        "gpc_text_curve": 2,
+        "gpc_workbook": 1,
+        "hydrodynamic_curve": 3,
+        "hydrolytic_aging_tensile_raw": 12,
+        "network_calculation_workbook": 1,
+        "nmr_curve": 6,
+        "processed_tensile_workbook": 1,
+        "tensile_raw": 45,
+        "uv_vis_curve": 33
+      },
+      "suffix_counts": {
+        ".arw": 2,
+        ".csv": 53,
+        ".opju": 1,
+        ".pdf": 2,
+        ".spa": 47,
+        ".txt": 99,
+        ".xlsx": 3
+      },
+      "curve_count_audited": 158,
+      "curve_point_count_audited": 3050843,
+      "curve_count_candidate_after_dedup": 151,
+      "curve_point_count_candidate_after_dedup": 3016301,
+      "curve_counts_by_category": {
+        "cyclic_tensile_raw": 6,
+        "ftir_curve_csv": 47,
+        "gpc_text_curve": 2,
+        "gpc_workbook": 2,
+        "hydrodynamic_curve": 3,
+        "hydrolytic_aging_tensile_raw": 12,
+        "nmr_curve": 6,
+        "processed_tensile_workbook": 2,
+        "tensile_raw": 45,
+        "uv_vis_curve": 33
+      },
+      "curve_points_by_category": {
+        "cyclic_tensile_raw": 2062350,
+        "ftir_curve_csv": 331538,
+        "gpc_text_curve": 4320,
+        "gpc_workbook": 4320,
+        "hydrodynamic_curve": 7000,
+        "hydrolytic_aging_tensile_raw": 20523,
+        "nmr_curve": 393215,
+        "processed_tensile_workbook": 22114,
+        "tensile_raw": 185300,
+        "uv_vis_curve": 20163
+      },
+      "tensile_formulation_codes": [
+        "HDI-10",
+        "HDI-2",
+        "HDI-4",
+        "HDI-6",
+        "HDI-8",
+        "HMDI-10",
+        "HMDI-2",
+        "HMDI-4",
+        "HMDI-6",
+        "HMDI-8",
+        "MDI-10",
+        "MDI-2",
+        "MDI-4",
+        "MDI-6",
+        "MDI-8"
+      ],
+      "tensile_formulation_code_count": 15,
+      "network_formulation_codes": [
+        "HDI-2",
+        "HDI-4",
+        "HDI-6",
+        "HDI-8",
+        "HDI-10",
+        "HMDI-2",
+        "HMDI-4",
+        "HMDI-6",
+        "HMDI-8",
+        "HMDI-10",
+        "MDI-1",
+        "MDI-2",
+        "MDI-4",
+        "MDI-6",
+        "MDI-8",
+        "MDI-10"
+      ],
+      "network_formulation_code_count": 16,
+      "all_formulation_code_count": 16,
+      "duplicate_groups": [
+        {
+          "sha256": "4756e049113480a46c5ee3b9b31d3a420fec20894068071cbc4086d784222bea",
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/HDI/HDI-4-2.txt",
+          "member_paths": [
+            "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/HDI/HDI-4-2.txt",
+            "Low-Permeability and Calcification-resistant Polyu/Dataset 3. Barrier and aging data/hydrolytic aging mechanical retention raw data/HDI-4-Before-2.txt"
+          ]
+        },
+        {
+          "sha256": "6660da225af2ceca713ab80a2d6deaabd6a2988af37e9f7e0787dc2f748aa52e",
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/HDI/HDI-4-3.txt",
+          "member_paths": [
+            "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/HDI/HDI-4-3.txt",
+            "Low-Permeability and Calcification-resistant Polyu/Dataset 3. Barrier and aging data/hydrolytic aging mechanical retention raw data/HDI-4-Before-3.txt"
+          ]
+        },
+        {
+          "sha256": "999f8b59028d9df9f102d32602bdee6fd45483d1ac4e6a287dcb6f9350b12141",
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/HDI/HDI-4-1.txt",
+          "member_paths": [
+            "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/HDI/HDI-4-1.txt",
+            "Low-Permeability and Calcification-resistant Polyu/Dataset 3. Barrier and aging data/hydrolytic aging mechanical retention raw data/HDI-4-Before-1.txt"
+          ]
+        }
+      ],
+      "semantic_duplicate_groups": [
+        {
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 1. Structural characterization/representative GPC export data of IIR  IIR-OH/N-1.arw",
+          "duplicate_locator": "Low-Permeability and Calcification-resistant Polyu/Dataset 1. Structural characterization/representative GPC export data of IIR  IIR-OH/GPC-Data.xlsx#column_pair=1",
+          "relation": "same_numeric_curve",
+          "point_count": 2160,
+          "maximum_x_difference": 0.0,
+          "maximum_y_difference": 0.0
+        },
+        {
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 1. Structural characterization/representative GPC export data of IIR  IIR-OH/M-1.arw",
+          "duplicate_locator": "Low-Permeability and Calcification-resistant Polyu/Dataset 1. Structural characterization/representative GPC export data of IIR  IIR-OH/GPC-Data.xlsx#column_pair=2",
+          "relation": "same_numeric_curve",
+          "point_count": 2160,
+          "maximum_x_difference": 0.0,
+          "maximum_y_difference": 0.0
+        },
+        {
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/MDI/MDI-2-1.txt",
+          "duplicate_locator": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/Tensile.xlsx#column_pair=1",
+          "relation": "rounded_numeric_curve_copy",
+          "point_count": 11376,
+          "maximum_x_difference": 0.0,
+          "maximum_y_difference": 0.0005000000000000004
+        },
+        {
+          "canonical_member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/MDI/MDI-2-2.txt",
+          "duplicate_locator": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/Tensile.xlsx#column_pair=2",
+          "relation": "rounded_numeric_curve_copy",
+          "point_count": 10738,
+          "maximum_x_difference": 0.0,
+          "maximum_y_difference": 0.0005000000000000004
+        }
+      ],
+      "duplicate_representation_curve_count": 7,
+      "workbooks": [
+        {
+          "member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 1. Structural characterization/representative GPC export data of IIR  IIR-OH/GPC-Data.xlsx",
+          "sheets": [
+            {
+              "sheet": "GPC",
+              "max_row": 2162,
+              "max_column": 4,
+              "formula_count": 0,
+              "cached_formula_count": 0
+            }
+          ]
+        },
+        {
+          "member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/tensile raw data/Tensile.xlsx",
+          "sheets": [
+            {
+              "sheet": "MDI",
+              "max_row": 11380,
+              "max_column": 4,
+              "formula_count": 0,
+              "cached_formula_count": 0
+            }
+          ],
+          "processed_tensile_label_nonunique": true
+        },
+        {
+          "member_path": "Low-Permeability and Calcification-resistant Polyu/Dataset 2. Network and mechanical data/swelling raw data and crosslink density calculation sheet/Gel content and Crosslink density calculation.xlsx",
+          "sheets": [
+            {
+              "sheet": "Gel content calculation",
+              "max_row": 24,
+              "max_column": 19,
+              "formula_count": 144,
+              "cached_formula_count": 144
+            },
+            {
+              "sheet": "Crosslink density calculation",
+              "max_row": 13,
+              "max_column": 50,
+              "formula_count": 336,
+              "cached_formula_count": 336
+            }
+          ],
+          "calculation_semantics": "48个三重复试样槽、16个配方代码的m0/m1/m2、凝胶含量和Flory-Rehner交联密度；公式及缓存值完整，单位和1/2/4/6/8/10代码语义仍需论文/预印本闭合。"
+        }
+      ],
+      "network_scalar_audit": {
+        "sample_count": 48,
+        "resolved_final_scalar_count": 96,
+        "conditional_m1_over_m0_count": 48,
+        "gold_standard_hdi_2_rep1": {
+          "formulation_code": "HDI-2",
+          "replicate_id": 1,
+          "sample_id": "HDI-2::rep1",
+          "source_column": "C",
+          "chi": 0.523078154184083,
+          "m0": 0.0204,
+          "m1": 0.0865,
+          "m2": 0.0126,
+          "vr": 0.13231261673633216,
+          "n_raw": 9.610439809530733e-06,
+          "crosslink_density_reported_scaled": 0.09610439809530734,
+          "gel_content": 0.6176470588235293,
+          "normalized_swollen_mass_ratio": 4.240196078431372,
+          "reported_scale_factor": 10000
+        },
+        "unit_status": "not_stated_in_workbook",
+        "reported_scale_factor": 10000
+      },
+      "scientific_boundaries": [
+        "2/4/6/8/10的配方计量语义尚待预印本或配方表闭合。",
+        "Tensile.xlsx两组MDI-2曲线是原始TXT的舍入副本，GPC工作簿与文本ARW重复；均不重复计数。",
+        "ARW已确认是可解析双列文本；SPA、PDF和OPJU保留为原始/证据资产，不从专有格式伪造数值。",
+        "精确重复曲线保留血缘但物化时只计一次；曲线点不作为独立材料数。",
+        "SSRN预印本关联是高置信推断，不是Mendeley仓库官方关联论文。"
+      ],
+      "training_split_created": false,
+      "training_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "gold_e_scalar_materialization": {
+        "tensile_curve_count": 54,
+        "derived_tensile_endpoint_count": 162,
+        "network_sample_count": 48,
+        "network_scalar_count": 144,
+        "gold_e_scalar_row_count": 306,
+        "admission_counts": {
+          "admitted_reference": 183,
+          "conditional_reference": 123
+        },
+        "training_split_created": false,
+        "training_weight_materialized": false,
+        "model_ready_record_count": 0
+      }
+    },
+    "batch19_aged_vegetable_puf_simulation_audit": {
+      "audit_version": "batch19-aged-vegetable-puf-simulation-v1",
+      "source_id": "source_mendeley_n9h66xjk7y_v1",
+      "dataset": {
+        "title": "Simulated Results for Aged Polyurethane Foam",
+        "doi": "10.17632/n9h66xjk7y.1",
+        "version": 1,
+        "published": "2024-03-20",
+        "contributor": "Enio Henrique Pires Da Silva",
+        "institution": "Universidade de Sao Paulo",
+        "license": "CC BY 4.0",
+        "landing_page": "https://data.mendeley.com/datasets/n9h66xjk7y/1",
+        "official_api": "https://data.mendeley.com/public-api/datasets/n9h66xjk7y",
+        "official_download": "https://data.mendeley.com/public-api/zip/n9h66xjk7y/download/1",
+        "associated_article_doi": "10.1002/pen.27196",
+        "arrhenius_parameter_article_doi": "10.1002/pen.26725",
+        "experimental_dataset_doi": "10.17632/2sp8fyvhfm.3",
+        "experimental_data_article_doi": "10.1016/j.dib.2024.110199"
+      },
+      "archive": {
+        "filename": "n9h66xjk7y-1.zip",
+        "bytes": 7042325,
+        "sha256": "e672f248e43b5cd6d9173ec87612643749b2b7e59ef528975b64d82d69e27b02",
+        "member_count": 4202,
+        "uncompressed_bytes": 29380486,
+        "compressed_member_bytes": 6052929,
+        "crc_status": "pass",
+        "path_safety_status": "pass",
+        "suffix_counts": {
+          ".npy": 2,
+          ".rpt": 4200
+        }
+      },
+      "count_semantics": {
+        "material_system_count": 1,
+        "nominal_formulation_count": 1,
+        "simulation_run_count": 4200,
+        "unique_input_condition_count": 3868,
+        "curve_point_count": 424200,
+        "curve_points_are_independent_samples": false,
+        "unique_numerical_curve_count": 3863,
+        "unique_raw_rpt_byte_stream_count": 4192
+      },
+      "conditions": {
+        "age_days_range": [
+          3,
+          2999
+        ],
+        "age_days_unique_count": 1629,
+        "temperature_C_range": [
+          10,
+          89
+        ],
+        "temperature_C_unique_count": 80,
+        "direction_summary": {
+          "1": {
+            "description": "transverse_to_expansion",
+            "simulation_run_count": 2100,
+            "unique_condition_count": 1939,
+            "unique_numerical_curve_count": 1939
+          },
+          "3": {
+            "description": "parallel_to_expansion",
+            "simulation_run_count": 2100,
+            "unique_condition_count": 1929,
+            "unique_numerical_curve_count": 1924
+          }
+        }
+      },
+      "duplicate_audit": {
+        "condition_group_size_distribution": {
+          "1": 3580,
+          "2": 248,
+          "3": 36,
+          "4": 4
+        },
+        "condition_groups_with_multiple_runs": 288,
+        "runs_in_repeated_condition_groups": 620,
+        "repeated_condition_excess_run_count": 332,
+        "condition_groups_with_multiple_numerical_curves": 0,
+        "numerical_curve_group_size_distribution": {
+          "1": 3575,
+          "2": 247,
+          "3": 36,
+          "4": 4,
+          "7": 1
+        },
+        "numerical_curve_groups_with_multiple_runs": 288,
+        "duplicate_numerical_curve_excess_run_count": 337,
+        "raw_rpt_group_size_distribution": {
+          "1": 4189,
+          "2": 2,
+          "7": 1
+        },
+        "raw_rpt_groups_with_multiple_runs": 3,
+        "duplicate_raw_rpt_excess_run_count": 8,
+        "cross_condition_numerical_curve_groups": [
+          {
+            "numerical_curve_sha256": "7940fc69f0e93d8571d71ac0110e25aca641497b425a47c26ae93346961094d6",
+            "run_ids": [
+              4059,
+              4093,
+              4094,
+              4138,
+              4144,
+              4157,
+              4192
+            ],
+            "unique_condition_count": 6,
+            "condition_keys": [
+              "direction=3|age_days=34|temperature_C=79",
+              "direction=3|age_days=44|temperature_C=80",
+              "direction=3|age_days=45|temperature_C=80",
+              "direction=3|age_days=49|temperature_C=78",
+              "direction=3|age_days=49|temperature_C=79",
+              "direction=3|age_days=49|temperature_C=80"
+            ]
+          }
+        ],
+        "raw_duplicate_groups": [
+          {
+            "raw_sha256": "45bd40cda91e88d71eda53b23360ff2f61e373c04fe6cd45d92e412a4db85818",
+            "run_ids": [
+              4059,
+              4093,
+              4094,
+              4138,
+              4144,
+              4157,
+              4192
+            ],
+            "condition_keys": [
+              "direction=3|age_days=34|temperature_C=79",
+              "direction=3|age_days=44|temperature_C=80",
+              "direction=3|age_days=45|temperature_C=80",
+              "direction=3|age_days=49|temperature_C=78",
+              "direction=3|age_days=49|temperature_C=79",
+              "direction=3|age_days=49|temperature_C=80"
+            ]
+          },
+          {
+            "raw_sha256": "acb5490adcda03993aeccefcc1f347cb5c18e7e5fe4b66ce0ed1f746d30af6bf",
+            "run_ids": [
+              2019,
+              2053
+            ],
+            "condition_keys": [
+              "direction=1|age_days=49|temperature_C=79"
+            ]
+          },
+          {
+            "raw_sha256": "c2b2951e9a5462c79c5f8a2e8cb5843624d730269c833c15f0caaa8979e9f7d9",
+            "run_ids": [
+              2027,
+              2070
+            ],
+            "condition_keys": [
+              "direction=1|age_days=44|temperature_C=79"
+            ]
+          }
+        ]
+      },
+      "curve_quality": {
+        "point_count_per_run": 101,
+        "all_stress_curves_monotonic_nondecreasing": true,
+        "issue_run_count": 1,
+        "issue_runs": [
+          {
+            "run_id": 4193,
+            "condition_key": "direction=3|age_days=27|temperature_C=84",
+            "member_path": "Simulated Results for Aged Polyurethane Foam/Stress-Strain data/4193.rpt",
+            "issues": [
+              "expected_x_grid_0_to_1_by_0_01_not_met",
+              "duplicate_adjacent_x_count=1",
+              "final_x_1_0_missing"
+            ]
+          }
+        ]
+      },
+      "identity": {
+        "global_structure_family_key": "family_mendeley_aged_vegetable_puf",
+        "system_identity": "single nominal castor-oil-based polyurethane foam formulation; commercial Kehl IC200 MDI and KT1106-R vegetable-oil polyol blend at 1:1 mass ratio; exact proprietary molecular composition unresolved",
+        "structure_identity_status": "single_nominal_formulation_commercial_component_identity_only_exact_structure_unresolved",
+        "exact_molecular_structure_resolved": false
+      },
+      "training_governance": {
+        "training_split_created": false,
+        "training_weight_materialized": false,
+        "canonical_condition_rule": "lowest_run_id_per_unique_direction_age_temperature"
+      },
+      "gold_c_materialization": {
+        "canonical_unique_condition_count": 3868,
+        "scalar_row_count": 19340,
+        "property_counts": {
+          "compression_energy_density_to_max_observed_log_strain": 3868,
+          "maximum_observed_mises_stress": 3868,
+          "mises_stress_at_compressive_log_strain_0_1": 3868,
+          "mises_stress_at_compressive_log_strain_0_5": 3868,
+          "mises_stress_at_compressive_log_strain_1_0": 3868
+        },
+        "admission_counts": {
+          "admitted_reference": 19305,
+          "conditional_reference": 35
+        },
+        "potential_weight_ceiling_counts": {
+          "0.10": 35,
+          "0.20": 19305
+        },
+        "conditional_canonical_run_ids": [
+          4059,
+          4093,
+          4138,
+          4144,
+          4157,
+          4192,
+          4193
+        ],
+        "simulation_key_count": 3868,
+        "split_group_count": 1,
+        "actual_training_weight_materialized": false,
+        "curve_point_rows_materialized": 0
+      }
     }
   },
   "source_ledger": [
@@ -4617,13 +5256,13 @@
       "current_weight_materialized": false,
       "model_ready_record_count": 0,
       "unit_status": "已解析",
-      "license_status": "manual_review",
+      "license_status": "allow_with_attribution",
       "dedup_status": "已核验无曲线重复",
-      "split_group_status": "配方批次试样键完整",
-      "completeness": "source_aggregate_plus_record_curves",
+      "split_group_status": "DOI+配方同折且批次/试样键完整",
+      "completeness": "source_aggregate_plus_record_curves_and_materialized_gold_e",
       "citation_keys": "ledger-055-meyersohn-2024-low-ceiling-tpuu-data;ledger-056-meyersohn-2024-low-ceiling-tpuu",
-      "audit_basis": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/内容审计摘要.json;数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/曲线审计清单.tsv",
-      "notes": "4个材料代码定量配方仍需正文/SI解码"
+      "audit_basis": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/内容审计摘要.json;数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/曲线审计清单.tsv;代码/审计/DRUM_TPUU.py",
+      "notes": "CC0 1.0来源已核验；4个材料代码定量配方仍需正文/SI解码；第17批已物化24条CSV曲线的110281个原始点及60个可复算端点，4条旧版XLS DMTA曲线2779点保留为已审计待接入"
     },
     {
       "source_id": "source_drum_05ek6k60",
@@ -5081,7 +5720,7 @@
       "dedup_status": "两组精确重复已分组",
       "split_group_status": "试样键可用",
       "completeness": "source_aggregate_plus_record_curves",
-      "citation_keys": "ledger-084-pires-da-silva-2023-aged-puf-data",
+      "citation_keys": "ledger-084-pires-da-silva-2023-aged-puf-data;ledger-174-pires-da-silva-2024-aged-puf-simulation-data;ledger-175-pires-2025-aged-puf-dnn;ledger-176-da-silva-2024-aged-puf-arrhenius",
       "audit_basis": "数据/原始/外部数据/新增开放数据/Mendeley_植物基PU泡沫温湿老化压缩/内容审计摘要.json;数据/原始/外部数据/新增开放数据/Mendeley_植物基PU泡沫温湿老化压缩/曲线审计清单.tsv",
       "notes": "90试样中默认88可用；同一未知配方不扩大化学空间"
     },
@@ -7524,6 +8163,98 @@
       "notes": "Zenodo固定归档与论文共同闭合11个硬质/软质PU泡沫配方、59个压缩试样、10条黏度曲线和8个导热工作簿。 压缩原始数据有45922个观测点，按论文和UNE-EN ISO 604限定的0--27%形变保留13159点，并派生118个10%/25%端点； 加上581个黏度点、73个有效直接标量后形成13931条Gold-E记录，其中66条正式、13865条条件参考。 RPUF0第7个文件的西班牙语13列结构已按真实压缩应变列修复；来源可靠但属于发泡PU迁移域，不冒充线性TPU精确结构监督，当前训练权重为空。"
     },
     {
+      "source_id": "source_mendeley_wg3znh66bv_v1",
+      "source_scope_id": "scope_mendeley_wg3znh66bv_v1",
+      "source_family_id": "family_iir_oh_barrier_pu_2026",
+      "source_directory": "第十八批实验_IIR-OH聚氨酯",
+      "source_title": "Low-Permeability and Calcification-resistant Polyurethanes Based on Hydroxylated Butyl Rubber",
+      "canonical_identifier": "10.17632/wg3znh66bv.1",
+      "task": "IIR-OH软段聚氨酯的配方—网络—力学—阻隔—水解—抗钙化多任务迁移参考",
+      "origin_kind": "实验",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 207,
+      "material_count": 17,
+      "formulation_count": 16,
+      "batch_count": null,
+      "specimen_count": null,
+      "run_count": 151,
+      "curve_count_observed": 158,
+      "curve_count_candidate": 151,
+      "scalar_count_observed": 144,
+      "scalar_count_candidate": 144,
+      "point_count_observed": 3050843,
+      "point_count_candidate": 3016301,
+      "numeric_value_count": 3016607,
+      "evidence_group_count": 5,
+      "computational_system_count": 0,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.55,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "部分已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "207个文件只有204个唯一字节载荷；3条老化前曲线与基线拉伸精确重复，Tensile.xlsx两条曲线是原始TXT舍入副本，GPC工作簿与两个文本ARW是语义重复，均只计一次",
+      "split_group_status": "16个IIR-OH聚氨酯配方代码按数据集DOI与配方同折；同配方的拉伸、循环、网络、光谱、老化和阻隔观测不得跨折，3016301个去重曲线点不得点级随机划分",
+      "completeness": "source_aggregate_plus_16_formulations_151_unique_curves_144_network_scalars_and_derived_tensile_endpoints",
+      "citation_keys": "ledger-172-zhang-2026-iir-oh-barrier-pu-data;ledger-173-zhang-2026-iir-oh-barrier-pu-preprint",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/来源元数据.json;数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/曲线审计清单.tsv;数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/文件校验清单.tsv;数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/Gold_E_实验指标.tsv;代码/审计/第十八批IIR_OH聚氨酯.py",
+      "notes": "Mendeley Data固定version 1的ZIP为CC BY 4.0；207个成员包含HDI/HMDI/MDI三类二异氰酸酯与2/4/6/8/10五档代码， 形成15个有拉伸数据的配方、一个仅有网络数据的MDI-1配方及一个商用PU70A对照。审计得到158条可解析呈现曲线、去重后151条曲线和3016301个采样点；采样点只提高曲线分辨率， 不增加材料、配方或独立来源数。凝胶/交联密度工作簿给出96个明确最终标量与48个条件性m1/m0比值；54条唯一单调拉伸曲线可复算162个最大观测应力、 最大观测应变和记录末点前曲线面积。部分曲线终点仍承载，因此面积不命名为完整断裂韧性。FTIR、NMR、GPC、专有SPA/OPJU及两条同名MDI-2处理曲线保留条件参考；水氧透过率OPJU尚未可靠解析。 SSRN预印本与数据集的关系依据同题名和作者作高置信推断，但Mendeley元数据未官方绑定论文。0.55仅为未来任务门禁闭合后的潜在上限；当前不生成训练权重或划分。"
+    },
+    {
+      "source_id": "source_mendeley_n9h66xjk7y_v1",
+      "source_scope_id": "scope_mendeley_n9h66xjk7y_v1",
+      "source_family_id": "family_mendeley_aged_vegetable_puf",
+      "source_directory": "第十九批模拟_老化植物基PU泡沫",
+      "source_title": "Simulated Results for Aged Polyurethane Foam",
+      "canonical_identifier": "10.17632/n9h66xjk7y.1",
+      "task": "植物基PU泡沫温湿老化—方向—压缩响应的有限元多保真迁移",
+      "origin_kind": "模拟",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-C",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 4202,
+      "material_count": 1,
+      "formulation_count": 1,
+      "batch_count": null,
+      "specimen_count": null,
+      "run_count": 4200,
+      "curve_count_observed": 4200,
+      "curve_count_candidate": 3868,
+      "scalar_count_observed": 19340,
+      "scalar_count_candidate": 19340,
+      "point_count_observed": 424200,
+      "point_count_candidate": 390668,
+      "numeric_value_count": 19340,
+      "evidence_group_count": 4,
+      "computational_system_count": 1,
+      "source_identity_count_contribution": 0,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.25,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "4200个运行归并为3868个唯一方向—老化时间—温度工况；332个重复工况不重复物化，另有6个不同工况共享同一舍入后数值曲线并显式保留冲突组",
+      "split_group_status": "模拟源与现有90个植物基PU泡沫实验试样属于同一来源家族，实验、模拟及所有方向/工况必须整体同折；424200个曲线点不得点级随机划分",
+      "completeness": "source_aggregate_plus_4200_runs_3868_unique_conditions_and_19340_compact_gold_c_scalars",
+      "citation_keys": "ledger-174-pires-da-silva-2024-aged-puf-simulation-data;ledger-175-pires-2025-aged-puf-dnn;ledger-176-da-silva-2024-aged-puf-arrhenius",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/文件校验清单.tsv;数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/模拟运行清单.tsv;数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/Gold_C_紧凑标量表.tsv;数据/原始/外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/来源说明.md;代码/审计/第十九批老化植物基PU泡沫模拟.py",
+      "notes": "Mendeley Data固定version 1的ZIP为CC BY 4.0；4200条Abaqus RPT覆盖一个植物基PU泡沫名义配方、两个发泡方向、3--2999天和10--89摄氏度。 归档没有UMAT源码、输入文件、网格或求解配置，因此可作为实验锚定的本构有限元低保真参考，但不能宣称逐运行完全可复现，也不能直接监督线性TPU拉伸性能。 3868个唯一工况各物化0.1/0.5/1.0压缩对数应变处Mises应力、最大观测Mises应力和记录终点前能量密度5个描述符，共19340条Gold-C； 4193号运行缺最终步，其5条描述符进入条件参考；另有6个不同工况共享完全相同数值曲线，对应30条描述符也保留并降为条件参考，合计19305条正式、35条条件参考。 该源与10.17632/2sp8fyvhfm.3实验数据共用一个来源家族，不增加独立材料、配方或来源贡献数。 当前训练权重和划分均为空。"
+    },
+    {
       "source_id": "source_4tu_data",
       "source_scope_id": "self_healing_tpu_4tu_deposit",
       "source_family_id": "family_4tu_self_healing",
@@ -7711,8 +8442,8 @@
   "record_manifest_artifact": {
     "path": "结果/样本清单.csv.gz",
     "format": "csv.gz",
-    "row_count": 133333,
-    "sha256": "4d3123690dce8a5cc2d006de26e9b951374cc52b29c25ce4d0ec5ed15b1d9b62"
+    "row_count": 133493,
+    "sha256": "5bcb8e14b6ea3bad5835c7046b5382f278411dee1d3f8e07ecf744338026311e"
   },
   "gold_reference_artifacts": {
     "Gold-V": {
@@ -7725,8 +8456,8 @@
     "Gold-C": {
       "path": "结果/Gold_C_计算性能.csv.gz",
       "format": "csv.gz",
-      "row_count": 1415903,
-      "sha256": "52fa91e8350da6000cec23c1d22839d2448cd77c7c40b76307dba4d7a8b8d025",
+      "row_count": 1435243,
+      "sha256": "dfa5c0c1939f15e7607687c1f0cfc0ae40b5d9f41e2a5417ab9ded8550cbf63d",
       "artifact_role": "computational_numeric_context_reference",
       "batch15_input_descriptor_count": 68,
       "batch15_performance_output_count": 47
@@ -7734,11 +8465,11 @@
     "Gold-E": {
       "path": "结果/Gold_E_实验表格.csv.gz",
       "format": "csv.gz",
-      "row_count": 194461,
-      "sha256": "0c708e5f161d09b184e047f1f3eec4f54e2a855d57306fceb3e95d493253a807",
+      "row_count": 305108,
+      "sha256": "0bf46480d6263d61c5630a854842929e7194f9cbe08159917e9b852ce280de3e",
       "artifact_role": "experimental_observation_reference",
-      "admitted_reference_count": 14040,
-      "conditional_reference_count": 180421
+      "admitted_reference_count": 124564,
+      "conditional_reference_count": 180544
     }
   }
 }

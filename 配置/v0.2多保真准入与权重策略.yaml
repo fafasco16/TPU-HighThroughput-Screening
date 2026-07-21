@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.19
+policy_version: multi-fidelity-admission-weight-v0.2.21
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -16,6 +16,10 @@ principles:
   repeated_measurements_increase_formula_count: false
   source_mirror_increases_sample_count: false
   model_predictions_are_ground_truth: false
+  reliable_simulation_can_enter_gold_c_reference: true
+  reliable_virtual_candidates_can_enter_gold_v_reference: true
+  reference_admission_requires_direct_experimental_pairing: false
+  observation_level_fidelity_label_required: true
   simulation_inputs_have_target_weight: false
   simulation_frames_are_samples: false
   simulation_restarts_are_independent_without_seed_evidence: false
@@ -977,6 +981,38 @@ source_overrides:
       duplicated_thermal_workbook_or_out_of_range_compression_point: 0.00
       direct_linear_tpu_structure_property: 0.00
     note: 11个配方、59个压缩试样、10条黏度曲线和有效导热/配方标量形成13931条Gold-E记录；0--27%以外压缩点和重复导热工作簿只留证据，同研究全部记录共享一个来源家族拆分组。
+
+  - source_scope_key: scope_mendeley_wg3znh66bv_v1
+    intended_use: iir_oh_polyurethane_barrier_durability_multitask_transfer
+    base_weight_ceiling: 0.55
+    group_keys: [dataset_doi, formulation_code, specimen_or_run, modality]
+    split_group_keys: [dataset_doi, formulation_code]
+    task_specific_ceilings:
+      direct_unique_tensile_or_cyclic_response: 0.55
+      derived_observed_peak_strain_or_area_from_unique_curve: 0.45
+      explicit_gel_fraction_or_crosslink_density: 0.45
+      hydrolytic_aging_response: 0.45
+      uv_vis_or_hydrodynamic_response: 0.30
+      ftir_nmr_or_gpc_shape_reference: 0.20
+      source_reported_m1_over_m0_with_unresolved_semantics: 0.15
+      exact_or_rounded_duplicate_representation: 0.00
+      unresolved_opju_or_conflicting_processed_curve: 0.00
+      direct_exact_structure_to_linear_tpu_supervision: 0.00
+    note: 16个IIR-OH聚氨酯配方代码、151条去重曲线、3016301个去重曲线点及144个网络标量进入Gold-E多任务参考；可靠来源允许条件字段留在Gold，但配方后缀、专有OPJU和同名MDI-2处理曲线未闭合前不提供精确结构监督。全部模态按配方同折，曲线点不作独立样本。
+
+  - source_scope_key: scope_mendeley_n9h66xjk7y_v1
+    intended_use: aged_vegetable_pu_foam_abaqus_curve_transfer
+    base_weight_ceiling: 0.25
+    group_keys: [source_family, nominal_formulation, expansion_direction, simulation_run]
+    split_group_keys: [source_family]
+    task_specific_ceilings:
+      direct_abaqus_compression_curve_or_compact_descriptor: 0.25
+      condition_duplicate_or_numeric_curve_duplicate: 0.10
+      run_with_incomplete_terminal_step: 0.10
+      experimental_compression_truth: 0.00
+      direct_linear_tpu_tensile_supervision: 0.00
+      independent_material_or_formulation_contribution: 0.00
+    note: 4200条Abaqus RPT来自同一个植物基PU泡沫名义配方和两个发泡方向；它们是现有实验家族的Arrhenius派生模拟，不是4200种材料。全部实验与模拟按来源家族同折；332条重复输入工况和6组数值曲线重复显式降级，曲线点不独立拆分，训练权重仍为空。
 
 materialization_gate:
   required_before_training:

@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc36
+rules_version: v0.2-asset-rules-2026-07-21-rc38
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -5188,4 +5188,100 @@ rules:
     model_readiness_status: ineligible
     release_status: denied
     decision_basis: 确定性记录西班牙语13列压缩文件的真实应变列、有效形变边界、导热重复冲突、曲线端点复算及一个来源家族分组；审计统计不扩增材料。
+    review_required: true
+
+  - rule_id: eighteenth_batch_iir_oh_barrier_pu_archive
+    priority: 3140
+    path_regex: '^外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/wg3znh66bv-1\.zip$'
+    source_scope_key: scope_mendeley_wg3znh66bv_v1
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: hydroxylated_butyl_rubber_polyurethane
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Mendeley Data固定version 1的CC BY 4.0原始ZIP；207个成员、字节数、SHA-256、CRC、路径安全、曲线与工作簿结构均已冻结审计。
+    review_required: true
+
+  - rule_id: eighteenth_batch_iir_oh_barrier_pu_audit
+    priority: 3130
+    path_regex: '^外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/(?:来源元数据\.json|下载清单\.tsv|内容审计摘要\.json|文件校验清单\.tsv|曲线审计清单\.tsv)$'
+    source_scope_key: scope_mendeley_wg3znh66bv_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: hydroxylated_butyl_rubber_polyurethane
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 审计产物分开报告16个配方代码、151条去重曲线与3016301个去重采样点，并保留精确重复、处理曲线标签非唯一、工作簿公式和未解析专有格式边界；不扩增材料数。
+    review_required: true
+
+  - rule_id: eighteenth_batch_iir_oh_barrier_pu_normalized_scalars
+    priority: 3135
+    path_regex: '^外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/Gold_E_实验指标\.tsv$'
+    source_scope_key: scope_mendeley_wg3znh66bv_v1
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: hydroxylated_butyl_rubber_polyurethane
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 54条唯一拉伸曲线的162个确定性端点与48个网络试样的144个长表标量，共306条紧凑Gold-E记录；不把3016301个相邻曲线点伪装成独立材料样本。
+    review_required: true
+
+  - rule_id: nineteenth_batch_aged_vegetable_puf_simulation_archive
+    priority: 3170
+    path_regex: '^外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/n9h66xjk7y-1\.zip$'
+    source_scope_key: scope_mendeley_n9h66xjk7y_v1
+    artifact_role: simulation_output
+    data_stage: raw
+    material_scope_hint: aged_vegetable_polyurethane_foam
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Mendeley Data固定version 1的CC BY 4.0模拟ZIP；4200条Abaqus RPT及Age/Temp条件数组按成员、曲线、工况和数值哈希审计。
+    review_required: true
+
+  - rule_id: nineteenth_batch_aged_vegetable_puf_simulation_audit
+    priority: 3160
+    path_regex: '^外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/(?:内容审计摘要\.json|文件校验清单\.tsv|模拟运行清单\.tsv|来源说明\.md)$'
+    source_scope_key: scope_mendeley_n9h66xjk7y_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: aged_vegetable_polyurethane_foam
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 审计产物明确区分1个配方、2个方向、4200个模拟运行、3868个唯一工况、重复工况、重复数值曲线和424200个曲线点。
+    review_required: true
+
+  - rule_id: nineteenth_batch_aged_vegetable_puf_simulation_normalized_scalars
+    priority: 3165
+    path_regex: '^外部数据/新增开放数据/第十九批模拟_老化植物基PU泡沫/Gold_C_紧凑标量表\.tsv$'
+    source_scope_key: scope_mendeley_n9h66xjk7y_v1
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: aged_vegetable_polyurethane_foam
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 每条模拟曲线只物化可解释的紧凑描述符；全部记录保留同一实验材料家族分组，且不把运行或曲线点解释成新材料。
     review_required: true

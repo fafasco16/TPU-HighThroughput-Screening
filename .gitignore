@@ -20,6 +20,7 @@ node_modules/
 数据/快照/**/*.duckdb
 结果/*.xlsx
 结果/*.png
+结果/.*.tmp
 
 # 避免误提交出版商附件和大体积容器。
 *.xlsx

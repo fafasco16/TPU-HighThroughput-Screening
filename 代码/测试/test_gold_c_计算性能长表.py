@@ -109,6 +109,12 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
                     "coarse_grained_component_family_only_exact_atomistic_graph_unresolved"
                 )
                 assert key.startswith("family_multicomponent_pu_")
+            elif source_id == "source_mendeley_n9h66xjk7y_v1":
+                assert row["structure_identity_status"] == (
+                    "single_nominal_formulation_commercial_component_identity_only_"
+                    "exact_structure_unresolved"
+                )
+                assert key == "family_mendeley_aged_vegetable_puf"
             else:
                 assert row["structure_identity_status"] == (
                     "formulation_label_with_molar_ratio_link_no_single_smiles"
@@ -178,8 +184,8 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
 def test_gold_c_long_table_contains_real_finite_source_values(
     generated_gold_c: dict,
 ):
-    assert generated_gold_c["row_count"] == 1_415_903
-    assert generated_gold_c["non_omg_observation_id_count"] == 224_003
+    assert generated_gold_c["row_count"] == 1_435_243
+    assert generated_gold_c["non_omg_observation_id_count"] == 243_343
     assert generated_gold_c["source_counts"] == {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209_905,
@@ -188,6 +194,7 @@ def test_gold_c_long_table_contains_real_finite_source_values(
         "source_omg_batch10": 1_191_900,
         "source_openpolymer_challenge_v1": 4_524,
         "source_figshare_ma5c03283_si": 115,
+        "source_mendeley_n9h66xjk7y_v1": 19_340,
     }
     assert {
         "DFT",
@@ -197,6 +204,7 @@ def test_gold_c_long_table_contains_real_finite_source_values(
         "CFD-PBE-QMOM",
         "computational-protocol",
         "DFT-AA-MD-reactive-CG",
+        "Abaqus_UMAT_Arrhenius_large_deformation",
     } <= set(generated_gold_c["method_counts"])
     assert (
         generated_gold_c["unit_status_counts"][
@@ -225,6 +233,12 @@ def test_gold_c_long_table_contains_real_finite_source_values(
     assert admissions[
         ("source_figshare_ma5c03283_si", "conditional_reference")
     ] == 17
+    assert admissions[
+        ("source_mendeley_n9h66xjk7y_v1", "admitted_reference")
+    ] == 19_305
+    assert admissions[
+        ("source_mendeley_n9h66xjk7y_v1", "conditional_reference")
+    ] == 35
     roles = generated_gold_c["record_role_counts"]
     assert sum(
         count
@@ -363,7 +377,7 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
             "multifidelity_gold_c_reference_not_training_dataset"
         ),
         "path": "结果/Gold_C_计算性能.csv.gz",
-        "row_count": 1_415_903,
+        "row_count": 1_435_243,
         "source_value_counts": {
             radon_id: 440,
             polyomics_id: 209_905,
@@ -372,12 +386,18 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
             "source_omg_batch10": 1_191_900,
             "source_openpolymer_challenge_v1": 4_524,
             "source_figshare_ma5c03283_si": 115,
+            "source_mendeley_n9h66xjk7y_v1": 19_340,
         },
         "cross_source_overlap_structure_count": 11,
         "cross_source_overlap_polyomics_record_count": 58,
         "batch15_multiscale_numeric_context_count": 115,
         "batch15_multiscale_input_descriptor_count": 68,
         "batch15_multiscale_performance_output_count": 47,
+        "batch19_aged_puf_compact_scalar_count": 19_340,
+        "batch19_aged_puf_admission_counts": {
+            "admitted_reference": 19_305,
+            "conditional_reference": 35,
+        },
         "current_weight_materialized": False,
     }
 

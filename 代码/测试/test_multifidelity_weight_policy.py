@@ -16,7 +16,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
-    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.19"
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.21"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -255,6 +255,8 @@ def test_every_source_override_resolves_to_a_declared_scope_and_mirror_is_zero()
         "scope_mendeley_pu_seat_processed_v2",
         "scope_figshare_ma5c03283_si",
         "scope_zenodo_5713819_recycled_pu_foam",
+        "scope_mendeley_wg3znh66bv_v1",
+        "scope_mendeley_n9h66xjk7y_v1",
     } <= override_keys
 
     caps = policy["cross_source_equivalence_caps"]
@@ -416,6 +418,19 @@ def test_every_source_override_resolves_to_a_declared_scope_and_mirror_is_zero()
     assert recycled["split_group_keys"] == ["source_family"]
     assert recycled["task_specific_ceilings"][
         "duplicated_thermal_workbook_or_out_of_range_compression_point"
+    ] == 0.0
+
+    iir_oh = by_scope["scope_mendeley_wg3znh66bv_v1"]
+    assert iir_oh["base_weight_ceiling"] == 0.55
+    assert "derived_observed_peak_strain_or_area_from_unique_curve" in iir_oh[
+        "task_specific_ceilings"
+    ]
+
+    aged_simulation = by_scope["scope_mendeley_n9h66xjk7y_v1"]
+    assert aged_simulation["base_weight_ceiling"] == 0.25
+    assert aged_simulation["split_group_keys"] == ["source_family"]
+    assert aged_simulation["task_specific_ceilings"][
+        "direct_linear_tpu_tensile_supervision"
     ] == 0.0
 
 
