@@ -13,7 +13,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "代码" / "审计" / "SMiPoly_TPU候选分类.py"
-PRODUCTION_OUTPUT = ROOT / "结果" / "Gold_候选.csv"
+PRODUCTION_OUTPUT = ROOT / "结果" / "Gold_V_候选.csv.gz"
 
 
 def _load_module():

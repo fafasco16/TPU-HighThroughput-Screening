@@ -2,8 +2,7 @@ import csv
 import gzip
 import hashlib
 import json
-import subprocess
-import sys
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -11,16 +10,17 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "代码" / "生成数据总账.py"
 JSON_PATH = ROOT / "结果" / "数据总账.json"
 LEDGER_PATH = ROOT / "结果" / "数据规模总账.csv"
 MANIFEST_PATH = ROOT / "结果" / "样本清单.csv.gz"
 REPORT_PATH = ROOT / "结果" / "数据总账说明.md"
-CANDIDATE_PATH = ROOT / "结果" / "Gold_候选.csv"
+CANDIDATE_PATH = ROOT / "结果" / "Gold_V_候选.csv.gz"
 GOLD_C_VALUE_PATH = ROOT / "结果" / "Gold_C_计算性能.csv.gz"
+GOLD_E_TABLE_PATH = ROOT / "结果" / "Gold_E_实验表格.csv.gz"
 PROFILE_PATH = ROOT / "配置" / "v0.2可训练样本总账来源画像.yaml"
 OUTPUT_PATHS = (
     CANDIDATE_PATH,
+    GOLD_E_TABLE_PATH,
     GOLD_C_VALUE_PATH,
     LEDGER_PATH,
     MANIFEST_PATH,
@@ -30,8 +30,7 @@ OUTPUT_PATHS = (
 
 
 @pytest.fixture(scope="module")
-def inventory() -> dict:
-    subprocess.run([sys.executable, str(SCRIPT)], cwd=ROOT, check=True)
+def inventory(generated_inventory_outputs: dict[str, str]) -> dict:
     payload = json.loads(JSON_PATH.read_text(encoding="utf-8"))
     assert "record_manifest" not in payload
     payload["record_manifest"] = _typed_manifest_rows(MANIFEST_PATH)
@@ -72,13 +71,13 @@ def _sha256(path: Path) -> str:
 def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
     summary = inventory["summary"]
 
-    assert summary["ledger_source_scope_count"] == 73
-    assert summary["v0_2_source_directory_count"] == 65
-    assert summary["v0_2_independent_source_identity_count"] == 64
+    assert summary["ledger_source_scope_count"] == 77
+    assert summary["v0_2_source_directory_count"] == 69
+    assert summary["v0_2_independent_source_identity_count"] == 68
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
     assert summary["v0_1_frozen_baseline_source_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 72
+    assert summary["total_independent_source_contribution_count"] == 76
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_calibration_curve_point_row_count"] == 935_097
     assert summary["strict_core_calibration_complete_point_pair_upper_bound"] == 935_095
@@ -99,29 +98,29 @@ def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
     experimental = summary["known_origin_totals"]["experimental_only"]
     assert experimental["specimen_count"] == {
         "value": 1465,
-        "known_source_scope_count": 22,
+        "known_source_scope_count": 23,
     }
     assert experimental["curve_count_observed"] == {
         "value": 2665,
-        "known_source_scope_count": 36,
+        "known_source_scope_count": 41,
     }
     assert experimental["curve_count_candidate"] == {
         "value": 2485,
-        "known_source_scope_count": 36,
+        "known_source_scope_count": 41,
     }
     assert experimental["point_count_observed"] == {
         "value": 9_545_156,
-        "known_source_scope_count": 36,
+        "known_source_scope_count": 41,
     }
 
     mixed = summary["known_origin_totals"]["mixed_experiment_and_simulation"]
     assert mixed["curve_count_observed"] == {
         "value": 701,
-        "known_source_scope_count": 8,
+        "known_source_scope_count": 9,
     }
     assert mixed["point_count_observed"] == {
         "value": 7_862_426,
-        "known_source_scope_count": 7,
+        "known_source_scope_count": 8,
     }
 
 
@@ -593,27 +592,32 @@ def test_materialized_gold_v_candidates_are_unique_traceable_and_zero_weight(inv
     rows = _csv_rows(CANDIDATE_PATH)
     summary = inventory["summary"]
 
-    assert len(rows) == summary["virtual_candidate_count"] == 13_544
+    assert len(rows) == summary["virtual_candidate_count"] == 117_629
     assert sum(row["source_id"] == "ds_smipoly_monomers" for row in rows) == 1071
     assert sum(row["source_id"] == "source_zenodo_11612378_purgen_fragments" for row in rows) == 414
     assert sum(
         row["source_id"] == "source_zenodo_12585902_polyuniverse_pu"
         for row in rows
     ) == 12_059
-    assert len({row["candidate_id"] for row in rows}) == 13_544
-    assert len({row["canonical_smiles"] for row in rows}) == 13_544
+    assert sum(row["source_id"] == "source_omg_batch10" for row in rows) == 100_584
+    assert sum(
+        row["source_id"] == "source_openpolymer_challenge_v1"
+        for row in rows
+    ) == 3_501
+    assert len({row["candidate_id"] for row in rows}) == 117_629
+    assert len({row["canonical_smiles"] for row in rows}) == 117_629
     assert all(row["inchikey"] for row in rows)
     assert all(row["gold_layer"] == "Gold-V" for row in rows)
-    assert sum(row["gold_admission_status"] == "admitted_reference" for row in rows) == 10_804
+    assert sum(row["gold_admission_status"] == "admitted_reference" for row in rows) == 114_889
     assert sum(row["gold_admission_status"] == "conditional_reference" for row in rows) == 2_740
     assert all(float(row["direct_property_supervision_weight_ceiling"]) == 0.0 for row in rows)
     assert summary["virtual_candidate_priority1_structure_count"] == 9_631
     assert summary["virtual_candidate_direct_building_block_count"] == 9_490
-    assert summary["virtual_candidate_reference_count"] == 13_544
+    assert summary["virtual_candidate_reference_count"] == 117_629
     assert summary["virtual_candidate_synthesis_primary_count"] == 9_490
     assert summary["virtual_candidate_mixture_or_salt_reference_count"] == 2_579
     assert summary["virtual_candidate_not_synthesis_candidate_count"] == 161
-    assert summary["virtual_candidate_functional_group_matched_count"] == 13_013
+    assert summary["virtual_candidate_functional_group_matched_count"] == 113_807
     assert summary["virtual_candidate_unclassified_count"] == 531
 
     candidate_manifest = {
@@ -621,7 +625,7 @@ def test_materialized_gold_v_candidates_are_unique_traceable_and_zero_weight(inv
         for row in inventory["record_manifest"]
         if row["record_granularity"] == "candidate"
     }
-    assert len(candidate_manifest) == 13_544
+    assert len(candidate_manifest) == 117_629
     source_sets_by_family: dict[str, set[str]] = {}
     row_count_by_family: dict[str, int] = {}
     for row in rows:
@@ -892,7 +896,7 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
     manifest_rows = _csv_rows(MANIFEST_PATH)
     report = REPORT_PATH.read_text(encoding="utf-8")
 
-    assert len(ledger_rows) == 73
+    assert len(ledger_rows) == 77
     assert len(manifest_rows) == inventory["summary"]["manifest_row_count"]
     for row in ledger_rows:
         assert row["source_scope_id"].strip()
@@ -908,14 +912,92 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
     assert "https://doi.org/" in report
 
 
-def test_two_runs_are_byte_reproducible_atomic_and_reconciled(inventory: dict):
-    first = {path.name: _sha256(path) for path in OUTPUT_PATHS}
-    subprocess.run([sys.executable, str(SCRIPT)], cwd=ROOT, check=True)
-    second = {path.name: _sha256(path) for path in OUTPUT_PATHS}
-    subprocess.run([sys.executable, str(SCRIPT)], cwd=ROOT, check=True)
-    third = {path.name: _sha256(path) for path in OUTPUT_PATHS}
+def test_acs_published_tables_are_materialized_as_multifidelity_reference(
+    inventory: dict,
+):
+    rows = _csv_rows(GOLD_E_TABLE_PATH)
+    assert len(rows) == 2_600
+    assert Counter(row["source_id"] for row in rows) == {
+        "ledger_source_118": 143,
+        "ledger_source_106": 95,
+        "ledger_source_110": 217,
+        "ledger_source_112": 45,
+        "source_sciencedb_pue643_v1": 1_929,
+        "source_zenodo_6406174": 171,
+    }
+    assert Counter(row["gold_admission_status"] for row in rows) == {
+        "admitted_reference": 654,
+        "conditional_reference": 1_946,
+    }
+    assert all(row["current_weight_materialized"] == "false" for row in rows)
+    assert all(row["training_weight"] == "" for row in rows)
+    assert all(row["file_sha256"] and row["source_locator"] for row in rows)
+    metadata = inventory["summary"]["gold_e_published_table_long_table"]
+    assert metadata["row_count"] == 2_600
+    assert metadata["current_weight_materialized"] is False
 
-    assert first == second == third
+    manifest_rows = [
+        row
+        for row in inventory["record_manifest"]
+        if row["audit_basis"] == "代码/审计/第十批ACS表格物化.py"
+    ]
+    assert len(manifest_rows) == 505
+    assert Counter(row["gold_layer"] for row in manifest_rows) == {
+        "Gold-E": 500,
+        "Gold-C": 5,
+    }
+
+
+def test_batch10_gold_e_keeps_targets_and_context_without_label_inflation(
+    inventory: dict,
+):
+    rows = _csv_rows(GOLD_E_TABLE_PATH)
+    sciencedb = [
+        row
+        for row in rows
+        if row["source_id"] == "source_sciencedb_pue643_v1"
+    ]
+    kinetics = [
+        row for row in rows if row["source_id"] == "source_zenodo_6406174"
+    ]
+
+    assert len(sciencedb) == 1_929
+    assert Counter(row["property_name"] for row in sciencedb) == {
+        "logYM": 643,
+        "logTS": 643,
+        "logEB": 643,
+    }
+    assert {row["gold_admission_status"] for row in sciencedb} == {
+        "conditional_reference"
+    }
+    assert all(
+        len(json.loads(row["condition_value"])) == 20 for row in sciencedb
+    )
+
+    assert len(kinetics) == 171
+    assert Counter(row["gold_admission_status"] for row in kinetics) == {
+        "admitted_reference": 169,
+        "conditional_reference": 2,
+    }
+    assert sum(float(row["value"]) == 0.0 for row in kinetics) == 23
+    assert all(row["property_name"] == "NCO_content" for row in kinetics)
+    assert all(row["training_weight"] == "" for row in [*sciencedb, *kinetics])
+
+    manifest_rows = [
+        row
+        for row in inventory["record_manifest"]
+        if row["audit_basis"] == "代码/审计/第十批多保真物化.py"
+    ]
+    assert len(manifest_rows) == 2_100
+    assert {row["gold_layer"] for row in manifest_rows} == {"Gold-E"}
+
+
+def test_two_runs_are_byte_reproducible_atomic_and_reconciled(
+    inventory: dict,
+    regenerated_inventory_outputs: tuple[dict[str, str], dict[str, str]],
+):
+    first, second = regenerated_inventory_outputs
+    assert first == second
     for path in OUTPUT_PATHS:
         assert not list(path.parent.glob(f".{path.name}.*.tmp"))
 
@@ -925,7 +1007,7 @@ def test_two_runs_are_byte_reproducible_atomic_and_reconciled(inventory: dict):
     report = REPORT_PATH.read_text(encoding="utf-8")
     assert payload["summary"]["audit_as_of_utc"] == "2026-07-21T14:00:00Z"
     assert len(payload["input_fingerprints"]) == payload["summary"]["input_file_count"]
-    assert len(ledger_rows) == len(payload["source_ledger"]) == 73
+    assert len(ledger_rows) == len(payload["source_ledger"]) == 77
     manifest_artifact = payload["record_manifest_artifact"]
     assert manifest_artifact == {
         "path": "结果/样本清单.csv.gz",
@@ -934,7 +1016,7 @@ def test_two_runs_are_byte_reproducible_atomic_and_reconciled(inventory: dict):
         "sha256": _sha256(MANIFEST_PATH),
     }
     assert JSON_PATH.stat().st_size < 1_000_000
-    assert MANIFEST_PATH.stat().st_size < 5_000_000
+    assert MANIFEST_PATH.stat().st_size < 10_000_000
     assert "| 严格核心键控试样/曲线/已审计点行 | 217 / 217 / 913,608 |" in report
     assert "| 当前模型就绪记录 | **0** |" in report
 
@@ -946,7 +1028,7 @@ def test_source_profile_covers_every_open_data_directory():
     actual = {path.name for path in raw_root.iterdir() if path.is_dir()}
 
     assert len(profile["baseline_profiles"]) == 4
-    assert len(configured) == 65
+    assert len(configured) == 69
     assert configured == actual
     backlog = profile["local_backlog_profiles"]
     assert len(backlog) == 4

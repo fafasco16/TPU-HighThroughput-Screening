@@ -3,8 +3,6 @@ import gzip
 import hashlib
 import json
 import math
-import subprocess
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -12,7 +10,6 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "代码" / "生成数据总账.py"
 OUTPUT = ROOT / "结果" / "Gold_C_计算性能.csv.gz"
 MANIFEST = ROOT / "结果" / "样本清单.csv.gz"
 INVENTORY = ROOT / "结果" / "数据总账.json"
@@ -22,6 +19,8 @@ REQUIRED_COLUMNS = {
     "source_record_id",
     "observation_id",
     "canonical_structure",
+    "system_identity",
+    "structure_identity_status",
     "global_structure_family_key",
     "simulation_key",
     "property_name",
@@ -48,9 +47,9 @@ def _sha256(path: Path) -> str:
 
 
 @pytest.fixture(scope="module")
-def generated_gold_c() -> dict:
-    subprocess.run([sys.executable, str(SCRIPT)], cwd=ROOT, check=True)
+def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
     source_counts: Counter[str] = Counter()
+    source_admission_counts: Counter[tuple[str, str]] = Counter()
     method_counts: Counter[str] = Counter()
     unit_status_counts: Counter[str] = Counter()
     unit_admission_counts: Counter[tuple[str, str]] = Counter()
@@ -61,7 +60,11 @@ def generated_gold_c() -> dict:
     thermal_status_counts: Counter[tuple[str, str, str]] = Counter()
     nonthermal_admission_mismatch = 0
     row_count = 0
-    observation_ids: set[str] = set()
+    non_omg_observation_ids: set[str] = set()
+    overlap_sources = {
+        "source_github_radonpy_pi1070_840dd4a",
+        "source_polyomics_data",
+    }
     with gzip.open(OUTPUT, "rt", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         assert set(reader.fieldnames or ()) >= REQUIRED_COLUMNS
@@ -69,17 +72,30 @@ def generated_gold_c() -> dict:
             row_count += 1
             source_id = row["source_id"]
             source_counts[source_id] += 1
+            source_admission_counts[
+                (source_id, row["gold_admission_status"])
+            ] += 1
             method_counts[row["method_family"]] += 1
             unit_status_counts[row["unit_status"]] += 1
             unit_admission_counts[
                 (row["unit_status"], row["property_admission_status"])
             ] += 1
             key = row["global_structure_family_key"]
-            structure_keys[source_id].add(key)
-            structure_records[source_id][key].add(row["source_record_id"])
+            if source_id in overlap_sources:
+                structure_keys[source_id].add(key)
+                structure_records[source_id][key].add(
+                    row["source_record_id"]
+                )
             assert math.isfinite(float(row["value"]))
-            assert row["canonical_structure"]
-            assert key.startswith("global_polymer_structure_")
+            assert row["system_identity"]
+            if row["canonical_structure"]:
+                assert row["canonical_structure"]
+                assert key.startswith("global_polymer_structure_")
+            else:
+                assert row["structure_identity_status"] == (
+                    "formulation_label_with_molar_ratio_link_no_single_smiles"
+                )
+                assert key.startswith("global_formulation_system_")
             assert row["simulation_key"]
             assert row["unit"]
             assert row["method_detail"]
@@ -89,8 +105,9 @@ def generated_gold_c() -> dict:
             assert row["training_weight"] == ""
             assert row["source_locator"]
             assert row["citation_keys"]
-            assert 0 <= float(row["potential_weight_ceiling"]) <= 0.20
-            observation_ids.add(row["observation_id"])
+            assert 0 <= float(row["potential_weight_ceiling"]) <= 0.25
+            if source_id != "source_omg_batch10":
+                non_omg_observation_ids.add(row["observation_id"])
             if row["property_name"] == "thermal_conductivity":
                 thermal_status_counts[
                     (
@@ -109,6 +126,7 @@ def generated_gold_c() -> dict:
         "sha256": _sha256(OUTPUT),
         "row_count": row_count,
         "source_counts": source_counts,
+        "source_admission_counts": source_admission_counts,
         "method_counts": method_counts,
         "unit_status_counts": unit_status_counts,
         "unit_admission_counts": unit_admission_counts,
@@ -116,18 +134,21 @@ def generated_gold_c() -> dict:
         "structure_records": structure_records,
         "thermal_status_counts": thermal_status_counts,
         "nonthermal_admission_mismatch": nonthermal_admission_mismatch,
-        "observation_id_count": len(observation_ids),
+        "non_omg_observation_id_count": len(non_omg_observation_ids),
     }
 
 
 def test_gold_c_long_table_contains_real_finite_source_values(
     generated_gold_c: dict,
 ):
-    assert generated_gold_c["row_count"] == 210_345
-    assert generated_gold_c["observation_id_count"] == 210_345
+    assert generated_gold_c["row_count"] == 1_406_774
+    assert generated_gold_c["non_omg_observation_id_count"] == 214_874
     assert generated_gold_c["source_counts"] == {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209_905,
+        "ledger_source_106": 5,
+        "source_omg_batch10": 1_191_900,
+        "source_openpolymer_challenge_v1": 4_524,
     }
     assert {
         "DFT",
@@ -142,6 +163,15 @@ def test_gold_c_long_table_contains_real_finite_source_values(
         ]
         > 0
     )
+    admissions = generated_gold_c["source_admission_counts"]
+    assert admissions[("source_omg_batch10", "admitted_reference")] == 52_150
+    assert admissions[("source_omg_batch10", "conditional_reference")] == 1_139_750
+    assert admissions[
+        ("source_openpolymer_challenge_v1", "admitted_reference")
+    ] == 389
+    assert admissions[
+        ("source_openpolymer_challenge_v1", "conditional_reference")
+    ] == 4_135
 
 
 def test_polyomics_property_gate_preserves_failed_thermal_values_as_conditional(
@@ -176,6 +206,28 @@ def test_polyomics_property_gate_preserves_failed_thermal_values_as_conditional(
     assert unit_admissions[
         ("source_native_unit_unresolved", "admitted_reference")
     ] == 0
+
+
+def test_acs_dual_phase_md_values_keep_formulation_identity_and_raw_anomaly(
+    generated_gold_c: dict,
+):
+    with gzip.open(OUTPUT, "rt", encoding="utf-8", newline="") as handle:
+        rows = [
+            row
+            for row in csv.DictReader(handle)
+            if row["source_id"] == "ledger_source_106"
+        ]
+    assert len(rows) == 5
+    assert all(row["method_family"] == "MD" for row in rows)
+    assert all(row["canonical_structure"] == "" for row in rows)
+    assert all(row["system_identity"] for row in rows)
+    assert Counter(row["gold_admission_status"] for row in rows) == {
+        "admitted_reference": 4,
+        "conditional_reference": 1,
+    }
+    anomaly = next(row for row in rows if "D0C4" in row["system_identity"])
+    assert float(anomaly["value"]) == 211194.0
+    assert anomaly["source_validation_status"] == "published_value_anomaly_retained"
 
 
 def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
@@ -229,13 +281,16 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
     assert metadata == {
         "artifact_role": "normalized_computational_value_reference",
         "artifact_status": (
-            "reference_only_not_final_gold_c_or_training_dataset"
+            "multifidelity_gold_c_reference_not_training_dataset"
         ),
         "path": "结果/Gold_C_计算性能.csv.gz",
-        "row_count": 210_345,
+        "row_count": 1_406_774,
         "source_value_counts": {
             radon_id: 440,
             polyomics_id: 209_905,
+            "ledger_source_106": 5,
+            "source_omg_batch10": 1_191_900,
+            "source_openpolymer_challenge_v1": 4_524,
         },
         "cross_source_overlap_structure_count": 11,
         "cross_source_overlap_polyomics_record_count": 58,
@@ -245,11 +300,13 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
 
 def test_gold_c_gzip_is_deterministic_and_stream_readable(
     generated_gold_c: dict,
+    regenerated_inventory_outputs: tuple[dict[str, str], dict[str, str]],
 ):
     header = OUTPUT.read_bytes()[:10]
     assert header[:2] == b"\x1f\x8b"
     assert header[4:8] == b"\x00\x00\x00\x00"
-    subprocess.run([sys.executable, str(SCRIPT)], cwd=ROOT, check=True)
+    first, second = regenerated_inventory_outputs
+    assert first == second
     assert _sha256(OUTPUT) == generated_gold_c["sha256"]
     with gzip.open(OUTPUT, "rt", encoding="utf-8", newline="") as handle:
         assert next(csv.reader(handle))[0] == "source_id"

@@ -11,8 +11,9 @@ import stat
 import tempfile
 from collections import Counter
 from dataclasses import dataclass
+from itertools import chain
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Iterator
 
 import yaml
 from rdkit import Chem, rdBase
@@ -45,6 +46,41 @@ from 审计.第九批RadonPy_PI1070 import (
     BASE_UNITS as RADONPY_BASE_UNITS,
     SOURCE_DIR as RADONPY_SOURCE_DIR,
 )
+from 审计.第十批ACS表格物化 import (
+    MATERIALIZED_EVIDENCE_GROUPS as ACS_MATERIALIZED_EVIDENCE_GROUPS,
+    RECORD_COLUMNS as ACS_TABLE_RECORD_COLUMNS,
+    SPECS as ACS_TABLE_SPECS,
+    build_records as build_acs_table_records,
+)
+from 审计.第十批OpenPolymerChallenge import (
+    FROZEN_FILES as BATCH10_OPENPOLY_FROZEN_FILES,
+)
+from 审计.第十批多保真物化 import (
+    COMPUTATIONAL_RECORD_COLUMNS as BATCH10_COMPUTATIONAL_RECORD_COLUMNS,
+    KINETICS_AUDIT as BATCH10_KINETICS_AUDIT,
+    KINETICS_CONDITIONS as BATCH10_KINETICS_CONDITIONS,
+    KINETICS_HASHES as BATCH10_KINETICS_HASHES,
+    KINETICS_MEASUREMENTS as BATCH10_KINETICS_MEASUREMENTS,
+    OMG_AUDIT as BATCH10_OMG_AUDIT,
+    OMG_CANDIDATE_CSV as BATCH10_OMG_CANDIDATE_CSV,
+    OMG_FIELD_DICTIONARY as BATCH10_OMG_FIELD_DICTIONARY,
+    OMG_GOLD_C_COUNT as BATCH10_OMG_GOLD_C_COUNT,
+    OMG_PROPERTY_FILES as BATCH10_OMG_PROPERTY_FILES,
+    OMG_PU_PROPERTY_CSV as BATCH10_OMG_PU_PROPERTY_CSV,
+    OPENPOLY_CANDIDATE_COUNT as BATCH10_OPENPOLY_CANDIDATE_COUNT,
+    OPENPOLY_DIR as BATCH10_OPENPOLY_DIR,
+    OPENPOLY_GOLD_C_COUNT as BATCH10_OPENPOLY_GOLD_C_COUNT,
+    SCIENCEDB_AUDIT as BATCH10_SCIENCEDB_AUDIT,
+    SCIENCEDB_CSV as BATCH10_SCIENCEDB_CSV,
+    SOURCE_KINETICS as BATCH10_SOURCE_KINETICS,
+    SOURCE_OMG as BATCH10_SOURCE_OMG,
+    SOURCE_OPENPOLY as BATCH10_SOURCE_OPENPOLY,
+    SOURCE_SCIENCEDB as BATCH10_SOURCE_SCIENCEDB,
+    audit_materialization_inputs as audit_batch10_materialization_inputs,
+    build_candidate_rows as build_batch10_candidate_rows,
+    build_gold_e_rows as build_batch10_gold_e_rows,
+    iter_gold_c_rows as iter_batch10_gold_c_rows,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,8 +93,9 @@ OUTPUT_LEDGER = ROOT / "结果" / "数据规模总账.csv"
 OUTPUT_MANIFEST = ROOT / "结果" / "样本清单.csv.gz"
 OUTPUT_JSON = ROOT / "结果" / "数据总账.json"
 OUTPUT_REPORT = ROOT / "结果" / "数据总账说明.md"
-OUTPUT_CANDIDATES = ROOT / "结果" / "Gold_候选.csv"
+OUTPUT_CANDIDATES = ROOT / "结果" / "Gold_V_候选.csv.gz"
 OUTPUT_GOLD_C_VALUES = ROOT / "结果" / "Gold_C_计算性能.csv.gz"
+OUTPUT_GOLD_E_TABLES = ROOT / "结果" / "Gold_E_实验表格.csv.gz"
 SCRIPT_PATH = Path(__file__).resolve()
 SMIPOLY_CLASSIFIER_PATH = (
     ROOT / "代码" / "审计" / "SMiPoly_TPU候选分类.py"
@@ -68,6 +105,13 @@ POLYUNIVERSE_DINCO_AUDIT_SCRIPT_PATH = (
     ROOT / "代码" / "审计" / "第九批PolyUniverse异氰酸酯单体.py"
 )
 POLYOMICS_AUDIT_SCRIPT_PATH = ROOT / "代码" / "审计" / "第九批PolyOmics.py"
+ACS_TABLE_AUDIT_SCRIPT_PATH = ROOT / "代码" / "审计" / "第十批ACS表格物化.py"
+BATCH10_MATERIALIZATION_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十批多保真物化.py"
+)
+BATCH10_OPENPOLY_AUDIT_SCRIPT_PATH = (
+    ROOT / "代码" / "审计" / "第十批OpenPolymerChallenge.py"
+)
 INPUT_FILES_READ: set[Path] = set()
 
 
@@ -76,6 +120,8 @@ GOLD_C_VALUE_COLUMNS = [
     "source_record_id",
     "observation_id",
     "canonical_structure",
+    "system_identity",
+    "structure_identity_status",
     "global_structure_family_key",
     "simulation_key",
     "property_name",
@@ -96,6 +142,14 @@ GOLD_C_VALUE_COLUMNS = [
     "training_weight",
     "source_locator",
     "citation_keys",
+]
+
+
+GOLD_E_TABLE_COLUMNS = [
+    "source_id",
+    "source_scope_id",
+    "source_family_id",
+    *ACS_TABLE_RECORD_COLUMNS,
 ]
 
 
@@ -546,7 +600,15 @@ def _audit_paths(profile: dict[str, Any]) -> list[Path]:
         fragment = fragment.strip()
         if not fragment:
             continue
-        candidate = ROOT / fragment if "/" in fragment or "\\" in fragment else _profile_base(profile) / fragment
+        normalized_fragment = fragment.replace("\\", "/")
+        is_project_relative = normalized_fragment.startswith(
+            ("代码/", "配置/", "数据/", "文档/", "结果/")
+        )
+        candidate = (
+            ROOT / fragment
+            if is_project_relative
+            else _profile_base(profile) / fragment
+        )
         if not candidate.exists():
             raise FileNotFoundError(f"审计依据不存在: {candidate}")
         _register_input(candidate)
@@ -912,6 +974,9 @@ def _tabular_record(
         record["quality_status"] = "仅验证"
         record["weight_ceiling"] = 0.0
         record["numeric_value_count"] = 0
+        record["target_origin"] = "evidence"
+        record["record_role"] = "evidence"
+        record["_declared_gold_admission_status"] = "evidence_only"
     return record
 
 
@@ -997,6 +1062,12 @@ def _canonical_polymer_structure(smiles: str) -> str:
 def _global_structure_family_key(canonical_structure: str) -> str:
     digest = hashlib.sha256(canonical_structure.encode("utf-8")).hexdigest()
     return f"global_polymer_structure_{digest[:24]}"
+
+
+def _global_named_system_family_key(source_family: str, system_identity: str) -> str:
+    payload = f"{source_family}|{system_identity}"
+    digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    return f"global_formulation_system_{digest[:24]}"
 
 
 def _finite_numeric_text(value: Any, *, context: str) -> str:
@@ -1098,9 +1169,55 @@ def _polyomics_record_role(property_name: str) -> str:
     return "computational_target"
 
 
+def _governed_batch10_gold_c_rows(
+    profiles: list[dict[str, Any]],
+    identities: dict[str, SourceIdentity],
+) -> Iterator[dict[str, Any]]:
+    """流式注入权威来源身份、引用和来源级权重上限。"""
+
+    profile_by_directory = {
+        profile["source_directory"]: profile for profile in profiles
+    }
+    source_directories = {
+        BATCH10_SOURCE_OMG: "第十批计算_OMG",
+        BATCH10_SOURCE_OPENPOLY: "第十批计算_OpenPolymerChallenge",
+    }
+    governance: dict[str, tuple[str, SourceIdentity, float]] = {}
+    for source_id, directory in source_directories.items():
+        identity = identities[directory]
+        if identity.source_id != source_id:
+            raise AssertionError(
+                f"第十批Gold-C来源ID漂移: {directory}="
+                f"{identity.source_id}, expected={source_id}"
+            )
+        governance[source_id] = (
+            directory,
+            identity,
+            float(profile_by_directory[directory]["weight_ceiling"]),
+        )
+
+    for source_row in iter_batch10_gold_c_rows():
+        source_id = str(source_row["source_id"])
+        if source_id not in governance:
+            raise AssertionError(f"第十批Gold-C出现未知来源ID: {source_id}")
+        directory, identity, source_ceiling = governance[source_id]
+        row = dict(source_row)
+        row["citation_keys"] = ";".join(identity.citation_keys)
+        row["potential_weight_ceiling"] = min(
+            float(row["potential_weight_ceiling"]), source_ceiling
+        )
+        row["source_locator"] = (
+            f"数据/原始/外部数据/新增开放数据/{directory}/"
+            f"{row['source_locator']}"
+        )
+        yield row
+
+
 def _gold_c_computational_value_rows(
-    profiles: list[dict[str, Any]], identities: dict[str, SourceIdentity]
-) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    profiles: list[dict[str, Any]],
+    identities: dict[str, SourceIdentity],
+    acs_table_rows: list[dict[str, Any]],
+) -> tuple[Iterable[dict[str, Any]], dict[str, Any]]:
     """Materialize normalized source values, not a final training dataset."""
 
     profile_by_directory = {
@@ -1152,6 +1269,8 @@ def _gold_c_computational_value_rows(
                 "source_record_id": source_record_id,
                 "observation_id": source_row["observation_id"],
                 "canonical_structure": canonical,
+                "system_identity": canonical,
+                "structure_identity_status": "exact_polymer_smiles",
                 "global_structure_family_key": _global_structure_family_key(
                     canonical
                 ),
@@ -1236,6 +1355,8 @@ def _gold_c_computational_value_rows(
                         f"{source_row['record_id']}:{property_name}"
                     ),
                     "canonical_structure": canonical,
+                    "system_identity": canonical,
+                    "structure_identity_status": "exact_polymer_smiles",
                     "global_structure_family_key": (
                         _global_structure_family_key(canonical)
                     ),
@@ -1278,15 +1399,99 @@ def _gold_c_computational_value_rows(
                 }
             )
 
-    expected_counts = {
+    acs_md_rows = [
+        row for row in acs_table_rows if row["target_origin"] == "md"
+    ]
+    for source_row in acs_md_rows:
+        directory = str(source_row["source_directory"])
+        identity = identities[directory]
+        system_identity = (
+            f"{source_row['sample_id']}; composition linked to published Table S1"
+        )
+        simulation_basis = _joined(
+            identity.source_family_id,
+            source_row["sample_id"],
+            source_row["method_or_test_protocol"],
+        )
+        simulation_digest = hashlib.sha256(
+            simulation_basis.encode("utf-8")
+        ).hexdigest()[:24]
+        rows.append(
+            {
+                "source_id": identity.source_id,
+                "source_record_id": source_row["source_record_id"],
+                "observation_id": source_row["observation_id"],
+                "canonical_structure": "",
+                "system_identity": system_identity,
+                "structure_identity_status": (
+                    "formulation_label_with_molar_ratio_link_no_single_smiles"
+                ),
+                "global_structure_family_key": _global_named_system_family_key(
+                    identity.source_family_id, source_row["sample_id"]
+                ),
+                "simulation_key": f"acs_published_md_{simulation_digest}",
+                "property_name": source_row["property_name"],
+                "value": _finite_numeric_text(
+                    source_row["value"], context=source_row["observation_id"]
+                ),
+                "unit": source_row["unit"],
+                "unit_status": "source_unit_preserved",
+                "method_family": "MD",
+                "method_detail": source_row["method_or_test_protocol"],
+                "fidelity_level": source_row["fidelity_level"],
+                "temp": 298,
+                "press": 1,
+                "gold_admission_status": source_row[
+                    "gold_admission_status"
+                ],
+                "property_admission_status": source_row[
+                    "gold_admission_status"
+                ],
+                "source_validation_status": (
+                    "published_value_anomaly_retained"
+                    if source_row["protocol_status"].endswith("value_anomaly")
+                    else "source_pdf_hash_protocol_and_value_verified"
+                ),
+                "record_role": "computational_feature_or_mechanistic_reference",
+                "potential_weight_ceiling": source_row[
+                    "potential_weight_ceiling"
+                ],
+                "current_weight_materialized": "false",
+                "training_weight": "",
+                "source_locator": (
+                    f"数据/原始/外部数据/新增开放数据/{directory}/"
+                    f"{source_row['source_locator']}"
+                ),
+                "citation_keys": ";".join(identity.citation_keys),
+            }
+        )
+
+    expected_existing_counts = {
         radon_identity.source_id: 440,
         polyomics_identity.source_id: 209_905,
+        identities["ACS_Figshare_双相演化聚氨酯"].source_id: 5,
     }
     actual_counts = Counter(row["source_id"] for row in rows)
-    if actual_counts != expected_counts:
+    if actual_counts != expected_existing_counts:
         raise AssertionError(
             f"Gold-C计算数值数量漂移: {dict(actual_counts)}"
         )
+    batch10_identity_expectations = {
+        "第十批计算_OMG": BATCH10_SOURCE_OMG,
+        "第十批计算_OpenPolymerChallenge": BATCH10_SOURCE_OPENPOLY,
+    }
+    for directory, expected_source_id in batch10_identity_expectations.items():
+        actual_source_id = identities[directory].source_id
+        if actual_source_id != expected_source_id:
+            raise AssertionError(
+                f"第十批Gold-C来源ID漂移: {directory}="
+                f"{actual_source_id}, expected={expected_source_id}"
+            )
+    all_source_counts = {
+        **dict(actual_counts),
+        BATCH10_SOURCE_OMG: BATCH10_OMG_GOLD_C_COUNT,
+        BATCH10_SOURCE_OPENPOLY: BATCH10_OPENPOLY_GOLD_C_COUNT,
+    }
     radon_structures = {
         row["global_structure_family_key"]
         for row in rows
@@ -1312,13 +1517,72 @@ def _gold_c_computational_value_rows(
         )
     metadata = {
         "artifact_role": "normalized_computational_value_reference",
-        "artifact_status": "reference_only_not_final_gold_c_or_training_dataset",
+        "artifact_status": "multifidelity_gold_c_reference_not_training_dataset",
         "path": _to_relative(OUTPUT_GOLD_C_VALUES),
-        "row_count": len(rows),
-        "source_value_counts": dict(actual_counts),
+        "row_count": sum(all_source_counts.values()),
+        "source_value_counts": all_source_counts,
         "cross_source_overlap_structure_count": len(overlapping_structures),
         "cross_source_overlap_polyomics_record_count": len(
             overlapping_polyomics_records
+        ),
+        "current_weight_materialized": False,
+    }
+    # 第十批 OMG 的 1,191,900 行保持流式，避免百万个 26 列 dict 常驻内存。
+    return chain(
+        rows, _governed_batch10_gold_c_rows(profiles, identities)
+    ), metadata
+
+
+def _gold_e_table_value_rows(
+    materialized_table_rows: list[dict[str, Any]],
+    identities: dict[str, SourceIdentity],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    batch10_identity_expectations = {
+        "第十批实验_ScienceDB643": BATCH10_SOURCE_SCIENCEDB,
+        "第十批实验_无溶剂PU反应动力学": BATCH10_SOURCE_KINETICS,
+    }
+    for directory, expected_source_id in batch10_identity_expectations.items():
+        actual_source_id = identities[directory].source_id
+        if actual_source_id != expected_source_id:
+            raise AssertionError(
+                f"第十批Gold-E来源ID漂移: {directory}="
+                f"{actual_source_id}, expected={expected_source_id}"
+            )
+    rows: list[dict[str, Any]] = []
+    for source_row in materialized_table_rows:
+        if source_row["target_origin"] not in {
+            "experimental",
+            "experimental_transformed",
+        }:
+            continue
+        directory = str(source_row["source_directory"])
+        identity = identities[directory]
+        row = {
+            "source_id": identity.source_id,
+            "source_scope_id": identity.source_scope_id,
+            "source_family_id": identity.source_family_id,
+            **source_row,
+        }
+        row["citation_keys"] = ";".join(identity.citation_keys)
+        row["source_locator"] = (
+            f"数据/原始/外部数据/新增开放数据/{directory}/"
+            f"{source_row['source_locator']}"
+        )
+        rows.append(row)
+    source_counts = Counter(row["source_id"] for row in rows)
+    metadata = {
+        "artifact_role": "normalized_experimental_published_table_reference",
+        "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
+        "path": _to_relative(OUTPUT_GOLD_E_TABLES),
+        "row_count": len(rows),
+        "source_value_counts": dict(source_counts),
+        "admitted_reference_count": sum(
+            row["gold_admission_status"] == "admitted_reference"
+            for row in rows
+        ),
+        "conditional_reference_count": sum(
+            row["gold_admission_status"] == "conditional_reference"
+            for row in rows
         ),
         "current_weight_materialized": False,
     }
@@ -1726,12 +1990,84 @@ def _virtual_candidate_records(
     return records
 
 
+def _materialized_table_manifest_records(
+    profiles: list[dict[str, Any]],
+    identities: dict[str, SourceIdentity],
+    materialized_table_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    profile_by_directory = {
+        profile["source_directory"]: profile for profile in profiles
+    }
+    records: list[dict[str, Any]] = []
+    for index, row in enumerate(materialized_table_rows):
+        directory = str(row["source_directory"])
+        profile = profile_by_directory[directory]
+        identity = identities[directory]
+        record = _base_record(
+            profile, identity, "scalar", str(row["observation_id"]), index
+        )
+        record_kind = str(row["record_kind"])
+        if record_kind == "formulation_component":
+            role = "formulation_descriptor"
+        elif record_kind == "process_condition":
+            role = "process_descriptor"
+        elif row["target_origin"] == "md":
+            role = "computational_property_observation"
+        else:
+            role = "property_observation"
+        uncertainty_count = int(row["uncertainty_value"] != "")
+        record.update(
+            {
+                "task": row["property_name"],
+                "target_origin": row["target_origin"],
+                "record_role": role,
+                "method_family": (
+                    "MD" if row["target_origin"] == "md" else "experiment"
+                ),
+                "fidelity_level": row["fidelity_level"],
+                "candidate_id": row["formulation_id"],
+                "material_formula_key": row["formulation_id"] or row["sample_id"],
+                "specimen_key": "",
+                "scalar_key": row["observation_id"],
+                "leakage_group_key": _joined(
+                    identity.source_family_id, row["split_group"]
+                ),
+                "leakage_key_status": "explicit_record_group",
+                "quality_status": profile["quality_status"],
+                "weight_ceiling": float(row["potential_weight_ceiling"]),
+                "scalar_count": 1,
+                "numeric_value_count": 1 + uncertainty_count,
+                "source_locator": (
+                    f"数据/原始/外部数据/新增开放数据/{directory}/"
+                    f"{row['source_locator']}"
+                ),
+                "audit_basis": _to_relative(
+                    ACS_TABLE_AUDIT_SCRIPT_PATH
+                    if directory.startswith("ACS_Figshare_")
+                    else BATCH10_MATERIALIZATION_SCRIPT_PATH
+                ),
+                "decision_basis": _joined(
+                    row["gold_admission_status"],
+                    row["mapping_status"],
+                    row["protocol_status"],
+                ),
+                "notes": row["notes"],
+                "_declared_gold_admission_status": row[
+                    "gold_admission_status"
+                ],
+            }
+        )
+        records.append(record)
+    return records
+
+
 def _build_manifest(
     profiles: list[dict[str, Any]],
     baseline_profiles: list[dict[str, Any]],
     identities: dict[str, SourceIdentity],
     ledger: list[dict[str, Any]],
     candidate_rows: list[dict[str, Any]],
+    materialized_table_rows: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     profile_by_dir = {profile["source_directory"]: profile for profile in [*baseline_profiles, *profiles]}
     records: list[dict[str, Any]] = []
@@ -1763,6 +2099,11 @@ def _build_manifest(
             profiles, baseline_profiles, identities, candidate_rows
         )
     )
+    records.extend(
+        _materialized_table_manifest_records(
+            profiles, identities, materialized_table_rows
+        )
+    )
 
     for profile in profiles:
         identity = identities[profile["source_directory"]]
@@ -1778,6 +2119,14 @@ def _build_manifest(
             if not path.exists():
                 continue
             for index, row in enumerate(_read_tsv(path)):
+                if (
+                    filename == "曲线审计清单.tsv"
+                    and row.get("record_id")
+                    in ACS_MATERIALIZED_EVIDENCE_GROUPS.get(
+                        profile["source_directory"], frozenset()
+                    )
+                ):
+                    continue
                 records.append(_tabular_record(profile, identity, row, path, index))
         scalar_path = base / "标量审计清单.tsv"
         if scalar_path.exists():
@@ -2049,7 +2398,11 @@ def _atomic_write_text(path: Path, text: str, *, encoding: str) -> None:
 
 
 def _write_gzip_csv(
-    path: Path, columns: list[str], rows: Iterable[dict[str, Any]]
+    path: Path,
+    columns: list[str],
+    rows: Iterable[dict[str, Any]],
+    *,
+    expected_row_count: int | None = None,
 ) -> None:
     """Atomically write a remotely stream-readable deterministic gzip CSV."""
 
@@ -2084,7 +2437,18 @@ def _write_gzip_csv(
                     lineterminator="\n",
                 )
                 writer.writeheader()
-                writer.writerows(rows)
+                row_count = 0
+                for row in rows:
+                    writer.writerow(row)
+                    row_count += 1
+                if (
+                    expected_row_count is not None
+                    and row_count != expected_row_count
+                ):
+                    raise AssertionError(
+                        f"流式输出行数漂移: {path.name}; "
+                        f"expected={expected_row_count}, actual={row_count}"
+                    )
                 text_handle.flush()
                 text_handle.detach()
             raw_handle.flush()
@@ -2290,20 +2654,20 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 73
-    assert summary["v0_2_source_directory_count"] == 65
-    assert summary["v0_2_independent_source_identity_count"] == 64
+    assert len(ledger) == 77
+    assert summary["v0_2_source_directory_count"] == 69
+    assert summary["v0_2_independent_source_identity_count"] == 68
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 72
+    assert summary["total_independent_source_contribution_count"] == 76
     assert summary["model_ready_record_count"] == 0
-    assert summary["virtual_candidate_count"] == 13544
+    assert summary["virtual_candidate_count"] == 117629
     assert summary["virtual_candidate_priority1_structure_count"] == 9631
     assert summary["virtual_candidate_direct_building_block_count"] == 9490
     assert summary["virtual_candidate_synthesis_primary_count"] == 9490
     assert summary["virtual_candidate_mixture_or_salt_reference_count"] == 2579
     assert summary["virtual_candidate_not_synthesis_candidate_count"] == 161
-    assert summary["virtual_candidate_functional_group_matched_count"] == 13013
+    assert summary["virtual_candidate_functional_group_matched_count"] == 113807
     assert summary["virtual_candidate_unclassified_count"] == 531
     expected_layer_by_origin = {
         "实验": "Gold-E",
@@ -2319,14 +2683,25 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     virtual_candidates = [
         row for row in manifest if row["record_granularity"] == "candidate"
     ]
-    assert len(virtual_candidates) == 13544
-    assert len({row["candidate_id"] for row in virtual_candidates}) == 13544
+    assert len(virtual_candidates) == 117629
+    assert len({row["candidate_id"] for row in virtual_candidates}) == 117629
     assert all(row["gold_layer"] == "Gold-V" for row in virtual_candidates)
     assert Counter(row["gold_admission_status"] for row in virtual_candidates) == {
-        "admitted_reference": 10804,
+        "admitted_reference": 114889,
         "conditional_reference": 2740,
     }
     assert all(float(row["weight_ceiling"]) == 0.0 for row in virtual_candidates)
+    gold_c_metadata = summary["gold_c_computational_value_long_table"]
+    assert gold_c_metadata["row_count"] == 1_406_774
+    assert gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OMG] == 1_191_900
+    assert (
+        gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OPENPOLY]
+        == 4_524
+    )
+    gold_e_metadata = summary["gold_e_published_table_long_table"]
+    assert gold_e_metadata["row_count"] == 2_600
+    assert gold_e_metadata["admitted_reference_count"] == 654
+    assert gold_e_metadata["conditional_reference_count"] == 1_946
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_keyed_specimen_count"] == 217
     assert summary["strict_core_keyed_curve_count"] == 217
@@ -2566,6 +2941,7 @@ def _write_report(
             f"- 逐记录清单：`{_to_relative(OUTPUT_MANIFEST)}`",
             f"- JSON 总账：`{_to_relative(OUTPUT_JSON)}`",
             f"- Gold-V 候选结构：`{_to_relative(OUTPUT_CANDIDATES)}`",
+            f"- Gold-E 已物化论文表格：`{_to_relative(OUTPUT_GOLD_E_TABLES)}`（配方、工艺和实验汇总值，不是训练集）",
             f"- Gold-C 计算性能长表：`{_to_relative(OUTPUT_GOLD_C_VALUES)}`（规范化参考值，不是训练集）",
             "- 复算程序：`代码/生成数据总账.py`",
             "- 校验：`代码/测试/test_trainable_inventory.py`",
@@ -2610,6 +2986,42 @@ def main() -> None:
         _register_input(POLYUNIVERSE_DINCO_SOURCE_DIR / str(spec["name"]))
     _register_input(POLYOMICS_AUDIT_SCRIPT_PATH)
     _register_input(POLYOMICS_CSV_PATH)
+    _register_input(ACS_TABLE_AUDIT_SCRIPT_PATH)
+    for spec in ACS_TABLE_SPECS.values():
+        _register_input(RAW_NEW / spec.directory / spec.pdf_name)
+        metadata_path = RAW_NEW / spec.directory / "官方API元数据.json"
+        if metadata_path.is_file():
+            _register_input(metadata_path)
+    _register_input(BATCH10_MATERIALIZATION_SCRIPT_PATH)
+    _register_input(BATCH10_OPENPOLY_AUDIT_SCRIPT_PATH)
+    for path, _ in BATCH10_OMG_PROPERTY_FILES:
+        _register_input(path)
+    for path in (
+        BATCH10_OMG_CANDIDATE_CSV,
+        BATCH10_OMG_PU_PROPERTY_CSV,
+        BATCH10_OMG_FIELD_DICTIONARY,
+        BATCH10_OMG_AUDIT,
+        BATCH10_OPENPOLY_DIR / "冻结审计结果.json",
+        BATCH10_SCIENCEDB_CSV,
+        BATCH10_SCIENCEDB_AUDIT,
+        BATCH10_KINETICS_MEASUREMENTS,
+        BATCH10_KINETICS_CONDITIONS,
+        BATCH10_KINETICS_HASHES,
+        BATCH10_KINETICS_AUDIT,
+        BATCH10_KINETICS_MEASUREMENTS.parent
+        / "Solvent_Free_Adhesives_Dataset_5-2.zip",
+    ):
+        _register_input(path)
+    for relative_name in BATCH10_OPENPOLY_FROZEN_FILES:
+        _register_input(BATCH10_OPENPOLY_DIR / relative_name)
+    if tuple(BATCH10_COMPUTATIONAL_RECORD_COLUMNS) != tuple(
+        GOLD_C_VALUE_COLUMNS
+    ):
+        raise AssertionError("第十批Gold-C字段与总账字段不一致")
+    batch10_materialization_audit = audit_batch10_materialization_inputs()
+    acs_table_rows, acs_table_audit_summary = build_acs_table_records()
+    batch10_gold_e_rows = build_batch10_gold_e_rows()
+    materialized_table_rows = [*acs_table_rows, *batch10_gold_e_rows]
     smipoly_candidate_rows = build_candidate_rows(SMIPOLY_CANDIDATE_INPUT)
     _, purgen_candidate_rows = build_purgen_fragment_rows(PURGEN_ARCHIVE)
     existing_candidate_structures = {
@@ -2619,18 +3031,35 @@ def main() -> None:
     polyuniverse_dinco_rows = build_polyuniverse_dinco_rows(
         existing_candidate_structures
     )
+    existing_candidate_structures.update(
+        str(row["canonical_smiles"])
+        for row in polyuniverse_dinco_rows
+    )
+    batch10_candidate_rows = build_batch10_candidate_rows(
+        existing_candidate_structures
+    )
+    expected_batch10_candidate_count = (
+        100_584 + BATCH10_OPENPOLY_CANDIDATE_COUNT - 1
+    )
+    if len(batch10_candidate_rows) != expected_batch10_candidate_count:
+        raise AssertionError(
+            "第十批Gold-V跨来源去重数量漂移: "
+            f"expected={expected_batch10_candidate_count}, "
+            f"actual={len(batch10_candidate_rows)}"
+        )
     candidate_rows = [
         *smipoly_candidate_rows,
         *purgen_candidate_rows,
         *polyuniverse_dinco_rows,
+        *batch10_candidate_rows,
     ]
     candidate_summary = summarize_candidates(candidate_rows)
     profiles = profile_config["profiles"]
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 65:
-        raise AssertionError(f"v0.2来源画像必须覆盖65个目录，当前为{len(profiles)}")
+    if len(profiles) != 69:
+        raise AssertionError(f"v0.2来源画像必须覆盖69个目录，当前为{len(profiles)}")
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
@@ -2652,10 +3081,20 @@ def main() -> None:
     identities = _resolve_source_identities(scope_config, all_profiles, baseline_profiles)
     ledger = _build_ledger(all_profiles, baseline_profiles, identities)
     manifest = _build_manifest(
-        all_profiles, baseline_profiles, identities, ledger, candidate_rows
+        all_profiles,
+        baseline_profiles,
+        identities,
+        ledger,
+        candidate_rows,
+        materialized_table_rows,
     )
     gold_c_value_rows, gold_c_value_metadata = (
-        _gold_c_computational_value_rows(all_profiles, identities)
+        _gold_c_computational_value_rows(
+            all_profiles, identities, acs_table_rows
+        )
+    )
+    gold_e_table_rows, gold_e_table_metadata = _gold_e_table_value_rows(
+        materialized_table_rows, identities
     )
     input_fingerprints, input_fingerprint_sha256 = _build_input_fingerprints()
     summary = _build_summary(
@@ -2669,16 +3108,40 @@ def main() -> None:
         backlog_directories,
     )
     summary["gold_c_computational_value_long_table"] = gold_c_value_metadata
+    summary["gold_e_published_table_long_table"] = gold_e_table_metadata
+    summary["acs_table_materialization_audit"] = acs_table_audit_summary
+    summary["batch10_multifidelity_materialization_audit"] = (
+        batch10_materialization_audit
+    )
     _validate(ledger, manifest, summary)
     _write_gzip_csv(
-        OUTPUT_GOLD_C_VALUES, GOLD_C_VALUE_COLUMNS, gold_c_value_rows
+        OUTPUT_GOLD_C_VALUES,
+        GOLD_C_VALUE_COLUMNS,
+        gold_c_value_rows,
+        expected_row_count=int(gold_c_value_metadata["row_count"]),
     )
-    _write_csv(OUTPUT_CANDIDATES, CANDIDATE_COLUMNS, candidate_rows)
+    _write_gzip_csv(
+        OUTPUT_GOLD_E_TABLES,
+        GOLD_E_TABLE_COLUMNS,
+        gold_e_table_rows,
+        expected_row_count=int(gold_e_table_metadata["row_count"]),
+    )
+    _write_gzip_csv(
+        OUTPUT_CANDIDATES,
+        CANDIDATE_COLUMNS,
+        candidate_rows,
+        expected_row_count=len(candidate_rows),
+    )
     _write_csv(OUTPUT_LEDGER, LEDGER_COLUMNS, ledger)
-    _write_gzip_csv(OUTPUT_MANIFEST, MANIFEST_COLUMNS, manifest)
+    _write_gzip_csv(
+        OUTPUT_MANIFEST,
+        MANIFEST_COLUMNS,
+        manifest,
+        expected_row_count=len(manifest),
+    )
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.9",
+        "artifact_version": "trainable-inventory-v0.2.11",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],

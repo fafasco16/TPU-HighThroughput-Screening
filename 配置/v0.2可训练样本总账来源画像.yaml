@@ -1,5 +1,5 @@
 schema_version: v0.2
-profile_version: trainable-inventory-profile-v0.2.13
+profile_version: trainable-inventory-profile-v0.2.15
 profile_status: audit_inventory_only
 generated_training_view: false
 audit_as_of_utc: '2026-07-21T14:00:00Z'
@@ -99,11 +99,11 @@ baseline_profiles:
 
 profiles:
   - {source_directory: ACS_Figshare_二氧化碳共聚酯聚氨酯, task: 配方/合成/力学文献证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: PDF 证据待双人录入, counts: {source_record_count: 3, material_count: 4, formulation_count: 4, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 3, computational_system_count: 0, source_identity_count_contribution: 1}}
-  - {source_directory: ACS_Figshare_呋喃高强聚氨酯, task: 高强韧/耗散/恢复文献证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 6 个配方线索但无原始重复曲线, counts: {source_record_count: 5, material_count: 6, formulation_count: 6, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 5, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: ACS_Figshare_呋喃高强聚氨酯, task: 呋喃基TPU配方—循环耗散—恢复—回收—导电, origin_kind: 实验, scientific_role: TPU核心, quality_status: 降权, weight_ceiling: 0.55, unit_status: 已解析, license_status: manual_review, dedup_status: 表格行已核验且二手比较行排除, split_group_status: 论文家族+配方/样品标签同折, completeness: source_aggregate_plus_materialized_published_tables, audit_basis: 内容审计摘要.json;代码/审计/第十批ACS表格物化.py, notes: 217条表格记录含112个±不确定度值；FAPU/FNPU标签冲突保留，原始曲线未公开且CC BY-NC 4.0单独隔离, counts: {source_record_count: 218, material_count: 13, formulation_count: 12, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 217, scalar_count_candidate: 217, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 329, evidence_group_count: 1, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: ACS_Figshare_聚碳酸酯大分子二醇TPU, task: CO2 基大分子二醇—TPU性能证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 表头/脚注与重复编号待人工复原, counts: {source_record_count: 4, material_count: null, formulation_count: null, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 4, computational_system_count: 0, source_identity_count_contribution: 1}}
-  - {source_directory: ACS_Figshare_聚酰亚胺回收链扩剂PU, task: 回收链扩剂—PU性能证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 5 个配方线索；二手比较表不作本研究样本, counts: {source_record_count: 5, material_count: 5, formulation_count: 5, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 5, computational_system_count: 0, source_identity_count_contribution: 1}}
-  - {source_directory: ACS_Figshare_氢键纳米结构TPU, task: 氢键程度—热/力学证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 7 个配方线索；破折号必须保留为缺失, counts: {source_record_count: 4, material_count: 7, formulation_count: 7, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 4, computational_system_count: 0, source_identity_count_contribution: 1}}
-  - {source_directory: ACS_Figshare_双相演化聚氨酯, task: 双相演化—氢键—力学证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 5 个配方线索；无原始曲线, counts: {source_record_count: 4, material_count: 5, formulation_count: 5, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 4, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: ACS_Figshare_聚酰亚胺回收链扩剂PU, task: 回收链扩剂—PU配方—拉伸性能迁移, origin_kind: 实验, scientific_role: 迁移, quality_status: 降权, weight_ceiling: 0.35, unit_status: 已解析, license_status: manual_review, dedup_status: 二手比较表已排除, split_group_status: 论文家族+配方标签同折, completeness: source_aggregate_plus_materialized_published_tables, audit_basis: 内容审计摘要.json;代码/审计/第十批ACS表格物化.py, notes: 45条表格记录；10个拉伸端点因SI缺测试协议进入条件参考，CC BY-NC 4.0不自动授权商业用途, counts: {source_record_count: 47, material_count: 10, formulation_count: 5, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 45, scalar_count_candidate: 45, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 45, evidence_group_count: 2, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: ACS_Figshare_氢键纳米结构TPU, task: 配方—分子量—氢键—Tg—强度—伸长—韧性, origin_kind: 实验, scientific_role: TPU核心, quality_status: 降权, weight_ceiling: 0.65, unit_status: 已解析, license_status: manual_review, dedup_status: 已逐表核验, split_group_status: 论文家族+HTPU配方同折, completeness: source_aggregate_plus_materialized_published_tables, audit_basis: 内容审计摘要.json;代码/审计/第十批ACS表格物化.py, notes: 143条配方/工艺/实验表格值；P6/P7软段Tg破折号保留为缺失；发表汇总低于原始重复曲线，CC BY-NC 4.0隔离, counts: {source_record_count: 143, material_count: 7, formulation_count: 7, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 143, scalar_count_candidate: 143, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 143, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}}
+  - {source_directory: ACS_Figshare_双相演化聚氨酯, task: 配方—分子量—氢键—全原子MD内聚能, origin_kind: 混合, scientific_role: TPU核心, quality_status: 降权, weight_ceiling: 0.45, unit_status: 已解析, license_status: manual_review, dedup_status: 实验与MD逐条分层且图线未数字化, split_group_status: 论文家族+DxCy配方同折, completeness: source_aggregate_plus_materialized_published_tables_and_md, audit_basis: 内容审计摘要.json;代码/审计/第十批ACS表格物化.py, notes: 95条实验表值+5条MD内聚能；D0C4原文211194异常值原样条件保留，机械图线仍仅作证据；CC BY-NC 4.0隔离, counts: {source_record_count: 101, material_count: 5, formulation_count: 5, batch_count: null, specimen_count: null, run_count: 5, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 100, scalar_count_candidate: 100, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 100, evidence_group_count: 1, computational_system_count: 5, source_identity_count_contribution: 1}}
   - {source_directory: ACS_Figshare_PLA立构复合TPU, task: 立构复合界面—热/力学证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: PCL与10个三嵌段线索；无机器可读力学表, counts: {source_record_count: 5, material_count: 11, formulation_count: 11, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 5, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: ACS_Figshare_TPU退火硬段聚集, task: 退火—硬段聚集—性能证据, origin_kind: 证据, scientific_role: 证据, quality_status: 仅验证, weight_ceiling: 0.0, unit_status: 不适用, license_status: manual_review, dedup_status: 不适用, split_group_status: 粗粒度来源家族, completeness: source_aggregate_plus_evidence_groups, audit_basis: 内容审计摘要.json, notes: 21 个退火温度—时间条件仅作证据, counts: {source_record_count: 3, material_count: null, formulation_count: null, batch_count: null, specimen_count: null, run_count: 21, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 3, computational_system_count: 0, source_identity_count_contribution: 1}}
   - {source_directory: AGH_低石化多元醇硬质PU泡沫, task: 生物基硬质PU泡沫候选元数据, origin_kind: 证据, scientific_role: 证据, quality_status: 隔离, weight_ceiling: 0.0, unit_status: 未解析, license_status: blocked_access, dedup_status: 未知, split_group_status: 粗粒度来源家族, completeness: metadata_only, audit_basis: 内容审计摘要.json, notes: 8/9 远端文件受限；本地测量单元为0, counts: {source_record_count: 1, material_count: null, formulation_count: null, batch_count: null, specimen_count: 0, run_count: 0, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 0, evidence_group_count: 1, computational_system_count: 0, source_identity_count_contribution: 1}}
@@ -330,6 +330,91 @@ profiles:
       许可证为CC BY-NC 3.0；项目画像枚举没有独立noncommercial状态，故标为manual_review并与可商用数据隔离，禁止商业部署或公开再分发原件。
     counts:
       {source_record_count: 331, material_count: 9, formulation_count: 9, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 331, curve_count_candidate: 331, scalar_count_observed: 0, scalar_count_candidate: 0, point_count_observed: 115013, point_count_candidate: 115013, numeric_value_count: 230026, evidence_group_count: 0, computational_system_count: null, source_identity_count_contribution: 1}
+
+  - source_directory: 第十批计算_OMG
+    task: OMG可合成反应模板候选与量子化学多性质多保真参考
+    origin_kind: 模拟
+    scientific_role: TPU核心
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.25
+    unit_status: 已解析
+    license_status: manual_review
+    dedup_status: 100584个reaction_idx等于6候选结构唯一；47676个计算体系按reaction_id唯一连接，2086个直接PU体系单列
+    split_group_status: OMG反应ID加规范重复单元整体系同折；同一体系25项属性不得跨折，候选与计算子集不得重复计材料
+    completeness: source_aggregate_plus_100584_pu_candidates_47676_computational_systems_and_1191900_properties
+    audit_basis: 来源清单.json;审计结果.json;计算字段字典.json;派生/OMG_PU_反应候选_100584.csv;派生/OMG_PU_计算属性_2086.csv
+    notes: >-
+      Open Macromolecular Genome v1.0b的reaction_idx=6按官方模板定义为二异氰酸酯与二元醇逐步聚合，形成100584个虚拟PU重复单元候选；
+      这只是可合成反应模板，不是实验合成成功标签。OMG PhysicalProperties的47676个直接量子化学计算体系各含25项RDKit、GFN2-xTB、
+      DFT、TDDFT或COSMO-SAC性质，共1191900个可靠计算值，其中2086个体系与PU候选精确连接、形成52150个高相关Gold-C观测；
+      其余45590个一般聚合物体系的1139750个值保持conditional迁移参考，同样进入多保真参考池。GPL-3.0-or-later与MIT两个固定版本分别治理，
+      当前不创建训练集、逐条权重或拆分。
+    counts:
+      {source_record_count: 148260, material_count: 100584, formulation_count: 0, batch_count: 0, specimen_count: 0, run_count: 47676, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 1191900, scalar_count_candidate: 1191900, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 1191900, evidence_group_count: 0, computational_system_count: 47676, source_identity_count_contribution: 2}
+
+  - source_directory: 第十批计算_OpenPolymerChallenge
+    task: Open Polymer Challenge赛后结构与五项MD性质多任务迁移参考
+    origin_kind: 模拟
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.20
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: 3502个原始与规范pSMILES均唯一，public与private之间无规范结构重复；空单元格不当作零或标签
+    split_group_status: 规范pSMILES整结构同折；同一结构的Tg、FFV、Tc、Density与Rg不得跨折，未公开训练集重叠仍待审计
+    completeness: source_aggregate_plus_3502_structures_1649_labeled_systems_and_4524_md_labels
+    audit_basis: 下载许可与哈希元数据.json;冻结审计结果.json;Kaggle官方API元数据.json;arXiv官方元数据.xml
+    notes: >-
+      Kaggle官方赛后version 1包含3502个唯一有效pSMILES，其中1649个结构至少有一项MD标签、1853个结构全部未标注；
+      261个Tg、223个FFV、1404个热导、1526个密度和1110个回转半径合计4524个非空Gold-C计算观测。
+      211个结构具有氨基甲酸酯SMARTS，131个已有标签；其余结构可作通用聚合物表示迁移或候选参考，不能冒充TPU实验。
+      官方Kaggle API标记MIT，但ZIP内没有独立LICENSE，故保留API许可快照。当前不创建训练权重或拆分。
+    counts:
+      {source_record_count: 3502, material_count: 3502, formulation_count: 0, batch_count: 0, specimen_count: 0, run_count: 1649, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 4524, scalar_count_candidate: 4524, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 4524, evidence_group_count: 0, computational_system_count: 1649, source_identity_count_contribution: 1}
+
+  - source_directory: 第十批实验_ScienceDB643
+    task: PUE-643标准化输入上下文与三项实验性能目标补全
+    origin_kind: 实验
+    scientific_role: 迁移
+    quality_status: 仅验证
+    reference_admission_status: conditional_reference
+    weight_ceiling: 0.35
+    unit_status: 部分已解析
+    license_status: allow_with_attribution
+    dedup_status: 643个SSID唯一；与既有PUE-643论文和ESI同源，只补全机器可读表而不增加独立实验来源
+    split_group_status: PUE-643来源家族加SSID同折；标准化输入与三个变换后目标必须同折
+    completeness: source_aggregate_plus_643_rows_20_context_features_and_1929_transformed_targets
+    audit_basis: 来源清单.json;审计结果.json;原始/PUE643_YM-TS-EB.csv;派生/PUE643_标准化643.csv
+    notes: >-
+      Science Data Bank V1的643行表与Ding等PUE-643论文及官方ESI属于同一来源家族，不重复扩增为第二套643个实验。
+      每行只有logYM、logTS和logEB三项实验变换目标，共1929个性能标签；SSID之外的其余20个标准化或编码输入只作配方、工艺和测试上下文，
+      不能计为性能标签。公开CSV没有原始应力—应变曲线、原单位目标或完整化学身份，因此全部进入Gold-E conditional参考；
+      在原始单位和配方映射闭合前不反推数值，也不物化训练权重。
+    counts:
+      {source_record_count: 643, material_count: 643, formulation_count: 643, batch_count: null, specimen_count: null, run_count: null, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 1929, scalar_count_candidate: 1929, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 14789, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 0}
+
+  - source_directory: 第十批实验_无溶剂PU反应动力学
+    task: 无溶剂宏二醇—二异氰酸酯链增长与NCO消耗动力学参考
+    origin_kind: 实验
+    scientific_role: TPU核心
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.65
+    unit_status: 已解析
+    license_status: allow_with_attribution
+    dedup_status: 171个非空滴定点按条件、重复列、时间与源单元格唯一；23个零值保留为测量，理论t0与实测分离
+    split_group_status: 数据集DOI加21个反应条件同折；同条件全部重复和时间点不得跨折，点级随机拆分禁止
+    completeness: source_aggregate_plus_21_reaction_conditions_34_measurement_runs_and_171_nco_points
+    audit_basis: 内容审计摘要.json;NCO测量长表.tsv;反应条件清单.tsv;原料身份清单.tsv;文件校验清单.tsv
+    notes: >-
+      Zenodo CC BY 4.0数据集给出4种宏二醇、2种二异氰酸酯在21个摩尔比—温度条件下的二丁胺滴定链增长动力学；
+      34个测量列产生171个非空%NCO点，其中169个时间闭合正式参考，2个缺失时间点不插补并作conditional参考。
+      23个实测零值保留，但论文TTS拟合排除零值；理论初始%NCO与实测点分列。该来源可约束合成可行性、反应温度与时间窗，
+      不直接监督TPU拉伸、韧性或DMA性能；当前不创建训练权重或拆分。
+    counts:
+      {source_record_count: 171, material_count: 6, formulation_count: 21, batch_count: 34, specimen_count: 0, run_count: 34, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 171, scalar_count_candidate: 171, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 171, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
 
 local_backlog_profiles:
   - source_directory: SelfHealingTPU_4TU

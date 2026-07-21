@@ -372,7 +372,7 @@ def write_candidate_csv(
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
-        description="审计SMiPoly来源候选；不会覆盖综合Gold_候选.csv"
+        description="审计SMiPoly来源候选；不会覆盖综合Gold_V_候选.csv.gz"
     )
     parser.add_argument(
         "--output",

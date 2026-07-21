@@ -8,6 +8,7 @@ dependencies = [
   "pyarrow>=17,<22",
   "duckdb>=1.2,<2",
   "openpyxl>=3.1,<4",
+  "pypdf>=6,<7",
   "PyYAML>=6,<7",
   "rdkit>=2026.3,<2027",
 ]

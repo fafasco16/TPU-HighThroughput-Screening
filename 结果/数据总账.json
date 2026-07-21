@@ -1,6 +1,6 @@
 {
   "schema_version": "v0.2",
-  "artifact_version": "trainable-inventory-v0.2.9",
+  "artifact_version": "trainable-inventory-v0.2.11",
   "artifact_status": "audit_inventory_only",
   "count_semantics": {
     "source_record_count": "来源报告的记录/容器级科学条目；不等于独立样本。",
@@ -29,8 +29,8 @@
   "input_fingerprints": [
     {
       "path": "代码/审计/SMiPoly_TPU候选分类.py",
-      "bytes": 13096,
-      "sha256": "900a68029b0f3f2f3c7bd8bc146b793df92a4c0ea3ac2a3820fa1539504ff682"
+      "bytes": 13101,
+      "sha256": "c2e6f1c2373904c78f7e818b6f6a3564d0f347bcd84a06973088322bb684a4ab"
     },
     {
       "path": "代码/审计/第七批PURGEN虚拟片段.py",
@@ -44,13 +44,28 @@
     },
     {
       "path": "代码/审计/第九批PolyUniverse异氰酸酯单体.py",
-      "bytes": 29304,
-      "sha256": "7b4c02f26aabaf7030730ab63fdf3fb6f7abbfdc4e335b05ad36aed493a578bb"
+      "bytes": 29476,
+      "sha256": "803cac48108a8ee5f719dc2a7f1eff7f9171398e38de3436c13308248195f13e"
+    },
+    {
+      "path": "代码/审计/第十批ACS表格物化.py",
+      "bytes": 42246,
+      "sha256": "1c6b617d737ef38104c1474798399143f17421d9f8ddcc75b213e2b82a0228ec"
+    },
+    {
+      "path": "代码/审计/第十批OpenPolymerChallenge.py",
+      "bytes": 23013,
+      "sha256": "547ebbda5048c4f754fe96bf6eeded6fccb55524c7bd8049f019d50f586a1c06"
+    },
+    {
+      "path": "代码/审计/第十批多保真物化.py",
+      "bytes": 38550,
+      "sha256": "edf8c53afa70fd7a96742e1d0750a3e6ce52818fa1aa8d1181976109889c9549"
     },
     {
       "path": "代码/生成数据总账.py",
-      "bytes": 126859,
-      "sha256": "9a1ca9aba698fd08ed63a7745af88aae35b3ef420e33d90b279fc82bf56abed8"
+      "bytes": 145885,
+      "sha256": "052c64283a1914e84f6477ffc34b1664c48de41fd13debbfec0640c8e44c4ba1"
     },
     {
       "path": "数据/原始/外部数据/力学曲线/Schwarz2022_EPU40/内容审计摘要.json",
@@ -163,9 +178,19 @@
       "sha256": "6fa455b19a6bb4c32a39cd6eadd278693659575586d66ebea56b230e08ca5c65"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_双相演化聚氨酯/tz5c00732_si_001.pdf",
+      "bytes": 1176571,
+      "sha256": "5bdedae10fcaff85da215a98a5dadfe7b0608ea6d14ba7dcc1adcbbc468938c9"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_双相演化聚氨酯/内容审计摘要.json",
       "bytes": 2922,
       "sha256": "8cd2b1046d5ecbd117d64c3713b02d731fb7a80f47429ef3b973c85db5d3c2b8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_双相演化聚氨酯/官方API元数据.json",
+      "bytes": 26795,
+      "sha256": "88fd30171882497284f917d2c243053ad86dd6d969970bdb120551dbd5793c6d"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_双相演化聚氨酯/曲线审计清单.tsv",
@@ -173,9 +198,19 @@
       "sha256": "adb48c7122a78c467279aa214f9a0b645274a08efada55aae0651df95395ecd2"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_呋喃高强聚氨酯/ma5c03627_si_001.pdf",
+      "bytes": 2261687,
+      "sha256": "1b85a8294ce375e9b7f7cf314df369eaf7edfa9713a2ff6031aae74330df9108"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_呋喃高强聚氨酯/内容审计摘要.json",
       "bytes": 3287,
       "sha256": "f170ce5aa51247dcb74f0075be0f8b43a9d75aeb469507ed58a1780bb8ee0968"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_呋喃高强聚氨酯/官方API元数据.json",
+      "bytes": 34612,
+      "sha256": "c97cdb2bbb55d90d664dff5f0ea2c6ddfd3b102d4f7bfa66f99107eb9a566aaa"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_呋喃高强聚氨酯/曲线审计清单.tsv",
@@ -183,9 +218,19 @@
       "sha256": "27f4d693afae80cea3c81ea0ce5be77bd50fb012d90ad64d3ad1aca1f4789eeb"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_氢键纳米结构TPU/ma6c00352_si_001.pdf",
+      "bytes": 2077355,
+      "sha256": "29d8b451025a86acb3c075a6cb7c29428b725e7c40083a70d271500444b93765"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_氢键纳米结构TPU/内容审计摘要.json",
       "bytes": 2998,
       "sha256": "63d7cd671a78eb3ae8054a8e7e7ae2f4c89d028b2d34f3a5eda644e3a5eaa293"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_氢键纳米结构TPU/官方API元数据.json",
+      "bytes": 32418,
+      "sha256": "26a781898dd430c9ae9c6593f6e477fb276816ee147e595d23c1d3711f3fd25d"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_氢键纳米结构TPU/曲线审计清单.tsv",
@@ -203,9 +248,19 @@
       "sha256": "a4aedba3e29e7c6de182ba60508e7b821021d73df69829325676ee951caa2ddf"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_聚酰亚胺回收链扩剂PU/ap5c04872_si_001.pdf",
+      "bytes": 922002,
+      "sha256": "c18bb54c66f7182cff03508067f7def63ee417fbdbdbfe29067ba568849bedea"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_聚酰亚胺回收链扩剂PU/内容审计摘要.json",
       "bytes": 3044,
       "sha256": "c53f358f392d2ed4bcb4c8aa27c35b2243c660c17dd33671d9c05bd50fffa16a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_聚酰亚胺回收链扩剂PU/官方API元数据.json",
+      "bytes": 30193,
+      "sha256": "6b6ce7783756429830c17da0fbb9f3d03a4cfd7278fbd6d91d1301f6868d59dc"
     },
     {
       "path": "数据/原始/外部数据/新增开放数据/ACS_Figshare_聚酰亚胺回收链扩剂PU/曲线审计清单.tsv",
@@ -958,6 +1013,146 @@
       "sha256": "c22b90a6af9a002a5c364ac84a2a83c828031814f6d56608c17cd86a70694f95"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/原始/PUE643_YM-TS-EB.csv",
+      "bytes": 174087,
+      "sha256": "356e087856378a9e1da7cde4d29d4dcc246a21d48124968af0063e30a622813e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/审计结果.json",
+      "bytes": 807,
+      "sha256": "2f813e12dfa4629e55460d05c2eb94b50e9dc4319695e97d0993fffc4610d184"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/来源清单.json",
+      "bytes": 1655,
+      "sha256": "adf85608d67bd86b016fc1de20fa6a1574d1ab41fd2cad7773b654d23d2b948c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/派生/PUE643_标准化643.csv",
+      "bytes": 287372,
+      "sha256": "5ae99de2b3d90141a43fac715b5d656a5177b34940ea1963e9a730e709a0bb64"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/NCO测量长表.tsv",
+      "bytes": 62663,
+      "sha256": "d70728062deb69698fea3f004367daa3bd4694ff206fa48b9ef8b2e4d6529e0f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/Solvent_Free_Adhesives_Dataset_5-2.zip",
+      "bytes": 580544,
+      "sha256": "dcf72184ff617b9ad42141628262d6ee57ad99171a635b05254bebd91a8e8e52"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/内容审计摘要.json",
+      "bytes": 3257,
+      "sha256": "f0cf9502e3ed25ad1abd8b6e675a94edd0e0271269c6c0c853a115a90ca6c619"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/原料身份清单.tsv",
+      "bytes": 945,
+      "sha256": "1315eda446ed288828097fe5f8a5df64514bb03efc4507d27ba7420442fc027f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/反应条件清单.tsv",
+      "bytes": 7135,
+      "sha256": "9441b4e6fc55ebfe7af855615e134bd44eb0d90cbada3e035b7d126ef022925c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/文件校验清单.tsv",
+      "bytes": 642,
+      "sha256": "71f1c9cab3301185015673ff2c1f050218cfdf8b34548a9cedfe919e94016b59"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/来源文件哈希.json",
+      "bytes": 1145,
+      "sha256": "1dc0a8420b37cec70d7867aef676e66d905761d9d0283788bf4e6fc3fe0d2ead"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/原始/OMG_train_batch_3_chemprop_with_reaction_id.csv",
+      "bytes": 16992656,
+      "sha256": "9abcfa2f9f582428a3b8dda97374373325061466316a0abc6c9bece45d7c894b"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/原始/test_chemprop_with_reaction_id.csv",
+      "bytes": 7760674,
+      "sha256": "6b8ac2e7a14c516a1d9e66aa3caa6acc5c290a9764e67d24072b898d031d23bc"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/审计结果.json",
+      "bytes": 2261,
+      "sha256": "66071f073f9dd3566a45b3febec0e070da5b2c43388a40b234a97862bca33f5d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/来源清单.json",
+      "bytes": 3501,
+      "sha256": "8e7d01a873c2dbdffbe31ecc8243ac8c2f2bd4e473ea7e4ef2f47d63977020f2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/派生/OMG_PU_反应候选_100584.csv",
+      "bytes": 23374782,
+      "sha256": "de4c8fed83bae17c7d712f917e2761b67a8fbb3562ba3f2ed72c59d3e74dc17d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/派生/OMG_PU_计算属性_2086.csv",
+      "bytes": 1878993,
+      "sha256": "9d8988659449e356795b39c3391fe3f8b71cd717f19069c3e6bd6aa878e6518d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/计算字段字典.json",
+      "bytes": 4824,
+      "sha256": "53867bbb9699185980597ab1817f15cfc8e2e1dda10434664d1d56604becf0a6"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/Kaggle官方API元数据.json",
+      "bytes": 3458,
+      "sha256": "304aa35195899cf63dcae6ec7dc9734fb19be673f9225bdd37116cec9352eb31"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/OpenPolymerChallenge_官方赛后测试集_v1.zip",
+      "bytes": 66197,
+      "sha256": "0f048769eb8330ab4ae36784a3f1329e4677768805f9f4531b58d1fa6ec95336"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/arXiv官方元数据.xml",
+      "bytes": 3833,
+      "sha256": "23aefe2f4d4bf8333690b6b528705d82c9791f398398522d812cdab0290a76e9"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/下载响应头.txt",
+      "bytes": 1244,
+      "sha256": "961cc772838f387e3a01d6e159f53d497a1eec28ac43d1ae5818e7fcaa2a52b6"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/下载许可与哈希元数据.json",
+      "bytes": 3911,
+      "sha256": "06a10e0ac6c3feca47362d59de24d7a898b279b2602035d4faa8c79f38472c47"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/冻结审计结果.json",
+      "bytes": 4696,
+      "sha256": "63099e167ee93c92a525c5d4d340766147fd7ea002a2ab940dcc0600bbf38b5c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/解包/private.csv",
+      "bytes": 208864,
+      "sha256": "55cac160c1c139240968a96ba070b583e93902dd1901be2e54d722c4d590a952"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/解包/public.csv",
+      "bytes": 19513,
+      "sha256": "0b5b59f9464fb30da82252cc9e4f56552ff641284c627f11aa93fa4d7031c514"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/论文HTML_OpenPolymerChallenge_arXiv2512.08896.html",
+      "bytes": 117238,
+      "sha256": "710aae63aab187b702997824550b5454f2e23f54bf94dd20d46e4fb3605d3929"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/论文_OpenPolymerChallenge_arXiv2512.08896.pdf",
+      "bytes": 2302430,
+      "sha256": "3600267c6eb34a8cc855751d0448bfffd4859b7aea2840e565215e74696fcdf0"
+    },
+    {
       "path": "数据/快照/TPU数据库_v0.1_快照.json",
       "bytes": 54767,
       "sha256": "e534cec3e4b7da0b8f9ff7cd4adb4a00de929cbe280853f325311590f25502ba"
@@ -969,13 +1164,13 @@
     },
     {
       "path": "配置/v0.2可训练样本总账来源画像.yaml",
-      "bytes": 85124,
-      "sha256": "ac65e0ca8a2e631c4c08f718f93ef5e148d2bcdc0f483938dfaa35d4b18e2048"
+      "bytes": 93599,
+      "sha256": "8a688b8f3077b22e797d4f7d879688d6ea3512e6914216544a0ae9ae84121350"
     },
     {
       "path": "配置/v0.2来源范围.yaml",
-      "bytes": 281893,
-      "sha256": "6e4743f2b7b6aeec19e9a649d89edbf3596e490f548a8e96bff9bd526bb3c743"
+      "bytes": 299119,
+      "sha256": "15815eb0dd0c9d3bcf945e615db9ccab7c4905528d93ff3126f9418f1164b7a8"
     }
   ],
   "enums": {
@@ -1022,75 +1217,75 @@
   },
   "summary": {
     "audit_as_of_utc": "2026-07-21T14:00:00Z",
-    "input_file_count": 190,
-    "input_fingerprint_sha256": "38fff0ef348c1f38df43bfcc72950152208a5be097e7375ee6ce77e67f65f5bc",
+    "input_file_count": 229,
+    "input_fingerprint_sha256": "779d8ae36516bf0cf5668e07ff2a1c894fe907e2ad2120b1a69fc9caf90bd3c9",
     "training_enabled": false,
     "training_split_created": false,
     "training_weight_materialized": false,
     "model_ready_record_count": 0,
-    "v0_2_source_directory_count": 65,
-    "v0_2_independent_source_identity_count": 64,
+    "v0_2_source_directory_count": 69,
+    "v0_2_independent_source_identity_count": 68,
     "local_backlog_source_directory_count": 4,
     "local_backlog_independent_source_identity_count": 4,
     "v0_1_frozen_baseline_source_count": 4,
-    "ledger_source_scope_count": 73,
-    "total_independent_source_contribution_count": 72,
+    "ledger_source_scope_count": 77,
+    "total_independent_source_contribution_count": 76,
     "source_quality_status_counts": {
-      "仅验证": 17,
+      "仅验证": 14,
       "入选": 5,
-      "降权": 42,
+      "降权": 49,
       "隔离": 9
     },
     "source_gold_layer_counts": {
-      "Gold-C": 12,
-      "Gold-E": 38,
-      "Gold-E+Gold-C": 8,
+      "Gold-C": 14,
+      "Gold-E": 43,
+      "Gold-E+Gold-C": 9,
       "Gold-V": 3,
-      "Not-Gold": 12
+      "Not-Gold": 8
     },
     "source_gold_admission_status_counts": {
-      "admitted_reference": 50,
+      "admitted_reference": 57,
       "blocked": 3,
-      "conditional_reference": 8,
-      "evidence_only": 12
+      "conditional_reference": 9,
+      "evidence_only": 8
     },
-    "manifest_row_count": 26648,
+    "manifest_row_count": 133328,
     "manifest_granularity_counts": {
-      "candidate": 13544,
+      "candidate": 117629,
       "curve": 2223,
-      "evidence_group": 54,
+      "evidence_group": 40,
       "run": 6784,
-      "scalar": 3748,
-      "source": 73,
+      "scalar": 6353,
+      "source": 77,
       "specimen": 222
     },
     "manifest_quality_status_counts": {
-      "仅验证": 17254,
+      "仅验证": 19166,
       "入选": 422,
-      "降权": 8660,
+      "降权": 113428,
       "隔离": 312
     },
     "manifest_gold_layer_counts": {
-      "Gold-C": 7788,
-      "Gold-E": 4859,
-      "Gold-E+Gold-C": 368,
-      "Gold-V": 13547,
-      "Not-Gold": 86
+      "Gold-C": 7795,
+      "Gold-E": 7464,
+      "Gold-E+Gold-C": 369,
+      "Gold-V": 117632,
+      "Not-Gold": 68
     },
     "manifest_gold_admission_status_counts": {
-      "admitted_reference": 19513,
+      "admitted_reference": 124263,
       "blocked": 294,
-      "conditional_reference": 6755,
-      "evidence_only": 86
+      "conditional_reference": 8703,
+      "evidence_only": 68
     },
-    "virtual_candidate_count": 13544,
-    "virtual_candidate_reference_count": 13544,
+    "virtual_candidate_count": 117629,
+    "virtual_candidate_reference_count": 117629,
     "virtual_candidate_priority1_structure_count": 9631,
     "virtual_candidate_direct_building_block_count": 9490,
     "virtual_candidate_synthesis_primary_count": 9490,
     "virtual_candidate_mixture_or_salt_reference_count": 2579,
     "virtual_candidate_not_synthesis_candidate_count": 161,
-    "virtual_candidate_functional_group_matched_count": 13013,
+    "virtual_candidate_functional_group_matched_count": 113807,
     "virtual_candidate_unclassified_count": 531,
     "virtual_candidate_role_counts": {
       "cyclic_carbonate_nipu_precursor": 4,
@@ -1106,20 +1301,24 @@
       "monoisocyanate_model_compound": 2,
       "monool_model_compound": 38,
       "polyester_polyol_precursor": 77,
+      "polymer_repeat_unit_transfer_candidate": 3291,
       "polyol_crosslinker_candidate": 13,
       "polythiol_adjacent_candidate": 27,
+      "polyurethane_repeat_unit_candidate": 100794,
       "unclassified": 531
     },
     "virtual_candidate_screening_scope_counts": {
       "adjacent_model_compound": 50,
       "adjacent_reactive_building_block": 27,
       "direct_tpu_building_block": 9490,
+      "general_polymer_md_transfer_reference": 3501,
       "mixture_or_salt_reference": 2579,
       "not_synthesis_candidate": 161,
       "polyol_synthesis_precursor": 147,
       "tpuu_or_nipu_building_block": 145,
       "unresolved": 531,
-      "virtual_polyurethane_fragment": 414
+      "virtual_polyurethane_fragment": 414,
+      "virtual_tpu_repeat_unit_candidate": 100584
     },
     "strict_core_calibration_curve_count": 233,
     "strict_core_calibration_curve_definition": "新增三套核心源中217条具有键控试样的校准曲线，加v0.1 Eom 16条可合法派生曲线；Eom 16条尚未闭合配方—独立试样链，因此233条不是同一composition-linked总体。",
@@ -1155,19 +1354,19 @@
       "experimental_only": {
         "specimen_count": {
           "value": 1465,
-          "known_source_scope_count": 22
+          "known_source_scope_count": 23
         },
         "curve_count_observed": {
           "value": 2665,
-          "known_source_scope_count": 36
+          "known_source_scope_count": 41
         },
         "curve_count_candidate": {
           "value": 2485,
-          "known_source_scope_count": 36
+          "known_source_scope_count": 41
         },
         "point_count_observed": {
           "value": 9545156,
-          "known_source_scope_count": 36
+          "known_source_scope_count": 41
         }
       },
       "mixed_experiment_and_simulation": {
@@ -1177,15 +1376,15 @@
         },
         "curve_count_observed": {
           "value": 701,
-          "known_source_scope_count": 8
+          "known_source_scope_count": 9
         },
         "curve_count_candidate": {
           "value": 687,
-          "known_source_scope_count": 8
+          "known_source_scope_count": 9
         },
         "point_count_observed": {
           "value": 7862426,
-          "known_source_scope_count": 7
+          "known_source_scope_count": 8
         }
       }
     },
@@ -1208,16 +1407,221 @@
     "definition": "跨非重叠来源的实验曲线/历史下界；包含核心TPU、商业牌号与迁移域，不等于化学独立配方数。",
     "gold_c_computational_value_long_table": {
       "artifact_role": "normalized_computational_value_reference",
-      "artifact_status": "reference_only_not_final_gold_c_or_training_dataset",
+      "artifact_status": "multifidelity_gold_c_reference_not_training_dataset",
       "path": "结果/Gold_C_计算性能.csv.gz",
-      "row_count": 210345,
+      "row_count": 1406774,
       "source_value_counts": {
         "source_github_radonpy_pi1070_840dd4a": 440,
-        "source_polyomics_data": 209905
+        "source_polyomics_data": 209905,
+        "ledger_source_106": 5,
+        "source_omg_batch10": 1191900,
+        "source_openpolymer_challenge_v1": 4524
       },
       "cross_source_overlap_structure_count": 11,
       "cross_source_overlap_polyomics_record_count": 58,
       "current_weight_materialized": false
+    },
+    "gold_e_published_table_long_table": {
+      "artifact_role": "normalized_experimental_published_table_reference",
+      "artifact_status": "multifidelity_gold_e_reference_not_training_dataset",
+      "path": "结果/Gold_E_实验表格.csv.gz",
+      "row_count": 2600,
+      "source_value_counts": {
+        "ledger_source_118": 143,
+        "ledger_source_106": 95,
+        "ledger_source_110": 217,
+        "ledger_source_112": 45,
+        "source_sciencedb_pue643_v1": 1929,
+        "source_zenodo_6406174": 171
+      },
+      "admitted_reference_count": 654,
+      "conditional_reference_count": 1946,
+      "current_weight_materialized": false
+    },
+    "acs_table_materialization_audit": {
+      "audit_version": "batch10-acs-table-materialization-v1",
+      "source_count": 4,
+      "record_count": 505,
+      "numeric_value_count_including_uncertainty": 617,
+      "uncertainty_value_count": 112,
+      "source_record_counts": {
+        "ACS_Figshare_氢键纳米结构TPU": 143,
+        "ACS_Figshare_双相演化聚氨酯": 100,
+        "ACS_Figshare_呋喃高强聚氨酯": 217,
+        "ACS_Figshare_聚酰亚胺回收链扩剂PU": 45
+      },
+      "target_origin_counts": {
+        "experimental": 500,
+        "md": 5
+      },
+      "admission_counts": {
+        "admitted_reference": 489,
+        "conditional_reference": 16
+      },
+      "verified_files": [
+        {
+          "source_directory": "ACS_Figshare_双相演化聚氨酯",
+          "pdf_name": "tz5c00732_si_001.pdf",
+          "bytes": 1176571,
+          "sha256": "5bdedae10fcaff85da215a98a5dadfe7b0608ea6d14ba7dcc1adcbbc468938c9",
+          "pages": 17,
+          "verification": "matched_frozen_identity_and_text_anchors"
+        },
+        {
+          "source_directory": "ACS_Figshare_呋喃高强聚氨酯",
+          "pdf_name": "ma5c03627_si_001.pdf",
+          "bytes": 2261687,
+          "sha256": "1b85a8294ce375e9b7f7cf314df369eaf7edfa9713a2ff6031aae74330df9108",
+          "pages": 35,
+          "verification": "matched_frozen_identity_and_text_anchors"
+        },
+        {
+          "source_directory": "ACS_Figshare_聚酰亚胺回收链扩剂PU",
+          "pdf_name": "ap5c04872_si_001.pdf",
+          "bytes": 922002,
+          "sha256": "c18bb54c66f7182cff03508067f7def63ee417fbdbdbfe29067ba568849bedea",
+          "pages": 11,
+          "verification": "matched_frozen_identity_and_text_anchors"
+        },
+        {
+          "source_directory": "ACS_Figshare_氢键纳米结构TPU",
+          "pdf_name": "ma6c00352_si_001.pdf",
+          "bytes": 2077355,
+          "sha256": "29d8b451025a86acb3c075a6cb7c29428b725e7c40083a70d271500444b93765",
+          "pages": 28,
+          "verification": "matched_frozen_identity_and_text_anchors"
+        }
+      ],
+      "training_split_materialized": false,
+      "training_weight_materialized": false
+    },
+    "batch10_multifidelity_materialization_audit": {
+      "status": "pass",
+      "training_weight_materialized": false,
+      "candidate": {
+        "omg": 100584,
+        "openpoly_before_cross_source_deduplication": 3502
+      },
+      "gold_c": {
+        "omg_systems": 47676,
+        "omg_properties_per_system": 25,
+        "omg_values": 1191900,
+        "omg_tpu_high_relevance_systems": 2086,
+        "omg_transfer_conditional_systems": 45590,
+        "openpoly_values": 4524
+      },
+      "gold_e": {
+        "sciencedb_samples": 643,
+        "sciencedb_target_values": 1929,
+        "sciencedb_input_context_fields": 20,
+        "kinetics_nco_measurements": 171
+      },
+      "schema": {
+        "candidate_columns": [
+          "candidate_id",
+          "source_id",
+          "source_record_id",
+          "source_locator",
+          "preferred_name",
+          "raw_smiles",
+          "canonical_smiles",
+          "inchikey",
+          "molecular_formula_reported",
+          "molecular_formula_calculated",
+          "molecular_weight_reported_g_mol",
+          "molecular_weight_calculated_g_mol",
+          "exact_mass_g_mol",
+          "formal_charge",
+          "heavy_atom_count",
+          "isocyanate_group_count",
+          "hydroxyl_group_count",
+          "amine_group_count",
+          "thiol_group_count",
+          "carboxylic_acid_group_count",
+          "cyclic_carbonate_group_count",
+          "epoxide_group_count",
+          "tpu_role",
+          "role_confidence",
+          "role_basis",
+          "screening_scope",
+          "screening_priority",
+          "functional_group_match",
+          "structure_status",
+          "duplicate_status",
+          "license_spdx",
+          "data_origin",
+          "fidelity_level",
+          "gold_layer",
+          "gold_admission_status",
+          "direct_property_supervision_weight_ceiling",
+          "prediction_uncertainty",
+          "generation_rule_version",
+          "rdkit_version"
+        ],
+        "computational_columns": [
+          "source_id",
+          "source_record_id",
+          "observation_id",
+          "canonical_structure",
+          "system_identity",
+          "structure_identity_status",
+          "global_structure_family_key",
+          "simulation_key",
+          "property_name",
+          "value",
+          "unit",
+          "unit_status",
+          "method_family",
+          "method_detail",
+          "fidelity_level",
+          "temp",
+          "press",
+          "gold_admission_status",
+          "property_admission_status",
+          "source_validation_status",
+          "record_role",
+          "potential_weight_ceiling",
+          "current_weight_materialized",
+          "training_weight",
+          "source_locator",
+          "citation_keys"
+        ],
+        "experimental_columns": [
+          "source_directory",
+          "source_record_id",
+          "observation_id",
+          "formulation_id",
+          "sample_id",
+          "record_kind",
+          "component_name",
+          "component_role",
+          "property_name",
+          "value",
+          "unit",
+          "uncertainty_value",
+          "uncertainty_type",
+          "condition_name",
+          "condition_value",
+          "condition_unit",
+          "target_origin",
+          "data_origin",
+          "reduction_level",
+          "method_or_test_protocol",
+          "fidelity_level",
+          "gold_admission_status",
+          "mapping_status",
+          "protocol_status",
+          "potential_weight_ceiling",
+          "current_weight_materialized",
+          "training_weight",
+          "split_group",
+          "source_locator",
+          "file_sha256",
+          "license",
+          "citation_keys",
+          "notes"
+        ]
+      }
     }
   },
   "source_ledger": [
@@ -1458,25 +1862,25 @@
       "source_directory": "ACS_Figshare_呋喃高强聚氨酯",
       "source_title": "High-Strength, Tough, Furan-Based Polyurethane Elastomers Achieving Performance and Functionality Upgrades through Postdynamic Cross-Linking",
       "canonical_identifier": "doi:10.1021/acs.macromol.5c03627.s001",
-      "task": "高强韧/耗散/恢复文献证据",
-      "origin_kind": "证据",
-      "scientific_role": "证据",
-      "gold_layer": "Not-Gold",
-      "gold_admission_status": "evidence_only",
-      "source_record_count": 5,
-      "material_count": 6,
-      "formulation_count": 6,
+      "task": "呋喃基TPU配方—循环耗散—恢复—回收—导电",
+      "origin_kind": "实验",
+      "scientific_role": "TPU核心",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 218,
+      "material_count": 13,
+      "formulation_count": 12,
       "batch_count": null,
       "specimen_count": null,
       "run_count": null,
       "curve_count_observed": 0,
       "curve_count_candidate": 0,
-      "scalar_count_observed": 0,
-      "scalar_count_candidate": 0,
+      "scalar_count_observed": 217,
+      "scalar_count_candidate": 217,
       "point_count_observed": 0,
       "point_count_candidate": 0,
-      "numeric_value_count": 0,
-      "evidence_group_count": 5,
+      "numeric_value_count": 329,
+      "evidence_group_count": 1,
       "computational_system_count": 0,
       "source_identity_count_contribution": 1,
       "direct_numeric_total": null,
@@ -1484,18 +1888,18 @@
       "valid_derived_scalar_count": null,
       "invalid_cached_formula_count": null,
       "known_missing_direct_count": null,
-      "quality_status": "仅验证",
-      "weight_ceiling": 0.0,
+      "quality_status": "降权",
+      "weight_ceiling": 0.55,
       "current_weight_materialized": false,
       "model_ready_record_count": 0,
-      "unit_status": "不适用",
+      "unit_status": "已解析",
       "license_status": "manual_review",
-      "dedup_status": "不适用",
-      "split_group_status": "粗粒度来源家族",
-      "completeness": "source_aggregate_plus_evidence_groups",
+      "dedup_status": "表格行已核验且二手比较行排除",
+      "split_group_status": "论文家族+配方/样品标签同折",
+      "completeness": "source_aggregate_plus_materialized_published_tables",
       "citation_keys": "ledger-110-yang-2026-furan-tpu-si",
-      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_呋喃高强聚氨酯/内容审计摘要.json",
-      "notes": "6 个配方线索但无原始重复曲线"
+      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_呋喃高强聚氨酯/内容审计摘要.json;代码/审计/第十批ACS表格物化.py",
+      "notes": "217条表格记录含112个±不确定度值；FAPU/FNPU标签冲突保留，原始曲线未公开且CC BY-NC 4.0单独隔离"
     },
     {
       "source_id": "ledger_source_116",
@@ -1550,25 +1954,25 @@
       "source_directory": "ACS_Figshare_聚酰亚胺回收链扩剂PU",
       "source_title": "Upcycling of Polyimide for the Preparation of a High-Performance Polyurethane Chain Extender",
       "canonical_identifier": "doi:10.1021/acsapm.5c04872.s001",
-      "task": "回收链扩剂—PU性能证据",
-      "origin_kind": "证据",
-      "scientific_role": "证据",
-      "gold_layer": "Not-Gold",
-      "gold_admission_status": "evidence_only",
-      "source_record_count": 5,
-      "material_count": 5,
+      "task": "回收链扩剂—PU配方—拉伸性能迁移",
+      "origin_kind": "实验",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 47,
+      "material_count": 10,
       "formulation_count": 5,
       "batch_count": null,
       "specimen_count": null,
       "run_count": null,
       "curve_count_observed": 0,
       "curve_count_candidate": 0,
-      "scalar_count_observed": 0,
-      "scalar_count_candidate": 0,
+      "scalar_count_observed": 45,
+      "scalar_count_candidate": 45,
       "point_count_observed": 0,
       "point_count_candidate": 0,
-      "numeric_value_count": 0,
-      "evidence_group_count": 5,
+      "numeric_value_count": 45,
+      "evidence_group_count": 2,
       "computational_system_count": 0,
       "source_identity_count_contribution": 1,
       "direct_numeric_total": null,
@@ -1576,18 +1980,18 @@
       "valid_derived_scalar_count": null,
       "invalid_cached_formula_count": null,
       "known_missing_direct_count": null,
-      "quality_status": "仅验证",
-      "weight_ceiling": 0.0,
+      "quality_status": "降权",
+      "weight_ceiling": 0.35,
       "current_weight_materialized": false,
       "model_ready_record_count": 0,
-      "unit_status": "不适用",
+      "unit_status": "已解析",
       "license_status": "manual_review",
-      "dedup_status": "不适用",
-      "split_group_status": "粗粒度来源家族",
-      "completeness": "source_aggregate_plus_evidence_groups",
+      "dedup_status": "二手比较表已排除",
+      "split_group_status": "论文家族+配方标签同折",
+      "completeness": "source_aggregate_plus_materialized_published_tables",
       "citation_keys": "ledger-112-guo-2026-polyimide-chain-extender-si",
-      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_聚酰亚胺回收链扩剂PU/内容审计摘要.json",
-      "notes": "5 个配方线索；二手比较表不作本研究样本"
+      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_聚酰亚胺回收链扩剂PU/内容审计摘要.json;代码/审计/第十批ACS表格物化.py",
+      "notes": "45条表格记录；10个拉伸端点因SI缺测试协议进入条件参考，CC BY-NC 4.0不自动授权商业用途"
     },
     {
       "source_id": "ledger_source_118",
@@ -1596,12 +2000,12 @@
       "source_directory": "ACS_Figshare_氢键纳米结构TPU",
       "source_title": "Design of Sustainable and High Strength-Toughness Thermoplastic Elastomer via a Strong Hydrogen Bond-Reinforced Nanostructure",
       "canonical_identifier": "doi:10.1021/acs.macromol.6c00352.s001",
-      "task": "氢键程度—热/力学证据",
-      "origin_kind": "证据",
-      "scientific_role": "证据",
-      "gold_layer": "Not-Gold",
-      "gold_admission_status": "evidence_only",
-      "source_record_count": 4,
+      "task": "配方—分子量—氢键—Tg—强度—伸长—韧性",
+      "origin_kind": "实验",
+      "scientific_role": "TPU核心",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 143,
       "material_count": 7,
       "formulation_count": 7,
       "batch_count": null,
@@ -1609,12 +2013,12 @@
       "run_count": null,
       "curve_count_observed": 0,
       "curve_count_candidate": 0,
-      "scalar_count_observed": 0,
-      "scalar_count_candidate": 0,
+      "scalar_count_observed": 143,
+      "scalar_count_candidate": 143,
       "point_count_observed": 0,
       "point_count_candidate": 0,
-      "numeric_value_count": 0,
-      "evidence_group_count": 4,
+      "numeric_value_count": 143,
+      "evidence_group_count": 0,
       "computational_system_count": 0,
       "source_identity_count_contribution": 1,
       "direct_numeric_total": null,
@@ -1622,18 +2026,18 @@
       "valid_derived_scalar_count": null,
       "invalid_cached_formula_count": null,
       "known_missing_direct_count": null,
-      "quality_status": "仅验证",
-      "weight_ceiling": 0.0,
+      "quality_status": "降权",
+      "weight_ceiling": 0.65,
       "current_weight_materialized": false,
       "model_ready_record_count": 0,
-      "unit_status": "不适用",
+      "unit_status": "已解析",
       "license_status": "manual_review",
-      "dedup_status": "不适用",
-      "split_group_status": "粗粒度来源家族",
-      "completeness": "source_aggregate_plus_evidence_groups",
+      "dedup_status": "已逐表核验",
+      "split_group_status": "论文家族+HTPU配方同折",
+      "completeness": "source_aggregate_plus_materialized_published_tables",
       "citation_keys": "ledger-118-wei-2026-hbond-nanostructure-si",
-      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_氢键纳米结构TPU/内容审计摘要.json",
-      "notes": "7 个配方线索；破折号必须保留为缺失"
+      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_氢键纳米结构TPU/内容审计摘要.json;代码/审计/第十批ACS表格物化.py",
+      "notes": "143条配方/工艺/实验表格值；P6/P7软段Tg破折号保留为缺失；发表汇总低于原始重复曲线，CC BY-NC 4.0隔离"
     },
     {
       "source_id": "ledger_source_106",
@@ -1642,44 +2046,44 @@
       "source_directory": "ACS_Figshare_双相演化聚氨酯",
       "source_title": "Capturing Robust and Tough Thermoplastic Polyurethane Elastomers via Engineering Dual-Phase Evolution Rather than Chain Extenders",
       "canonical_identifier": "doi:10.1021/acsmaterialslett.5c00732.s001",
-      "task": "双相演化—氢键—力学证据",
-      "origin_kind": "证据",
-      "scientific_role": "证据",
-      "gold_layer": "Not-Gold",
-      "gold_admission_status": "evidence_only",
-      "source_record_count": 4,
+      "task": "配方—分子量—氢键—全原子MD内聚能",
+      "origin_kind": "混合",
+      "scientific_role": "TPU核心",
+      "gold_layer": "Gold-E+Gold-C",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 101,
       "material_count": 5,
       "formulation_count": 5,
       "batch_count": null,
       "specimen_count": null,
-      "run_count": null,
+      "run_count": 5,
       "curve_count_observed": 0,
       "curve_count_candidate": 0,
-      "scalar_count_observed": 0,
-      "scalar_count_candidate": 0,
+      "scalar_count_observed": 100,
+      "scalar_count_candidate": 100,
       "point_count_observed": 0,
       "point_count_candidate": 0,
-      "numeric_value_count": 0,
-      "evidence_group_count": 4,
-      "computational_system_count": 0,
+      "numeric_value_count": 100,
+      "evidence_group_count": 1,
+      "computational_system_count": 5,
       "source_identity_count_contribution": 1,
       "direct_numeric_total": null,
       "complete_direct_response_count": null,
       "valid_derived_scalar_count": null,
       "invalid_cached_formula_count": null,
       "known_missing_direct_count": null,
-      "quality_status": "仅验证",
-      "weight_ceiling": 0.0,
+      "quality_status": "降权",
+      "weight_ceiling": 0.45,
       "current_weight_materialized": false,
       "model_ready_record_count": 0,
-      "unit_status": "不适用",
+      "unit_status": "已解析",
       "license_status": "manual_review",
-      "dedup_status": "不适用",
-      "split_group_status": "粗粒度来源家族",
-      "completeness": "source_aggregate_plus_evidence_groups",
+      "dedup_status": "实验与MD逐条分层且图线未数字化",
+      "split_group_status": "论文家族+DxCy配方同折",
+      "completeness": "source_aggregate_plus_materialized_published_tables_and_md",
       "citation_keys": "ledger-106-lu-2025-dual-phase-tpu-si",
-      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_双相演化聚氨酯/内容审计摘要.json",
-      "notes": "5 个配方线索；无原始曲线"
+      "audit_basis": "数据/原始/外部数据/新增开放数据/ACS_Figshare_双相演化聚氨酯/内容审计摘要.json;代码/审计/第十批ACS表格物化.py",
+      "notes": "95条实验表值+5条MD内聚能；D0C4原文211194异常值原样条件保留，机械图线仍仅作证据；CC BY-NC 4.0隔离"
     },
     {
       "source_id": "ledger_source_108",
@@ -4396,6 +4800,190 @@
       "notes": "Mendeley Data固定version 1的28个Origin工程全部通过SHA-256与固定解析器核验；28个文件和144个导出工作表不是材料， 独立材料条件严格为未填充SPU加8个糖填充条件，共9个。331条图层曲线引用中87条正式准入、244条条件参考； 记录级分层为99条Gold-E实验/派生曲线、155条Gold-C已发表连续体或增强模型曲线、77条Gold-E+Gold-C混合对照， 来源级聚合为Gold-E+Gold-C。实验曲线上限0.75，已发表模型曲线上限0.25，混合条件记录至多0.10，重复、未解析或映射未闭合记录为0。 115013个曲线点只提高序列分辨率，不是独立材料样本。SPU精确重复单元SMILES未闭合，纯SMILES结构监督权重为0。 许可证为CC BY-NC 3.0；项目画像枚举没有独立noncommercial状态，故标为manual_review并与可商用数据隔离，禁止商业部署或公开再分发原件。"
     },
     {
+      "source_id": "source_omg_batch10",
+      "source_scope_id": "scope_omg_batch10_v1_0b",
+      "source_family_id": "family_omg_batch10",
+      "source_directory": "第十批计算_OMG",
+      "source_title": "TheJacksonLab/OpenMacromolecularGenome: v 1.0b",
+      "canonical_identifier": "10.5281/zenodo.7556992",
+      "task": "OMG可合成反应模板候选与量子化学多性质多保真参考",
+      "origin_kind": "模拟",
+      "scientific_role": "TPU核心",
+      "gold_layer": "Gold-C",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 148260,
+      "material_count": 100584,
+      "formulation_count": 0,
+      "batch_count": 0,
+      "specimen_count": 0,
+      "run_count": 47676,
+      "curve_count_observed": 0,
+      "curve_count_candidate": 0,
+      "scalar_count_observed": 1191900,
+      "scalar_count_candidate": 1191900,
+      "point_count_observed": 0,
+      "point_count_candidate": 0,
+      "numeric_value_count": 1191900,
+      "evidence_group_count": 0,
+      "computational_system_count": 47676,
+      "source_identity_count_contribution": 2,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.25,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "已解析",
+      "license_status": "manual_review",
+      "dedup_status": "100584个reaction_idx等于6候选结构唯一；47676个计算体系按reaction_id唯一连接，2086个直接PU体系单列",
+      "split_group_status": "OMG反应ID加规范重复单元整体系同折；同一体系25项属性不得跨折，候选与计算子集不得重复计材料",
+      "completeness": "source_aggregate_plus_100584_pu_candidates_47676_computational_systems_and_1191900_properties",
+      "citation_keys": "ledger-152-kim-2023-omg-v1-0b-data;ledger-153-kim-2023-open-macromolecular-genome;ledger-154-kim-2024-omg-property-database;ledger-155-kim-2025-functional-monomer-design",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十批计算_OMG/来源清单.json;数据/原始/外部数据/新增开放数据/第十批计算_OMG/审计结果.json;数据/原始/外部数据/新增开放数据/第十批计算_OMG/计算字段字典.json;数据/原始/外部数据/新增开放数据/第十批计算_OMG/派生/OMG_PU_反应候选_100584.csv;数据/原始/外部数据/新增开放数据/第十批计算_OMG/派生/OMG_PU_计算属性_2086.csv",
+      "notes": "Open Macromolecular Genome v1.0b的reaction_idx=6按官方模板定义为二异氰酸酯与二元醇逐步聚合，形成100584个虚拟PU重复单元候选； 这只是可合成反应模板，不是实验合成成功标签。OMG PhysicalProperties的47676个直接量子化学计算体系各含25项RDKit、GFN2-xTB、 DFT、TDDFT或COSMO-SAC性质，共1191900个可靠计算值，其中2086个体系与PU候选精确连接、形成52150个高相关Gold-C观测； 其余45590个一般聚合物体系的1139750个值保持conditional迁移参考，同样进入多保真参考池。GPL-3.0-or-later与MIT两个固定版本分别治理， 当前不创建训练集、逐条权重或拆分。"
+    },
+    {
+      "source_id": "source_openpolymer_challenge_v1",
+      "source_scope_id": "scope_openpolymer_challenge_v1",
+      "source_family_id": "family_openpolymer_challenge_2025",
+      "source_directory": "第十批计算_OpenPolymerChallenge",
+      "source_title": "NeurIPS - Open Polymer Prediction 2025 Test Data",
+      "canonical_identifier": "https://www.kaggle.com/datasets/alexliu99/neurips-open-polymer-prediction-2025-test-data",
+      "task": "Open Polymer Challenge赛后结构与五项MD性质多任务迁移参考",
+      "origin_kind": "模拟",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-C",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 3502,
+      "material_count": 3502,
+      "formulation_count": 0,
+      "batch_count": 0,
+      "specimen_count": 0,
+      "run_count": 1649,
+      "curve_count_observed": 0,
+      "curve_count_candidate": 0,
+      "scalar_count_observed": 4524,
+      "scalar_count_candidate": 4524,
+      "point_count_observed": 0,
+      "point_count_candidate": 0,
+      "numeric_value_count": 4524,
+      "evidence_group_count": 0,
+      "computational_system_count": 1649,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.2,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "3502个原始与规范pSMILES均唯一，public与private之间无规范结构重复；空单元格不当作零或标签",
+      "split_group_status": "规范pSMILES整结构同折；同一结构的Tg、FFV、Tc、Density与Rg不得跨折，未公开训练集重叠仍待审计",
+      "completeness": "source_aggregate_plus_3502_structures_1649_labeled_systems_and_4524_md_labels",
+      "citation_keys": "ledger-156-liu-2025-open-polymer-challenge-data;ledger-157-liu-2025-open-polymer-challenge-report",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/下载许可与哈希元数据.json;数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/冻结审计结果.json;数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/Kaggle官方API元数据.json;数据/原始/外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/arXiv官方元数据.xml",
+      "notes": "Kaggle官方赛后version 1包含3502个唯一有效pSMILES，其中1649个结构至少有一项MD标签、1853个结构全部未标注； 261个Tg、223个FFV、1404个热导、1526个密度和1110个回转半径合计4524个非空Gold-C计算观测。 211个结构具有氨基甲酸酯SMARTS，131个已有标签；其余结构可作通用聚合物表示迁移或候选参考，不能冒充TPU实验。 官方Kaggle API标记MIT，但ZIP内没有独立LICENSE，故保留API许可快照。当前不创建训练权重或拆分。"
+    },
+    {
+      "source_id": "source_sciencedb_pue643_v1",
+      "source_scope_id": "scope_sciencedb_pue643_v1",
+      "source_family_id": "family_pue643",
+      "source_directory": "第十批实验_ScienceDB643",
+      "source_title": "Mechanical Properties for Polyurethane Elastomers",
+      "canonical_identifier": "10.57760/sciencedb.14957",
+      "task": "PUE-643标准化输入上下文与三项实验性能目标补全",
+      "origin_kind": "实验",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "conditional_reference",
+      "source_record_count": 643,
+      "material_count": 643,
+      "formulation_count": 643,
+      "batch_count": null,
+      "specimen_count": null,
+      "run_count": null,
+      "curve_count_observed": 0,
+      "curve_count_candidate": 0,
+      "scalar_count_observed": 1929,
+      "scalar_count_candidate": 1929,
+      "point_count_observed": 0,
+      "point_count_candidate": 0,
+      "numeric_value_count": 14789,
+      "evidence_group_count": 0,
+      "computational_system_count": 0,
+      "source_identity_count_contribution": 0,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "仅验证",
+      "weight_ceiling": 0.35,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "部分已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "643个SSID唯一；与既有PUE-643论文和ESI同源，只补全机器可读表而不增加独立实验来源",
+      "split_group_status": "PUE-643来源家族加SSID同折；标准化输入与三个变换后目标必须同折",
+      "completeness": "source_aggregate_plus_643_rows_20_context_features_and_1929_transformed_targets",
+      "citation_keys": "ledger-001-ding-2023-pue-mechanical;ledger-158-li-2024-sciencedb-pue643-data",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/来源清单.json;数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/审计结果.json;数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/原始/PUE643_YM-TS-EB.csv;数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/派生/PUE643_标准化643.csv",
+      "notes": "Science Data Bank V1的643行表与Ding等PUE-643论文及官方ESI属于同一来源家族，不重复扩增为第二套643个实验。 每行只有logYM、logTS和logEB三项实验变换目标，共1929个性能标签；SSID之外的其余20个标准化或编码输入只作配方、工艺和测试上下文， 不能计为性能标签。公开CSV没有原始应力—应变曲线、原单位目标或完整化学身份，因此全部进入Gold-E conditional参考； 在原始单位和配方映射闭合前不反推数值，也不物化训练权重。"
+    },
+    {
+      "source_id": "source_zenodo_6406174",
+      "source_scope_id": "scope_zenodo_6406174",
+      "source_family_id": "family_solventfree_pu_kinetics",
+      "source_directory": "第十批实验_无溶剂PU反应动力学",
+      "source_title": "TERMINUS WP5: Chain Extension Kinetics for Solvent-Free Adhesive Components",
+      "canonical_identifier": "10.5281/zenodo.6406174",
+      "task": "无溶剂宏二醇—二异氰酸酯链增长与NCO消耗动力学参考",
+      "origin_kind": "实验",
+      "scientific_role": "TPU核心",
+      "gold_layer": "Gold-E",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 171,
+      "material_count": 6,
+      "formulation_count": 21,
+      "batch_count": 34,
+      "specimen_count": 0,
+      "run_count": 34,
+      "curve_count_observed": 0,
+      "curve_count_candidate": 0,
+      "scalar_count_observed": 171,
+      "scalar_count_candidate": 171,
+      "point_count_observed": 0,
+      "point_count_candidate": 0,
+      "numeric_value_count": 171,
+      "evidence_group_count": 0,
+      "computational_system_count": 0,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.65,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "已解析",
+      "license_status": "allow_with_attribution",
+      "dedup_status": "171个非空滴定点按条件、重复列、时间与源单元格唯一；23个零值保留为测量，理论t0与实测分离",
+      "split_group_status": "数据集DOI加21个反应条件同折；同条件全部重复和时间点不得跨折，点级随机拆分禁止",
+      "completeness": "source_aggregate_plus_21_reaction_conditions_34_measurement_runs_and_171_nco_points",
+      "citation_keys": "ledger-159-asadauskas-2022-solventfree-pu-kinetics-data;ledger-160-asadauskas-2023-solventless-pu-kinetics",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/内容审计摘要.json;数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/NCO测量长表.tsv;数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/反应条件清单.tsv;数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/原料身份清单.tsv;数据/原始/外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/文件校验清单.tsv",
+      "notes": "Zenodo CC BY 4.0数据集给出4种宏二醇、2种二异氰酸酯在21个摩尔比—温度条件下的二丁胺滴定链增长动力学； 34个测量列产生171个非空%NCO点，其中169个时间闭合正式参考，2个缺失时间点不插补并作conditional参考。 23个实测零值保留，但论文TTS拟合排除零值；理论初始%NCO与实测点分列。该来源可约束合成可行性、反应温度与时间窗， 不直接监督TPU拉伸、韧性或DMA性能；当前不创建训练权重或拆分。"
+    },
+    {
       "source_id": "source_4tu_data",
       "source_scope_id": "self_healing_tpu_4tu_deposit",
       "source_family_id": "family_4tu_self_healing",
@@ -4583,7 +5171,7 @@
   "record_manifest_artifact": {
     "path": "结果/样本清单.csv.gz",
     "format": "csv.gz",
-    "row_count": 26648,
-    "sha256": "24850fa12d70aebf0d7c112d8dafab3474480613d6fe837faef40836ff10bed4"
+    "row_count": 133328,
+    "sha256": "bf770b68b3932cbd802fd514be5d5cfa24ae345b45ded199a2f72704a9daca2f"
   }
 }

@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc30
+rules_version: v0.2-asset-rules-2026-07-21-rc31
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -4580,4 +4580,260 @@ rules:
     model_readiness_status: ineligible
     release_status: not_assessed
     decision_basis: CNF/TPU曲线、标量、配方、错误公式和血缘审计输出；依赖统计量不重复计权。
+    review_required: true
+
+  - rule_id: tenth_batch_omg_raw_payloads
+    priority: 2640
+    path_regex: '^外部数据/新增开放数据/第十批计算_OMG/原始/(?:OMG_monomers_CRU\.zip|OMG_train_batch_3_chemprop_with_reaction_id\.csv|test_chemprop_with_reaction_id\.csv)$'
+    source_scope_key: scope_omg_batch10_v1_0b
+    artifact_role: computed_property_output
+    data_stage: raw
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 固定OMG v1.0b候选归档与OMG_property_v1.0直接量子化学表；47676个计算体系按reaction_id连接，不把文件行、属性列或构象当独立材料。
+    review_required: true
+
+  - rule_id: tenth_batch_omg_derived_views
+    priority: 2630
+    path_regex: '^外部数据/新增开放数据/第十批计算_OMG/派生/(?:OMG_PU_反应候选_100584\.csv|OMG_PU_计算属性_2086\.csv)$'
+    source_scope_key: scope_omg_batch10_v1_0b
+    artifact_role: subset_view
+    data_stage: derived
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 从固定原表确定性筛出的100584个reaction_idx等于6虚拟PU候选和2086个直接PU计算体系；两表分别服务Gold-V与Gold-C，不重复增加来源计数。
+    review_required: true
+
+  - rule_id: tenth_batch_omg_source_and_audit_evidence
+    priority: 2620
+    path_regex: '^外部数据/新增开放数据/第十批计算_OMG/(?:计算字段字典\.json|接入建议\.md|来源清单\.json|审计结果\.json)$'
+    source_scope_key: scope_omg_batch10_v1_0b
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: DOI、固定标签提交、GPL/MIT许可、字段方法与哈希审计证据；只闭合版本、单位和血缘，不产生额外候选或性质观测。
+    review_required: true
+
+  - rule_id: tenth_batch_omg_python_cache
+    priority: 2610
+    path_regex: '^外部数据/新增开放数据/第十批计算_OMG/__pycache__/[^/]+\.pyc$'
+    source_scope_key: scope_omg_batch10_v1_0b
+    artifact_role: code
+    data_stage: derived
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: rejected
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 本地Python字节码缓存不是科研数据、来源证据或可复现代码，明确排除且不计数。
+    review_required: false
+
+  - rule_id: tenth_batch_openpolymer_challenge_archive
+    priority: 2640
+    path_regex: '^外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/OpenPolymerChallenge_官方赛后测试集_v1\.zip$'
+    source_scope_key: scope_openpolymer_challenge_v1
+    artifact_role: computed_property_output
+    data_stage: raw
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Kaggle官方赛后version 1归档，包含3502个唯一pSMILES与4524个非空MD标签；空单元格不是零值或标签。
+    review_required: true
+
+  - rule_id: tenth_batch_openpolymer_challenge_extracted_views
+    priority: 2635
+    path_regex: '^外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/解包/(?:public|private)\.csv$'
+    source_scope_key: scope_openpolymer_challenge_v1
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 官方ZIP的确定性解包视图，成员SHA-256已冻结；public/private是评榜分区，不是新的独立来源或额外样本。
+    review_required: true
+
+  - rule_id: tenth_batch_openpolymer_challenge_audit
+    priority: 2630
+    path_regex: '^外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/冻结审计结果\.json$'
+    source_scope_key: scope_openpolymer_challenge_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 结构可解析性、规范去重、五项MD标签缺失、氨基甲酸酯SMARTS与public/private泄漏的确定性全量审计；不物化训练权重。
+    review_required: true
+
+  - rule_id: tenth_batch_openpolymer_challenge_source_evidence
+    priority: 2620
+    path_regex: '^外部数据/新增开放数据/第十批计算_OpenPolymerChallenge/(?:论文_OpenPolymerChallenge_arXiv2512\.08896\.pdf|论文HTML_OpenPolymerChallenge_arXiv2512\.08896\.html|下载响应头\.txt|下载许可与哈希元数据\.json|arXiv官方元数据\.xml|Kaggle官方API元数据\.json)$'
+    source_scope_key: scope_openpolymer_challenge_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: computational_polymer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: Kaggle API、HTTP响应、arXiv v1和论文快照闭合数据版本、MIT标记、模拟方法与单位；ZIP缺少独立LICENSE的事实保留。
+    review_required: true
+
+  - rule_id: tenth_batch_sciencedb_pue643_raw
+    priority: 2640
+    path_regex: '^外部数据/新增开放数据/第十批实验_ScienceDB643/原始/PUE643_YM-TS-EB\.csv$'
+    source_scope_key: scope_sciencedb_pue643_v1
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_elastomer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted_with_waiver
+    model_readiness_status: held_out_only
+    release_status: denied
+    decision_basis: Science Data Bank V1的643行机器可读表；只有logYM、logTS和logEB三项为实验变换目标，SSID之外20个标准化数值输入只作上下文，并与既有PUE-643来源去重。
+    review_required: true
+
+  - rule_id: tenth_batch_sciencedb_pue643_normalized
+    priority: 2630
+    path_regex: '^外部数据/新增开放数据/第十批实验_ScienceDB643/派生/PUE643_标准化643\.csv$'
+    source_scope_key: scope_sciencedb_pue643_v1
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: polyurethane_elastomer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted_with_waiver
+    model_readiness_status: held_out_only
+    release_status: denied
+    decision_basis: 对官方643行表的确定性标准化视图；不反推原单位，不把20个数值输入计作性能标签，也不增加独立实验来源。
+    review_required: true
+
+  - rule_id: tenth_batch_sciencedb_pue643_evidence
+    priority: 2620
+    path_regex: '^外部数据/新增开放数据/第十批实验_ScienceDB643/(?:接入建议\.md|来源清单\.json|审计结果\.json)$'
+    source_scope_key: scope_sciencedb_pue643_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_elastomer
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted_with_waiver
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: DataCite正式题名、Yunqi Li、V1、2024-01-05、CC BY 4.0、文件哈希和PUE-643同源关系证据；只闭合引用与条件准入。
+    review_required: true
+
+  - rule_id: tenth_batch_sciencedb_pue643_python_cache
+    priority: 2610
+    path_regex: '^外部数据/新增开放数据/第十批实验_ScienceDB643/__pycache__/[^/]+\.pyc$'
+    source_scope_key: scope_sciencedb_pue643_v1
+    artifact_role: code
+    data_stage: derived
+    material_scope_hint: polyurethane_elastomer
+    registration_status: discovered
+    availability_status: available
+    parse_status: not_applicable
+    scientific_admission_status: rejected
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 本地Python字节码缓存不是科研数据、来源证据或可复现代码，明确排除且不计数。
+    review_required: false
+
+  - rule_id: tenth_batch_solventfree_pu_kinetics_archive
+    priority: 2640
+    path_regex: '^外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/Solvent_Free_Adhesives_Dataset_5-2\.zip$'
+    source_scope_key: scope_zenodo_6406174
+    artifact_role: primary_data
+    data_stage: raw
+    material_scope_hint: polyurethane_reaction_kinetics
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Zenodo记录6406174的CC BY 4.0原始ZIP；宏二醇—二异氰酸酯链增长滴定数据用于反应时间窗参考，不直接监督TPU力学。
+    review_required: true
+
+  - rule_id: tenth_batch_solventfree_pu_kinetics_normalized
+    priority: 2630
+    path_regex: '^外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/(?:NCO测量长表\.tsv|反应条件清单\.tsv|原料身份清单\.tsv|测量列清单\.tsv)$'
+    source_scope_key: scope_zenodo_6406174
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: polyurethane_reaction_kinetics
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 21个反应条件、34个测量列和171个非空%NCO点的可复算长表；169点正式、2点缺时间条件参考，理论t0与实测分开。
+    review_required: true
+
+  - rule_id: tenth_batch_solventfree_pu_kinetics_source_evidence
+    priority: 2620
+    path_regex: '^外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/(?:Zenodo_API元数据\.json|来源文件哈希\.json|论文实验协议\.json)$'
+    source_scope_key: scope_zenodo_6406174
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_reaction_kinetics
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: Zenodo DOI、版本、作者、CC BY 4.0、文件哈希与RSC实验协议证据；论文CC BY-NC 3.0不改变数据集许可。
+    review_required: true
+
+  - rule_id: tenth_batch_solventfree_pu_kinetics_audit
+    priority: 2610
+    path_regex: '^外部数据/新增开放数据/第十批实验_无溶剂PU反应动力学/(?:内容审计摘要\.json|文件校验清单\.tsv)$'
+    source_scope_key: scope_zenodo_6406174
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_reaction_kinetics
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 工作簿成员、条件、测量列、零值、缺失时间和准入状态的确定性审计；统计产物不作为额外实验点。
     review_required: true

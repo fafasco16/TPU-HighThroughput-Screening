@@ -30,9 +30,17 @@ from rdkit import Chem, RDLogger, rdBase
 from rdkit.Chem import Descriptors, rdMolDescriptors
 
 try:
-    from .SMiPoly_TPU候选分类 import _group_counts
+    from .SMiPoly_TPU候选分类 import (
+        CANDIDATE_COLUMNS as _CANDIDATE_COLUMNS,
+        _group_counts,
+    )
 except ImportError:  # 允许直接运行本文件。
-    from SMiPoly_TPU候选分类 import _group_counts
+    from SMiPoly_TPU候选分类 import (
+        CANDIDATE_COLUMNS as _CANDIDATE_COLUMNS,
+        _group_counts,
+    )
+
+CANDIDATE_COLUMNS = _CANDIDATE_COLUMNS
 
 
 ROOT = Path(__file__).resolve().parents[2]
