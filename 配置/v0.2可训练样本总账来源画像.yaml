@@ -1,5 +1,5 @@
 schema_version: v0.2
-profile_version: trainable-inventory-profile-v0.2.15
+profile_version: trainable-inventory-profile-v0.2.17
 profile_status: audit_inventory_only
 generated_training_view: false
 audit_as_of_utc: '2026-07-21T14:00:00Z'
@@ -415,6 +415,31 @@ profiles:
       不直接监督TPU拉伸、韧性或DMA性能；当前不创建训练权重或拆分。
     counts:
       {source_record_count: 171, material_count: 6, formulation_count: 21, batch_count: 34, specimen_count: 0, run_count: 34, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 171, scalar_count_candidate: 171, point_count_observed: 0, point_count_candidate: 0, numeric_value_count: 171, evidence_group_count: 0, computational_system_count: 0, source_identity_count_contribution: 1}
+
+  - source_directory: 第十二批计算_PUFoam
+    task: 聚氨酯反应发泡CFD—PBE—QMOM时空过程参考
+    origin_kind: 模拟
+    scientific_role: 迁移
+    quality_status: 降权
+    reference_admission_status: admitted_reference
+    weight_ceiling: 0.30
+    unit_status: 部分已解析
+    license_status: manual_review
+    dedup_status: 归档只有1个完整二维mixing-cup计算算例；50个输出时刻、52个场和9014个数值均属于同一计算体系，不扩增为独立材料
+    split_group_status: 数据集DOI、二维算例和全部时间/空间统计共享一个simulation_key；时间点、场变量和统计量不得跨折
+    completeness: source_aggregate_plus_1_reactive_cfd_case_50_frames_250_source_values_8764_derived_values
+    audit_basis: PUFoam.tar.gz;官方元数据.json;论文Crossref元数据.json;代码/审计/第十二批PUFoam.py
+    notes: >-
+      Mendeley Data固定version 1的PUFoam归档通过8252834 bytes与SHA-256核验；归档含3822个成员、3452个普通文件、331个目录及39个根内相对符号链接，
+      审计器不解包而直接流式读取。唯一二维mixing-cup算例覆盖0至50 s；主查询表接入50×5=250个官方cellSource体积平均值，
+      以及时间1至50 s的52个OpenFOAM标量场均值/极值/总体标准差8764个，共9014个Gold-C过程数值。
+      论文以12组mixing-cup实验对模型的密度和温度进行比较验证，但这不等于全部52个场及其派生统计都获得逐字段实验验证；字段级准入、单位状态和潜在上限分别保存。
+      4293个单位与字段语义闭合值进入正式参考；4721个PBE矩、nodes/weights、Psi等物理语义未闭合值进入条件参考而不删除。
+      归档没有12套独立计算输入，故计算体系数严格为1；50个轨迹帧只提高过程分辨率。
+      通用NCO/OH/水与n-pentane工艺身份可用于发泡动力学、密度、泡群和过程窗口迁移；原料化学结构未闭合，不进入Gold-V结构监督，
+      也不直接监督线性TPU拉伸性能。GPLv3按Mendeley数据集页记录；软件代码、数值数据和训练/再分发边界在使用前仍需逐动作复核。
+    counts:
+      {source_record_count: 250, material_count: null, formulation_count: null, batch_count: null, specimen_count: 0, run_count: 1, curve_count_observed: 0, curve_count_candidate: 0, scalar_count_observed: 9014, scalar_count_candidate: 9014, point_count_observed: 50, point_count_candidate: 50, numeric_value_count: 9014, evidence_group_count: 0, computational_system_count: 1, source_identity_count_contribution: 1}
 
 local_backlog_profiles:
   - source_directory: SelfHealingTPU_4TU

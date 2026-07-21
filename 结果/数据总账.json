@@ -1,6 +1,6 @@
 {
   "schema_version": "v0.2",
-  "artifact_version": "trainable-inventory-v0.2.12",
+  "artifact_version": "trainable-inventory-v0.2.13",
   "artifact_status": "audit_inventory_only",
   "count_semantics": {
     "source_record_count": "来源报告的记录/容器级科学条目；不等于独立样本。",
@@ -53,6 +53,11 @@
       "sha256": "9f19e846cf8d686bba7e95ce50abcc9d18bd803c6d5c7baccf69d19346b66211"
     },
     {
+      "path": "代码/审计/第十二批PUFoam.py",
+      "bytes": 36435,
+      "sha256": "5c4db8e3f4aa1fb624be47e31bb31f39346f6f08fe70a0cbf91a326111780d3b"
+    },
+    {
       "path": "代码/审计/第十批ACS表格物化.py",
       "bytes": 42246,
       "sha256": "1c6b617d737ef38104c1474798399143f17421d9f8ddcc75b213e2b82a0228ec"
@@ -69,8 +74,8 @@
     },
     {
       "path": "代码/生成数据总账.py",
-      "bytes": 146654,
-      "sha256": "e51769868ce6dc535f08a5558f33c4a8c950912d8f1e42cdc0d8242f2332843b"
+      "bytes": 149459,
+      "sha256": "64704b625d575d6a5d757bea15b5e8776a2568628d514b65ec3a6ed5aad13843"
     },
     {
       "path": "数据/原始/外部数据/力学曲线/Schwarz2022_EPU40/内容审计摘要.json",
@@ -1018,6 +1023,21 @@
       "sha256": "c22b90a6af9a002a5c364ac84a2a83c828031814f6d56608c17cd86a70694f95"
     },
     {
+      "path": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/PUFoam.tar.gz",
+      "bytes": 8252834,
+      "sha256": "64e0a24689b8b9dcb8046ed9b3730ae6666180991bc40f75971b69ef56b63b84"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/官方元数据.json",
+      "bytes": 2414,
+      "sha256": "0fb0664dc361eaf14e5c7b8d0c4bf38367d374f94ca3217481698403619df115"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/论文Crossref元数据.json",
+      "bytes": 8151,
+      "sha256": "92b4afb7e000759c7267ffb928e6382c10d095b6405705acd5d1523e2f03b945"
+    },
+    {
       "path": "数据/原始/外部数据/新增开放数据/第十批实验_ScienceDB643/原始/PUE643_YM-TS-EB.csv",
       "bytes": 174087,
       "sha256": "356e087856378a9e1da7cde4d29d4dcc246a21d48124968af0063e30a622813e"
@@ -1169,13 +1189,13 @@
     },
     {
       "path": "配置/v0.2可训练样本总账来源画像.yaml",
-      "bytes": 93599,
-      "sha256": "8a688b8f3077b22e797d4f7d879688d6ea3512e6914216544a0ae9ae84121350"
+      "bytes": 96239,
+      "sha256": "83b10ad3c43ebecdbe1f33eb794d88ad17416a1c60a53cd49b3c643ce4bd9ff1"
     },
     {
       "path": "配置/v0.2来源范围.yaml",
-      "bytes": 299119,
-      "sha256": "15815eb0dd0c9d3bcf945e615db9ccab7c4905528d93ff3126f9418f1164b7a8"
+      "bytes": 302726,
+      "sha256": "6d3a4ef1b353ba664c802ffbd2a142cdb718874e1f9dc5e4d04aa67729dd1800"
     }
   ],
   "enums": {
@@ -1222,63 +1242,63 @@
   },
   "summary": {
     "audit_as_of_utc": "2026-07-21T14:00:00Z",
-    "input_file_count": 230,
-    "input_fingerprint_sha256": "2023eddb329fda550d1adb530e3e8e81a592c6f72cfb6e04ae68d9de2e8599c7",
+    "input_file_count": 234,
+    "input_fingerprint_sha256": "7f14e04c0e63f48d95b8a04d06cf9649e7030c5a46a7c24bbcf05bccb05dc108",
     "training_enabled": false,
     "training_split_created": false,
     "training_weight_materialized": false,
     "model_ready_record_count": 0,
-    "v0_2_source_directory_count": 69,
-    "v0_2_independent_source_identity_count": 68,
+    "v0_2_source_directory_count": 70,
+    "v0_2_independent_source_identity_count": 69,
     "local_backlog_source_directory_count": 4,
     "local_backlog_independent_source_identity_count": 4,
     "v0_1_frozen_baseline_source_count": 4,
-    "ledger_source_scope_count": 77,
-    "total_independent_source_contribution_count": 76,
+    "ledger_source_scope_count": 78,
+    "total_independent_source_contribution_count": 77,
     "source_quality_status_counts": {
       "仅验证": 14,
       "入选": 5,
-      "降权": 49,
+      "降权": 50,
       "隔离": 9
     },
     "source_gold_layer_counts": {
-      "Gold-C": 14,
+      "Gold-C": 15,
       "Gold-E": 43,
       "Gold-E+Gold-C": 9,
       "Gold-V": 3,
       "Not-Gold": 8
     },
     "source_gold_admission_status_counts": {
-      "admitted_reference": 57,
+      "admitted_reference": 58,
       "blocked": 3,
       "conditional_reference": 9,
       "evidence_only": 8
     },
-    "manifest_row_count": 133328,
+    "manifest_row_count": 133329,
     "manifest_granularity_counts": {
       "candidate": 117629,
       "curve": 2223,
       "evidence_group": 40,
       "run": 6784,
       "scalar": 6353,
-      "source": 77,
+      "source": 78,
       "specimen": 222
     },
     "manifest_quality_status_counts": {
       "仅验证": 19166,
       "入选": 422,
-      "降权": 113428,
+      "降权": 113429,
       "隔离": 312
     },
     "manifest_gold_layer_counts": {
-      "Gold-C": 7795,
+      "Gold-C": 7796,
       "Gold-E": 7464,
       "Gold-E+Gold-C": 369,
       "Gold-V": 117632,
       "Not-Gold": 68
     },
     "manifest_gold_admission_status_counts": {
-      "admitted_reference": 124263,
+      "admitted_reference": 124264,
       "blocked": 294,
       "conditional_reference": 8703,
       "evidence_only": 68
@@ -1414,11 +1434,12 @@
       "artifact_role": "normalized_computational_value_reference",
       "artifact_status": "multifidelity_gold_c_reference_not_training_dataset",
       "path": "结果/Gold_C_计算性能.csv.gz",
-      "row_count": 1406774,
+      "row_count": 1415788,
       "source_value_counts": {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209905,
         "ledger_source_106": 5,
+        "source_mendeley_pufoam_v1": 9014,
         "source_omg_batch10": 1191900,
         "source_openpolymer_challenge_v1": 4524
       },
@@ -1697,6 +1718,392 @@
       },
       "training_split_materialized": false,
       "training_weight_materialized": false
+    },
+    "batch12_pufoam_audit": {
+      "audit_version": "batch12-pufoam-v2",
+      "source_id": "source_mendeley_pufoam_v1",
+      "dataset_doi": "10.17632/62ggzx623g.1",
+      "paper_doi": "10.1016/j.cpc.2017.03.010",
+      "dataset_version": 1,
+      "license": "GPLv3",
+      "published_date": "2017-04-10T12:51:05.146Z",
+      "archive": {
+        "filename": "PUFoam.tar.gz",
+        "bytes": 8252834,
+        "sha256": "64e0a24689b8b9dcb8046ed9b3730ae6666180991bc40f75971b69ef56b63b84",
+        "member_count": 3822,
+        "regular_file_count": 3452,
+        "directory_count": 331,
+        "symlink_count": 39,
+        "special_member_count": 0,
+        "safe_relative_symlinks": [
+          {
+            "member": "PUFoam/Kinetics/lnInclude/BACheck.H",
+            "linkname": "../BACheck.H",
+            "resolved_target": "PUFoam/Kinetics/BACheck.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/BAEqns.H",
+            "linkname": "../BAEqns.H",
+            "resolved_target": "PUFoam/Kinetics/BAEqns.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/BASources.H",
+            "linkname": "../BASources.H",
+            "resolved_target": "PUFoam/Kinetics/BASources.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/Kinetics.H",
+            "linkname": "../Kinetics.H",
+            "resolved_target": "PUFoam/Kinetics/Kinetics.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/KineticsFields.H",
+            "linkname": "../KineticsFields.H",
+            "resolved_target": "PUFoam/Kinetics/KineticsFields.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/PUgeneric.C",
+            "linkname": "../PUgeneric/PUgeneric.C",
+            "resolved_target": "PUFoam/Kinetics/PUgeneric/PUgeneric.C"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/PUgeneric.H",
+            "linkname": "../PUgeneric/PUgeneric.H",
+            "resolved_target": "PUFoam/Kinetics/PUgeneric/PUgeneric.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/blowingAgents.C",
+            "linkname": "../blowingAgents/blowingAgents.C",
+            "resolved_target": "PUFoam/Kinetics/blowingAgents/blowingAgents.C"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/blowingAgents.H",
+            "linkname": "../blowingAgents/blowingAgents.H",
+            "resolved_target": "PUFoam/Kinetics/blowingAgents/blowingAgents.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/blowingReaction.C",
+            "linkname": "../blowingReaction/blowingReaction.C",
+            "resolved_target": "PUFoam/Kinetics/blowingReaction/blowingReaction.C"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/blowingReaction.H",
+            "linkname": "../blowingReaction/blowingReaction.H",
+            "resolved_target": "PUFoam/Kinetics/blowingReaction/blowingReaction.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/checkGellingPoint.H",
+            "linkname": "../checkGellingPoint.H",
+            "resolved_target": "PUFoam/Kinetics/checkGellingPoint.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/conversionCheck.H",
+            "linkname": "../conversionCheck.H",
+            "resolved_target": "PUFoam/Kinetics/conversionCheck.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/conversionEqns.H",
+            "linkname": "../conversionEqns.H",
+            "resolved_target": "PUFoam/Kinetics/conversionEqns.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/conversionSources.H",
+            "linkname": "../conversionSources.H",
+            "resolved_target": "PUFoam/Kinetics/conversionSources.H"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/gellingReaction.C",
+            "linkname": "../gellingReaction/gellingReaction.C",
+            "resolved_target": "PUFoam/Kinetics/gellingReaction/gellingReaction.C"
+          },
+          {
+            "member": "PUFoam/Kinetics/lnInclude/gellingReaction.H",
+            "linkname": "../gellingReaction/gellingReaction.H",
+            "resolved_target": "PUFoam/Kinetics/gellingReaction/gellingReaction.H"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/MomConvert.H",
+            "linkname": "../MomConvert.H",
+            "resolved_target": "PUFoam/PBE/MomConvert.H"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/MomEqns.H",
+            "linkname": "../MomEqns.H",
+            "resolved_target": "PUFoam/PBE/MomEqns.H"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/MomFields.H",
+            "linkname": "../MomFields.H",
+            "resolved_target": "PUFoam/PBE/MomFields.H"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/MomSources.H",
+            "linkname": "../MomSources.H",
+            "resolved_target": "PUFoam/PBE/MomSources.H"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/Moments.C",
+            "linkname": "../Moments/Moments.C",
+            "resolved_target": "PUFoam/PBE/Moments/Moments.C"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/Moments.H",
+            "linkname": "../Moments/Moments.H",
+            "resolved_target": "PUFoam/PBE/Moments/Moments.H"
+          },
+          {
+            "member": "PUFoam/PBE/lnInclude/PDA.H",
+            "linkname": "../PDA.H",
+            "resolved_target": "PUFoam/PBE/PDA.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/TCheck.H",
+            "linkname": "../TCheck.H",
+            "resolved_target": "PUFoam/PUProperties/TCheck.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/continuityErrors.H",
+            "linkname": "../continuityErrors.H",
+            "resolved_target": "PUFoam/PUProperties/continuityErrors.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/densityEqns.H",
+            "linkname": "../densityEqns.H",
+            "resolved_target": "PUFoam/PUProperties/densityEqns.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/foamDensity.C",
+            "linkname": "../foamDensity/foamDensity.C",
+            "resolved_target": "PUFoam/PUProperties/foamDensity/foamDensity.C"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/foamDensity.H",
+            "linkname": "../foamDensity/foamDensity.H",
+            "resolved_target": "PUFoam/PUProperties/foamDensity/foamDensity.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/rheologyFields.H",
+            "linkname": "../rheologyFields.H",
+            "resolved_target": "PUFoam/PUProperties/rheologyFields.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/rheologyModel.H",
+            "linkname": "../rheologyModel.H",
+            "resolved_target": "PUFoam/PUProperties/rheologyModel.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/rheologyPU.C",
+            "linkname": "../rheologyPU/rheologyPU.C",
+            "resolved_target": "PUFoam/PUProperties/rheologyPU/rheologyPU.C"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/rheologyPU.H",
+            "linkname": "../rheologyPU/rheologyPU.H",
+            "resolved_target": "PUFoam/PUProperties/rheologyPU/rheologyPU.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/simulationMode.H",
+            "linkname": "../simulationMode.H",
+            "resolved_target": "PUFoam/PUProperties/simulationMode.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/lnInclude/thermalFields.H",
+            "linkname": "../thermalFields.H",
+            "resolved_target": "PUFoam/PUProperties/thermalFields.H"
+          },
+          {
+            "member": "PUFoam/PUProperties/rheologyPU/lnInclude/rheologyPU.C",
+            "linkname": "../rheologyPU.C",
+            "resolved_target": "PUFoam/PUProperties/rheologyPU/rheologyPU.C"
+          },
+          {
+            "member": "PUFoam/PUProperties/rheologyPU/lnInclude/rheologyPU.H",
+            "linkname": "../rheologyPU.H",
+            "resolved_target": "PUFoam/PUProperties/rheologyPU/rheologyPU.H"
+          },
+          {
+            "member": "PUFoam/twoPhaseMixtureThermo/lnInclude/twoPhaseMixtureThermo.C",
+            "linkname": "../twoPhaseMixtureThermo.C",
+            "resolved_target": "PUFoam/twoPhaseMixtureThermo/twoPhaseMixtureThermo.C"
+          },
+          {
+            "member": "PUFoam/twoPhaseMixtureThermo/lnInclude/twoPhaseMixtureThermo.H",
+            "linkname": "../twoPhaseMixtureThermo.H",
+            "resolved_target": "PUFoam/twoPhaseMixtureThermo/twoPhaseMixtureThermo.H"
+          }
+        ]
+      },
+      "case": {
+        "case_count": 1,
+        "case_id": "simulation_pufoam_2d_mixing_cup_v1",
+        "geometry": "2D mixing-cup",
+        "result_time_directory_count": 51,
+        "result_times_s": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "scalar_result_times_s": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "cells": 800,
+        "vol_scalar_field_count_per_time": 52,
+        "uniform_field_file_count": 462,
+        "nonuniform_field_file_count": 2138
+      },
+      "materialization": {
+        "native_volume_average_count": 250,
+        "derived_spatial_statistic_count": 8764,
+        "total_gold_c_count": 9014,
+        "aggregation_counts_derived": {
+          "max": 2138,
+          "mean": 2350,
+          "min": 2138,
+          "population_std": 2138
+        },
+        "policy_tier_counts": {
+          "derived_dimensions_resolved_admitted": 4143,
+          "derived_semantics_unresolved_conditional": 4621,
+          "native_unit_resolved_admitted": 150,
+          "native_unit_unresolved_conditional": 100
+        },
+        "gold_admission_status_counts": {
+          "admitted_reference": 4293,
+          "conditional_reference": 4721
+        },
+        "source_validation_status_counts": {
+          "derived_model_output_field_semantics_unresolved": 4621,
+          "derived_model_output_model_level_validation_only": 4143,
+          "model_level_validation_reported_field_semantics_unresolved": 100,
+          "model_level_validation_reported_not_field_specific": 150
+        },
+        "potential_weight_ceiling_counts": {
+          "0.10": 4721,
+          "0.20": 4143,
+          "0.30": 150
+        },
+        "unit_counts": {
+          "K": 350,
+          "Pa": 370,
+          "Pa*s": 750,
+          "dimensionless": 5674,
+          "kg/m^3": 585,
+          "m^2/s": 800,
+          "s^2/m^2": 385,
+          "source_native_unit_unresolved": 100
+        },
+        "unit_status_counts": {
+          "resolved": 150,
+          "resolved_from_openfoam_dimensions": 4143,
+          "source_declared_dimensions_semantics_unresolved": 4621,
+          "unresolved": 100
+        },
+        "simulation_key_count": 1,
+        "time_points_are_independent_systems": false,
+        "current_weight_materialized": false
+      },
+      "citations": [
+        "ledger-161-karimi-2017-pufoam-data",
+        "ledger-162-karimi-2017-pufoam-paper"
+      ]
     }
   },
   "source_ledger": [
@@ -5059,6 +5466,52 @@
       "notes": "Zenodo CC BY 4.0数据集给出4种宏二醇、2种二异氰酸酯在21个摩尔比—温度条件下的二丁胺滴定链增长动力学； 34个测量列产生171个非空%NCO点，其中169个时间闭合正式参考，2个缺失时间点不插补并作conditional参考。 23个实测零值保留，但论文TTS拟合排除零值；理论初始%NCO与实测点分列。该来源可约束合成可行性、反应温度与时间窗， 不直接监督TPU拉伸、韧性或DMA性能；当前不创建训练权重或拆分。"
     },
     {
+      "source_id": "source_mendeley_pufoam_v1",
+      "source_scope_id": "scope_mendeley_pufoam_v1",
+      "source_family_id": "family_pufoam_2017",
+      "source_directory": "第十二批计算_PUFoam",
+      "source_title": "PUFoam: a novel open-source CFD solver for the simulation of expanding and reacting polyurethane foams",
+      "canonical_identifier": "10.17632/62ggzx623g.1",
+      "task": "聚氨酯反应发泡CFD—PBE—QMOM时空过程参考",
+      "origin_kind": "模拟",
+      "scientific_role": "迁移",
+      "gold_layer": "Gold-C",
+      "gold_admission_status": "admitted_reference",
+      "source_record_count": 250,
+      "material_count": null,
+      "formulation_count": null,
+      "batch_count": null,
+      "specimen_count": 0,
+      "run_count": 1,
+      "curve_count_observed": 0,
+      "curve_count_candidate": 0,
+      "scalar_count_observed": 9014,
+      "scalar_count_candidate": 9014,
+      "point_count_observed": 50,
+      "point_count_candidate": 50,
+      "numeric_value_count": 9014,
+      "evidence_group_count": 0,
+      "computational_system_count": 1,
+      "source_identity_count_contribution": 1,
+      "direct_numeric_total": null,
+      "complete_direct_response_count": null,
+      "valid_derived_scalar_count": null,
+      "invalid_cached_formula_count": null,
+      "known_missing_direct_count": null,
+      "quality_status": "降权",
+      "weight_ceiling": 0.3,
+      "current_weight_materialized": false,
+      "model_ready_record_count": 0,
+      "unit_status": "部分已解析",
+      "license_status": "manual_review",
+      "dedup_status": "归档只有1个完整二维mixing-cup计算算例；50个输出时刻、52个场和9014个数值均属于同一计算体系，不扩增为独立材料",
+      "split_group_status": "数据集DOI、二维算例和全部时间/空间统计共享一个simulation_key；时间点、场变量和统计量不得跨折",
+      "completeness": "source_aggregate_plus_1_reactive_cfd_case_50_frames_250_source_values_8764_derived_values",
+      "citation_keys": "ledger-161-karimi-2017-pufoam-data;ledger-162-karimi-2017-pufoam-paper",
+      "audit_basis": "数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/PUFoam.tar.gz;数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/官方元数据.json;数据/原始/外部数据/新增开放数据/第十二批计算_PUFoam/论文Crossref元数据.json;代码/审计/第十二批PUFoam.py",
+      "notes": "Mendeley Data固定version 1的PUFoam归档通过8252834 bytes与SHA-256核验；归档含3822个成员、3452个普通文件、331个目录及39个根内相对符号链接， 审计器不解包而直接流式读取。唯一二维mixing-cup算例覆盖0至50 s；主查询表接入50×5=250个官方cellSource体积平均值， 以及时间1至50 s的52个OpenFOAM标量场均值/极值/总体标准差8764个，共9014个Gold-C过程数值。 论文以12组mixing-cup实验对模型的密度和温度进行比较验证，但这不等于全部52个场及其派生统计都获得逐字段实验验证；字段级准入、单位状态和潜在上限分别保存。 4293个单位与字段语义闭合值进入正式参考；4721个PBE矩、nodes/weights、Psi等物理语义未闭合值进入条件参考而不删除。 归档没有12套独立计算输入，故计算体系数严格为1；50个轨迹帧只提高过程分辨率。 通用NCO/OH/水与n-pentane工艺身份可用于发泡动力学、密度、泡群和过程窗口迁移；原料化学结构未闭合，不进入Gold-V结构监督， 也不直接监督线性TPU拉伸性能。GPLv3按Mendeley数据集页记录；软件代码、数值数据和训练/再分发边界在使用前仍需逐动作复核。"
+    },
+    {
       "source_id": "source_4tu_data",
       "source_scope_id": "self_healing_tpu_4tu_deposit",
       "source_family_id": "family_4tu_self_healing",
@@ -5246,7 +5699,7 @@
   "record_manifest_artifact": {
     "path": "结果/样本清单.csv.gz",
     "format": "csv.gz",
-    "row_count": 133328,
-    "sha256": "bf770b68b3932cbd802fd514be5d5cfa24ae345b45ded199a2f72704a9daca2f"
+    "row_count": 133329,
+    "sha256": "e643ce5ffe233d6feb5d5dc461b11e675504b2d33a9623b06e8cbb00d45a7db6"
   }
 }

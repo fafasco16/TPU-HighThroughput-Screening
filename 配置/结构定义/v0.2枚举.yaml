@@ -103,6 +103,9 @@ enums:
     - aimd
     - md
     - coarse_grained_md
+    - cfd
+    - population_balance
+    - reaction_kinetics_simulation
     - finite_element
     - group_contribution
     - reaction_rule_generated

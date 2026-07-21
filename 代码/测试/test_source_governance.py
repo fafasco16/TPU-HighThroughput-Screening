@@ -203,6 +203,9 @@ def test_lifecycle_enums_and_asset_lifecycle_fields_are_exact():
         "aimd",
         "md",
         "coarse_grained_md",
+        "cfd",
+        "population_balance",
+        "reaction_kinetics_simulation",
         "finite_element",
         "group_contribution",
         "reaction_rule_generated",
@@ -571,7 +574,7 @@ def test_contract_semantic_hashes_are_deterministic_across_two_loads():
         "63bb1bcea8e5791e86368279956c1b0c30cc09da918a745da92fc1b31836433d"
     )
     assert first.document_hashes["enums"] == (
-        "d887e6f3347740f79ea26fbf7b42e0412f77086fde351189b03766ce60afc6c7"
+        "c0e4a1af921c310d1f78d8632345f9ac33bacf40579fc691ef7a1c7c265cb0f6"
     )
     assert first.document_hashes["rules"] == (
         "3e3859b683a14b8ff5d548f45b4cc067e08e906339ca2808c71d513c347db3d1"

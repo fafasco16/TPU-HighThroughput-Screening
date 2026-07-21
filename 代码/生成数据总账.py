@@ -85,6 +85,16 @@ from 审计.第十一批既有实验标量物化 import (
     SPECS as BATCH11_EXISTING_SCALAR_SPECS,
     build_records as build_batch11_existing_scalar_records,
 )
+from 审计.第十二批PUFoam import (
+    ARCHIVE_PATH as BATCH12_PUFOAM_ARCHIVE,
+    CROSSREF_METADATA_PATH as BATCH12_PUFOAM_CROSSREF_METADATA,
+    EXPECTED_TOTAL_ROWS as BATCH12_PUFOAM_GOLD_C_COUNT,
+    GOLD_C_VALUE_COLUMNS as BATCH12_PUFOAM_GOLD_C_COLUMNS,
+    OFFICIAL_METADATA_PATH as BATCH12_PUFOAM_OFFICIAL_METADATA,
+    SOURCE_ID as BATCH12_SOURCE_PUFOAM,
+    audit as audit_batch12_pufoam,
+    build_gold_c_rows as build_batch12_pufoam_gold_c_rows,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -119,6 +129,7 @@ BATCH10_OPENPOLY_AUDIT_SCRIPT_PATH = (
 BATCH11_EXISTING_SCALAR_SCRIPT_PATH = (
     ROOT / "代码" / "审计" / "第十一批既有实验标量物化.py"
 )
+BATCH12_PUFOAM_SCRIPT_PATH = ROOT / "代码" / "审计" / "第十二批PUFoam.py"
 INPUT_FILES_READ: set[Path] = set()
 
 
@@ -453,6 +464,9 @@ def _target_origin(profile: dict[str, Any], explicit: Any = None) -> str:
         "模拟": "computational",
         "cgmd": "coarse_grained_md",
         "coarse_grained": "coarse_grained_md",
+        "cfd": "cfd",
+        "population_balance": "population_balance",
+        "reaction_kinetics_simulation": "reaction_kinetics_simulation",
         "fea": "finite_element",
         "finite_element_input": "simulation_input",
         "experimental_processed_curve": "experimental",
@@ -490,6 +504,9 @@ def _gold_layer_for_target(
         "aimd",
         "md",
         "coarse_grained_md",
+        "cfd",
+        "population_balance",
+        "reaction_kinetics_simulation",
         "finite_element",
         "simulation_input",
     }:
@@ -1232,7 +1249,8 @@ def _gold_c_computational_value_rows(
     }
     radon_directory = "第九批计算_RadonPy_PI1070"
     polyomics_directory = "第九批计算_PolyOmics"
-    required = {radon_directory, polyomics_directory}
+    pufoam_directory = "第十二批计算_PUFoam"
+    required = {radon_directory, polyomics_directory, pufoam_directory}
     missing = required - profile_by_directory.keys()
     if missing:
         raise ValueError(f"Gold-C数值长表缺少来源画像: {sorted(missing)}")
@@ -1473,10 +1491,36 @@ def _gold_c_computational_value_rows(
             }
         )
 
+    pufoam_identity = identities[pufoam_directory]
+    if pufoam_identity.source_id != BATCH12_SOURCE_PUFOAM:
+        raise AssertionError(
+            f"第十二批PUFoam来源ID漂移: {pufoam_identity.source_id}, "
+            f"expected={BATCH12_SOURCE_PUFOAM}"
+        )
+    pufoam_ceiling = float(
+        profile_by_directory[pufoam_directory]["weight_ceiling"]
+    )
+    for source_row in build_batch12_pufoam_gold_c_rows():
+        if source_row["source_id"] != pufoam_identity.source_id:
+            raise AssertionError(
+                f"PUFoam数值来源ID漂移: {source_row['source_id']}"
+            )
+        row = dict(source_row)
+        row["citation_keys"] = ";".join(pufoam_identity.citation_keys)
+        row["potential_weight_ceiling"] = min(
+            float(row["potential_weight_ceiling"]), pufoam_ceiling
+        )
+        row["source_locator"] = (
+            f"数据/原始/外部数据/新增开放数据/{pufoam_directory}/"
+            f"{row['source_locator']}"
+        )
+        rows.append(row)
+
     expected_existing_counts = {
         radon_identity.source_id: 440,
         polyomics_identity.source_id: 209_905,
         identities["ACS_Figshare_双相演化聚氨酯"].source_id: 5,
+        pufoam_identity.source_id: BATCH12_PUFOAM_GOLD_C_COUNT,
     }
     actual_counts = Counter(row["source_id"] for row in rows)
     if actual_counts != expected_existing_counts:
@@ -1784,7 +1828,18 @@ def _specific_records(profile: dict[str, Any], identity: SourceIdentity) -> list
     base = _profile_base(profile)
     records: list[dict[str, Any]] = []
     summary_path = base / "内容审计摘要.json"
-    summary = _read_json(summary_path) if summary_path.exists() else None
+    summary_sources = {
+        "QUB_生物基三重自修复TPU",
+        "Texas_湿干单根电纺PU纤维力学",
+        "PCL_GitLFS轨迹补采",
+        "Zenodo_PCL软段构象粗粒化MD",
+        "Zenodo_TPU回收封端剂DFT与机器学习",
+    }
+    summary = (
+        _read_json(summary_path)
+        if source in summary_sources and summary_path.exists()
+        else None
+    )
 
     if source == "QUB_生物基三重自修复TPU" and summary:
         for index, row in enumerate(summary["curve_records"]):
@@ -2334,6 +2389,9 @@ def _build_manifest(
                 "aimd",
                 "md",
                 "coarse_grained_md",
+                "cfd",
+                "population_balance",
+                "reaction_kinetics_simulation",
                 "finite_element",
             }
             and record["record_role"] == "property_observation"
@@ -2661,12 +2719,12 @@ def _build_summary(
 
 
 def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summary: dict[str, Any]) -> None:
-    assert len(ledger) == 77
-    assert summary["v0_2_source_directory_count"] == 69
-    assert summary["v0_2_independent_source_identity_count"] == 68
+    assert len(ledger) == 78
+    assert summary["v0_2_source_directory_count"] == 70
+    assert summary["v0_2_independent_source_identity_count"] == 69
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 76
+    assert summary["total_independent_source_contribution_count"] == 77
     assert summary["model_ready_record_count"] == 0
     assert summary["virtual_candidate_count"] == 117629
     assert summary["virtual_candidate_priority1_structure_count"] == 9631
@@ -2699,7 +2757,7 @@ def _validate(ledger: list[dict[str, Any]], manifest: list[dict[str, Any]], summ
     }
     assert all(float(row["weight_ceiling"]) == 0.0 for row in virtual_candidates)
     gold_c_metadata = summary["gold_c_computational_value_long_table"]
-    assert gold_c_metadata["row_count"] == 1_406_774
+    assert gold_c_metadata["row_count"] == 1_415_788
     assert gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OMG] == 1_191_900
     assert (
         gold_c_metadata["source_value_counts"][BATCH10_SOURCE_OPENPOLY]
@@ -3024,10 +3082,19 @@ def main() -> None:
     _register_input(BATCH11_EXISTING_SCALAR_SCRIPT_PATH)
     for spec in BATCH11_EXISTING_SCALAR_SPECS.values():
         _register_input(spec.path)
+    for path in (
+        BATCH12_PUFOAM_SCRIPT_PATH,
+        BATCH12_PUFOAM_ARCHIVE,
+        BATCH12_PUFOAM_OFFICIAL_METADATA,
+        BATCH12_PUFOAM_CROSSREF_METADATA,
+    ):
+        _register_input(path)
     if tuple(BATCH10_COMPUTATIONAL_RECORD_COLUMNS) != tuple(
         GOLD_C_VALUE_COLUMNS
     ):
         raise AssertionError("第十批Gold-C字段与总账字段不一致")
+    if tuple(BATCH12_PUFOAM_GOLD_C_COLUMNS) != tuple(GOLD_C_VALUE_COLUMNS):
+        raise AssertionError("第十二批PUFoam Gold-C字段与总账字段不一致")
     batch10_materialization_audit = audit_batch10_materialization_inputs()
     acs_table_rows, acs_table_audit_summary = build_acs_table_records()
     batch10_gold_e_rows = build_batch10_gold_e_rows()
@@ -3075,8 +3142,8 @@ def main() -> None:
     local_backlog_profiles = profile_config.get("local_backlog_profiles", [])
     all_profiles = [*profiles, *local_backlog_profiles]
     baseline_profiles = profile_config["baseline_profiles"]
-    if len(profiles) != 69:
-        raise AssertionError(f"v0.2来源画像必须覆盖69个目录，当前为{len(profiles)}")
+    if len(profiles) != 70:
+        raise AssertionError(f"v0.2来源画像必须覆盖70个目录，当前为{len(profiles)}")
     actual_directories = {path.name for path in RAW_NEW.iterdir() if path.is_dir()}
     configured_directories = {profile["source_directory"] for profile in profiles}
     if actual_directories != configured_directories:
@@ -3133,6 +3200,7 @@ def main() -> None:
     summary["batch11_existing_experimental_scalar_audit"] = (
         batch11_existing_scalar_audit
     )
+    summary["batch12_pufoam_audit"] = audit_batch12_pufoam()
     _validate(ledger, manifest, summary)
     _write_gzip_csv(
         OUTPUT_GOLD_C_VALUES,
@@ -3161,7 +3229,7 @@ def main() -> None:
     )
     json_payload = {
         "schema_version": "v0.2",
-        "artifact_version": "trainable-inventory-v0.2.12",
+        "artifact_version": "trainable-inventory-v0.2.13",
         "artifact_status": "audit_inventory_only",
         "count_semantics": profile_config["count_semantics"],
         "audit_metric_semantics": profile_config["audit_metric_semantics"],

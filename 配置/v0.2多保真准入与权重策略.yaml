@@ -1,5 +1,5 @@
 schema_version: v0.2
-policy_version: multi-fidelity-admission-weight-v0.2.16
+policy_version: multi-fidelity-admission-weight-v0.2.17
 policy_status: design_only
 training_enabled: false
 training_split_created: false
@@ -120,7 +120,7 @@ gold_layer_admission:
     minimum_requirement: 可追溯到来源、材料或配方身份、测试定义及单位；不完整字段显式为空而不是猜测。
     allowed_roles: [core_truth, transfer_reference, validation_only]
   Gold-C:
-    admitted_origins: [dft, aimd, md, coarse_grained_md, finite_element]
+    admitted_origins: [dft, aimd, md, coarse_grained_md, cfd, population_balance, reaction_kinetics_simulation, finite_element]
     experimental_mapping_required_for_reference_admission: false
     protocol_complete_required_for_conditional_reference: false
     conditional_reference_can_preserve_numeric_outputs: true
@@ -226,6 +226,11 @@ target_task_rules:
     acceptable_simulation_origin: [md, coarse_grained_md]
     simulation_role: morphology_descriptor
     note: 形貌任务按唯一体系—协议—种子聚合，帧数只提高统计精度，不增加独立样本权重。
+  - task_key: reactive_foaming_process_window
+    highest_priority_origin: [experimental, cfd]
+    acceptable_simulation_origin: [cfd, population_balance, reaction_kinetics_simulation]
+    simulation_role: process_kinetics_and_morphology_descriptor
+    note: 经论文或实验校准、输入输出和单位可追溯的反应发泡CFD/PBE数据可进入Gold-C；时间步、网格单元、场变量和统计量只提高过程分辨率，不增加独立材料或计算体系数。
 
 simulation_aggregation:
   independent_unit: unique_system_protocol_seed

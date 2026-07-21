@@ -16,7 +16,7 @@ def _load(path: Path) -> dict:
 def test_weight_policy_is_non_operational_until_scientific_gate_closes():
     policy = _load(POLICY_PATH)
 
-    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.16"
+    assert policy["policy_version"] == "multi-fidelity-admission-weight-v0.2.17"
     assert policy["policy_status"] == "design_only"
     assert policy["training_enabled"] is False
     assert policy["training_split_created"] is False
@@ -151,7 +151,14 @@ def test_gold_reference_admission_includes_reliable_computational_and_virtual_da
     assert gold["Gold-C"]["experimental_mapping_required_for_reference_admission"] is False
     assert gold["Gold-C"]["protocol_complete_required_for_conditional_reference"] is False
     assert gold["Gold-C"]["conditional_reference_can_preserve_numeric_outputs"] is True
-    assert {"dft", "md", "finite_element"} <= set(gold["Gold-C"]["admitted_origins"])
+    assert {
+        "dft",
+        "md",
+        "cfd",
+        "population_balance",
+        "reaction_kinetics_simulation",
+        "finite_element",
+    } <= set(gold["Gold-C"]["admitted_origins"])
     assert "low_fidelity_label" in gold["Gold-C"]["allowed_without_experimental_mapping"]
     assert gold["Gold-V"]["experimental_label_required_for_reference_admission"] is False
     assert gold["Gold-V"]["applicability_domain_required_for_conditional_reference"] is False

@@ -91,6 +91,11 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
             if row["canonical_structure"]:
                 assert row["canonical_structure"]
                 assert key.startswith("global_polymer_structure_")
+            elif source_id == "source_mendeley_pufoam_v1":
+                assert row["structure_identity_status"] == (
+                    "process_system_identity_only"
+                )
+                assert key == "family_pufoam_generic_nco_oh_water_npentane"
             else:
                 assert row["structure_identity_status"] == (
                     "formulation_label_with_molar_ratio_link_no_single_smiles"
@@ -105,7 +110,11 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
             assert row["training_weight"] == ""
             assert row["source_locator"]
             assert row["citation_keys"]
-            assert 0 <= float(row["potential_weight_ceiling"]) <= 0.25
+            ceiling = float(row["potential_weight_ceiling"])
+            if source_id == "source_mendeley_pufoam_v1":
+                assert 0 <= ceiling <= 0.30
+            else:
+                assert 0 <= ceiling <= 0.25
             if source_id != "source_omg_batch10":
                 non_omg_observation_ids.add(row["observation_id"])
             if row["property_name"] == "thermal_conductivity":
@@ -141,12 +150,13 @@ def generated_gold_c(generated_inventory_outputs: dict[str, str]) -> dict:
 def test_gold_c_long_table_contains_real_finite_source_values(
     generated_gold_c: dict,
 ):
-    assert generated_gold_c["row_count"] == 1_406_774
-    assert generated_gold_c["non_omg_observation_id_count"] == 214_874
+    assert generated_gold_c["row_count"] == 1_415_788
+    assert generated_gold_c["non_omg_observation_id_count"] == 223_888
     assert generated_gold_c["source_counts"] == {
         "source_github_radonpy_pi1070_840dd4a": 440,
         "source_polyomics_data": 209_905,
         "ledger_source_106": 5,
+        "source_mendeley_pufoam_v1": 9_014,
         "source_omg_batch10": 1_191_900,
         "source_openpolymer_challenge_v1": 4_524,
     }
@@ -155,6 +165,7 @@ def test_gold_c_long_table_contains_real_finite_source_values(
         "MD",
         "NEMD",
         "MD-derived",
+        "CFD-PBE-QMOM",
         "computational-protocol",
     } <= set(generated_gold_c["method_counts"])
     assert (
@@ -172,6 +183,12 @@ def test_gold_c_long_table_contains_real_finite_source_values(
     assert admissions[
         ("source_openpolymer_challenge_v1", "conditional_reference")
     ] == 4_135
+    assert admissions[
+        ("source_mendeley_pufoam_v1", "admitted_reference")
+    ] == 4_293
+    assert admissions[
+        ("source_mendeley_pufoam_v1", "conditional_reference")
+    ] == 4_721
 
 
 def test_polyomics_property_gate_preserves_failed_thermal_values_as_conditional(
@@ -284,11 +301,12 @@ def test_cross_source_structure_identity_is_shared_in_values_and_manifest(
             "multifidelity_gold_c_reference_not_training_dataset"
         ),
         "path": "结果/Gold_C_计算性能.csv.gz",
-        "row_count": 1_406_774,
+        "row_count": 1_415_788,
         "source_value_counts": {
             radon_id: 440,
             polyomics_id: 209_905,
             "ledger_source_106": 5,
+            "source_mendeley_pufoam_v1": 9_014,
             "source_omg_batch10": 1_191_900,
             "source_openpolymer_challenge_v1": 4_524,
         },

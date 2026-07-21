@@ -71,13 +71,13 @@ def _sha256(path: Path) -> str:
 def test_source_and_scientific_denominator_totals_are_frozen(inventory: dict):
     summary = inventory["summary"]
 
-    assert summary["ledger_source_scope_count"] == 77
-    assert summary["v0_2_source_directory_count"] == 69
-    assert summary["v0_2_independent_source_identity_count"] == 68
+    assert summary["ledger_source_scope_count"] == 78
+    assert summary["v0_2_source_directory_count"] == 70
+    assert summary["v0_2_independent_source_identity_count"] == 69
     assert summary["local_backlog_source_directory_count"] == 4
     assert summary["local_backlog_independent_source_identity_count"] == 4
     assert summary["v0_1_frozen_baseline_source_count"] == 4
-    assert summary["total_independent_source_contribution_count"] == 76
+    assert summary["total_independent_source_contribution_count"] == 77
     assert summary["strict_core_calibration_curve_count"] == 233
     assert summary["strict_core_calibration_curve_point_row_count"] == 935_097
     assert summary["strict_core_calibration_complete_point_pair_upper_bound"] == 935_095
@@ -160,6 +160,9 @@ def test_gold_reference_layer_is_machine_queryable_and_independent_of_weight(inv
         "aimd": "Gold-C",
         "md": "Gold-C",
         "coarse_grained_md": "Gold-C",
+        "cfd": "Gold-C",
+        "population_balance": "Gold-C",
+        "reaction_kinetics_simulation": "Gold-C",
         "finite_element": "Gold-C",
         "simulation_input": "Gold-C",
         "virtual": "Gold-V",
@@ -896,7 +899,7 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
     manifest_rows = _csv_rows(MANIFEST_PATH)
     report = REPORT_PATH.read_text(encoding="utf-8")
 
-    assert len(ledger_rows) == 77
+    assert len(ledger_rows) == 78
     assert len(manifest_rows) == inventory["summary"]["manifest_row_count"]
     for row in ledger_rows:
         assert row["source_scope_id"].strip()
@@ -910,6 +913,26 @@ def test_machine_and_human_ledgers_keep_traceable_source_citations(inventory: di
 
     assert "## 8. 数据来源参考文献" in report
     assert "https://doi.org/" in report
+
+
+def test_pufoam_keeps_one_computational_system_without_inventing_material_identity(
+    inventory: dict,
+):
+    row = next(
+        item
+        for item in inventory["source_ledger"]
+        if item["source_directory"] == "第十二批计算_PUFoam"
+    )
+    assert row["source_record_count"] == 250
+    assert row["material_count"] is None
+    assert row["formulation_count"] is None
+    assert row["run_count"] == 1
+    assert row["point_count_observed"] == 50
+    assert row["scalar_count_observed"] == 9_014
+    assert row["numeric_value_count"] == 9_014
+    assert row["computational_system_count"] == 1
+    assert row["weight_ceiling"] == 0.30
+    assert row["current_weight_materialized"] is False
 
 
 def test_gold_e_scalars_are_materialized_as_multifidelity_reference(
@@ -1015,7 +1038,7 @@ def test_two_runs_are_byte_reproducible_atomic_and_reconciled(
     report = REPORT_PATH.read_text(encoding="utf-8")
     assert payload["summary"]["audit_as_of_utc"] == "2026-07-21T14:00:00Z"
     assert len(payload["input_fingerprints"]) == payload["summary"]["input_file_count"]
-    assert len(ledger_rows) == len(payload["source_ledger"]) == 77
+    assert len(ledger_rows) == len(payload["source_ledger"]) == 78
     manifest_artifact = payload["record_manifest_artifact"]
     assert manifest_artifact == {
         "path": "结果/样本清单.csv.gz",
@@ -1036,7 +1059,7 @@ def test_source_profile_covers_every_open_data_directory():
     actual = {path.name for path in raw_root.iterdir() if path.is_dir()}
 
     assert len(profile["baseline_profiles"]) == 4
-    assert len(configured) == 69
+    assert len(configured) == 70
     assert configured == actual
     backlog = profile["local_backlog_profiles"]
     assert len(backlog) == 4

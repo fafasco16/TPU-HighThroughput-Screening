@@ -1,6 +1,6 @@
 schema_version: v0.2
 id_algorithm_version: uuid5-v1
-rules_version: v0.2-asset-rules-2026-07-21-rc31
+rules_version: v0.2-asset-rules-2026-07-21-rc32
 discovery_scope_key: local_raw_assets_v0.2
 
 scan:
@@ -4836,4 +4836,68 @@ rules:
     model_readiness_status: ineligible
     release_status: denied
     decision_basis: 工作簿成员、条件、测量列、零值、缺失时间和准入状态的确定性审计；统计产物不作为额外实验点。
+    review_required: true
+
+  - rule_id: twelfth_batch_pufoam_archive
+    priority: 2740
+    path_regex: '^外部数据/新增开放数据/第十二批计算_PUFoam/PUFoam\.tar\.gz$'
+    source_scope_key: scope_mendeley_pufoam_v1
+    artifact_role: computed_property_output
+    data_stage: raw
+    material_scope_hint: polyurethane_foam_process_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: Mendeley Data version 1固定归档，包含PUFoam源码、完整二维mixing-cup输入和0至50 s示例结果；哈希、成员路径和根内相对链接均由无解包审计器核验。
+    review_required: true
+
+  - rule_id: twelfth_batch_pufoam_metadata
+    priority: 2730
+    path_regex: '^外部数据/新增开放数据/第十二批计算_PUFoam/(?:官方元数据|论文Crossref元数据)\.json$'
+    source_scope_key: scope_mendeley_pufoam_v1
+    artifact_role: documentation
+    data_stage: metadata_only
+    material_scope_hint: polyurethane_foam_process_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: Mendeley固定版本、GPLv3标签、贡献者、数据DOI与CPC论文卷页/DOI的官方机器元数据快照。
+    review_required: true
+
+  - rule_id: twelfth_batch_pufoam_normalized
+    priority: 2720
+    path_regex: '^外部数据/新增开放数据/第十二批计算_PUFoam/Gold_C_过程观测长表\.tsv$'
+    source_scope_key: scope_mendeley_pufoam_v1
+    artifact_role: subset_view
+    data_stage: normalized
+    material_scope_hint: polyurethane_foam_process_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: not_assessed
+    release_status: denied
+    decision_basis: 250个官方体积平均值与8764个可复算标量场统计组成9014个Gold-C过程观测；全部共享一个simulation_key，时间点和场值不扩增为独立材料。
+    review_required: true
+
+  - rule_id: twelfth_batch_pufoam_audit
+    priority: 2710
+    path_regex: '^外部数据/新增开放数据/第十二批计算_PUFoam/(?:内容审计摘要\.json|文件校验清单\.tsv|来源说明\.md)$'
+    source_scope_key: scope_mendeley_pufoam_v1
+    artifact_role: documentation
+    data_stage: derived
+    material_scope_hint: polyurethane_foam_process_simulation
+    registration_status: discovered
+    availability_status: available
+    parse_status: parsed
+    scientific_admission_status: admitted
+    model_readiness_status: ineligible
+    release_status: denied
+    decision_basis: 固定归档哈希、成员安全、唯一算例、时间/场计数、单位和分组边界的确定性审计；统计产物不是额外模拟体系。
     review_required: true
