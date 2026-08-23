@@ -9,6 +9,7 @@ import shutil
 import socket
 import subprocess
 import time
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -75,6 +76,44 @@ def _software_version(executable: str) -> str:
     text = "\n".join((completed.stdout, completed.stderr))
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     return next((line for line in lines if "version" in line.lower()), "unknown")
+
+
+@contextmanager
+def slurm_concurrency_slot(root: Path, threads: int):
+    """按Slurm实际分配核数限制并发；非Slurm环境直接放行。
+
+    提交脚本可能在排队期间被管理员或 ``scontrol`` 下调 CPU 数。包装器用
+    文件锁把活跃 CREST 数限制为 ``SLURM_CPUS_PER_TASK // threads``，避免已
+    入队脚本中的较大 ``xargs -P`` 造成CPU超配。
+    """
+
+    allocated = os.environ.get("SLURM_CPUS_PER_TASK")
+    if not allocated or not os.environ.get("SLURM_JOB_ID"):
+        yield
+        return
+    slot_count = max(1, int(allocated) // max(1, int(threads)))
+    slot_root = root / ".并发槽"
+    slot_root.mkdir(parents=True, exist_ok=True)
+    import fcntl  # Linux/Slurm only; intentionally imported lazily for Windows tests.
+
+    handle = None
+    while handle is None:
+        for index in range(slot_count):
+            candidate = (slot_root / f"slot_{index:03d}.lock").open("a+", encoding="ascii")
+            try:
+                fcntl.flock(candidate.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                candidate.close()
+                continue
+            handle = candidate
+            break
+        if handle is None:
+            time.sleep(1.0)
+    try:
+        yield
+    finally:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        handle.close()
 
 
 def run_task(root: Path, index: int, threads: int, crest_executable: str) -> dict[str, Any]:
@@ -189,7 +228,9 @@ def main() -> None:
     parser.add_argument("--线程", type=int, default=4)
     parser.add_argument("--crest", default="crest")
     args = parser.parse_args()
-    run_task(args.根目录.resolve(), args.索引, args.线程, args.crest)
+    root = args.根目录.resolve()
+    with slurm_concurrency_slot(root, args.线程):
+        run_task(root, args.索引, args.线程, args.crest)
 
 
 if __name__ == "__main__":

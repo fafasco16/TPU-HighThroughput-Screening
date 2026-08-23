@@ -115,6 +115,15 @@ def test_completed_task_is_skipped_when_hash_matches(tmp_path):
     assert runner.should_skip(state, "abc", result) is True
 
 
+def test_concurrency_slot_is_transparent_outside_slurm(tmp_path, monkeypatch):
+    monkeypatch.delenv("SLURM_JOB_ID", raising=False)
+    monkeypatch.delenv("SLURM_CPUS_PER_TASK", raising=False)
+    with runner.slurm_concurrency_slot(tmp_path, threads=4):
+        marker = tmp_path / "inside"
+        marker.write_text("ok", encoding="ascii")
+    assert marker.read_text(encoding="ascii") == "ok"
+
+
 def _runner_root(tmp_path: Path, geometry_status: str = "ready") -> Path:
     root = tmp_path / "remote"
     (root / "初始结构").mkdir(parents=True)

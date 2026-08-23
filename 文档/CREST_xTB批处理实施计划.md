@@ -4,7 +4,7 @@
 
 **Goal:** 把 48 条 DFT 复核配方去重成 86 个唯一构件，在 Slurm 服务器上生成可断点续算的 CREST/GFN2-xTB 构象筛选任务，并输出可回填数据库的状态与结果表。
 
-**Architecture:** 本地仓库负责从已发布队列确定性生成任务清单和三维初始结构；服务器沿用仓库的 `代码/候选/计算` 浅层目录，轨迹与日志放在 `计算/结果` 和 `计算/日志`。集群按整节点而非CPU粒度分配，故只提交一个128 CPU作业：先在同一节点运行2个烟雾任务，通过后32路并行执行构件任务，每路4 CPU。Python包装器记录输入/输出哈希、版本、退出码和完成状态。ORCA/r2SCAN-3c 未安装，因此只启动Tier-1a，Tier-1b保持软件门状态。
+**Architecture:** 本地仓库负责从已发布队列确定性生成任务清单和三维初始结构；服务器沿用仓库的 `代码/候选/计算` 浅层目录，轨迹与日志放在 `计算/结果` 和 `计算/日志`。实际队列显示运行作业多为16–64核，故Job 8307从128核降为32核并保留原Job ID与排队年龄；先运行2个烟雾任务，通过后8路并行执行构件任务，每路4 CPU。Python包装器另按Slurm实际分配核数加并发锁，记录输入/输出哈希、版本、退出码和完成状态。ORCA/r2SCAN-3c 未安装，因此只启动Tier-1a，Tier-1b保持软件门状态。
 
 **Tech Stack:** Python 3.11、Pandas、RDKit、CREST 3.0.2、xTB 6.7.1、Slurm。
 
@@ -101,7 +101,7 @@ Expected: FAIL，因为汇总器尚不存在。
 
 - [ ] **Step 3: Write minimal implementation**
 
-Slurm 固定 `--partition=192c`、`--cpus-per-task=128`、`--time=1-00:00:00`，激活 `/home/zhanhao/software/quantum-cpu`。脚本先并行运行索引0和44，通过后由`xargs -P 32`调度全部索引，每路4线程。集群将节点 `RealMemory` 错配为1 MiB，故不能声明常规 `--mem`，实际内存通过节点 `FreeMem` 监控。汇总器读取每个 `运行状态.json`，输出 `计算/CREST运行汇总.csv`，并保留失败原因、运行时间、版本和哈希。
+Slurm 固定 `--partition=192c`、`--cpus-per-task=32`、`--time=1-00:00:00`，激活 `/home/zhanhao/software/quantum-cpu`。脚本先并行运行索引0和44，通过后由`xargs -P 8`调度全部索引，每路4线程。集群将节点 `RealMemory` 错配为1 MiB，故不能声明常规 `--mem`，实际内存通过节点 `FreeMem` 监控。汇总器读取每个 `运行状态.json`，输出 `计算/CREST运行汇总.csv`，并保留失败原因、运行时间、版本和哈希。
 
 - [ ] **Step 4: Run test to verify it passes**
 

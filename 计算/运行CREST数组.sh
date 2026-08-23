@@ -3,7 +3,7 @@
 #SBATCH --partition=192c
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=128
+#SBATCH --cpus-per-task=32
 #SBATCH --time=1-00:00:00
 #SBATCH --chdir=/home/zhanhao/TPU高通量筛选
 #SBATCH --output=计算/日志/crest_%j.log
@@ -18,7 +18,7 @@ source "/home/zhanhao/software/miniforge3/etc/profile.d/conda.sh"
 conda activate "$ENV_ROOT"
 
 THREADS_PER_TASK=4
-MAX_PARALLEL_TASKS=32
+MAX_PARALLEL_TASKS=$((SLURM_CPUS_PER_TASK / THREADS_PER_TASK))
 
 export OMP_NUM_THREADS="$THREADS_PER_TASK"
 export MKL_NUM_THREADS=1
