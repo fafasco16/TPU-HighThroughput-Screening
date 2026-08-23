@@ -13,6 +13,9 @@
 | `候选组合库.csv` | 1,152 | 三组分的平衡轮转组合，不是全笛卡尔积。|
 | `可合成配方候选.csv.gz` | 9,216 | 组合 × 目标宏二醇 Mn（1000/2000）× 硬段质量分数（0.35/0.45）× NCO/OH（1.00/1.02）的计量闭合配方。|
 | `候选发布清单.json` | — | 冻结输入、配置、行数与所有输出文件的 SHA-256。|
+| `候选预审.csv.gz` | 9,216 | 每个虚拟配方的有限结构警示、采购/EHS/新颖性人工状态和实验准入门。|
+| `DFT_MD复核队列.csv` | 48 | 固定格点的结构多样性 DFT Tier-1 队列；不是性能前 48 名。|
+| `候选预审发布清单.json` | — | 预审输入、配置、输出文件 SHA-256 和解释边界。|
 
 这里的“可合成”只表示双官能端基、设定的 NCO/OH 与质量分数在计量上可闭合；它**不**表示已验证反应动力学、相容性、原料可采购性、EHS、纯化、分子量分布、加工窗口或实际性能。因此文件名中的“可合成配方候选”应理解为 *stoichiometrically feasible virtual formulation*，不是实验可直接下单的配方。
 
@@ -32,6 +35,10 @@ uv run python .\代码\生成候选配方.py
 
 # 核验发布哈希和计量闭合，不写文件
 uv run python .\代码\生成候选配方.py --检查
+
+# 生成并核验人工预审视图和 DFT Tier-1 队列
+uv run python .\代码\生成候选预审.py
+uv run python .\代码\生成候选预审.py --检查
 ```
 
 ```python
@@ -50,6 +57,8 @@ assert review_queue["dft_md_status"].eq("not_calculated").all()
 
 不能按 `performance_prediction_status` 排序：它目前全部是 `not_scored_by_baseline`。第一阶段模型在严格来源留出上没有显示出可直接用于跨来源发现的泛化能力，因此本阶段刻意不制造“高性能 Top-100”名单。下一步应以此空间为输入，先做适用域、可得性/EHS与文献新颖性预审，再建立 DFT/MD 复核队列。
 
+预审视图已把结构规则、外部事实和计算状态分开：结构规则只能触发 SDS/EHS 人工复核；采购和文献新颖性仍为 `not_checked`；48 条 DFT 队列全部为 `no_performance_claim`。其 `md_stage` 保持暂停，因为宏二醇仍是小分子代理，尚未闭合真实低聚物身份和 Mn/Mw/PDI。具体计算层级、字段和验收门见 [DFT/MD复核协议](../文档/DFT_MD复核协议.md)。
+
 ## 数据来源与论文引用
 
 本发布不新增外部数据。二异氰酸酯虚拟结构来自 PolyUniverse 固定 Zenodo 版本；二醇与宏二醇结构代理来自 SMiPoly 公开单体示例。论文或补充材料应引用原始作者与固定数据版本，而不是只引用本仓库：
@@ -57,5 +66,8 @@ assert review_queue["dft_md_status"].eq("not_calculated").all()
 1. Ohno, M.; Hayashi, Y.; Zhang, Q.; Kaneko, Y.; Yoshida, R. SMiPoly: Generation of a Synthesizable Polymer Virtual Library Using Rule-Based Polymerization Reactions. *Journal of Chemical Information and Modeling* **2023**, *63*, 5539–5548. https://doi.org/10.1021/acs.jcim.3c00329.
 2. Yue, T. PolyUniverse: Generation Results [Data set]; Zenodo, 2024. https://doi.org/10.5281/zenodo.12585902.
 3. Yue, T.; He, J.; Li, Y. Polyuniverse: Generation of a Large-Scale Polymer Library Using Rule-Based Polymerization Reactions for Polymer Informatics. *Digital Discovery* **2024**, *3*, 2465–2478. https://doi.org/10.1039/D4DD00196F.
+4. Bannwarth, C.; Ehlert, S.; Grimme, S. GFN2-xTB—An Accurate and Broadly Parametrized Self-Consistent Tight-Binding Quantum Chemical Method with Multipole Electrostatics and Density-Dependent Dispersion Contributions. *Journal of Chemical Theory and Computation* **2019**, *15*, 1652–1671. https://doi.org/10.1021/acs.jctc.8b01176.
+5. Pracht, P.; Bohle, F.; Grimme, S. Automated Exploration of the Low-Energy Chemical Space with Fast Quantum Chemical Methods. *Physical Chemistry Chemical Physics* **2020**, *22*, 7169–7192. https://doi.org/10.1039/C9CP06869D.
+6. Grimme, S.; Hansen, A.; Ehlert, S.; Mewes, J.-M. r2SCAN-3c: A “Swiss Army Knife” Composite Electronic-Structure Method. *The Journal of Chemical Physics* **2021**, *154*, 064103. https://doi.org/10.1063/5.0040021.
 
-完整项目引文键、许可证和定位信息见 [数据来源与参考文献](../文档/数据来源与参考文献.md) 的 `[7]`、`[135]`–`[137]` 与 [来源与引用](../结果/可用数据集/来源与引用.csv)。源数据的 `CC BY 4.0` / `BSD-3-Clause` 条件与本候选发布无关的第三方材料采购、生产和商业使用许可必须另行确认。
+完整项目引文键、许可证和定位信息见 [数据来源与参考文献](../文档/数据来源与参考文献.md) 的 `[7]`、`[135]`–`[137]`、`[145]`–`[146]`、`[151]` 和 `[177]`–`[179]`，以及 [来源与引用](../结果/可用数据集/来源与引用.csv)。源数据的 `CC BY 4.0` / `BSD-3-Clause` 条件与本候选发布无关的第三方材料采购、生产和商业使用许可必须另行确认。
