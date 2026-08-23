@@ -1,0 +1,171 @@
+schema_version: v0.2
+catalog_version: tpu-v02-rules/0.2.0
+rules:
+  V02-CONTRACT-001:
+    version: 1
+    scope: schema_version
+    default_severity: blocking
+    blocking_profiles: [contract_freeze]
+    implementation_ref: contract.validate_contract_bundle
+    test_ids: [test_contract_bundle_accepts_complete_minimum]
+  V02-CONTRACT-002:
+    version: 1
+    scope: enum_reference
+    default_severity: blocking
+    blocking_profiles: [contract_freeze]
+    implementation_ref: schema.validate_schema_definition
+    test_ids: [test_contract_bundle_rejects_structural_errors]
+  V02-CONTRACT-003:
+    version: 1
+    scope: primary_key
+    default_severity: blocking
+    blocking_profiles: [contract_freeze]
+    implementation_ref: schema.validate_schema_definition
+    test_ids: [test_contract_bundle_rejects_structural_errors]
+  V02-CONTRACT-004:
+    version: 1
+    scope: foreign_key
+    default_severity: blocking
+    blocking_profiles: [contract_freeze]
+    implementation_ref: contract.validate_contract_bundle
+    test_ids: [test_contract_bundle_rejects_structural_errors]
+  V02-CONTRACT-005:
+    version: 1
+    scope: unique_check_conditional
+    default_severity: blocking
+    blocking_profiles: [contract_freeze]
+    implementation_ref: contract.validate_contract_bundle
+    test_ids: [test_contract_bundle_rejects_structural_errors]
+  V02-CONTRACT-006:
+    version: 1
+    scope: arrow_duckdb_type
+    default_severity: blocking
+    blocking_profiles: [contract_freeze]
+    implementation_ref: contract.validate_contract_bundle
+    test_ids: [test_contract_bundle_rejects_structural_errors]
+  V02-ID-001:
+    version: 1
+    scope: stable_identity
+    default_severity: blocking
+    blocking_profiles: [contract_freeze, snapshot_freeze]
+    implementation_ref: record_identity.stable_record_uid
+    test_ids: [test_uuid5_identity_is_canonical_and_snapshot_independent]
+  V02-HASH-001:
+    version: 1
+    scope: logical_hash
+    default_severity: blocking
+    blocking_profiles: [contract_freeze, snapshot_freeze]
+    implementation_ref: logical_hash.table_logical_hash
+    test_ids: [test_table_logical_hash_is_row_order_independent_with_declared_key]
+  V02-ID-REGISTRY-001:
+    version: 1
+    scope: record_registry_identity_recomputation
+    default_severity: blocking
+    blocking_profiles: [contract_freeze, snapshot_freeze]
+    implementation_ref: contract.validate_record_identity_rows
+    test_ids: [test_record_identity_qc_recomputes_json_digest_algorithm_and_uuid5]
+  V02-REVISION-001:
+    version: 1
+    scope: record_revision_recomputation_and_chain
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: contract.validate_revision_chains
+    test_ids: [test_revision_qc_recomputes_content_hash_revision_uuid_and_chain]
+  V02-SNAPSHOT-001:
+    version: 1
+    scope: snapshot_contract_hash_revision_and_approval
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: contract.validate_snapshot_integrity
+    test_ids: [test_snapshot_qc_checks_real_contract_hashes_revision_schema_and_approval]
+  V02-STATUS-001:
+    version: 1
+    scope: immutable_status_events_and_snapshot_assignment
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: contract.validate_status_history
+    test_ids: [test_status_qc_rejects_axis_value_mismatch_and_broken_event_selection]
+  V02-LINEAGE-001:
+    version: 1
+    scope: lineage_acyclic_conversion_and_original_reachability
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze, model_release]
+    implementation_ref: contract.validate_lineage_integrity
+    test_ids: [test_lineage_qc_requires_successful_transform_and_reachability_to_original_file]
+  V02-RIGHTS-001:
+    version: 1
+    scope: rights_decision_evidence_closure
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze, model_release, public_release]
+    implementation_ref: contract.validate_rights_decision_closure
+    test_ids: [test_rights_closure_qc_recomputes_rows_ancestry_archive_state_and_hash]
+  V02-RIGHTS-ARCHIVE-001:
+    version: 1
+    scope: rights_archive_body_hash_path_and_verification
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze, model_release, public_release]
+    implementation_ref: contract.validate_rights_evidence_archives
+    test_ids: [test_rights_archive_qc_rejects_unverified_body_or_unsafe_archive_path]
+  V02-EQUIVALENCE-001:
+    version: 1
+    scope: equivalence_snapshot_membership_and_canonical
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze, model_release]
+    implementation_ref: contract.validate_equivalence_integrity
+    test_ids: [test_equivalence_qc_rejects_missing_or_multiple_canonical_membership]
+  V02-FAMILY-001:
+    version: 1
+    scope: source_family_evidence_and_scope_tree
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze, model_release]
+    implementation_ref: contract.validate_source_family_integrity
+    test_ids: [test_source_family_and_supersession_qc_reject_cycles_and_cross_object_links]
+  V02-SUPERSESSION-001:
+    version: 1
+    scope: supersession_same_object_and_acyclic
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: contract.validate_supersession_chains
+    test_ids: [test_source_family_and_supersession_qc_reject_cycles_and_cross_object_links]
+  V02-COUNT-001:
+    version: 1
+    scope: frozen_count_file_scope_hash_and_recount
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: contract.validate_frozen_count_assertions
+    test_ids: [test_frozen_count_qc_requires_same_file_scope_hash_and_successful_recount]
+  V02-LOCATOR-001:
+    version: 1
+    scope: locator_canonical_json_hash_and_type_shape
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: contract.validate_locator_rows
+    test_ids: [test_locator_qc_recomputes_canonical_json_hash_and_type_shape]
+  V02-CITATION-001:
+    version: 1
+    scope: citation_reference_text_authors_and_structured_exports
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze, manuscript_release]
+    implementation_ref: contract.validate_citation_rows
+    test_ids: [test_citation_qc_requires_full_reference_and_nonempty_article_authors]
+  V02-ASSET-AUDIT-001:
+    version: 1
+    scope: asset_build_reconciliation
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: build_verification.audit_asset_build
+    test_ids: [test_asset_audit_accepts_complete_reconciled_provisional_build, test_asset_audit_rejects_nonpassing_or_inconsistent_reports]
+  V02-BUILD-REPEAT-001:
+    version: 1
+    scope: independent_double_build_identity
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: build_verification.compare_asset_builds
+    test_ids: [test_compare_asset_builds_requires_byte_and_logical_identity, test_compare_asset_builds_fails_closed_for_missing_or_different_outputs]
+  V02-FROZEN-BASELINE-001:
+    version: 1
+    scope: v01_frozen_snapshot_read_only_regression
+    default_severity: blocking
+    blocking_profiles: [snapshot_freeze]
+    implementation_ref: build_verification.verify_v01_baseline
+    test_ids: [test_verify_v01_baseline_is_read_only_and_checks_all_declared_hashes, test_verify_v01_baseline_rejects_snapshot_or_content_drift]

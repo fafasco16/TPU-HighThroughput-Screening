@@ -1,0 +1,21 @@
+release_id: tpu-candidate-precheck-2026-08-23-v1
+source_candidate_release_id: tpu-virtual-formulation-2026-07-22-v1
+
+manual_review:
+  procurement_status: not_checked
+  ehs_status: requires_sds_and_local_EHS_review
+  literature_novelty_status: not_checked
+  experimental_eligibility: blocked_pending_manual_review
+
+dft_queue:
+  queue_size: 48
+  macrodiol_nominal_mn_g_mol: 2000.0
+  hard_segment_mass_fraction_target: 0.45
+  nco_oh_ratio_target: 1.02
+  fingerprint_radius: 2
+  fingerprint_bits: 512
+  dft_stage: tier1_monomer_reactivity_and_conformer_screen
+  dft_protocol_id: TPU-DFT-T1-v1
+  md_stage: on_hold_pending_real_macrodiol_identity_Mn_Mw_PDI
+  queue_selection_basis: component_union_morgan_maxmin_diversity
+  performance_claim_status: no_performance_claim

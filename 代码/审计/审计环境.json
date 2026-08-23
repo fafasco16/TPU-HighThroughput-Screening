@@ -1,0 +1,26 @@
+{
+  "schema_version": "tpu-source-audit-environment-v1",
+  "validated_on": "2026-07-20",
+  "python": {
+    "tested_version": "3.12.13",
+    "dependency_group": "independent_requirements_lock",
+    "lock_file": "代码/审计/requirements.lock",
+    "lock_sha256": "429088beeea5924ca01c556e9ff71362a215b6cf1f2574a5ee71a5a307b60acf",
+    "target_platform": "x86_64-pc-windows-msvc",
+    "hashes_required": true,
+    "root_project_isolated": true
+  },
+  "uv": {
+    "tested_version": "0.11.14"
+  },
+  "node": {
+    "tested_version": "24.15.0"
+  },
+  "artifact_tool": {
+    "package": "@oai/artifact-tool",
+    "tested_version": "2.8.24",
+    "source": "codex_workspace_runtime",
+    "locked_by_repository": false,
+    "version_change_gate": "rerun_two_complete_audits_and_compare_all_output_sha256"
+  }
+}

@@ -1,0 +1,46 @@
+schema_version: v0.2
+id_algorithm_version: uuid5-v1
+tables:
+  source_scope:
+    description: 最小来源范围夹具
+    primary_key: [source_scope_id]
+    unique_constraints:
+      - name: uq_source_scope_identity
+        fields: [scope_kind, canonical_identifier, version_label]
+    fields:
+      source_scope_id: {description: 来源范围稳定标识, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      scope_kind: {description: 来源范围类别, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      canonical_identifier: {description: 来源规范标识, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      version_label: {description: 来源版本标签, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+  record_registry:
+    description: 最小稳定记录登记夹具
+    primary_key: [record_uid]
+    unique_constraints:
+      - name: uq_record_identity
+        fields: [entity_type, identity_key_sha256, id_algorithm_version]
+    checks:
+      - name: ck_identity_sha256
+        expression: "length(identity_key_sha256) = 64"
+    fields:
+      record_uid: {description: 稳定记录标识, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      entity_type: {description: 记录实体类别, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      identity_key_sha256: {description: 身份键摘要, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      id_algorithm_version: {description: 标识算法版本, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+  snapshot_record:
+    description: 最小快照选择夹具
+    primary_key: [snapshot_id, record_uid]
+    foreign_keys:
+      - name: fk_snapshot_record_registry
+        fields: [record_uid]
+        references: {table: record_registry, fields: [record_uid]}
+        cardinality: many_to_one
+        on_delete: restrict
+    fields:
+      snapshot_id: {description: 快照标识, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      record_uid: {description: 稳定记录标识, type: string, required: true, arrow_type: string, duckdb_type: VARCHAR}
+      registration_status: {description: 登记生命周期状态, type: string, required: true, enum: registration_status, arrow_type: string, duckdb_type: VARCHAR}
+conditional_required:
+  - name: cr_registered_identity
+    table: snapshot_record
+    when: {field: registration_status, equals: registered}
+    require: [record_uid]

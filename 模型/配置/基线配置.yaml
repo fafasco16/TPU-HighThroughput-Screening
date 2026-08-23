@@ -1,0 +1,71 @@
+release:
+  id: tpu-usable-2026-07-21-v1
+  manifest: 发布清单.json
+
+computational_task:
+  task_id: 计算_结构多任务预训练
+  targets:
+    - name: Rg
+      unit: angstrom
+      role: primary_baseline
+    - name: density
+      unit: g/cm^3
+      role: primary_baseline
+    - name: bulk_modulus
+      unit: Pa
+      role: primary_baseline
+    - name: thermal_conductivity
+      unit: W/(m*K)
+      role: primary_baseline
+    - name: Tg
+      unit: degC
+      role: exploratory_only
+  training_modes:
+    - primary_only
+    - primary_plus_aux
+  minimum_groups:
+    train: 100
+    validation: 20
+    test: 20
+  source_holdout_minimum_groups:
+    train: 100
+    validation: 20
+    test: 50
+
+features:
+  morgan_radius: 2
+  morgan_bits: 512
+
+ridge:
+  alphas:
+    - 0.01
+    - 0.1
+    - 1.0
+    - 10.0
+
+curves:
+  task_id: 实验_曲线建模
+  derive_only_when_release_model_ready: true
+
+pue643:
+  enabled: true
+  source_family_id: family_pue643
+  source_id: source_sciencedb_pue643_v1
+  condition_name: published_input_feature_vector
+  targets:
+    - logYM
+    - logTS
+    - logEB
+  expected_input_fields: 20
+  categorical_fields:
+    - Form_Method
+    - PMStep
+  split_seed: 20260722
+  minimum_groups:
+    train: 100
+    validation: 20
+    test: 20
+
+run:
+  random_seed: 20260722
+  csv_float_format: "%.12g"

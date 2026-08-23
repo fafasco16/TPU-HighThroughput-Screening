@@ -1,0 +1,92 @@
+{
+  "counts": {
+    "active_source_count": 27,
+    "active_source_family_count": 26,
+    "candidate_rows": 117629,
+    "computational_hard_groups": 55760,
+    "computational_model_ready_rows": 1378201,
+    "computational_rows": 1435243,
+    "curve_count": 201,
+    "experimental_hard_groups": 818,
+    "experimental_model_ready_rows": 214704,
+    "experimental_rows": 305108,
+    "linear_tpu_building_blocks": 8365,
+    "screening_ready_candidates": 110807,
+    "task_count": 6
+  },
+  "input_files": {
+    "Gold-C": {
+      "bytes": 43283304,
+      "path": "结果/Gold_C_计算性能.csv.gz",
+      "sha256": "dfa5c0c1939f15e7607687c1f0cfc0ae40b5d9f41e2a5417ab9ded8550cbf63d"
+    },
+    "Gold-E": {
+      "bytes": 9231215,
+      "path": "结果/Gold_E_实验表格.csv.gz",
+      "sha256": "0bf46480d6263d61c5630a854842929e7194f9cbe08159917e9b852ce280de3e"
+    },
+    "Gold-V": {
+      "bytes": 5914090,
+      "path": "结果/Gold_V_候选.csv.gz",
+      "sha256": "f9d1b873b37f2c97252f9ae5806e9657a80bd35038b24d1f8beacb090c819900"
+    },
+    "来源总账": {
+      "bytes": 96716,
+      "path": "结果/数据规模总账.csv",
+      "sha256": "e2c2a5d3d18a4b43d9784b2df938993bca5e37d50e5ffbb33dd28086a710bf1e"
+    }
+  },
+  "output_files": {
+    "任务清单": {
+      "bytes": 2982,
+      "path": "结果/可用数据集/任务清单.csv",
+      "sha256": "ade1236e3112a9c4b822d1ba323054605562cd1f998ab024ddd0d524a26d9b33"
+    },
+    "使用说明": {
+      "bytes": 9652,
+      "path": "结果/可用数据集/README.md",
+      "sha256": "80f240d03e4c57cdfe7755a53e1a555d9b35ffad0c3cdbd6945e1f94dfec179e"
+    },
+    "候选结构": {
+      "bytes": 5787359,
+      "path": "结果/可用数据集/候选结构.csv.gz",
+      "sha256": "e5c9691e672f7dc6e5f47d63250daceb8fc989ef43fc40a4134db924a8dc3787"
+    },
+    "字段字典": {
+      "bytes": 30449,
+      "path": "结果/可用数据集/字段字典.csv",
+      "sha256": "1ef9311aa9c4a56a9f7dc865ea04b7fbe9d6843df7ac7a1055c151bfa6848c62"
+    },
+    "实验观测": {
+      "bytes": 9248584,
+      "path": "结果/可用数据集/实验观测.csv.gz",
+      "sha256": "4c943e96c247276a6d00ecf007fc7bfd4e706698e5ca8db112b035921c06b3f3"
+    },
+    "曲线索引": {
+      "bytes": 125771,
+      "path": "结果/可用数据集/曲线索引.csv",
+      "sha256": "26cc78606874fd2b7925fe795c6723ccaf8569c0e2f95086a2827f79d1cdf61f"
+    },
+    "来源与引用": {
+      "bytes": 21784,
+      "path": "结果/可用数据集/来源与引用.csv",
+      "sha256": "0cfcb7f5dd1886e803a8290b80e614439da8812e9fd352bb63122476eeeca148"
+    },
+    "计算观测": {
+      "bytes": 47203198,
+      "path": "结果/可用数据集/计算观测.csv.gz",
+      "sha256": "0c8f5888034ca2d746063539a8780df284d6697e44b0ba71c698eaecfbba6918"
+    }
+  },
+  "release_id": "tpu-usable-2026-07-21-v1",
+  "schema_version": "1.0.0",
+  "source_reference_layers_are_immutable": true,
+  "split_seed": "tpu-usable-split-v1",
+  "weight_policy": {
+    "conditional_reference": "eligible only as explicitly labeled auxiliary_train when units and value semantics are usable",
+    "context": "input descriptors remain present with zero loss weight",
+    "curve_and_repeated_unit_rule": "rows in one task-property-independent_unit share one total budget",
+    "loss": "potential_weight_ceiling * quality_factor * role_factor * independence_weight",
+    "sampling": "equal total probability per active source within each task"
+  }
+}

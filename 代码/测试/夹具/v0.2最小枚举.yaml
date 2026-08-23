@@ -1,0 +1,4 @@
+schema_version: v0.2
+enums:
+  registration_status: [discovered, registered, excluded_with_evidence]
+  scientific_use_class: [primary_experimental, primary_computational, auxiliary, representation, validation, audit_only, blocked]

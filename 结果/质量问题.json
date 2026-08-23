@@ -1,0 +1,32 @@
+{
+  "checks": [
+    "primary_key",
+    "provenance",
+    "finite_values",
+    "lineage_split",
+    "curve_point_count",
+    "unit_status",
+    "derived_coverage",
+    "public_release_license"
+  ],
+  "issue_counts": {
+    "warning": 2
+  },
+  "issues": [
+    {
+      "message": "28 条记录缺少足够单位证据；许可可发布不等于模型就绪",
+      "record_id": "count=28",
+      "rule_id": "unit.unresolved",
+      "severity": "warning",
+      "table_name": "curve"
+    },
+    {
+      "message": "1036 条记录缺少足够单位证据；许可可发布不等于模型就绪",
+      "record_id": "count=1036",
+      "rule_id": "unit.unresolved",
+      "severity": "warning",
+      "table_name": "curve_point"
+    }
+  ],
+  "snapshot_id": "snapshot_70ad15e95295f065"
+}

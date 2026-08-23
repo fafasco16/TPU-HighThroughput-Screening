@@ -1,0 +1,194 @@
+﻿file_name,field_name,dtype,nullable,allowed_values_if_small_enum,definition
+候选结构.csv.gz,release_id,object,False,tpu-usable-2026-07-21-v1,可用数据集冻结版本
+候选结构.csv.gz,gold_layer,object,False,Gold-V,来源参考层：Gold-V、Gold-C或Gold-E
+候选结构.csv.gz,candidate_id,object,False,,稳定候选结构主键
+候选结构.csv.gz,source_id,object,False,ds_smipoly_monomers | source_omg_batch10 | source_openpolymer_challenge_v1 | source_zenodo_11612378_purgen_fragments | source_zenodo_12585902_polyuniverse_pu,来源或物化视图标识
+候选结构.csv.gz,source_family_id,object,False,family_omg_batch10 | family_openpolymer_challenge_2025 | family_polyuniverse_virtual_polymers | family_purgen_virtual_fragments | family_smipoly,同一论文、数据集及附件共享的来源族
+候选结构.csv.gz,source_record_id,object,False,,来源内部记录标识
+候选结构.csv.gz,source_locator,object,False,,可复核到原始文件、数据记录或行的定位信息
+候选结构.csv.gz,preferred_name,object,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,raw_smiles,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,canonical_smiles,object,False,,候选结构的规范SMILES或pSMILES
+候选结构.csv.gz,inchikey,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,molecular_formula_calculated,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,molecular_weight_calculated_g_mol,float64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,exact_mass_g_mol,float64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,formal_charge,int64,False,-1 | -2 | -3 | -4 | -5 | -6 | 0 | 1 | 2 | 3,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,isocyanate_group_count,int64,False,0 | 1 | 2 | 3 | 4 | 5 | 6,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,hydroxyl_group_count,int64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,amine_group_count,int64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,thiol_group_count,int64,False,0 | 1 | 12 | 2 | 3 | 4 | 6 | 7,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,carboxylic_acid_group_count,int64,False,0 | 1 | 14 | 2 | 25 | 3 | 4 | 5 | 6 | 7,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,cyclic_carbonate_group_count,int64,False,0 | 1 | 3,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,epoxide_group_count,int64,False,0 | 1 | 11 | 18 | 2 | 3 | 4 | 5 | 6 | 7,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,tpu_role,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,role_confidence,object,False,none | reference_only | rule_high | rule_medium | source_defined_high | transfer_medium,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,screening_scope,object,False,adjacent_model_compound | adjacent_reactive_building_block | direct_tpu_building_block | general_polymer_md_transfer_reference | mixture_or_salt_reference | not_synthesis_candidate | polyol_synthesis_precursor | tpuu_or_nipu_building_block | unresolved | virtual_polyurethane_fragment | virtual_tpu_repeat_unit_candidate,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,screening_priority,int64,False,1 | 2 | 3 | 4 | 5 | 9,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,functional_group_match,bool,False,False | True,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,candidate_use,object,False,adjacent_chemistry | direct_building_block | reference_only | transfer_reference | virtual_repeat_unit,直接构件、虚拟重复单元、相邻化学或迁移参考
+候选结构.csv.gz,screening_ready,bool,False,False | True,候选是否通过结构级初筛门
+候选结构.csv.gz,linear_component_class,object,False, | chain_extender_diol | diisocyanate | macrodiol,线性TPU主路线的二异氰酸酯、二醇扩链剂或宏二醇
+候选结构.csv.gz,linear_tpu_building_block_ready,bool,False,False | True,是否通过中性、单组分、双官能且无竞争官能团门
+候选结构.csv.gz,candidate_priority_weight,float64,False,0.0 | 0.05 | 0.125 | 0.5 | 0.75 | 1.0,仅用于候选排序的先验权重，不能进入性能监督
+候选结构.csv.gz,development_split,object,False,test | train | validation,按hard_group固定生成的train/validation/test
+候选结构.csv.gz,source_holdout_fold,int64,False,0 | 2 | 3 | 4,按来源族固定生成的五折严格外推编号
+候选结构.csv.gz,structure_status,object,False,rdkit_validated | rdkit_validated_mixture_or_salt_reference | rdkit_validated_not_synthesis_candidate | rdkit_validated_polymer_psmiles;inchikey_formula_and_descriptors_from_methyl_capped_proxy | rdkit_validated_strict,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,gold_admission_status,object,False,admitted_reference | conditional_reference,参考层准入状态
+候选结构.csv.gz,data_origin,object,False,enumeration | reaction_rule_generated | virtual,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,fidelity_level,object,False,candidate_fragment_3d | candidate_structure,实验/计算/虚拟数据的保真度描述
+候选结构.csv.gz,prediction_uncertainty,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,generation_rule_version,object,False,OMG-v1.0b-reaction_idx-6 | OpenPolymerChallenge-v1-official-test | polyuniverse-dinco-audit-v2 | purgen-fragment-audit-v1 | smipoly-rdkit-role-v1,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+候选结构.csv.gz,license_spdx,object,True,BSD-3-Clause | CC-BY-4.0 | GPL-3.0-or-later | MIT,候选来源的SPDX许可证
+候选结构.csv.gz,license_status,object,False,allow_with_attribution | manual_review,来源总账中的训练/再分发权利状态
+计算观测.csv.gz,release_id,object,False,tpu-usable-2026-07-21-v1,可用数据集冻结版本
+计算观测.csv.gz,gold_layer,object,False,Gold-C,来源参考层：Gold-V、Gold-C或Gold-E
+计算观测.csv.gz,task_id,object,False,上下文_仅作输入 | 计算_结构多任务预训练 | 计算_过程代理模型,推荐使用任务；不同任务不可无条件混合
+计算观测.csv.gz,usage_mode,object,False,auxiliary_train | context_only | primary_train | reference_only,primary_train、auxiliary_train、context_only或reference_only
+计算观测.csv.gz,model_ready,bool,False,False | True,是否通过当前任务的数值、单位、角色和权重门
+计算观测.csv.gz,source_id,object,False,ledger_source_106 | source_figshare_ma5c03283_si | source_github_radonpy_pi1070_840dd4a | source_mendeley_n9h66xjk7y_v1 | source_mendeley_pufoam_v1 | source_omg_batch10 | source_openpolymer_challenge_v1 | source_polyomics_data,来源或物化视图标识
+计算观测.csv.gz,source_family_id,object,False,family_mendeley_aged_vegetable_puf | family_multicomponent_pu_multiscale_2026 | family_omg_batch10 | family_openpolymer_challenge_2025 | family_polyomics | family_pufoam_2017 | family_radonpy_pi1070 | family_tpu_dual_phase_evolution,同一论文、数据集及附件共享的来源族
+计算观测.csv.gz,source_record_id,object,False,,来源内部记录标识
+计算观测.csv.gz,observation_id,object,False,,逐观测稳定主键
+计算观测.csv.gz,canonical_structure,object,True,,计算体系使用的规范聚合物结构表示
+计算观测.csv.gz,system_identity,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,structure_identity_status,object,False,coarse_grained_component_family_only_exact_atomistic_graph_unresolved | exact_polymer_smiles | formulation_label_with_molar_ratio_link_no_single_smiles | process_system_identity_only | rdkit_validated_methyl_terminated_constitutional_repeat_unit | rdkit_validated_polymer_psmiles | single_nominal_formulation_commercial_component_identity_only_exact_structure_unresolved,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,global_structure_family_key,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,simulation_key,object,False,,一次可复算模拟或计算体系标识
+计算观测.csv.gz,record_role,object,False,computational_feature_or_mechanistic_reference | computational_target | derived_spatial_summary | polymer_transfer_computational_reference | sensitivity_input_descriptor | sensitivity_output | simulation_curve_derived_scalar | simulation_input_descriptor | simulation_output | source_native_volume_average | tpu_core_computational_reference,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,target_role,object,False,computational_feature_or_mechanistic_reference | computational_target | derived_spatial_summary | polymer_transfer_computational_reference | sensitivity_input_descriptor | sensitivity_output | simulation_curve_derived_scalar | simulation_input_descriptor | simulation_output | source_native_volume_average | tpu_core_computational_reference,该行在任务中的目标/辅助/输入语义
+计算观测.csv.gz,property_name,object,False,,原始且已审计的性质名称
+计算观测.csv.gz,value,float64,False,,数值，语义由property_name与unit共同确定
+计算观测.csv.gz,unit,object,False,,来源单位或已规范化单位
+计算观测.csv.gz,unit_status,object,False,,计算记录单位解析状态
+计算观测.csv.gz,method_family,object,False,,DFT、MD、NEMD、FEA、CFD/PBE等方法族
+计算观测.csv.gz,method_detail,object,False,,计算方法、软件或协议细节
+计算观测.csv.gz,temp,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,press,float64,True,1.0,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,fidelity_level,object,False,,实验/计算/虚拟数据的保真度描述
+计算观测.csv.gz,gold_admission_status,object,False,admitted_reference | conditional_reference,参考层准入状态
+计算观测.csv.gz,property_admission_status,object,False,admitted_reference | conditional_reference,计算性质的任务级准入状态
+计算观测.csv.gz,source_validation_status,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+计算观测.csv.gz,leakage_group,object,False,,结构、模拟、曲线、样品和配方传递闭包后的硬分组
+计算观测.csv.gz,development_split,object,False,test | train | validation,按hard_group固定生成的train/validation/test
+计算观测.csv.gz,source_holdout_fold,int64,False,0 | 2 | 4,按来源族固定生成的五折严格外推编号
+计算观测.csv.gz,independent_unit,object,False,,权重归一所用的曲线、样品或模拟单位
+计算观测.csv.gz,potential_weight_ceiling,float64,False,0.0 | 0.1 | 0.15 | 0.2 | 0.25 | 0.3,Gold参考层给出的潜在权重上限
+计算观测.csv.gz,quality_factor,float64,False,0.0 | 0.25 | 0.35 | 1.0,正式/条件及目标角色对应的任务质量因子
+计算观测.csv.gz,role_factor,float64,False,0.0 | 0.5 | 0.6 | 1.0,直接目标、迁移或上下文角色因子
+计算观测.csv.gz,independence_weight,float64,False,0.0 | 0.02 | 0.021739130434782608 | 0.022222222222222223 | 0.2 | 0.25 | 0.3333333333333333 | 0.5 | 1.0,同一独立单元同性质的重复/点数归一因子
+计算观测.csv.gz,recommended_loss_weight,float64,False,,建议损失权重，不回写原Gold层
+计算观测.csv.gz,source_balanced_sampling_probability,float64,False,,任务内各有效来源总概率相等的抽样概率
+计算观测.csv.gz,license_status,object,False,allow_with_attribution | manual_review,来源总账中的训练/再分发权利状态
+计算观测.csv.gz,source_locator,object,False,,可复核到原始文件、数据记录或行的定位信息
+计算观测.csv.gz,citation_keys,object,False,ledger-020-polyomics-2025;ledger-151-hayashi-2026-polyomics-data | ledger-106-lu-2025-dual-phase-tpu-si | ledger-145-hayashi-radonpy-pi1070-data;ledger-146-hayashi-2022-radonpy | ledger-152-kim-2023-omg-v1-0b-data;ledger-153-kim-2023-open-macromolecular-genome;ledger-154-kim-2024-omg-property-database;ledger-155-kim-2025-functional-monomer-design | ledger-156-liu-2025-open-polymer-challenge-data;ledger-157-liu-2025-open-polymer-challenge-report | ledger-161-karimi-2017-pufoam-data;ledger-162-karimi-2017-pufoam-paper | ledger-163-meng-2026-multiscale-pu-si;ledger-164-meng-2026-multiscale-pu | ledger-174-pires-da-silva-2024-aged-puf-simulation-data;ledger-175-pires-2025-aged-puf-dnn;ledger-176-da-silva-2024-aged-puf-arrhenius;ledger-084-pires-da-silva-2023-aged-puf-data,连接文档/数据来源与参考文献.md的引用键
+计算观测.csv.gz,exclusion_reason,object,False, | input_descriptor_not_target | source_validation_flag | unit_semantics_unresolved,该行未成为任务监督目标的直接原因
+实验观测.csv.gz,release_id,object,False,tpu-usable-2026-07-21-v1,可用数据集冻结版本
+实验观测.csv.gz,gold_layer,object,False,Gold-E,来源参考层：Gold-V、Gold-C或Gold-E
+实验观测.csv.gz,task_id,object,False,上下文_仅作输入 | 实验_曲线建模 | 实验_标量校准,推荐使用任务；不同任务不可无条件混合
+实验观测.csv.gz,usage_mode,object,False,auxiliary_train | context_only | primary_train | reference_only,primary_train、auxiliary_train、context_only或reference_only
+实验观测.csv.gz,model_ready,bool,False,False | True,是否通过当前任务的数值、单位、角色和权重门
+实验观测.csv.gz,source_id,object,False,,来源或物化视图标识
+实验观测.csv.gz,source_family_id,object,False,,同一论文、数据集及附件共享的来源族
+实验观测.csv.gz,source_record_id,object,False,,来源内部记录标识
+实验观测.csv.gz,observation_id,object,False,,逐观测稳定主键
+实验观测.csv.gz,formulation_id,object,True,,配方标识；空值表示尚未映射
+实验观测.csv.gz,sample_id,object,False,,试样/材料实例标识
+实验观测.csv.gz,curve_id,object,True,,整条实验曲线标识
+实验观测.csv.gz,point_index,float64,True,,曲线内部点序号，不是独立样本序号
+实验观测.csv.gz,record_kind,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,target_role,object,False,auxiliary_characterization | curve_target | experimental_scalar | feature_only | literature_aggregate | transformed_target,该行在任务中的目标/辅助/输入语义
+实验观测.csv.gz,property_name,object,False,,原始且已审计的性质名称
+实验观测.csv.gz,value,float64,False,,数值，语义由property_name与unit共同确定
+实验观测.csv.gz,unit,object,True,,来源单位或已规范化单位
+实验观测.csv.gz,uncertainty_value,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,uncertainty_type,object,True,reported_plus_minus_type_unresolved,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,condition_name,object,True,,主要条件或曲线横轴名称
+实验观测.csv.gz,condition_value,object,True,,主要条件或曲线横轴数值
+实验观测.csv.gz,condition_unit,object,True,,主要条件单位
+实验观测.csv.gz,secondary_condition_name,object,True,cycle_count | elapsed_time | frequency | temperature,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,secondary_condition_value,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,secondary_condition_unit,object,True,Hz | degC | dimensionless | s,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,auxiliary_value_name,object,True,elapsed_time | source_native_peak_intensity,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,auxiliary_value,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,auxiliary_unit,object,True,s | source_native_relative_unit_unresolved,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,method_or_test_protocol,object,False,,实验方法、测试协议或标准
+实验观测.csv.gz,target_origin,object,False,experimental,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,data_origin,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,fidelity_level,object,False,,实验/计算/虚拟数据的保真度描述
+实验观测.csv.gz,gold_admission_status,object,False,admitted_reference | conditional_reference,参考层准入状态
+实验观测.csv.gz,mapping_status,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,protocol_status,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+实验观测.csv.gz,leakage_group,object,False,,结构、模拟、曲线、样品和配方传递闭包后的硬分组
+实验观测.csv.gz,development_split,object,False,test | train | validation,按hard_group固定生成的train/validation/test
+实验观测.csv.gz,source_holdout_fold,int64,False,0 | 1 | 2 | 3 | 4,按来源族固定生成的五折严格外推编号
+实验观测.csv.gz,independent_unit,object,False,,权重归一所用的曲线、样品或模拟单位
+实验观测.csv.gz,potential_weight_ceiling,float64,False,,Gold参考层给出的潜在权重上限
+实验观测.csv.gz,quality_factor,float64,False,0.0 | 0.125 | 0.25 | 0.75 | 1.0,正式/条件及目标角色对应的任务质量因子
+实验观测.csv.gz,role_factor,float64,False,1.0,直接目标、迁移或上下文角色因子
+实验观测.csv.gz,independence_weight,float64,False,,同一独立单元同性质的重复/点数归一因子
+实验观测.csv.gz,recommended_loss_weight,float64,False,,建议损失权重，不回写原Gold层
+实验观测.csv.gz,source_balanced_sampling_probability,float64,False,,任务内各有效来源总概率相等的抽样概率
+实验观测.csv.gz,license,object,False,CC BY 4.0 | CC BY-NC 4.0 | CC-BY-4.0 | CC0-1.0,实验记录携带的来源许可证
+实验观测.csv.gz,license_status,object,False, | allow_with_attribution | manual_review,来源总账中的训练/再分发权利状态
+实验观测.csv.gz,source_locator,object,False,,可复核到原始文件、数据记录或行的定位信息
+实验观测.csv.gz,citation_keys,object,False,,连接文档/数据来源与参考文献.md的引用键
+实验观测.csv.gz,exclusion_reason,object,False, | context_descriptor_not_target | unit_semantics_unresolved_or_missing | zero_effective_weight,该行未成为任务监督目标的直接原因
+曲线索引.csv,release_id,object,False,tpu-usable-2026-07-21-v1,可用数据集冻结版本
+曲线索引.csv,curve_id,object,False,,整条实验曲线标识
+曲线索引.csv,source_id,object,False,source_drum_zf53w893 | source_mendeley_pu_seat_raw_v2 | source_mendeley_wg3znh66bv_v1 | source_mendeley_xs78ch5jb7_v3 | source_zenodo_5713819_recycled_pu_foam,来源或物化视图标识
+曲线索引.csv,source_family_id,object,False,family_date_seed_oil_rigid_pu_pir_2025 | family_drum_low_ceiling_tpuu | family_elorza_recycled_pu_foam | family_iir_oh_barrier_pu_2026 | family_moon_2020_pu_multilayer_seat,同一论文、数据集及附件共享的来源族
+曲线索引.csv,formulation_id,object,True,,配方标识；空值表示尚未映射
+曲线索引.csv,sample_id,object,False,,试样/材料实例标识
+曲线索引.csv,property_name,object,False,,原始且已审计的性质名称
+曲线索引.csv,unit,object,False,,来源单位或已规范化单位
+曲线索引.csv,point_count,int64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,point_index_min,float64,True,0.0 | 1.0,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,point_index_max,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,value_min,float64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,value_max,float64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,condition_name,object,False,compressive_strain | elapsed_time | indentation_displacement | peak_ordinal | source_curve_state | strain_signal | tensile_strain | time | wavenumber,主要条件或曲线横轴名称
+曲线索引.csv,condition_unit,object,True,% | cm^-1 | dimensionless | index | min | mm | s | source_axis_unit_unresolved,主要条件单位
+曲线索引.csv,condition_min,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,condition_max,float64,True,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,gold_admission_status,object,False,admitted_reference | conditional_reference,参考层准入状态
+曲线索引.csv,usage_mode,object,False,auxiliary_train | primary_train | reference_only,primary_train、auxiliary_train、context_only或reference_only
+曲线索引.csv,model_ready,bool,False,False | True,是否通过当前任务的数值、单位、角色和权重门
+曲线索引.csv,leakage_group,object,False,,结构、模拟、曲线、样品和配方传递闭包后的硬分组
+曲线索引.csv,development_split,object,False,test | train | validation,按hard_group固定生成的train/validation/test
+曲线索引.csv,source_holdout_fold,int64,False,1 | 2 | 3 | 4,按来源族固定生成的五折严格外推编号
+曲线索引.csv,curve_total_loss_weight,float64,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+曲线索引.csv,source_locator,object,False,,可复核到原始文件、数据记录或行的定位信息
+曲线索引.csv,citation_keys,object,False,ledger-055-meyersohn-2024-low-ceiling-tpuu-data;ledger-056-meyersohn-2024-low-ceiling-tpuu | ledger-165-taghvaei-nia-2024-date-seed-oil-pu-pir-data;ledger-166-taghvaei-nia-2025-date-seed-oil-pu-pir | ledger-167-oh-2019-pu-seat-raw-data;ledger-169-moon-2020-pu-seat-comfort | ledger-170-elorza-2021-recycled-pu-foam-data;ledger-171-elorza-2021-recycled-pu-foam | ledger-172-zhang-2026-iir-oh-barrier-pu-data;ledger-173-zhang-2026-iir-oh-barrier-pu-preprint,连接文档/数据来源与参考文献.md的引用键
+曲线索引.csv,license,object,False,CC BY 4.0 | CC0-1.0,实验记录携带的来源许可证
+任务清单.csv,release_id,object,False,tpu-usable-2026-07-21-v1,可用数据集冻结版本
+任务清单.csv,task_id,object,False,上下文_仅作输入 | 候选_结构排序 | 实验_曲线建模 | 实验_标量校准 | 计算_结构多任务预训练 | 计算_过程代理模型,推荐使用任务；不同任务不可无条件混合
+任务清单.csv,gold_layer,object,False,Gold-C | Gold-C+Gold-E | Gold-E | Gold-V,来源参考层：Gold-V、Gold-C或Gold-E
+任务清单.csv,purpose,object,False,保留配方、几何、工艺和模拟输入，不进入目标损失 | 在已知模拟体系内学习工况到过程/力学响应 | 应力应变、循环、热分析、光谱和过程曲线建模 | 构件、虚拟重复单元和相邻化学空间的分级筛选 | 用可追溯量化计算和分子描述符学习结构表示 | 用实验标量校准最终性能预测和多保真残差,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,rows_total,int64,False,117629 | 1406769 | 28406 | 299448 | 4770 | 958,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,rows_model_ready,int64,False,0 | 110807 | 1354517 | 211969 | 23684 | 2735,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,rows_primary_train,int64,False,0 | 121624 | 132813 | 2274,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,rows_auxiliary_train,int64,False,0 | 1221704 | 23684 | 461 | 90345,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,independent_units_model_ready,int64,False,0 | 110807 | 181 | 3886 | 457 | 56030,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,property_count,int64,False,0 | 100 | 114 | 17 | 69,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,source_count,int64,False,0 | 13 | 4 | 5,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,train_rows,int64,False,0 | 1083428 | 160799 | 19361 | 2467 | 88614,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,validation_rows,int64,False,0 | 11094 | 114 | 136433 | 14130 | 27,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,test_rows,int64,False,0 | 11099 | 134656 | 154 | 37040 | 4296,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,recommended_loss_weight_sum,float64,False,0.0 | 139.175000002 | 53325.6875 | 793.595833333 | 973.6875,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,sampling_probability_sum,float64,False,0.0 | 1.0,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,recommended_model,object,False,仅作为特征或条件变量 | 多任务 GNN、指纹模型或缺失标签多任务回归 | 序列模型、函数回归或先提取稳健端点 | 条件回归、代理模型或物理约束网络 | 组分/配方/工艺条件化回归 | 规则过滤、聚类、多目标排序或主动学习,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,split_rule,object,False,canonical_smiles按80/10/10固定哈希；来源族另设五折 | hard_group按80/10/10固定哈希；source_holdout_fold作五折严格来源留出,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,weight_rule,object,False,优先级×准入×官能团匹配，仅用于候选排序 | 潜在上限×质量×角色×独立性；再按任务-来源平衡采样,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+任务清单.csv,caveat,object,False,recommended_loss_weight 恒为 0 | 候选权重是排序先验，不是性能真值，也不代表已证明可合成 | 只有结构—配方—工艺映射闭合的子集可用于纯结构到性能建模 | 同一名义配方的大量工况不能解释为大量新材料 | 同一曲线全部点同折，逐点权重之和受一条曲线权重上限约束 | 通用聚合物迁移数据不能直接当作 TPU 宏观实验性能,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+来源与引用.csv,release_id,object,False,tpu-usable-2026-07-21-v1,可用数据集冻结版本
+来源与引用.csv,source_id,object,False,,来源或物化视图标识
+来源与引用.csv,source_family_id,object,False,,同一论文、数据集及附件共享的来源族
+来源与引用.csv,source_title,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+来源与引用.csv,canonical_identifier,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+来源与引用.csv,origin_kind,object,False,实验 | 模拟 | 混合 | 虚拟候选,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+来源与引用.csv,gold_layer,object,False,Gold-C | Gold-E | Gold-E+Gold-C | Gold-V,来源参考层：Gold-V、Gold-C或Gold-E
+来源与引用.csv,citation_keys,object,False,,连接文档/数据来源与参考文献.md的引用键
+来源与引用.csv,license_status,object,False, | allow_with_attribution | manual_review,来源总账中的训练/再分发权利状态
+来源与引用.csv,quality_status,object,False,仅验证 | 入选 | 降权,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
+来源与引用.csv,notes,object,False,,继承自冻结Gold参考层或本发布汇总；详见Gold数据集定义与使用说明。
