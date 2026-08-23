@@ -1,0 +1,466 @@
+{
+  "configuration": {
+    "charge": 0,
+    "crest_method": "GFN2-xTB",
+    "embedding": "RDKit_ETKDGv3",
+    "force_field_preference": [
+      "MMFF94s",
+      "UFF"
+    ],
+    "geometry_seed": 20260823,
+    "initial_conformers": 10,
+    "uhf": 0
+  },
+  "counts": {
+    "chain_extender_tasks": 22,
+    "diisocyanate_tasks": 48,
+    "geometry_blocked_tasks": 2,
+    "geometry_ready_tasks": 84,
+    "initial_xyz_files": 84,
+    "macrodiol_proxy_tasks": 16,
+    "source_formulation_rows": 48,
+    "unique_component_tasks": 86
+  },
+  "dft_task_release_id": "tpu-crest-gfn2-2026-08-23-v1",
+  "initial_geometries": {
+    "aggregate_sha256": "8461510ad05dac4f4bb8b9901156488844d531f3d03c22efaa93af248a7dc61c",
+    "files": [
+      {
+        "bytes": 662,
+        "path": "计算/初始结构/0000_chemical_16bdee252ed11d7a.xyz",
+        "sha256": "98c8d7183892146acd4a65d0db15fbd46960d2491df777eae233f699b734d876"
+      },
+      {
+        "bytes": 1031,
+        "path": "计算/初始结构/0001_chemical_1ace6e6abb3b5be3.xyz",
+        "sha256": "017131e17b8471e488dbd9d54ab55d692a2d855dcff4c819bd36f4a49ae629be"
+      },
+      {
+        "bytes": 1277,
+        "path": "计算/初始结构/0002_chemical_28a648027cd37607.xyz",
+        "sha256": "38d7b5c5b16efd9e363166a1b3bd40b830aa9cb1888f0ead3b1952a15e2786f5"
+      },
+      {
+        "bytes": 1031,
+        "path": "计算/初始结构/0003_chemical_2a0d22152800ae85.xyz",
+        "sha256": "c97275b12c0b097dc006aec3e7d5baed1a6cbd81447e89175bbf1dbb68fe3435"
+      },
+      {
+        "bytes": 1482,
+        "path": "计算/初始结构/0004_chemical_2dad29ca9d88607e.xyz",
+        "sha256": "dd395d971746e0839d1594efaf369597050e7bd2f6bf9b85aba62035679152ba"
+      },
+      {
+        "bytes": 1154,
+        "path": "计算/初始结构/0005_chemical_3635aefc1005d8ad.xyz",
+        "sha256": "95540a88b62d6704e3f7323b0cdea0dbdbbc62768927f0d51afde5de798e9eac"
+      },
+      {
+        "bytes": 1318,
+        "path": "计算/初始结构/0006_chemical_48e0f37b8f35d22d.xyz",
+        "sha256": "7df768a96ff2734b448c8a557e160ab191e53dbbe1468675e807cc452364eaa3"
+      },
+      {
+        "bytes": 1154,
+        "path": "计算/初始结构/0007_chemical_551a139d1b44a292.xyz",
+        "sha256": "08e9bb3266b00fee75269f9fae249a7f48f402b7bc953b386666cf01e1c41857"
+      },
+      {
+        "bytes": 580,
+        "path": "计算/初始结构/0008_chemical_5be20976c2a9d662.xyz",
+        "sha256": "0847bc5b48eb62e77b76cb2b0347ec2b0239ed1015eccb32b75eea3a474b2d83"
+      },
+      {
+        "bytes": 1400,
+        "path": "计算/初始结构/0009_chemical_63c6eb608324eca7.xyz",
+        "sha256": "fa9a0f7998e56137e1fe9c6c7e81191dfa2a95f672fe81b5fee6b6acf2931239"
+      },
+      {
+        "bytes": 826,
+        "path": "计算/初始结构/0010_chemical_6ee30a16c1c450ed.xyz",
+        "sha256": "fae5c901a9ad40352e871912ff1c3180723c8d9b235a7faa8a5b3307b5b78f30"
+      },
+      {
+        "bytes": 1482,
+        "path": "计算/初始结构/0011_chemical_706c38f2fda91d2c.xyz",
+        "sha256": "6e5de421cdb0017112a2558ec9b2469a0b9280fac40c54504a954c40e26a3cf6"
+      },
+      {
+        "bytes": 1523,
+        "path": "计算/初始结构/0012_chemical_72b7ed7d3d268fd7.xyz",
+        "sha256": "27fdb541e7ffc40d76d6be7c4a6fd5244caff80e302bac7782c1cb959b827733"
+      },
+      {
+        "bytes": 1277,
+        "path": "计算/初始结构/0013_chemical_75fb481cd45cc100.xyz",
+        "sha256": "7f413e51abd1a018e93a774aae5254c13bbdb8d04a1f649cfe18f1dfcddce4cf"
+      },
+      {
+        "bytes": 826,
+        "path": "计算/初始结构/0014_chemical_79b196ca779aae4e.xyz",
+        "sha256": "58db901b144f78593cb923d8db9270dc224e16a1122eb62a5472f861679e6d4e"
+      },
+      {
+        "bytes": 1072,
+        "path": "计算/初始结构/0015_chemical_7eec20377145fdb7.xyz",
+        "sha256": "a332ad30300f134b24703f0b9f1962c225701e64e95383950e627f45baf8ffae"
+      },
+      {
+        "bytes": 1482,
+        "path": "计算/初始结构/0016_chemical_831d24f7368b3f75.xyz",
+        "sha256": "6d455ae193937b93e79b8a3e29e76b2926fee11f9c3b506b1e4d07b9d9905018"
+      },
+      {
+        "bytes": 1359,
+        "path": "计算/初始结构/0017_chemical_bacbda6c95c1bb67.xyz",
+        "sha256": "129ab42efcc79de04bd516ace9bcb1d1fd6560879b702a859cdcd6fb87383599"
+      },
+      {
+        "bytes": 1113,
+        "path": "计算/初始结构/0018_chemical_c68025b85cef6d56.xyz",
+        "sha256": "4fe7c62b0a7ebbf41fd8fc9f1d264e741fe48fe5f2163750494ad2f41393743b"
+      },
+      {
+        "bytes": 1277,
+        "path": "计算/初始结构/0019_chemical_ca5e105838153c99.xyz",
+        "sha256": "8a3875ad77aa482a31bea9fbaba0dc699770cab631374c85b5e76bd4a6bd2f41"
+      },
+      {
+        "bytes": 826,
+        "path": "计算/初始结构/0020_chemical_dd2ebb8c8aeed446.xyz",
+        "sha256": "50b0d4dee58a4c6be3ebb67c5faf38605a06137fc4dd295c755d5182adf459a9"
+      },
+      {
+        "bytes": 908,
+        "path": "计算/初始结构/0021_chemical_f25ee56de4366915.xyz",
+        "sha256": "338c95819d27efe028269cc3eab7ba9434e2bfe5bbda059f14d0c47f03f3fedc"
+      },
+      {
+        "bytes": 1523,
+        "path": "计算/初始结构/0022_polyuniverse_dinco_016bfd4c165aa545a7db.xyz",
+        "sha256": "ec14062600f7d74a8536d35fec980585f649218579281d3efffb7ccb8591832f"
+      },
+      {
+        "bytes": 1728,
+        "path": "计算/初始结构/0023_polyuniverse_dinco_01a65934dd666174775c.xyz",
+        "sha256": "63ae52fa566de27cce8b0f2f526fe1e5c3b3858e4840dc6553ecf32ed3a45684"
+      },
+      {
+        "bytes": 990,
+        "path": "计算/初始结构/0024_polyuniverse_dinco_01e918a682cd6d3022ac.xyz",
+        "sha256": "e1bd5f43284d123315c9d184f4a412b9a26464e2153dea5355e59525bbf64de7"
+      },
+      {
+        "bytes": 1687,
+        "path": "计算/初始结构/0025_polyuniverse_dinco_0321877a48fd93e2fb7d.xyz",
+        "sha256": "a422d64e29dffa2a6b7344985b0ef4c68ab16069495f6afa792e71f998ab4b22"
+      },
+      {
+        "bytes": 1687,
+        "path": "计算/初始结构/0026_polyuniverse_dinco_0499900e71bdb9da6b5c.xyz",
+        "sha256": "a93c6cec915fc2df374dcf0a5a170424fd8314f4ff1a64eb4d16d5bc9b14521d"
+      },
+      {
+        "bytes": 2548,
+        "path": "计算/初始结构/0027_polyuniverse_dinco_055819dc5371734047d1.xyz",
+        "sha256": "8be85afba4d5997407ed4cf87682b85708d463c31c5ebcd4d45197956da2bb50"
+      },
+      {
+        "bytes": 1359,
+        "path": "计算/初始结构/0028_polyuniverse_dinco_07a134f8e87f85791f77.xyz",
+        "sha256": "cc2a8839fac5b7c7411fb289ef634197de8a081801ccf8a397af22aa9e843bb3"
+      },
+      {
+        "bytes": 1441,
+        "path": "计算/初始结构/0030_polyuniverse_dinco_236875b2e3fa5e54ba5a.xyz",
+        "sha256": "e553bcaf7baef6a79869ebe7016ade13a0721af23144a38a53730bb6c74e9791"
+      },
+      {
+        "bytes": 1359,
+        "path": "计算/初始结构/0031_polyuniverse_dinco_24471fc1c458b69a01cd.xyz",
+        "sha256": "582fe0e49528f233f23d6db1e2cda7016cdffbbe15de718a3b74ee83ce0d9c81"
+      },
+      {
+        "bytes": 2384,
+        "path": "计算/初始结构/0032_polyuniverse_dinco_29fcbdd3c8cf8655b397.xyz",
+        "sha256": "90d34ce09a468b203528d786dbd3f631aefbc5b3dea45704f8e6f9ec9e0340b9"
+      },
+      {
+        "bytes": 2384,
+        "path": "计算/初始结构/0033_polyuniverse_dinco_2c849f9c85ebe823e4a4.xyz",
+        "sha256": "8a746a60ee33ab7b754126464018fde7b8fb4f8107878b6109f6dfcd03c74d11"
+      },
+      {
+        "bytes": 1769,
+        "path": "计算/初始结构/0034_polyuniverse_dinco_36587639e34b8082240f.xyz",
+        "sha256": "30147958d00cbef81e50398e9dd92a6ca3bc6bea4084e7be285b557c6eb98c03"
+      },
+      {
+        "bytes": 1441,
+        "path": "计算/初始结构/0036_polyuniverse_dinco_4716b4743a5baa106de3.xyz",
+        "sha256": "2389862e1fdacf062137eb05dbda7b635458001116fdee5eef5cc09ec3be9502"
+      },
+      {
+        "bytes": 1072,
+        "path": "计算/初始结构/0037_polyuniverse_dinco_473f746a39152067a95e.xyz",
+        "sha256": "ca3724622d86b5774b9f9d0201192154df17d22a382a7a949434290a9ce9de34"
+      },
+      {
+        "bytes": 2589,
+        "path": "计算/初始结构/0038_polyuniverse_dinco_4bd62448d543828bc87c.xyz",
+        "sha256": "dd70c4a0de69ac39f2b492df2858862237257c004d4dc7a63c45f14aa0c15ec6"
+      },
+      {
+        "bytes": 1072,
+        "path": "计算/初始结构/0039_polyuniverse_dinco_569c13453ff070989050.xyz",
+        "sha256": "e41468a97bd3cba64f5d2fb1aa4a08a49a1a9b8e4a6b84c7c490303fd4664d71"
+      },
+      {
+        "bytes": 2466,
+        "path": "计算/初始结构/0040_polyuniverse_dinco_57af23a42ae72d943289.xyz",
+        "sha256": "f85675a4dc613651ba4a5a2bbc64cf7af9cf5a5285465d013119cc5da7ddab64"
+      },
+      {
+        "bytes": 1933,
+        "path": "计算/初始结构/0041_polyuniverse_dinco_61e84547e1c5aa376ad9.xyz",
+        "sha256": "1e127ad80d5be5ef6ed6a991aefe829df30c6509080509644b75654551e9367d"
+      },
+      {
+        "bytes": 2097,
+        "path": "计算/初始结构/0042_polyuniverse_dinco_629ef888e16fc71a3a21.xyz",
+        "sha256": "bba05c7658602516b338baf785b0b42bfef6d5aa139569dcb4f6ef5ba92d07b4"
+      },
+      {
+        "bytes": 498,
+        "path": "计算/初始结构/0043_polyuniverse_dinco_72c91e88a4c33aabb96c.xyz",
+        "sha256": "d1e060f1e36b4adbe5284962d61876840835cd3aa6247c6e88a4e5304c9a3b97"
+      },
+      {
+        "bytes": 867,
+        "path": "计算/初始结构/0044_polyuniverse_dinco_7416e04e1592ed966a70.xyz",
+        "sha256": "b67b8e08a001379ac4d6cbe8ec74f58bd14efade679682bb9a01e8503d5e4e35"
+      },
+      {
+        "bytes": 1892,
+        "path": "计算/初始结构/0045_polyuniverse_dinco_7988a8eeb838489f4eaf.xyz",
+        "sha256": "8f8c69b5036e581851be7d5487fb63fe3af04012ef0294c359bf1b5075ada3f0"
+      },
+      {
+        "bytes": 908,
+        "path": "计算/初始结构/0046_polyuniverse_dinco_7ae84879e7df0d84fdfa.xyz",
+        "sha256": "0c3318533494f3ea741bfe94094b07dcf90dc7f2dbfaf355eac8230bc49cfbfe"
+      },
+      {
+        "bytes": 1687,
+        "path": "计算/初始结构/0047_polyuniverse_dinco_7bf0d3c1efc36d46299a.xyz",
+        "sha256": "b02d9b69c8f38460dc2a19718e8f38892784a698fac76d7880feddc4c96b3688"
+      },
+      {
+        "bytes": 2220,
+        "path": "计算/初始结构/0048_polyuniverse_dinco_7df67f418ef75f339395.xyz",
+        "sha256": "5535f3618476a36a2a153c0cc9c19172d55a43bffbd7e1bd51310b02daa9b10f"
+      },
+      {
+        "bytes": 1523,
+        "path": "计算/初始结构/0049_polyuniverse_dinco_81e1e90ea24f1e711a99.xyz",
+        "sha256": "8a5974e59d199c1087699a934f2134945276cd86def0084ece0326d4276a37a2"
+      },
+      {
+        "bytes": 2712,
+        "path": "计算/初始结构/0050_polyuniverse_dinco_85368c1d86f60fbe6dfa.xyz",
+        "sha256": "235e6dcfea669ba6e04ca98cec7d905c75b8a52a4608f6908de523447b00b5a1"
+      },
+      {
+        "bytes": 1892,
+        "path": "计算/初始结构/0051_polyuniverse_dinco_8ec7a31c579192711514.xyz",
+        "sha256": "b32c868b50a90420d49f55bf905ea47ccceb6c4585ebc30ae650c677c5c6596d"
+      },
+      {
+        "bytes": 1154,
+        "path": "计算/初始结构/0052_polyuniverse_dinco_952c8476d31239835550.xyz",
+        "sha256": "905bed02afc5eeba99918d6e59414b0a6f49a95bb72e6fba266ef52ef10b31b9"
+      },
+      {
+        "bytes": 1400,
+        "path": "计算/初始结构/0053_polyuniverse_dinco_9a439aa6493516a05f38.xyz",
+        "sha256": "c76f07f99784e48467c34ee2e8d8dec6ab0611861f39d6274bafe1b11d0e2f85"
+      },
+      {
+        "bytes": 2425,
+        "path": "计算/初始结构/0054_polyuniverse_dinco_a5809ed0bb50011d11e7.xyz",
+        "sha256": "9d80649b679ed5ff1bb27fd4d22437db29fd89b8a71990ced45ea2eb36e86287"
+      },
+      {
+        "bytes": 1769,
+        "path": "计算/初始结构/0055_polyuniverse_dinco_ac4be1eff9a2d8a5bde3.xyz",
+        "sha256": "a3300870edb36613530d9be3b9e84b630d7ced9b8b93e356eeb8321110390813"
+      },
+      {
+        "bytes": 1482,
+        "path": "计算/初始结构/0056_polyuniverse_dinco_ba183439d0e722cfbeb8.xyz",
+        "sha256": "c551684246f0662ecc5e5f7b52afa0e201f4e81c68882cccf117b247bcfeeec0"
+      },
+      {
+        "bytes": 1933,
+        "path": "计算/初始结构/0057_polyuniverse_dinco_c716de5f027f8966961c.xyz",
+        "sha256": "ff8a738f917f1b6dd78738a825bca19c478f2dcac63852143abdf36ed9437e9b"
+      },
+      {
+        "bytes": 1523,
+        "path": "计算/初始结构/0058_polyuniverse_dinco_c842b8dc271bd83c79bd.xyz",
+        "sha256": "86131838a4d434544aec2f346c018afd27b9d1c6a8b72d2d626ca1b5902405c9"
+      },
+      {
+        "bytes": 1892,
+        "path": "计算/初始结构/0059_polyuniverse_dinco_d6e57fb34f6442032c80.xyz",
+        "sha256": "9e27075c6b4ad036274f54bd225a1a02343509137f2f57f58d56e26401119611"
+      },
+      {
+        "bytes": 2712,
+        "path": "计算/初始结构/0060_polyuniverse_dinco_d99b46b0b115b20a069f.xyz",
+        "sha256": "aa2cad1710ae3222f6f6971d4d00845b77fcad9ff1a16e2d8655d74092d9fd75"
+      },
+      {
+        "bytes": 1646,
+        "path": "计算/初始结构/0061_polyuniverse_dinco_d9e0e5b183928d0c3023.xyz",
+        "sha256": "16bc07922eedeb8dba5e2aa1d76a50c3f50e5b5cadd924147d794f8f69ab40bb"
+      },
+      {
+        "bytes": 1441,
+        "path": "计算/初始结构/0062_polyuniverse_dinco_e191aa437a5bb122583c.xyz",
+        "sha256": "ac4d582c2e3876cd30e9bba56d35c2ad2cb89f107956a613711e5a43ed69d132"
+      },
+      {
+        "bytes": 1441,
+        "path": "计算/初始结构/0063_polyuniverse_dinco_e3bd88989ad52de46012.xyz",
+        "sha256": "be5bd0c0be21cc95e10f93ead4fa757e625487301009294bbda370256734855a"
+      },
+      {
+        "bytes": 1892,
+        "path": "计算/初始结构/0064_polyuniverse_dinco_e6e130471887a66db2b6.xyz",
+        "sha256": "a7547344347b1a716c61cdaa3f84a3c658ce3a631ee8ffa238d71fa13eb8d801"
+      },
+      {
+        "bytes": 621,
+        "path": "计算/初始结构/0065_polyuniverse_dinco_e9c64a150258b8ae2353.xyz",
+        "sha256": "5762080f08a5f2b10f7fdc997668a44cc41ed3e378c1efde35f413c003e30ccc"
+      },
+      {
+        "bytes": 1318,
+        "path": "计算/初始结构/0066_polyuniverse_dinco_f4a3c1923033f08d5b48.xyz",
+        "sha256": "2c1a5657e16ad0c3a93d8f1b9e9effd15ae1101afb22c7c7b94de5b65ee2db6b"
+      },
+      {
+        "bytes": 1482,
+        "path": "计算/初始结构/0067_polyuniverse_dinco_f93d4f580beca33f9619.xyz",
+        "sha256": "76d5aa6396bcc1bed948108e2951fd7652007a34f5bbea4ff67238eb1cd6a59f"
+      },
+      {
+        "bytes": 1933,
+        "path": "计算/初始结构/0068_polyuniverse_dinco_fbadb623a6ef1950d388.xyz",
+        "sha256": "b366ae7f06711d8eacbe99ae3ee2121f275c91062335e1256daeac297d7c758d"
+      },
+      {
+        "bytes": 1728,
+        "path": "计算/初始结构/0069_polyuniverse_dinco_fd5f159552c1f70f915c.xyz",
+        "sha256": "26cec28f3691fd67ba81740883794f90ab2acb465650c4d75d4d15287d7cd6d2"
+      },
+      {
+        "bytes": 2425,
+        "path": "计算/初始结构/0070_chemical_0895e6cd5136df6a.xyz",
+        "sha256": "77b3122b72bb0aa3f3f4d4f2f2a06dd5c05b26cbc6d2f876a8ce85850dcc9b6b"
+      },
+      {
+        "bytes": 1646,
+        "path": "计算/初始结构/0071_chemical_1f862d0fb910ec42.xyz",
+        "sha256": "4cb7acc6f7ade62d64553ff97dc959cb14e547fc48c2cc29b80342ac7eaaabd7"
+      },
+      {
+        "bytes": 1605,
+        "path": "计算/初始结构/0072_chemical_34962dac292231e7.xyz",
+        "sha256": "6b0fd02591cba6a7d03dca902b9254145802e5191a698374fd64ac798e1fd3f3"
+      },
+      {
+        "bytes": 990,
+        "path": "计算/初始结构/0073_chemical_3a566be4d64035e3.xyz",
+        "sha256": "41758ac5eaebacf72e796da69a54af9052d6f16c1cba19f82b3a81c415076814"
+      },
+      {
+        "bytes": 2958,
+        "path": "计算/初始结构/0074_chemical_58b2613823466190.xyz",
+        "sha256": "a28d727065680a322f106dcfa7270b3b83979d276ea8e3cc5df240ea788c3359"
+      },
+      {
+        "bytes": 2138,
+        "path": "计算/初始结构/0075_chemical_5e814be594638bdc.xyz",
+        "sha256": "e440dd4fb587c9d45a0767aa159c64ae72cc4d884b59659df531c518758dd6a6"
+      },
+      {
+        "bytes": 1482,
+        "path": "计算/初始结构/0076_chemical_6364c045bd73da83.xyz",
+        "sha256": "819be02fb7a39e3d5471ce226f8c5013cf1c9ef1ac3d6a6a60af83319a143725"
+      },
+      {
+        "bytes": 990,
+        "path": "计算/初始结构/0077_chemical_694871d5e95b7370.xyz",
+        "sha256": "e3b502d4bafff68114fe8b0a04623c2d847294f9f5588c69ee48363dd022a2bb"
+      },
+      {
+        "bytes": 1154,
+        "path": "计算/初始结构/0078_chemical_986d2a218ca14417.xyz",
+        "sha256": "c60a7ab9bec66acac6de16afb5868e7847943100b5060a1dfa5d8452d7694272"
+      },
+      {
+        "bytes": 1728,
+        "path": "计算/初始结构/0079_chemical_a04b7de5081dd0a5.xyz",
+        "sha256": "04d34528e7832d6136660bf59e09dd3afa9c273ca6fc3e1ac6bae0d48a6aefb1"
+      },
+      {
+        "bytes": 1318,
+        "path": "计算/初始结构/0080_chemical_a2cf8157d0f77432.xyz",
+        "sha256": "10f4d92c6bde47c67836301e7dcbe2388abb023dc27bab8760b743c915ea8fb1"
+      },
+      {
+        "bytes": 2015,
+        "path": "计算/初始结构/0081_chemical_b94fa835d3f1bdb8.xyz",
+        "sha256": "11f3b00c2832946cac2c469a1f2a67c1fb1523e3dbab67b7bcdd20c3094fa054"
+      },
+      {
+        "bytes": 2671,
+        "path": "计算/初始结构/0082_chemical_e34b1bd2b88ad439.xyz",
+        "sha256": "689eadc38a5639def92e8b04c3dadd847aece7680003b6a3306b5fcf62abfdb5"
+      },
+      {
+        "bytes": 2261,
+        "path": "计算/初始结构/0083_chemical_e4aa17432292bb19.xyz",
+        "sha256": "17a42723e10e321fea77e31ccd24371e86a2a6ad17c8f5492671f8f3e5d41c4a"
+      },
+      {
+        "bytes": 2507,
+        "path": "计算/初始结构/0084_chemical_f59a0ec9b5c263ad.xyz",
+        "sha256": "a34e32377d1b3179bf03e6eadf441293c79e08ef7c47c52f206737a70c198199"
+      },
+      {
+        "bytes": 908,
+        "path": "计算/初始结构/0085_chemical_ff8d497a35fecaa4.xyz",
+        "sha256": "f5d3d44501c5159ba966012d53e27622350f7cb5285e59d6068b28335d2ad66d"
+      }
+    ]
+  },
+  "interpretation_limits": [
+    "初始XYZ是RDKit构象生成与力场预优化结果，不是DFT或实验结构。",
+    "CREST/GFN2-xTB结果只作构象与反应性代理，不是TPU宏观性能标签。",
+    "macrodiol_proxy不是Mn=2000真实低聚物，块体MD保持关闭。",
+    "ORCA/r2SCAN-3c在当前服务器环境不可用，Tier-1b未启动。"
+  ],
+  "source_queue": {
+    "bytes": 37891,
+    "path": "候选/DFT_MD复核队列.csv",
+    "sha256": "0f29e7554f3a4dc7e73ee40a6de0f2a1f4e494998e2a429eaf9b952d9fac06da"
+  },
+  "task_table": {
+    "bytes": 34407,
+    "path": "计算/DFT任务清单.csv",
+    "sha256": "54d0115063664acadd7ad0b00731410013e79a4b5665d4836be407ac73f017b4"
+  }
+}

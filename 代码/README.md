@@ -7,6 +7,9 @@
 run_pipeline.py     历史v0.1四源管道；不要用于重建v0.2权威总账
 生成候选配方.py     从冻结 Gold-V 构件构建第二阶段虚拟组合与计量闭合配方
 生成候选预审.py     标记人工复核状态并生成48条结构多样性DFT Tier-1队列
+生成DFT任务.py      将48条队列去重为构件任务并生成确定性三维初始结构
+运行CREST任务.py    服务器端单构件断点续算、哈希和失败状态包装器
+汇总CREST结果.py    汇总completed/failed/pending/blocked状态，不填补失败值
 ```
 
 注意：`run_pipeline.py manifest` 会扫描整个本地 `数据/原始`，只用于显式重建历史兼容清单；不要把它当作 v0.2 日常入口。v0.2 的权威产物是 `结果/数据规模总账.csv`、`结果/样本清单.csv.gz`、`结果/Gold_V_候选.csv.gz`、`结果/Gold_C_计算性能.csv.gz` 和 `结果/Gold_E_实验表格.csv.gz`。
@@ -30,4 +33,6 @@ uv run python 代码\生成候选配方.py
 uv run python 代码\生成候选配方.py --检查
 uv run python 代码\生成候选预审.py
 uv run python 代码\生成候选预审.py --检查
+uv run python 代码\生成DFT任务.py
+uv run python 代码\生成DFT任务.py --检查
 ```
