@@ -224,6 +224,8 @@ def build_conformer_tasks(
         frames = split_crest_xyz(ensemble_path)
         order_hash = atom_order_sha256(frames[0].elements)
         for frame in frames:
+            if frame.rank >= 1_000_000:
+                raise XtbTaskError("CREST conformer rank exceeds stable task index range")
             conformer_hash = _sha256_bytes(frame.text.encode("utf-8"))
             identity_payload = "\0".join(
                 (
@@ -234,8 +236,11 @@ def build_conformer_tasks(
                 )
             ).encode("utf-8")
             conformer_id = f"cf_{_sha256_bytes(identity_payload)[:20]}"
-            xtb_task_index = len(rows)
-            xtb_task_slug = f"{xtb_task_index:06d}_{conformer_id}"
+            source_task_index = int(source["task_index"])
+            xtb_task_index = source_task_index * 1_000_000 + frame.rank - 1
+            xtb_task_slug = (
+                f"{source_task_index:04d}_{frame.rank:06d}_{conformer_id}"
+            )
             relative_input = Path("输入构象") / f"{xtb_task_slug}.xyz"
             input_path = output_root / relative_input
             _write_atomic(input_path, frame.text)
@@ -247,7 +252,7 @@ def build_conformer_tasks(
                     "descriptor_release_id": descriptor_release_id,
                     "xtb_task_index": xtb_task_index,
                     "xtb_task_slug": xtb_task_slug,
-                    "source_task_index": int(source["task_index"]),
+                    "source_task_index": source_task_index,
                     "source_task_slug": str(source["task_slug"]),
                     "candidate_id": str(source["candidate_id"]),
                     "component_role": str(source["component_role"]),

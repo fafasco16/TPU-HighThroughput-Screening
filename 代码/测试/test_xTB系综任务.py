@@ -88,6 +88,8 @@ def test_strict_split_and_stable_materialization(tmp_path):
     assert first.equals(second)
     assert first["conformer_id"].is_unique
     assert first["crest_rank"].tolist() == [1, 2]
+    assert first["xtb_task_index"].tolist() == [0, 1]
+    assert first["xtb_task_slug"].str.startswith("0000_").all()
     assert first["atom_order_sha256"].nunique() == 1
     for row in first.itertuples(index=False):
         path = output / row.conformer_xyz_file

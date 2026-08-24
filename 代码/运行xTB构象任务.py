@@ -107,7 +107,7 @@ def task_layout(root: Path, row: pd.Series) -> dict[str, Path]:
     """把数万任务分散到固定分片，避免为每个成功任务永久保留目录。"""
 
     slug = str(row["xtb_task_slug"])
-    if not re.fullmatch(r"\d{6}_cf_[0-9a-f]{20}", slug):
+    if not re.fullmatch(r"\d{4}_\d{6}_cf_[0-9a-f]{20}", slug):
         raise XtbRunError("invalid xtb_task_slug for sharded storage")
     shard = _task_shard(str(row["conformer_id"]))
     return {
@@ -250,9 +250,16 @@ def _validate_json(path: Path) -> None:
         raise XtbRunError("invalid xtbout.json total energy")
 
 
-def run_task(root: Path, index: int, xtb_executable: str = "xtb") -> dict[str, Any]:
+def run_task(
+    root: Path,
+    index: int,
+    xtb_executable: str = "xtb",
+    *,
+    tasks: pd.DataFrame | None = None,
+) -> dict[str, Any]:
     task_path = root / "xTB构象任务清单.csv"
-    tasks = pd.read_csv(task_path)
+    if tasks is None:
+        tasks = pd.read_csv(task_path)
     required = {
         "xtb_task_index",
         "xtb_task_slug",
@@ -274,10 +281,14 @@ def run_task(root: Path, index: int, xtb_executable: str = "xtb") -> dict[str, A
     missing = required.difference(tasks.columns)
     if missing:
         raise XtbRunError(f"xTB task table missing fields: {sorted(missing)}")
-    selected = tasks.loc[tasks["xtb_task_index"].eq(index)]
-    if len(selected) != 1:
+    if not tasks["xtb_task_index"].is_unique:
+        raise XtbRunError("xTB task index is not unique")
+    indexed_tasks = tasks.set_index("xtb_task_index", drop=False)
+    if index not in indexed_tasks.index:
         raise XtbRunError(f"xTB task index {index} is absent or non-unique")
-    row = selected.iloc[0]
+    row = indexed_tasks.loc[index]
+    if isinstance(row, pd.DataFrame):
+        raise XtbRunError(f"xTB task index {index} is absent or non-unique")
     if str(row["xtb_version"]) != EXPECTED_XTB_VERSION or str(row["method"]) != METHOD:
         raise XtbRunError("xTB method/version task gate failed")
     if str(row["environment_model"]) != "gas_phase":
