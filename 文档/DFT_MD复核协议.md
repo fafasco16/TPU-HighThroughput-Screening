@@ -130,6 +130,10 @@ Ubuntu上另建了隔离`/opt/tpu-md-venv`，固定RadonPy develop提交`5d14893
 
 该多链结果仍是低密度执行链烟雾，不是密度平衡：盒体积在NVT中固定，初始密度0.20 g cm⁻³不能解释为TPU预测密度；1 ps也远不足以消除链构象记忆。虽然LAMMPS按能量容差停止，最终力未达到脚本设置的严格力容差，因此不能把终态称为高精度优化结构。39类聚氨酯相关GAFF2替代参数及Gasteiger电荷门继续阻断生产MD。下一步只有在参数/电荷协议获得文献、DFT小模型和商业对照验证后，才能设计低密度压缩、退火、NPT密度平衡和独立重复。
 
+`计算/现实MD/参数验证/`已把12条链的替代消息展开为70类唯一映射：51类涉及重复氨基甲酸酯`ns`类型，19类涉及残余异氰酸酯端基的`cg/ch`共轭类型；按参数类别为14类键、24类角、28类二面角和4类improper。替代事件数与估计氨基甲酸酯键数的Pearson相关系数为0.991303，因此这不是少数末端警告，而是随主链长度系统累积的P0参数风险。完整逐类型、逐配方表及输入/输出哈希见`参数门发布清单.json`。
+
+电荷路线建立了独立`/opt/tpu-resp-env`，固定Psi4 1.10.2[182]、RESP 1.0.0[183,184]、LibXC 7.0.0、Python 3.12.14和RadonPy 1.0b2。原生Psi4/RESP在`COC(=O)NC`模型、单一MMFF构象、HF/6-31G(d)、VDW缩放1.4/1.6/1.8/2.0和点密度1.0下完成两阶段拟合；第二阶段电荷和误差约`2.4×10^-17 e`，阶段间RESP RMS差约0.00693 e。结果只证明原生片段级路线可运行。RadonPy包装器硬编码点密度20，分别在4线程/4 GB、1线程/4 GB和1线程/16 GB下均于第一阶段GRID_ESP发生段错误；失败证据见`计算/现实MD/RESP环境/RadonPy_RESP失败审计.json`。因此当前电荷门为`native_two_stage_resp_ready...fragment_transfer_validation_pending`，尚未放行整链电荷转移、密度平衡或性能计算。
+
 ## 5. 从计算到实验的决策门
 
 建议按以下顺序缩小候选：
@@ -160,3 +164,9 @@ CREST结束后的逐构象单点命令、JSON字段、Boltzmann代理权重和NC
 [180] Pracht, P.; Grimme, S.; Bannwarth, C.; et al. CREST—A Program for the Exploration of Low-Energy Molecular Chemical Space. *The Journal of Chemical Physics* **2024**, *160* (11), 114110. https://doi.org/10.1063/5.0197592.
 
 [181] Neese, F. Software Update: The ORCA Program System—Version 6.0. *Wiley Interdisciplinary Reviews: Computational Molecular Science* **2025**, *15* (2), e70019. https://doi.org/10.1002/wcms.70019.
+
+[182] Smith, D. G. A.; Burns, L. A.; Simmonett, A. C.; et al. Psi4 1.4: Open-Source Software for High-Throughput Quantum Chemistry. *The Journal of Chemical Physics* **2020**, *152* (18), 184108. https://doi.org/10.1063/5.0006002.
+
+[183] Bayly, C. I.; Cieplak, P.; Cornell, W. D.; Kollman, P. A. A Well-Behaved Electrostatic Potential Based Method Using Charge Restraints for Deriving Atomic Charges: The RESP Model. *The Journal of Physical Chemistry* **1993**, *97* (40), 10269–10280. https://doi.org/10.1021/j100142a004.
+
+[184] Alenaizan, A.; Burns, L. A.; Sherrill, C. D. Python Implementation of the Restrained Electrostatic Potential Charge Model. *International Journal of Quantum Chemistry* **2020**, *120* (2), e26035. https://doi.org/10.1002/qua.26035.

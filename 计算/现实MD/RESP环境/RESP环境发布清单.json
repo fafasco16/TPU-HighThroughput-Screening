@@ -1,0 +1,49 @@
+{
+  "charge_gate_status": "native_two_stage_resp_available_fragment_transfer_validation_pending",
+  "environment_path": "/opt/tpu-resp-env",
+  "evidence": {
+    "explicit_environment": {
+      "bytes": 19788,
+      "path": "计算/现实MD/RESP环境/显式环境清单.txt",
+      "sha256": "fcaf0ee1a6194b690eb747bcd06a578312093a90d5b8897eb83a3ab5538383f8"
+    },
+    "native_resp_smoke_manifest": {
+      "bytes": 2447,
+      "path": "计算/现实MD/RESP烟雾_小片段_尝试5/RESP烟雾清单.json",
+      "sha256": "ea252b327f722b3902b75a4a5821c0adad586a32cf34f517eac3e623207a953a"
+    },
+    "package_list": {
+      "bytes": 103523,
+      "path": "计算/现实MD/RESP环境/包清单.json",
+      "sha256": "4e66e0a28c923baa48349de77c1c9bbf50972b1270ba200a496817f1035615fa"
+    },
+    "radonpy_resp_failure_audit": {
+      "bytes": 2362,
+      "path": "计算/现实MD/RESP环境/RadonPy_RESP失败审计.json",
+      "sha256": "35254c585372c1df9c0eb61b7b77e06e48d27916e68a484a5caff0fb24f7313a"
+    }
+  },
+  "micromamba": {
+    "path": "/opt/tpu-micromamba/bin/micromamba",
+    "sha256": "366cd9cd8be14df1ab8ed50352a82111082a36686b2d389fdb79a92c3fafb3e3",
+    "version": "2.9.0"
+  },
+  "platform": "Linux-6.8.0-50-generic-x86_64-with-glibc2.39",
+  "production_md_permission": "blocked_fragment_parameter_and_conformer_validation",
+  "radonpy": {
+    "commit": "5d14893515376a4518e9f1373a1ebc4bb756db14",
+    "version": "1.0b2",
+    "wheel_sha256": "446cb1a94d92a758a162c71f0bfbce3d70e4bc308cd9e8e7b6ff1a8a448a2cba"
+  },
+  "release_id": "tpu-resp-environment-20260825-v1",
+  "status": "native_resp_smoke_ready_radonpy_wrapper_density20_blocked",
+  "versions": {
+    "libxc-c": "7.0.0",
+    "numpy": "2.5.2",
+    "psi4": "1.10.2",
+    "python": "3.12.14",
+    "rdkit": "2026.03.5",
+    "resp": "1.0.0",
+    "setuptools": "84.0.0"
+  }
+}

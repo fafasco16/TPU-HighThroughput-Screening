@@ -1,0 +1,76 @@
+{
+  "atom_count": 13,
+  "basis": "6-31G(d)",
+  "charge_metrics": {
+    "stage1_esp_charge_sum_e": -1.1796119636642288e-16,
+    "stage1_resp_charge_sum_e": -9.107298248878237e-17,
+    "stage1_to_stage2_resp_rms_e": 0.006932046128613196,
+    "stage2_esp_charge_sum_e": 1.3877787807814457e-17,
+    "stage2_resp_charge_sum_e": -2.42861286636753e-17,
+    "stage2_resp_max_e": 0.8949526206970277,
+    "stage2_resp_min_e": -0.6121535904415818
+  },
+  "elapsed_seconds": 2.446,
+  "files": {
+    "1_methyl_n_methyl_carbamate_grid.dat": {
+      "bytes": 34032,
+      "sha256": "72fcfdd5babb75187c47c8a90866ce32fc5bf480b3f13e27624c67bd7d2f0dd9"
+    },
+    "1_methyl_n_methyl_carbamate_grid_esp.dat": {
+      "bytes": 11344,
+      "sha256": "dea75819cde23bc634dd483478f64fcb50cd22eb71a636e4ccc92d5b8ab14b0a"
+    },
+    "fragment_with_resp.sdf": {
+      "bytes": 1143,
+      "sha256": "5e20b23ff588dd1b36c1886d02883e2cccd9affea0e657cd7f0fb42823bf41e1"
+    },
+    "psi4_resp.log": {
+      "bytes": 10715,
+      "sha256": "e54d6c386e38d2a038c36dbdadbb42ecef326c05a8518b424b741c082931be6f"
+    },
+    "resp_charges.csv": {
+      "bytes": 989,
+      "sha256": "018f4ba3c0df324629b20b5ef9d22f1384f1ec2c220098e159a833d0b8c61b76"
+    },
+    "stage1_results.out": {
+      "bytes": 1512,
+      "sha256": "ccfac870a4af3f456c9a1a8f7286f8261f1ab785bfa26d4f15d2c3a149a25cd5"
+    },
+    "stage2_results.out": {
+      "bytes": 1518,
+      "sha256": "78f5759ae30df9a8fde761511006f40443173c2b03491af0934078dfedd996f3"
+    }
+  },
+  "fragment_name": "methyl_n_methyl_carbamate",
+  "interpretation_limit": "Native two-stage RESP execution smoke on one MMFF geometry; not yet a transferable TPU production charge set.",
+  "memory_gb": 8,
+  "method": "HF",
+  "mmff_status_code": 0,
+  "multiplicity": 1,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_fragment_and_conformer_validation_pending",
+  "random_seed": 20260825,
+  "release_id": "tpu-reality-md-native-resp-smoke-20260825-v2",
+  "resp_b": 0.1,
+  "resp_stage1_a": 0.0005,
+  "resp_stage2_a": 0.001,
+  "smiles": "COC(=O)NC",
+  "status": "completed_native_two_stage_resp_smoke",
+  "target_total_charge_e": 0,
+  "threads": 1,
+  "vdw_point_density": 1.0,
+  "vdw_scale_factors": [
+    1.4,
+    1.6,
+    1.8,
+    2.0
+  ],
+  "versions": {
+    "numpy": "2.5.2",
+    "psi4": "1.10.2",
+    "python": "3.12.14",
+    "radonpy_pypi": "1.0b2",
+    "rdkit": "2026.3.5",
+    "resp": "1.0.0"
+  }
+}

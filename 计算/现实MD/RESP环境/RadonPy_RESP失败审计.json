@@ -1,0 +1,63 @@
+{
+  "attempts": [
+    {
+      "attempt": "尝试1",
+      "grid": {
+        "bytes": 733536,
+        "path": "计算/现实MD/RESP烟雾_小片段_尝试1/grid.dat",
+        "sha256": "0ed9daaafdd364d6070d1f36c862e7eb8ce4ee70646df802675cf29edefa468f"
+      },
+      "log": {
+        "bytes": 4041,
+        "path": "计算/现实MD/RESP烟雾_小片段_尝试1/methyl_carbamate_resp_psi4_resp.log",
+        "sha256": "698d90f2224456675776db5129706c1930a6b6349b8c277cdbc4a5e7b949ca9b"
+      },
+      "memory_gb": 4,
+      "stage": "first_stage_grid_esp",
+      "status": "failed_segmentation_fault_exit_139",
+      "threads": 4
+    },
+    {
+      "attempt": "尝试2",
+      "grid": {
+        "bytes": 733536,
+        "path": "计算/现实MD/RESP烟雾_小片段_尝试2/grid.dat",
+        "sha256": "0ed9daaafdd364d6070d1f36c862e7eb8ce4ee70646df802675cf29edefa468f"
+      },
+      "log": {
+        "bytes": 4041,
+        "path": "计算/现实MD/RESP烟雾_小片段_尝试2/methyl_carbamate_resp_psi4_resp.log",
+        "sha256": "4d560e37c2a2276be9861d984d30193cf25e661ed49e4f6f24a82740eb157af1"
+      },
+      "memory_gb": 4,
+      "stage": "first_stage_grid_esp",
+      "status": "failed_segmentation_fault_exit_139",
+      "threads": 1
+    },
+    {
+      "attempt": "尝试3",
+      "grid": {
+        "bytes": 733536,
+        "path": "计算/现实MD/RESP烟雾_小片段_尝试3/grid.dat",
+        "sha256": "0ed9daaafdd364d6070d1f36c862e7eb8ce4ee70646df802675cf29edefa468f"
+      },
+      "log": {
+        "bytes": 4041,
+        "path": "计算/现实MD/RESP烟雾_小片段_尝试3/methyl_carbamate_resp_psi4_resp.log",
+        "sha256": "8537bcceea1d718b24505d9c77bbe107a865b19649538cf73022335f3c80c4fb"
+      },
+      "memory_gb": 16,
+      "stage": "first_stage_grid_esp",
+      "status": "failed_segmentation_fault_exit_139",
+      "threads": 1
+    }
+  ],
+  "basis": "6-31G(d)",
+  "fragment_smiles": "COC(=O)NC",
+  "interpretation": "Changing threads from 4 to 1 and memory from 4 to 16 GB did not remove the first-stage segmentation fault; native RESP at density 1.0 is evaluated separately.",
+  "method": "HF",
+  "production_md_permission": "blocked",
+  "radonpy_hardcoded_vdw_point_density": 20.0,
+  "release_id": "tpu-radonpy-resp-density20-failure-audit-20260825-v1",
+  "status": "radonpy_resp_wrapper_blocked_reproducible_segmentation_fault"
+}

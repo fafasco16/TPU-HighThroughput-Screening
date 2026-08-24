@@ -1,0 +1,43 @@
+Electrostatic potential parameters
+
+Grid information (see 1_methyl_n_methyl_carbamate_grid.dat in Angstrom)
+    Number of grid points:            709
+
+Quantum electrostatic potential (see 1_methyl_n_methyl_carbamate_grid_esp.dat)
+
+Constraints
+    Charge constraints
+        Total charge of  -0.46677887 on the set   2
+        Total charge of   0.89495262 on the set   3
+        Total charge of  -0.61215359 on the set   4
+        Total charge of  -0.53908038 on the set   5
+        Total charge of   0.31737888 on the set  10
+    Equality constraints
+        Equal charges on atoms
+                                  7   8   9
+                                 11  12  13
+
+Restraint
+    Hyperbolic restraint to a charge of zero
+    Hydrogen atoms are not restrained
+    resp_a:                           0.0010
+    resp_b:                           0.1000
+
+Fit
+
+Electrostatic Potential Charges
+   Center  Symbol       ESP      RESP
+      1    C       0.03118175  0.01079332
+      2    O      -0.46677887 -0.46677887
+      3    C       0.89495262  0.89495262
+      4    O      -0.61215359 -0.61215359
+      5    N      -0.53908038 -0.53908038
+      6    C      -0.12134232 -0.08947290
+      7    H       0.07205489  0.07792437
+      8    H       0.07205489  0.07792437
+      9    H       0.07205489  0.07792437
+     10    H       0.31737888  0.31737888
+     11    H       0.09322574  0.08352928
+     12    H       0.09322574  0.08352928
+     13    H       0.09322574  0.08352928
+Total Charge:      0.00000000 -0.00000000

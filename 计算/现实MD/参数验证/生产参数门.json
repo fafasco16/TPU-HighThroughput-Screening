@@ -1,0 +1,83 @@
+{
+  "charge_gate": {
+    "charge_gate_status": "native_two_stage_resp_ready_radonpy_wrapper_density20_blocked_fragment_transfer_validation_pending",
+    "module_availability": {
+      "distutils": true,
+      "psi4": true,
+      "radonpy": true,
+      "resp": true,
+      "setuptools": true
+    },
+    "native_resp_smoke": {
+      "basis": "6-31G(d)",
+      "charge_metrics": {
+        "stage1_esp_charge_sum_e": -1.1796119636642288e-16,
+        "stage1_resp_charge_sum_e": -9.107298248878237e-17,
+        "stage1_to_stage2_resp_rms_e": 0.006932046128613196,
+        "stage2_esp_charge_sum_e": 1.3877787807814457e-17,
+        "stage2_resp_charge_sum_e": -2.42861286636753e-17,
+        "stage2_resp_max_e": 0.8949526206970277,
+        "stage2_resp_min_e": -0.6121535904415818
+      },
+      "fragment_name": "methyl_n_methyl_carbamate",
+      "method": "HF",
+      "path": "计算/现实MD/RESP烟雾_小片段_尝试5/RESP烟雾清单.json",
+      "sha256": "ea252b327f722b3902b75a4a5821c0adad586a32cf34f517eac3e623207a953a",
+      "status": "completed_native_two_stage_resp_smoke",
+      "vdw_point_density": 1.0
+    },
+    "platform": "Linux-6.8.0-50-generic-x86_64-with-glibc2.39",
+    "python_implementation": "CPython",
+    "python_version": "3.12.14",
+    "radonpy_charge_signature": "(mol, charge='gasteiger', confId=0, opt=True, work_dir=None, tmp_dir=None, log_name='charge', qm_solver='psi4', opt_method='wb97m-d3bj', opt_basis='6-31G(d,p)', opt_basis_gen={'Br': '6-31G(d)', 'I': 'lanl2dz'}, geom_iter=50, geom_conv='QCHEM', geom_algorithm='RFO', charge_method='HF', charge_basis='6-31G(d)', charge_basis_gen={'Br': '6-31G(d)', 'I': 'lanl2dz'}, total_charge=None, total_multiplicity=None, **kwargs)",
+    "radonpy_charge_source": {
+      "bytes": 50523,
+      "path": "/opt/tpu-resp-env/lib/python3.12/site-packages/radonpy/core/calc.py",
+      "sha256": "17e468ca79569ead72cf5850f23671f442d220dfcda20996d2fed4b249bbf8fd"
+    },
+    "radonpy_distribution_version": "1.0b2",
+    "radonpy_qm_wrapper_available": true,
+    "radonpy_resp_defaults": {
+      "charge_basis": "6-31G(d)",
+      "charge_method": "HF",
+      "opt_basis": "6-31G(d,p)",
+      "opt_method": "wb97m-d3bj",
+      "qm_solver": "psi4"
+    },
+    "radonpy_resp_runtime_ready": true,
+    "radonpy_resp_wrapper_smoke": {
+      "attempt_count": 3,
+      "path": "计算/现实MD/RESP环境/RadonPy_RESP失败审计.json",
+      "sha256": "35254c585372c1df9c0eb61b7b77e06e48d27916e68a484a5caff0fb24f7313a",
+      "status": "radonpy_resp_wrapper_blocked_reproducible_segmentation_fault",
+      "vdw_point_density": 20.0
+    }
+  },
+  "environment_identity": {
+    "lammps_runtime_version": 20250722,
+    "python_version": "3.12.3",
+    "radonpy_commit": "5d14893515376a4518e9f1373a1ebc4bb756db14",
+    "radonpy_wheel_sha256": "446cb1a94d92a758a162c71f0bfbce3d70e4bc308cd9e8e7b6ff1a8a448a2cba"
+  },
+  "forcefield_parameter_gate": {
+    "all_formulations_blocked": true,
+    "formulation_count": 12,
+    "parameter_class_counts": {
+      "angle": 24,
+      "bond": 14,
+      "dihedral": 28,
+      "improper": 4
+    },
+    "status": "blocked_repeating_urethane_ns_substitution",
+    "unique_substitution_count": 70,
+    "urethane_bond_vs_substitution_event_pearson_r": 0.9913027044620191,
+    "validation_family_counts": {
+      "repeating_urethane_ns_substitution": 51,
+      "terminal_isocyanate_conjugated_type_substitution": 19
+    }
+  },
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v3",
+  "status": "production_md_blocked_parameter_and_charge_validation"
+}
