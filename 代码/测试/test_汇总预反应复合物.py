@@ -50,6 +50,19 @@ def _states(root: Path) -> None:
         else:
             pair = "pair-a" if index < 4 else "pair-b"
             energy = -5.0 - index / 10
+            attempt = root / "工作" / f"task-{index}" / "尝试_001"
+            attempt.mkdir(parents=True)
+            outputs = {
+                "xtbopt.xyz": "1\noptimized\nH 0 0 0\n",
+                "xtbout.json": "{\"total energy\": -100.0}\n",
+                "xtb.out": (
+                    "*** GEOMETRY OPTIMIZATION CONVERGED AFTER 10 ITERATIONS ***\n"
+                    "normal termination of xtb\n"
+                ),
+                "wbo": "1 1 0.0\n",
+            }
+            for name, text in outputs.items():
+                (attempt / name).write_text(text, encoding="utf-8")
             state = {
                 "task_index": index,
                 "task_slug": f"task-{index}",
@@ -59,6 +72,10 @@ def _states(root: Path) -> None:
                 "complex_total_energy_hartree": -100.0,
                 "final_reactive_distance_a": 2.7,
                 "runtime_seconds": 1.0,
+                "attempt_directory": attempt.relative_to(root).as_posix(),
+                "output_sha256": {
+                    name: aggregate.sha256(attempt / name) for name in outputs
+                },
             }
         (root / "状态" / f"task-{index}.json").write_text(
             json.dumps(state), encoding="utf-8"

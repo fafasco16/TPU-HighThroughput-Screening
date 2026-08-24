@@ -22,6 +22,9 @@ import pandas as pd
 EXPECTED_XTB_VERSION = "6.7.1"
 HARTREE_TO_KCAL_MOL = 627.5094740631
 _NORMAL_TERMINATION = re.compile(r"normal termination of xtb", re.IGNORECASE)
+_GEOMETRY_CONVERGED = re.compile(
+    r"GEOMETRY OPTIMIZATION CONVERGED AFTER\s+\d+\s+ITERATIONS", re.IGNORECASE
+)
 
 
 class PrereactionRunError(RuntimeError):
@@ -314,9 +317,15 @@ def run_task(
         failure = "nonzero_exit_code"
     elif not all((attempt_root / name).is_file() for name in required_outputs):
         failure = "missing_required_output"
-    elif not _NORMAL_TERMINATION.search(log_path.read_text(encoding="utf-8", errors="replace")):
-        failure = "missing_normal_termination"
     else:
+        log_text = log_path.read_text(encoding="utf-8", errors="replace")
+        if not _NORMAL_TERMINATION.search(log_text):
+            failure = "missing_normal_termination"
+        elif not _GEOMETRY_CONVERGED.search(log_text):
+            failure = "geometry_optimization_not_converged"
+        elif (attempt_root / ".sccnotconverged").exists():
+            failure = "scc_not_converged"
+    if not failure:
         try:
             energy = _json_energy(attempt_root / "xtbout.json")
             distance = _read_xyz_distance(

@@ -73,7 +73,10 @@ def test_ready_task_runs_validates_distance_and_records_association_proxy(
             json.dumps({"total energy": -9.01}), encoding="utf-8"
         )
         (work / "wbo").write_text("1 2 1.0\n", encoding="utf-8")
-        kwargs["stdout"].write("normal termination of xtb\n")
+        kwargs["stdout"].write(
+            "*** GEOMETRY OPTIMIZATION CONVERGED AFTER 12 ITERATIONS ***\n"
+            "normal termination of xtb\n"
+        )
         return SimpleNamespace(returncode=0)
 
     monkeypatch.setattr(runner.subprocess, "run", fake_run)

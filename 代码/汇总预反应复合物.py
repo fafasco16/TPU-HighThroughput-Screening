@@ -6,11 +6,19 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any, Sequence
 
 import numpy as np
 import pandas as pd
+
+
+_GEOMETRY_CONVERGED = re.compile(
+    r"GEOMETRY OPTIMIZATION CONVERGED AFTER\s+\d+\s+ITERATIONS", re.IGNORECASE
+)
+_NORMAL_TERMINATION = re.compile(r"normal termination of xtb", re.IGNORECASE)
+_REQUIRED_OUTPUTS = ("xtbopt.xyz", "xtbout.json", "xtb.out", "wbo")
 
 
 def sha256(path: Path) -> str:
@@ -35,6 +43,36 @@ def _state(path: Path) -> dict[str, Any] | None:
     except (OSError, UnicodeError, json.JSONDecodeError):
         return {"status": "invalid_state_json"}
     return value if isinstance(value, dict) else {"status": "invalid_state_json"}
+
+
+def _audit_completed_output(state: dict[str, Any], root: Path) -> str:
+    relative = state.get("attempt_directory")
+    output_hashes = state.get("output_sha256")
+    if not isinstance(relative, str) or not isinstance(output_hashes, dict):
+        return "completed_state_missing_output_identity"
+    candidate = Path(relative)
+    if candidate.is_absolute():
+        return "completed_state_attempt_path_invalid"
+    resolved_root = root.resolve()
+    attempt_root = (root / candidate).resolve()
+    if resolved_root not in attempt_root.parents:
+        return "completed_state_attempt_path_escape"
+    if set(output_hashes) != set(_REQUIRED_OUTPUTS):
+        return "completed_state_output_set_invalid"
+    for name in _REQUIRED_OUTPUTS:
+        path = attempt_root / name
+        if not path.is_file() or sha256(path) != str(output_hashes[name]):
+            return f"completed_state_output_hash_invalid:{name}"
+    if (attempt_root / ".sccnotconverged").exists():
+        return "completed_state_scc_not_converged"
+    log_text = (attempt_root / "xtb.out").read_text(
+        encoding="utf-8", errors="replace"
+    )
+    if not _NORMAL_TERMINATION.search(log_text):
+        return "completed_state_missing_normal_termination"
+    if not _GEOMETRY_CONVERGED.search(log_text):
+        return "completed_state_geometry_not_converged"
+    return ""
 
 
 def collect_task_states(tasks: pd.DataFrame, root: Path) -> pd.DataFrame:
@@ -92,6 +130,11 @@ def collect_task_states(tasks: pd.DataFrame, root: Path) -> pd.DataFrame:
                     if not all(math.isfinite(value) for value in values):
                         run_status = "invalid_completed_state"
                         issue = "completed_state_nonfinite_output"
+                if run_status == "completed":
+                    output_issue = _audit_completed_output(state, root)
+                    if output_issue:
+                        run_status = "invalid_completed_state"
+                        issue = output_issue
         rows.append(
             {
                 **task,
