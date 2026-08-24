@@ -5,7 +5,7 @@
   },
   "counts": {
     "calculation_tasks": 27,
-    "pending_macrodiols": 3,
+    "pending_macrodiols": 5,
     "ptmg_models": 5,
     "reality_components": 19,
     "reality_evidence": 19,
@@ -18,11 +18,11 @@
   "inputs": {
     "commercial_components": {
       "path": "候选/实验可行构件.csv",
-      "sha256": "7386bf9fb5e4e47704e725972edfdcdf652fe5c23d1d2dbfb339ac4cc697ed31"
+      "sha256": "15aba9fbc0330b3fdf89cffd1b83b87c38c086dccb3efcc367c5228db3bf530a"
     },
     "commercial_evidence": {
       "path": "候选/商用构件证据.csv",
-      "sha256": "3876aa32a5c6e839b42a1d0b81ee238aec8716a2674d45e7dfc298b45edda5fd"
+      "sha256": "084a6d55a74b567f80c22beb7f369057b5925d1c66ff538f3aceafe52d01e46a"
     },
     "commercial_formulations": {
       "path": "候选/实验合理组合.csv",
@@ -48,7 +48,7 @@
     },
     "pending_macrodiols": {
       "path": "数据/现实库/待建模宏二醇.csv",
-      "sha256": "c88ac40ce7f55c960e952b3c80bc1f603ab2a684797c1c24a361c35cf6a8f17d"
+      "sha256": "ee74392a1cd9d8db835b2973e88920f90208c3bbeb25fab7350106f009c6b07d"
     },
     "ptmg_models": {
       "path": "数据/现实库/PTMG代表模型.csv",

@@ -210,7 +210,7 @@ def test_real_repository_build_and_main(tmp_path: Path, monkeypatch: pytest.Monk
     assert manifest["counts"]["reality_components"] == 19
     assert manifest["counts"]["reality_formulations"] == 980
     assert manifest["counts"]["calculation_tasks"] == 27
-    assert manifest["counts"]["pending_macrodiols"] == 3
+    assert manifest["counts"]["pending_macrodiols"] == 5
     monkeypatch.setattr(sys, "argv", ["构建双库.py", "--配置", str(config)])
     assert dual.main() == 0
     assert "reality_components" in capsys.readouterr().out

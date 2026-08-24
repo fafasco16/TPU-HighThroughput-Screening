@@ -8,7 +8,7 @@
 - 245个化学体系和980条硬段/NCO-OH网格配方；
 - 4条第一轮小型商业对照矩阵。
 
-另有Capa S22X和ETERNACOLL UH-100/UH-200三条商业宏二醇证据已收集，但在PCL/PCDL代表链建模完成前不进入现实构件表。
+另有Capa S22X、ETERNACOLL UH-100/UH-200和VORANOL 1010 L/2000 L五条商业宏二醇证据已收集，但在PCL/PCDL/PPG代表链建模完成前不进入现实构件表。
 
 文件：
 

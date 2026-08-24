@@ -335,7 +335,7 @@ def test_write_outputs_and_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
         evidence, config, stage, tasks, query, pool, audit, combinations, run_query=False
     )
     assert counts == {
-        "commercial_components": 22,
+        "commercial_components": 24,
         "commercial_components_passed": 19,
         "current82_audited": 82,
         "current82_experiment_passed": 0,
