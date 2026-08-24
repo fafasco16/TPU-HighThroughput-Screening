@@ -19,6 +19,7 @@ xTB系综任务.py      拆分CREST构象并生成稳定ID、单帧哈希和任�
 xTB输出解析.py      严格解析JSON/WBO/极化率并做完整系综聚合
 反应位点描述符.py   计算NCO/OH位点SASA、净间隙与双位点差异
 汇总xTB结果包.py    安全流式核验分片包并生成构象/构件/失败三表
+运行现实MD多链烟雾.py 以最小现实低聚链验证RadonPy装箱、GAFF2导出、LAMMPS最小化/NVT执行链
 ```
 
 注意：`run_pipeline.py manifest` 会扫描整个本地 `数据/原始`，只用于显式重建历史兼容清单；不要把它当作 v0.2 日常入口。v0.2 的权威产物是 `结果/数据规模总账.csv`、`结果/样本清单.csv.gz`、`结果/Gold_V_候选.csv.gz`、`结果/Gold_C_计算性能.csv.gz` 和 `结果/Gold_E_实验表格.csv.gz`。
@@ -60,3 +61,17 @@ python 代码/CREST系综分析.py \
   --输出 计算/CREST构件系综汇总.csv \
   --温度 298.15
 ```
+
+现实MD多链烟雾只在固定的Ubuntu RadonPy/LAMMPS环境执行，输出目录必须为空，且LAMMPS内部文件名保持ASCII：
+
+```bash
+source /opt/tpu-md-venv/bin/activate
+python 代码/运行现实MD多链烟雾.py \
+  --化学图 计算/现实MD/低聚链化学图.csv.gz \
+  --输出目录 计算/现实MD/LAMMPS烟雾_多链_尝试3 \
+  --链数 2 --初始密度 0.20 \
+  --最小化最大迭代 20000 --最小化最大评估 200000 \
+  --NVT步数 2000 --时间步长fs 0.5 --温度K 300
+```
+
+该命令只验证执行链。`status=completed_multichain_smoke_production_md_blocked`不等于生产MD许可，也不能生成密度、Tg、力学或相分离性能标签。

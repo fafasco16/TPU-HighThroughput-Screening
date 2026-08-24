@@ -1,0 +1,94 @@
+{
+  "actual_total_atom_count": 396,
+  "alternate_parameter_line_count": 71,
+  "alternate_parameter_unique_count": 39,
+  "alternate_parameter_unique_sha256": "54837d91b479382e0fbd982ec4666422771618718d1873fb5e8cb1070eb8d424",
+  "chain_count": 2,
+  "charge_method": "gasteiger_smoke_only",
+  "elapsed_seconds": 37.596,
+  "expected_total_atom_count": 396,
+  "files": {
+    "multichain_smoke.data": {
+      "bytes": 91011,
+      "sha256": "a9f58ede674dda7b016a0db4286db7387032dc62e2ec1ac996324b0b51c88e08"
+    },
+    "multichain_smoke.dump": {
+      "bytes": 147141,
+      "sha256": "a24a31ffd2968551ca7767fb9e42d44adffb17c3124109f0041ec708027d5b5d"
+    },
+    "multichain_smoke.in": {
+      "bytes": 1599,
+      "sha256": "b42329f16288cb65e369e6236e8d9c5ccd6fd88a4ddf37b9861102dbaf605059"
+    },
+    "multichain_smoke_1.rst": {
+      "bytes": 130993,
+      "sha256": "4d21601bbf5afb4d102d680d4ae94a9061aeedf71c29069a2121d696b94a923c"
+    },
+    "multichain_smoke_2.rst": {
+      "bytes": 131085,
+      "sha256": "c8dd83ad0ec82b6db5b3464cf6d2d56f8e16625b370afabea90cbb94fdc9e625"
+    },
+    "multichain_smoke_lammps.log": {
+      "bytes": 53639,
+      "sha256": "dd0ef8b4b90ef89084265b338b316a4340e24c848e8bbb59e1f13686fae806fa"
+    },
+    "multichain_smoke_last.data": {
+      "bytes": 105834,
+      "sha256": "63122941b8b1bfce4e511f0eeced186e655950b3c0c77553203c990f06496b70"
+    },
+    "multichain_smoke_last.dump": {
+      "bytes": 45501,
+      "sha256": "d0bf21bcb3115aafc903c86379fd9a7b83c930f642d698ba4b3903e3bf21735a"
+    },
+    "multichain_smoke_screen.log": {
+      "bytes": 229,
+      "sha256": "7d3b13dd2deca9de6eb5328ca02820e93357bb3cd4d0cb889a6ff268b9985767"
+    }
+  },
+  "forcefield": "GAFF2_with_alternate_parameters",
+  "formulation_id": "commercial_system_0a4072d5b07dec7f_aa4e010292f6d778",
+  "initial_density_g_cm3": 0.2,
+  "interpretation_limit": "Execution-chain smoke only; the short low-density NVT trajectory is not equilibrated production TPU MD and yields no property claim.",
+  "lammps_log_summary": {
+    "contains_total_wall_time": false,
+    "error_detected": false,
+    "loop_wall_seconds": [
+      30.2905,
+      2.94078
+    ],
+    "minimization_converged": true,
+    "minimization_energy_initial_next_final_kcal_mol": [
+      171.814481713961,
+      48.1070854538262,
+      48.1070375324505
+    ],
+    "minimization_force_two_norm_initial_final": [
+      282.10439,
+      0.72268311
+    ],
+    "minimization_stopping_criterion": "energy tolerance",
+    "normal_loop_count": 2
+  },
+  "lammps_returncode": 0,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_urethane_alternate_parameter_and_charge_validation",
+  "protocol": {
+    "ensemble": "NVT_Nose-Hoover",
+    "minimization": {
+      "energy_tolerance": 1e-06,
+      "force_tolerance": 1e-08,
+      "max_evaluations": 200000,
+      "max_iterations": 20000,
+      "style": "cg"
+    },
+    "nvt_steps": 2000,
+    "packing": "RadonPy_poly.amorphous_cell",
+    "temperature_k": 300.0,
+    "time_step_fs": 0.5,
+    "trajectory_time_ps": 1.0
+  },
+  "random_seed": 20260825,
+  "release_id": "tpu-reality-md-multichain-smoke-20260825-v2",
+  "single_chain_atom_count": 198,
+  "status": "completed_multichain_smoke_production_md_blocked"
+}

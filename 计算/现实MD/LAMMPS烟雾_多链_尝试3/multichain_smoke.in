@@ -1,0 +1,53 @@
+log multichain_smoke_lammps.log append
+units real
+atom_style full
+boundary p p p
+
+pair_style lj/charmm/coul/long 8.0 12.0
+kspace_style pppm 1e-6
+dielectric 1.000000
+bond_style harmonic
+angle_style harmonic
+dihedral_style fourier
+improper_style cvff
+special_bonds amber
+pair_modify mix arithmetic
+neighbor 2.0 bin
+neigh_modify delay 0 every 1 check yes
+read_data multichain_smoke.data
+
+
+thermo_style custom step time temp press enthalpy etotal ke pe ebond eangle edihed eimp evdwl ecoul elong etail vol lx ly lz density pxx pyy pzz pxy pxz pyz
+thermo_modify flush yes
+thermo 100
+
+dump dump0 all custom 500 multichain_smoke.dump id type mol x y z ix iy iz vx vy vz
+restart 2000 multichain_smoke_1.rst multichain_smoke_2.rst
+
+undump dump0
+min_style cg
+minimize 0.000001 0.000000 20000 200000
+reset_timestep 0
+dump dump0 all custom 500 multichain_smoke.dump id type mol x y z ix iy iz vx vy vz
+
+timestep 0.500000
+
+velocity all create 300.000000 288968 mom yes rot yes dist gaussian
+
+# nvt
+fix md2 all nvt temp 300.000000 300.000000 50.000000
+
+# Update thermo_style
+thermo_style custom step time temp press enthalpy etotal ke pe ebond eangle edihed eimp evdwl ecoul elong etail vol lx ly lz density pxx pyy pzz pxy pxz pyz
+thermo_modify flush yes
+thermo 100
+
+run 2000
+unfix md2
+
+write_dump all custom multichain_smoke_last.dump id x y z xu yu zu vx vy vz fx fy fz modify sort id
+
+thermo_style custom step time temp press enthalpy etotal ke pe ebond eangle edihed eimp evdwl ecoul elong etail vol lx ly lz density pxx pyy pzz pxy pxz pyz
+thermo_modify flush yes
+write_data multichain_smoke_last.data
+quit

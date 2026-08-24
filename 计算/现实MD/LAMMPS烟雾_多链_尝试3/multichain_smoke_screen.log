@@ -1,0 +1,7 @@
+LAMMPS (22 Jul 2025 - Update 4)
+  using 1 OpenMP thread(s) per MPI task
+log multichain_smoke_lammps.log append
+ /opt/tpu-md-venv/bin/lmp  -in multichain_smoke.in -sc none -log multichain_smoke_screen.log
+
+
+LAMMPS returncode = 0 
