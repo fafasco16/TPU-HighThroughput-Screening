@@ -1,0 +1,38 @@
+{
+  "counts": {
+    "formulations": 12,
+    "pareto_formulations": 6,
+    "ready_formulations": 12
+  },
+  "files": {
+    "预反应Pareto.csv": {
+      "bytes": 44234,
+      "sha256": "a2abac7dfdcba89b23b8c993cbcc17d919f2a7546e213872469b2af5ed12f485"
+    },
+    "预反应优先级报告.md": {
+      "bytes": 710,
+      "sha256": "1aefc362de3039db32fb03c55df19358156148b5f293becb83cda7ce62391727"
+    },
+    "高层DFT候选_预反应更新.csv": {
+      "bytes": 75594,
+      "sha256": "a50dc28f8faf054f1c2e84176c4c952f1b9b99200432ba49db97c0533a4b9f3d"
+    }
+  },
+  "inputs": {
+    "formulations": {
+      "path": "结果\\现实筛选\\高层DFT候选12.csv",
+      "sha256": "06ce22524c23eba042ce40b0cda0945531aed6e515488ee1d7f6ab272c75f5ae"
+    },
+    "pair_results": {
+      "path": "计算\\现实预反应复合物\\聚合\\逐配对结果.csv",
+      "sha256": "cfe922f7f9e99a6d0fc6d670fc3b79423535adb91e94fa33b1383e99a94d5038"
+    }
+  },
+  "objectives": {
+    "chain_extender_pair__association_energy_start_span_kcal_mol": "min",
+    "chain_extender_pair__best_association_energy_proxy_kcal_mol": "min",
+    "macrodiol_pair__association_energy_start_span_kcal_mol": "min"
+  },
+  "release_id": "tpu-reality-prereaction-priority-20260825-v1",
+  "status": "completed"
+}

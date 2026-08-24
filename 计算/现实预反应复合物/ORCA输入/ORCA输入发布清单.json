@@ -1,0 +1,23 @@
+{
+  "aggregate_artifact_sha256": "a68a6182d96379d668feef5d57321ad2c3afe091449d2fed8aed0c53bb0d3ba2",
+  "counts": {
+    "blocked_pairs": 0,
+    "generated_optimization_inputs": 22,
+    "pairs": 22
+  },
+  "execution_note": {
+    "bytes": 813,
+    "path": "执行说明.md",
+    "sha256": "964faf1a84b7dd093163286c6557e8d871d19f264ef64aa159d7e2fb2de905a5"
+  },
+  "execution_permission": "blocked_missing_authorized_executable",
+  "method": "R2SCAN-3C",
+  "orca_version_target": "6.1",
+  "release_id": "tpu-reality-orca-r2scan3c-inputs-20260825-v1",
+  "status": "ready_inputs_execution_blocked",
+  "task_table": {
+    "bytes": 14076,
+    "path": "ORCA_r2SCAN3c任务清单.csv",
+    "sha256": "9afa86499d4a105180ce095ee0fa672982fd6f56bf39fe36aee429885549373c"
+  }
+}

@@ -91,6 +91,8 @@ Tier 1 可以比较同一方法下的构象柔性、局部电性、NCO/OH 位点
 
 条件参考可以用于选择后续r2SCAN-3c输入，但必须携带多起点缺失警告，不能与四起点完整配对等权。`代码/更新预反应优先级.py`分别连接二异氰酸酯–PTMG与二异氰酸酯–扩链剂代理，不生成黑箱总分；`代码/生成ORCA_r2SCAN3c输入包.py`只有在配对资格、最佳任务状态和4个xTB输出哈希闭合后才生成ORCA优化/频率输入。
 
+最终结果显示PTMG配对最佳缔合能代理跨体系为约−13至−76 kcal mol⁻¹，并随链长和全链构象松弛显著变化；它不能作为跨PTMG牌号的直接Pareto目标。该字段保留为`context_only_size_and_global_deformation_confounded`。预反应优先级只使用扩链剂小分子配对能、PTMG配对多起点离散度和扩链剂配对多起点离散度；PTMG绝对能需待局部模型、形变能分解或高层DFT后再比较。
+
 ## 4. MD 启动门与建议层级
 
 当前全部队列的 `md_stage` 为 `on_hold_pending_real_macrodiol_identity_Mn_Mw_PDI`。只有同时闭合下列信息才允许启动原子级 MD：

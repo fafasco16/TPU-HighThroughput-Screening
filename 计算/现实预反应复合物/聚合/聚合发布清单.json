@@ -1,0 +1,29 @@
+{
+  "counts": {
+    "completed_tasks": 74,
+    "eligible_pairs": 22,
+    "pairs": 22,
+    "tasks": 88
+  },
+  "files": {
+    "逐任务结果.csv": {
+      "bytes": 75236,
+      "sha256": "328e73c1e8588952880f3368618f50d19471f2a97d2bcd99a004670440b1c99a"
+    },
+    "逐配对结果.csv": {
+      "bytes": 7422,
+      "sha256": "cfe922f7f9e99a6d0fc6d670fc3b79423535adb91e94fa33b1383e99a94d5038"
+    }
+  },
+  "pair_status_counts": {
+    "complete": 12,
+    "complete_with_blocked_starts": 4,
+    "conditional_nonconverged_starts": 6
+  },
+  "status": "completed",
+  "status_counts": {
+    "blocked_input_geometry": 8,
+    "completed": 74,
+    "invalid_completed_state": 6
+  }
+}

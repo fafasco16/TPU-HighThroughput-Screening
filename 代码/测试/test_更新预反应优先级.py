@@ -68,6 +68,13 @@ def test_two_pair_types_join_and_derive_proxy_objectives_without_scalar_score():
     assert first["chain_extender_pair__best_association_energy_proxy_kcal_mol"] == -5.0
     assert first["association_proxy_mean_kcal_mol"] == -7.5
     assert first["association_proxy_balance_abs_difference_kcal_mol"] == 5.0
+    assert first["macrodiol_pair_energy_use_status"] == (
+        "context_only_size_and_global_deformation_confounded"
+    )
+    assert (
+        "macrodiol_pair__best_association_energy_proxy_kcal_mol"
+        not in first["prereaction_pareto_objective_spec"]
+    )
     assert result["prereaction_pareto_score"].isna().all()
     assert result["performance_claim_status"].eq("no_performance_claim").all()
 

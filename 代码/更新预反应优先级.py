@@ -18,9 +18,15 @@ from 配方系综特征 import prepare_pareto_input
 ROOT = Path(__file__).resolve().parents[1]
 OBJECTIVES: Mapping[str, str] = OrderedDict(
     (
-        ("macrodiol_pair__best_association_energy_proxy_kcal_mol", "min"),
         ("chain_extender_pair__best_association_energy_proxy_kcal_mol", "min"),
-        ("association_proxy_max_start_span_kcal_mol", "min"),
+        (
+            "macrodiol_pair__association_energy_start_span_kcal_mol",
+            "min",
+        ),
+        (
+            "chain_extender_pair__association_energy_start_span_kcal_mol",
+            "min",
+        ),
     )
 )
 PAIR_SPECS = {
@@ -175,6 +181,12 @@ def build_updated_priorities(
     output["association_proxy_max_start_span_kcal_mol"] = output[
         span_columns
     ].apply(pd.to_numeric, errors="coerce").max(axis=1, skipna=False)
+    output["macrodiol_pair_energy_use_status"] = (
+        "context_only_size_and_global_deformation_confounded"
+    )
+    output["chain_extender_pair_energy_use_status"] = (
+        "relative_proxy_objective_within_small_molecule_protocol"
+    )
     gate = pd.DataFrame(
         {
             "prereaction_gate_status": np.where(
@@ -259,6 +271,8 @@ def build_report(updated: pd.DataFrame) -> str:
             f"- 预反应代理Pareto：{pareto}",
             "",
             "本轮使用受约束GFN2-xTB复合物缔合能及多起点离散程度，只用于高层DFT输入优先级。",
+            "PTMG配对原始缔合能混入链长和全链构象松弛，只作上下文，不进入跨牌号Pareto目标。",
+            "Pareto只使用扩链剂小分子配对能、PTMG配对多起点离散度和扩链剂配对多起点离散度。",
             "负的缔合能代理不能解释为反应能垒、速率常数、转化率或TPU宏观性能。",
             "商业对照始终保留；未闭合配对不删除，只关闭其Pareto资格。",
             "正式r2SCAN-3c计算仍等待授权引擎，并须执行几何与频率门。",

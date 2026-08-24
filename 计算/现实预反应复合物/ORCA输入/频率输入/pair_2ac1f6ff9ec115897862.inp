@@ -1,0 +1,13 @@
+! R2SCAN-3C TightSCF Freq
+
+%pal
+  NProcs 8
+end
+
+%maxcore 6000
+
+%scf
+  MaxIter 500
+end
+
+* xyzfile 0 1 ../ORCA优化几何/pair_2ac1f6ff9ec115897862.xyz

@@ -1,0 +1,13 @@
+! R2SCAN-3C TightSCF Opt
+
+%pal
+  NProcs 8
+end
+
+%maxcore 6000
+
+%scf
+  MaxIter 500
+end
+
+* xyzfile 0 1 ../几何/pair_d0f7348c2ab6da21546e.xyz
