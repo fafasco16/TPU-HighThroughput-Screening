@@ -90,6 +90,8 @@ Tier 1 可以比较同一方法下的构象柔性、局部电性、NCO/OH 位点
 
 ## 6. 参考文献
 
+CREST结束后的逐构象单点命令、JSON字段、Boltzmann代理权重和NCO/OH位点定义，统一采用[xTB系综描述符实施方案](xTB系综描述符实施方案.md)，不得另写一套不兼容口径。
+
 [145] Hayashi, Y.; RadonPy Consortium. *RadonPy PI1070 Computational Polymer Dataset*, commit `840dd4a2b5f261fc9370bb6786eff0b71a463d2f`; GitHub, 2022. https://github.com/RadonPy/RadonPy/tree/840dd4a2b5f261fc9370bb6786eff0b71a463d2f/data.
 
 [146] Hayashi, Y.; Shiomi, J.; Morikawa, J.; Yoshida, R. RadonPy: Automated Physical Property Calculation Using All-Atom Classical Molecular Dynamics Simulations for Polymer Informatics. *npj Computational Materials* **2022**, *8*, 222. https://doi.org/10.1038/s41524-022-00906-4.

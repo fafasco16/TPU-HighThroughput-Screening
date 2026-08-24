@@ -10,6 +10,9 @@ run_pipeline.py     历史v0.1四源管道；不要用于重建v0.2权威总账
 生成DFT任务.py      将48条队列去重为构件任务并生成确定性三维初始结构
 运行CREST任务.py    服务器端单构件断点续算、哈希和失败状态包装器
 汇总CREST结果.py    汇总completed/failed/pending/blocked状态，不填补失败值
+CREST系综分析.py    解析多帧构象、Boltzmann权重、构象熵和低能窗口
+发布CREST结果.py    终态与哈希核验后生成确定性精简结果包
+配方系综特征.py     严格连接三类构件描述符并生成无总分Pareto输入
 ```
 
 注意：`run_pipeline.py manifest` 会扫描整个本地 `数据/原始`，只用于显式重建历史兼容清单；不要把它当作 v0.2 日常入口。v0.2 的权威产物是 `结果/数据规模总账.csv`、`结果/样本清单.csv.gz`、`结果/Gold_V_候选.csv.gz`、`结果/Gold_C_计算性能.csv.gz` 和 `结果/Gold_E_实验表格.csv.gz`。
@@ -35,4 +38,19 @@ uv run python 代码\生成候选预审.py
 uv run python 代码\生成候选预审.py --检查
 uv run python 代码\生成DFT任务.py
 uv run python 代码\生成DFT任务.py --检查
+```
+
+CREST全部终态后，在服务器生成最终发布与构件系综表：
+
+```bash
+python 代码/发布CREST结果.py \
+  --任务清单 计算/DFT任务清单.csv \
+  --结果目录 计算/结果 \
+  --输出目录 计算/发布
+
+python 代码/CREST系综分析.py \
+  --任务清单 计算/DFT任务清单.csv \
+  --结果目录 计算/结果 \
+  --输出 计算/CREST构件系综汇总.csv \
+  --温度 298.15
 ```
