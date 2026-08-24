@@ -30,9 +30,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def load_components(path: str | Path) -> pd.DataFrame:
     frame = pd.read_csv(path)
+    if "candidate_id" not in frame.columns and "component_id" in frame.columns:
+        frame = frame.rename(columns={"component_id": "candidate_id"})
     required = {"candidate_id", "canonical_smiles"}
     if required.difference(frame.columns):
         raise ValueError(f"采购查询输入缺少字段: {sorted(required.difference(frame.columns))}")
+    frame = frame.loc[
+        frame["canonical_smiles"].notna()
+        & frame["canonical_smiles"].astype(str).str.strip().ne("")
+    ].copy()
+    if frame.empty:
+        raise ValueError("采购查询输入没有可按离散结构查询的构件")
     if frame["candidate_id"].isna().any() or not frame["candidate_id"].is_unique:
         raise ValueError("采购查询输入candidate_id必须非空且唯一")
     components = []

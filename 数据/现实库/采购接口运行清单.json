@@ -1,0 +1,50 @@
+{
+  "cache_hits": 28,
+  "catalog_status_counts": {
+    "multiple_catalog_signals": 8,
+    "single_catalog_signal": 6
+  },
+  "configuration": {
+    "path": "E:\\数据\\TPU\\配置\\采购接口.yaml",
+    "sha256": "43d6605e94571479f1c0bd569ae62968f68ccbb0e8e5ef420bdc6aece2d04499"
+  },
+  "experiment_release_status": "blocked_pending_quote_sds_and_local_approval",
+  "input": {
+    "path": "数据\\现实库\\构件.csv",
+    "rows": 14,
+    "sha256": "923e69e87d66b01a92d16af37c124b2aa96f7588316a164261505fa7babca438"
+  },
+  "interfaces": [
+    "emolecules_link",
+    "molbloom",
+    "pubchem_vendor",
+    "smallworld"
+  ],
+  "outputs": {
+    "evidence": {
+      "path": "数据\\现实库\\采购接口证据.csv",
+      "rows": 50,
+      "sha256": "a2a9f2e44767a5f824e3585a03f66e5d0e85ab35f62165963d773a1d0ca7810c"
+    },
+    "summary": {
+      "path": "数据\\现实库\\采购查询.csv",
+      "rows": 14,
+      "sha256": "b9a94033b91160e45351514a1b560f399a7a135d8f19934ebc9cb4e34b213766"
+    }
+  },
+  "package_versions": {
+    "molbloom": "3.2.0",
+    "pandas": "2.3.3",
+    "rdkit": "2026.3.4",
+    "smallworld-api": "1.1.4"
+  },
+  "query_status_counts": {
+    "emolecules_link::link_generated": 14,
+    "molbloom::completed": 14,
+    "pubchem_vendor::completed": 14,
+    "smallworld::completed": 8
+  },
+  "refresh": false,
+  "smallworld_enabled": true,
+  "status": "completed"
+}

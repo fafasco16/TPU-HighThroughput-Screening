@@ -1,0 +1,29 @@
+{
+  "counts": {
+    "discrete_tasks": 14,
+    "gfnff_preoptimized_inputs": 3,
+    "ptmg_representative_tasks": 5,
+    "tasks": 19
+  },
+  "execution_policy": {
+    "first_wave": "14 discrete commercial components",
+    "max_parallel_tasks_on_16_cpu_instance": 4,
+    "ptmg_wave": "hold until discrete smoke tests and runtime review",
+    "smoke_test_candidate_ids": [
+      "commercial_bdo_14",
+      "commercial_ipdi"
+    ],
+    "threads_per_task": 4
+  },
+  "initial_geometries_aggregate_sha256": "fa178d4e55d01b2d77e1c8abe498ed46c62d586853a20182db70203d6aa38e84",
+  "release_id": "tpu-reality-crest-input-20260824-v1",
+  "source_task_table": {
+    "path": "E:\\数据\\TPU\\计算\\现实构件\\量化任务.csv",
+    "sha256": "03961d5d656431e06e52e0a976a533eef14950c34818fb0020d5662761f6c87d"
+  },
+  "status": "ready",
+  "task_table": {
+    "path": "E:\\数据\\TPU\\计算\\现实CREST\\DFT任务清单.csv",
+    "sha256": "efc537f108a2c5e2a74dba556e076d96d8b4102467517f9395bb49da150d5fed"
+  }
+}

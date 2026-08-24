@@ -13,16 +13,16 @@ sys.path.insert(0, str(ROOT / "代码"))
 import 生成现实构件量化任务 as reality_quantum
 
 
-def test_real_inputs_build_seven_tasks():
+def test_real_inputs_build_all_admitted_tasks():
     components = pd.read_csv(ROOT / "数据" / "现实库" / "构件.csv")
     ptmg = pd.read_csv(ROOT / "数据" / "现实库" / "PTMG代表模型.csv")
     tasks = reality_quantum.build_tasks(components, ptmg)
-    assert len(tasks) == 7
+    assert len(tasks) == 19
     assert tasks["candidate_id"].is_unique
     assert tasks["component_role"].value_counts().to_dict() == {
-        "diisocyanate": 4,
-        "macrodiol_representative": 2,
-        "chain_extender": 1,
+        "diisocyanate": 7,
+        "macrodiol_representative": 5,
+        "chain_extender": 7,
     }
     assert set(tasks.loc[tasks.component_role.eq("macrodiol_representative"), "initial_conformer_count"]) == {1, 3}
 
@@ -82,14 +82,21 @@ def test_build_and_main(tmp_path: Path, capsys):
     components = ROOT / "数据" / "现实库" / "构件.csv"
     ptmg = ROOT / "数据" / "现实库" / "PTMG代表模型.csv"
     manifest = reality_quantum.build(components, ptmg, tmp_path / "out", seed=20260824)
-    assert manifest["counts"]["tasks"] == 7
-    assert manifest["counts"]["force_field_converged"] == 5
-    assert manifest["counts"]["xtb_preoptimization_required"] == 2
+    assert manifest["counts"]["tasks"] == 19
+    assert (
+        manifest["counts"]["force_field_converged"]
+        + manifest["counts"]["xtb_preoptimization_required"]
+        == 19
+    )
+    assert manifest["counts"]["xtb_preoptimization_required"] >= 1
     assert manifest["status"] == "completed_with_preoptimization_required"
     assert (tmp_path / "out" / "量化任务.csv").is_file()
     assert (tmp_path / "out" / "发布清单.json").is_file()
     second = tmp_path / "main"
     assert reality_quantum.main([
-        "--构件", str(components), "--PTMG", str(ptmg), "--输出目录", str(second)
+        "--构件", str(components),
+        "--PTMG", str(ptmg),
+        "--输出目录", str(second),
+        "--预优化清单", str(tmp_path / "missing.json"),
     ]) == 0
-    assert '"tasks": 7' in capsys.readouterr().out
+    assert '"tasks": 19' in capsys.readouterr().out

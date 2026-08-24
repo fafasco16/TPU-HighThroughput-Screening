@@ -208,6 +208,14 @@ def test_load_components_and_existing_pubchem(tmp_path: Path):
     source = tmp_path / "components.csv"
     pd.DataFrame([{"candidate_id": "a", "canonical_smiles": "OCCCCO"}]).to_csv(source, index=False)
     assert runner.load_components(source).loc[0, "inchi_key"] == "WERYXYBDKMZEQL-UHFFFAOYSA-N"
+    reality_source = tmp_path / "reality.csv"
+    pd.DataFrame(
+        [
+            {"component_id": "a", "canonical_smiles": "OCCCCO"},
+            {"component_id": "polymer", "canonical_smiles": ""},
+        ]
+    ).to_csv(reality_source, index=False)
+    assert runner.load_components(reality_source)["candidate_id"].tolist() == ["a"]
     bad = tmp_path / "bad.csv"
     pd.DataFrame({"x": [1]}).to_csv(bad, index=False)
     with pytest.raises(ValueError, match="缺少字段"):

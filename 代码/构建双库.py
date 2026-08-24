@@ -220,7 +220,9 @@ def build_calculation_tasks(
     ptmg_models: pd.DataFrame,
 ) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
-    discrete = components.loc[components["identity_kind"].eq("discrete_substance")]
+    discrete = components.loc[
+        components["identity_kind"].isin(["discrete_substance", "commercial_isomer_mixture"])
+    ]
     for row in discrete.itertuples(index=False):
         rows.append(
             {
@@ -317,7 +319,8 @@ def write_dual_library(config_path: str | Path, *, root: str | Path = ROOT) -> d
     inputs = {key: base / value for key, value in config["inputs"].items()}
     release_manifest = json.loads(inputs["release_manifest"].read_text(encoding="utf-8"))
     virtual_index = build_virtual_asset_index(config["virtual_assets"], release_manifest, root=base)
-    reality_components = build_reality_components(pd.read_csv(inputs["commercial_components"]))
+    commercial_pool = pd.read_csv(inputs["commercial_components"])
+    reality_components = build_reality_components(commercial_pool)
     reality_formulations = build_reality_formulations(
         pd.read_csv(inputs["commercial_formulations"]), reality_components
     )
@@ -326,6 +329,12 @@ def write_dual_library(config_path: str | Path, *, root: str | Path = ROOT) -> d
     ptmg_models = build_ptmg_models(reality_components, config["ptmg_model"])
     calculation_tasks = build_calculation_tasks(reality_components, reality_formulations, ptmg_models)
     screening_queue = build_screening_queue(reality_formulations)
+    pending_macrodiols = commercial_pool.loc[
+        commercial_pool["role"].eq("macrodiol")
+        & commercial_pool["experimental_gate_status"].eq("blocked")
+        & commercial_pool["commercial_evidence_status"].eq("catalog_or_manufacturer_evidence")
+    ].copy()
+    pending_macrodiols["library_status"] = "commercial_evidence_only_pending_representative_model"
     outputs = {key: base / value for key, value in config["outputs"].items()}
     frames = {
         "virtual_asset_index": virtual_index,
@@ -335,6 +344,7 @@ def write_dual_library(config_path: str | Path, *, root: str | Path = ROOT) -> d
         "ptmg_models": ptmg_models,
         "calculation_tasks": calculation_tasks,
         "screening_queue": screening_queue,
+        "pending_macrodiols": pending_macrodiols,
     }
     for key, frame in frames.items():
         _write_csv(frame, outputs[key])

@@ -5,6 +5,7 @@ allowed_identity_kind:
     - discrete_substance
   chain_extender:
     - discrete_substance
+    - commercial_isomer_mixture
   macrodiol:
     - commercial_polyol_grade
 

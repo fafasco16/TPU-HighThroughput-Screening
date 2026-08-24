@@ -139,11 +139,15 @@ def build_experimental_combinations(
                     "commercial_ipdi": 2,
                     "commercial_h12mdi": 3,
                     "commercial_hdi": 4,
+                    "commercial_tdi_24": 5,
+                    "commercial_ndi_15": 6,
+                    "commercial_pdi_15": 7,
                 }.get(dii.stable_component_id, 9)
                 for hard_segment in hard_segments:
                     for ratio in ratios:
                         is_tier1 = (
                             dii.stable_component_id in {"commercial_mdi_44", "commercial_ipdi"}
+                            and extender.stable_component_id == "commercial_bdo_14"
                             and math.isclose(ratio, 1.02)
                             and (
                                 (math.isclose(float(macro.nominal_mn_g_mol), 1000.0) and math.isclose(hard_segment, 0.45))

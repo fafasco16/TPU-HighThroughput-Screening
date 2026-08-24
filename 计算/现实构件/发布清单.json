@@ -11,23 +11,24 @@
     "uhf": 0
   },
   "counts": {
-    "discrete_commercial_substances": 5,
-    "force_field_converged": 5,
+    "discrete_commercial_substances": 13,
+    "force_field_converged": 16,
     "geometry_blocked": 0,
-    "geometry_ready": 7,
-    "ptmg_single_chain_representatives": 2,
-    "tasks": 7,
-    "xtb_preoptimization_required": 2
+    "geometry_ready": 19,
+    "gfnff_preoptimization_completed": 3,
+    "ptmg_single_chain_representatives": 5,
+    "tasks": 19,
+    "xtb_preoptimization_required": 0
   },
-  "initial_geometries_aggregate_sha256": "c3f53a19ba3f8d9144d083bfce031fac8d80f2a378e3521b18d2b9cfb0b55bc2",
+  "initial_geometries_aggregate_sha256": "8767a6567a797eb7b7b0ddc541c90bce2815e9f3203cbd1fb2d705b850436fdb",
   "inputs": {
     "components": {
       "path": "E:\\数据\\TPU\\数据\\现实库\\构件.csv",
-      "sha256": "e842e344cb0150e579b44e6b37b11fbc2cc76ea2bb05a4f1a587ae5427dad0e2"
+      "sha256": "923e69e87d66b01a92d16af37c124b2aa96f7588316a164261505fa7babca438"
     },
     "ptmg_models": {
       "path": "E:\\数据\\TPU\\数据\\现实库\\PTMG代表模型.csv",
-      "sha256": "cbc434dfcda48ed3eb3226409eb69e1c0c5721a5a426de8f7c81b74a58a054f7"
+      "sha256": "667832ca8cde5376034d50f6c5fa827ab916f9ac301220b798ea4ca834fa8f25"
     }
   },
   "interpretation_limits": [
@@ -36,9 +37,9 @@
     "构件CREST/xTB描述符不能直接解释为完整TPU强度或韧性。"
   ],
   "release_id": "tpu-reality-component-quantum-2026-08-24-v1",
-  "status": "completed_with_preoptimization_required",
+  "status": "completed",
   "task_table": {
     "path": "E:\\数据\\TPU\\计算\\现实构件\\量化任务.csv",
-    "sha256": "299b7063ba9853275fe4c1142117d5c989a2bd9bfce5aef9aedc3e2dae0960ee"
+    "sha256": "03961d5d656431e06e52e0a976a533eef14950c34818fb0020d5662761f6c87d"
   }
 }

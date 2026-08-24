@@ -207,9 +207,10 @@ def test_real_repository_build_and_main(tmp_path: Path, monkeypatch: pytest.Monk
     manifest = dual.write_dual_library(config, root=ROOT)
     assert manifest["status"] == "completed"
     assert manifest["virtual_to_reality_component_leakage_count"] == 0
-    assert manifest["counts"]["reality_components"] == 7
-    assert manifest["counts"]["reality_formulations"] == 32
-    assert manifest["counts"]["calculation_tasks"] == 15
+    assert manifest["counts"]["reality_components"] == 19
+    assert manifest["counts"]["reality_formulations"] == 980
+    assert manifest["counts"]["calculation_tasks"] == 27
+    assert manifest["counts"]["pending_macrodiols"] == 3
     monkeypatch.setattr(sys, "argv", ["构建双库.py", "--配置", str(config)])
     assert dual.main() == 0
     assert "reality_components" in capsys.readouterr().out

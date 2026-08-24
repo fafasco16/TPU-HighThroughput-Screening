@@ -1,0 +1,43 @@
+{
+  "counts": {
+    "completed": 3,
+    "failed": 0
+  },
+  "interpretation_limit": "GFN-FF preoptimization only; not CREST ensemble or product distribution",
+  "release_id": "tpu-reality-ptmg-gfnff-preopt-20260824-v1",
+  "rows": [
+    {
+      "grade": "PTMG-1000",
+      "input_sha256": "18b2480f6602962e64eb731b35e953dbf675ce0ed744f7f90c33622848fe932d",
+      "log_sha256": "ca809f28735171eeac8330fca1034d75511228d743855e5dbba0ea524591ef77",
+      "method": "GFN-FF",
+      "optimization_level": "normal",
+      "optimized_bytes": 14503,
+      "optimized_sha256": "649e692dca7bfaf06c35e071b37aec0d453da716ed2d800afa4dce139b621523",
+      "status": "completed",
+      "threads": 8
+    },
+    {
+      "grade": "PTMG-1800",
+      "input_sha256": "85e1151621a94800c4825b8c180bff49cad00012d6027fe338fffd5154a8436c",
+      "log_sha256": "7900dafcc61ad5cd7ea43639cf6c303c2591922f7bc3ad4b344f4ff586071278",
+      "method": "GFN-FF",
+      "optimization_level": "normal",
+      "optimized_bytes": 25657,
+      "optimized_sha256": "c5bb76f59e6590d1cd533ba260c7a954cb169b1eee69320475a89107a353a324",
+      "status": "completed",
+      "threads": 8
+    },
+    {
+      "grade": "PTMG-2000",
+      "input_sha256": "c3ee544c6665f8896004cadad898ec0f7b83ef7e835e97cbbaa4701f17f7837c",
+      "log_sha256": "7b1c2d2c9b8416521aaa4e006a384de35d6c0472631dda81d452a1b3e8a4c0dd",
+      "method": "GFN-FF",
+      "optimization_level": "normal",
+      "optimized_bytes": 27685,
+      "optimized_sha256": "83a25e23846743f255e99016d53ce9aae1a8414495a84f18ad2bac52fd14600f",
+      "status": "completed",
+      "threads": 8
+    }
+  ]
+}

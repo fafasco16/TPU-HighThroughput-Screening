@@ -44,6 +44,7 @@ inputs:
   commercial_formulations: 候选/实验合理组合.csv
   commercial_evidence: 候选/商用构件证据.csv
   procurement_summary: 候选/当前82构件采购查询.csv
+  reality_procurement_summary: 数据/现实库/采购查询.csv
 
 ptmg_model:
   end_group_mass_g_mol: 18.015
@@ -59,4 +60,5 @@ outputs:
   ptmg_models: 数据/现实库/PTMG代表模型.csv
   calculation_tasks: 数据/现实库/计算任务.csv
   screening_queue: 数据/现实库/筛选队列.csv
+  pending_macrodiols: 数据/现实库/待建模宏二醇.csv
   manifest: 数据/双库发布清单.json

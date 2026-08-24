@@ -1,15 +1,16 @@
 {
   "configuration": {
     "path": "E:\\数据\\TPU\\配置\\双库筛选.yaml",
-    "sha256": "615efdfe46a5545de522117ffc40d3bccfa56dd2680e933bdc93da72a7b7be47"
+    "sha256": "aad77ecfa88a2c6f7a9181514648ab597b3b1326b40f085f67f782ea1faede77"
   },
   "counts": {
-    "calculation_tasks": 15,
-    "ptmg_models": 2,
-    "reality_components": 7,
-    "reality_evidence": 7,
-    "reality_formulations": 32,
-    "screening_queue": 32,
+    "calculation_tasks": 27,
+    "pending_macrodiols": 3,
+    "ptmg_models": 5,
+    "reality_components": 19,
+    "reality_evidence": 19,
+    "reality_formulations": 980,
+    "screening_queue": 980,
     "virtual_asset_index": 7
   },
   "experiment_release_status": "blocked_pending_quote_sds_and_local_approval",
@@ -17,19 +18,23 @@
   "inputs": {
     "commercial_components": {
       "path": "候选/实验可行构件.csv",
-      "sha256": "c39595d348d9bb240c2fb7f82acf957f0c791da3f544634905cccf37bad88176"
+      "sha256": "7386bf9fb5e4e47704e725972edfdcdf652fe5c23d1d2dbfb339ac4cc697ed31"
     },
     "commercial_evidence": {
       "path": "候选/商用构件证据.csv",
-      "sha256": "8497793793c00670d1c9ceb924ab1fad45b238017e5417d6c6f10d8a188ee829"
+      "sha256": "3876aa32a5c6e839b42a1d0b81ee238aec8716a2674d45e7dfc298b45edda5fd"
     },
     "commercial_formulations": {
       "path": "候选/实验合理组合.csv",
-      "sha256": "8583819151c89648c3baa5a382115fe6541a415c6bccaf7cc44d282ecd5bc499"
+      "sha256": "b60025058f3835c0623e8b34713aae0882ca645c5b296f269a89e7a8450f0747"
     },
     "procurement_summary": {
       "path": "候选/当前82构件采购查询.csv",
       "sha256": "aab9a727e7504dffb369278c255e932fe76d427276e0b384f92c23affa969da3"
+    },
+    "reality_procurement_summary": {
+      "path": "数据/现实库/采购查询.csv",
+      "sha256": "b9a94033b91160e45351514a1b560f399a7a135d8f19934ebc9cb4e34b213766"
     },
     "release_manifest": {
       "path": "结果/可用数据集/发布清单.json",
@@ -39,27 +44,31 @@
   "outputs": {
     "calculation_tasks": {
       "path": "数据/现实库/计算任务.csv",
-      "sha256": "e5e77eb6d20ae29ac1c8448af39dcc34715c3128c0da5b930124ebae624aab90"
+      "sha256": "5c88874917b31c5f8c02473bd5abe7705ec2edcf18c191dec72e862431fdb776"
+    },
+    "pending_macrodiols": {
+      "path": "数据/现实库/待建模宏二醇.csv",
+      "sha256": "c88ac40ce7f55c960e952b3c80bc1f603ab2a684797c1c24a361c35cf6a8f17d"
     },
     "ptmg_models": {
       "path": "数据/现实库/PTMG代表模型.csv",
-      "sha256": "cbc434dfcda48ed3eb3226409eb69e1c0c5721a5a426de8f7c81b74a58a054f7"
+      "sha256": "667832ca8cde5376034d50f6c5fa827ab916f9ac301220b798ea4ca834fa8f25"
     },
     "reality_components": {
       "path": "数据/现实库/构件.csv",
-      "sha256": "e842e344cb0150e579b44e6b37b11fbc2cc76ea2bb05a4f1a587ae5427dad0e2"
+      "sha256": "923e69e87d66b01a92d16af37c124b2aa96f7588316a164261505fa7babca438"
     },
     "reality_evidence": {
       "path": "数据/现实库/来源与证据.csv",
-      "sha256": "87111b9b0d56821d1a561ce6cf4a7607d7d5b0d8a20548faed3f4dab755ec6b9"
+      "sha256": "fffefb3647519a85bff1e28b996cc2b9b4582377aa8b9f542f8207fe8b559de4"
     },
     "reality_formulations": {
       "path": "数据/现实库/配方.csv",
-      "sha256": "959c154208e7a990ec57ff80c0b1ee3ded0a312d186e105bc5d9775b28d39ee7"
+      "sha256": "071bfaa691fda37d5b285508974ee712ad078f36d8202c65bcaef691357601e3"
     },
     "screening_queue": {
       "path": "数据/现实库/筛选队列.csv",
-      "sha256": "04074d1959ba7d4f681fad5ab47d81c7f907fd89a5fed8bdeea5d77327a950cb"
+      "sha256": "336da671adc99db8fcdeddff8ec4c6d4f25c5c71269491eede43ae7e18cbf7b7"
     },
     "virtual_asset_index": {
       "path": "数据/虚拟库/资产索引.csv",
