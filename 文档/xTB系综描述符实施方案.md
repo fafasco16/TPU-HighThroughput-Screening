@@ -328,7 +328,30 @@ chain_extender__*
 7. 298.15 K 权重和为 1，构象顺序打乱后构件级结果不变；
 8. 构象失败时不会静默重归一化或生成构件级完整状态。
 
-## 12. 参考文献与官方资料
+## 12. 2026-08-25 现实商业构件生产结果
+
+本方案已经从设计转入首轮生产，冻结结果如下：
+
+| 发布 | 构件 | 构象/任务 | 失败 | 保真度与用途 |
+|---|---:|---:|---:|---|
+| `tpu-reality-xtb-ensemble-20260825-v1` | 14 | 1,445 | 0 | 7个二异氰酸酯和7个扩链剂；CREST 3.0.2全系综后用xTB 6.7.1重算并加权 |
+| `tpu-reality-ptmg-xtb-proxy-20260825-v1` | 5 | 5 | 0 | PTMG-650/1000/1400/1800/2000各一个确定性代表链段；只作商品分布的单链代理 |
+| `tpu-reality-quantum-formulations-20260825-v1` | 19 | 980条配方 | 0个缺失连接 | 14个CREST系综构件与5个PTMG单链代理的混合保真度配方表 |
+
+14个离散构件的CREST状态、`crest_conformers.xyz`、输入/输出SHA-256和CREST 3.0.2版本全部闭合。随后在授权Ubuntu实例使用官方xTB 6.7.1二进制，SHA-256为`debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a`；1,445个单点全部正常结束，聚合得到1,445行逐构象描述符和14行构件系综描述符。PTMG单链代理另用同一二进制完成5个单点并得到5行构件代理描述符，禁止把其单构象标准差为零解释成商品分布没有不确定性。
+
+现实配方通过稳定构件ID闭合为980行、266列量化输入。现有GNN结构适用域检查把980行全部标为域外；本项目据此关闭GNN性能外推并提高验证优先级，但不关闭独立的xTB/DFT/MD代理筛选。首轮五目标Pareto前沿有336条配方、对应84个三构件基础体系；覆盖约束后的DFT/MD复核队列保留40条配方、26个基础体系，并覆盖全部7个二异氰酸酯、5个PTMG牌号和7个扩链剂。
+
+旧虚拟构件Slurm Job 8307于24小时墙钟后`TIMEOUT`：84个可运行输入中83个完成，1个宏二醇代理在最后一轮21,207结构优化约71%处停止；另2个输入继续保持`blocked_input_geometry`。该未完成任务不进入本节现实商业发布，也不因已有中间`crest_conformers.xyz`而伪装成正常结束。
+
+本地权威文件为：
+
+- `计算/现实xTB系综/发布清单.json`；
+- `计算/现实PTMG_xTB/发布清单.json`；
+- `数据/现实库/量化描述符发布清单.json`；
+- `结果/现实筛选/筛选发布清单.json`。
+
+## 13. 参考文献与官方资料
 
 [1] Bannwarth, C.; Ehlert, S.; Grimme, S. GFN2-xTB—An Accurate and Broadly Parametrized Self-Consistent Tight-Binding Quantum Chemical Method with Multipole Electrostatics and Density-Dependent Dispersion Contributions. *Journal of Chemical Theory and Computation* **2019**, *15* (3), 1652–1671. https://doi.org/10.1021/acs.jctc.8b01176.
 

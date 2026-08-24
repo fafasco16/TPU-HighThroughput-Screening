@@ -1,0 +1,7 @@
+# Byte-exact scientific releases whose SHA-256 values are recorded in manifests.
+/计算/现实xTB系综/** -text whitespace=cr-at-eol
+/计算/现实PTMG_xTB/** -text whitespace=cr-at-eol
+/数据/现实库/构件量化描述符.csv -text whitespace=cr-at-eol
+/数据/现实库/配方量化描述符.csv -text whitespace=cr-at-eol
+/数据/现实库/量化描述符发布清单.json -text whitespace=cr-at-eol
+/结果/现实筛选/** -text whitespace=cr-at-eol

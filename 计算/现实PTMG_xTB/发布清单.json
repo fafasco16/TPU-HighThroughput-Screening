@@ -1,0 +1,68 @@
+{
+  "release_id": "tpu-reality-ptmg-xtb-proxy-20260825-v1",
+  "status": "completed",
+  "source_host_scope": "authorized_ubuntu_instance",
+  "source_root": "/root/TPU高通量筛选/现实PTMG_xTB",
+  "calculation": {
+    "xtb_version": "6.7.1",
+    "xtb_binary_sha256": "debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a",
+    "method": "GFN2-xTB",
+    "environment_model": "gas_phase",
+    "electronic_temperature_k": 300.0,
+    "ensemble_temperature_k": 298.15,
+    "workers": 5,
+    "threads_per_worker": 1,
+    "conformer_tasks": 5,
+    "component_proxies": 5,
+    "failed_tasks": 0,
+    "started_utc": "2026-08-24T16:51:29Z",
+    "finished_utc": "2026-08-24T16:51:34Z"
+  },
+  "representation": {
+    "scope": "single_oligomer_proxy_for_product_distribution",
+    "distribution_claim_status": "no_distribution_claim",
+    "interpretation_limit": "Each row represents one deterministic oligomer chain selected near nominal Mn. It is not the commercial Mn/Mw/PDI distribution and is not a direct TPU performance label."
+  },
+  "files": [
+    {
+      "path": "xTB构象任务清单.csv",
+      "bytes": 4582,
+      "sha256": "31816d129ef091d2d26e7b157427574822717ec3b799a566ef41aec59c0aaa66"
+    },
+    {
+      "path": "PTMG源任务清单.csv",
+      "bytes": 1594,
+      "sha256": "6d1e6903f024de5d064fc00f108421c737ac94b4c36fe20add30245c32164839"
+    },
+    {
+      "path": "任务发布清单.json",
+      "bytes": 852,
+      "sha256": "c8682d3206e3e016ec22d4d66472a1e66c57fcd665f04c6e70b776cb5f8ea586"
+    },
+    {
+      "path": "聚合/逐构象描述符.csv",
+      "bytes": 8659,
+      "sha256": "228fc4e070da57d4ca7fcaf4d0746b64b0d66aa00113aa4d5235e6d8eac23321"
+    },
+    {
+      "path": "聚合/构件系综描述符.csv",
+      "bytes": 7302,
+      "sha256": "b26f35685bc9a464d881054a4488db796fdfd089316596f8ba66b4463c013b91"
+    },
+    {
+      "path": "聚合/失败明细.csv",
+      "bytes": 128,
+      "sha256": "89f66398bdde07c237a9e4e62ccfb8bceb8f8569f8a190dd210945045f01a3a0"
+    },
+    {
+      "path": "批次状态.txt",
+      "bytes": 98,
+      "sha256": "a03caa8d920ecbe898da8de05ce80ff431990bc648f625b8350691ebde7aed52"
+    },
+    {
+      "path": "聚合.log",
+      "bytes": 50,
+      "sha256": "00a2bb1f4546223b049a6cf27bb20711d5311963ac7d4a4a2aec4eba7497df88"
+    }
+  ]
+}

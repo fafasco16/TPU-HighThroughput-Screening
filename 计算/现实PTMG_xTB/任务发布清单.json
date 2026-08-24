@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "components": 5,
+    "conformer_tasks": 5
+  },
+  "environment_model": "gas_phase",
+  "files": {
+    "PTMG源任务清单.csv": {
+      "bytes": 1594,
+      "sha256": "6d1e6903f024de5d064fc00f108421c737ac94b4c36fe20add30245c32164839"
+    },
+    "xTB构象任务清单.csv": {
+      "bytes": 4582,
+      "sha256": "31816d129ef091d2d26e7b157427574822717ec3b799a566ef41aec59c0aaa66"
+    }
+  },
+  "interpretation_limit": "single deterministic oligomer proxy; not a commercial Mn/Mw/PDI distribution and not a direct TPU performance label",
+  "method": "GFN2-xTB",
+  "release_id": "tpu-reality-ptmg-xtb-proxy-20260825-v1",
+  "representation_scope": "single_oligomer_proxy_for_product_distribution",
+  "status": "ready",
+  "xtb_binary_sha256": "debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a",
+  "xtb_version": "6.7.1"
+}

@@ -167,6 +167,7 @@ def aggregate_formulation_features(
     component_descriptors: pd.DataFrame,
     *,
     component_id_column: str = "component_id",
+    role_id_columns: Mapping[str, str] | None = None,
     feature_columns: Sequence[str] | None = None,
     status_column: str = "calculation_status",
     uncertainty_columns: Sequence[str] = ("conformer_uncertainty",),
@@ -178,12 +179,19 @@ def aggregate_formulation_features(
     或非完成态时同样不能进入 Pareto。所有构件特征都带角色前缀。
     """
 
-    required = {"formulation_id", *ROLE_ID_COLUMNS.values()}
+    role_map = dict(ROLE_ID_COLUMNS if role_id_columns is None else role_id_columns)
+    if not role_map:
+        raise ValueError("role_id_columns不能为空")
+    if any(not str(role).strip() or not str(column).strip() for role, column in role_map.items()):
+        raise ValueError("role_id_columns的角色和字段名不能为空")
+    if len(set(role_map.values())) != len(role_map):
+        raise ValueError("role_id_columns不能让多个角色共用同一字段")
+    required = {"formulation_id", *role_map.values()}
     missing = required.difference(formulations.columns)
     if missing:
         raise ValueError(f"配方表缺少字段: {sorted(missing)}")
     _nonempty_unique_key(formulations, "formulation_id", "配方表")
-    for id_column in ROLE_ID_COLUMNS.values():
+    for id_column in role_map.values():
         if (
             formulations[id_column].isna()
             | formulations[id_column].astype(str).str.strip().eq("")
@@ -224,14 +232,15 @@ def aggregate_formulation_features(
     indexed = components.set_index(component_id_column, drop=False)
     role_status_columns: list[str] = []
     role_missing_columns: list[str] = []
-    for role, id_column in ROLE_ID_COLUMNS.items():
+    role_payload: dict[str, object] = {}
+    for role, id_column in role_map.items():
         ids = formulations[id_column]
         found = ids.isin(indexed.index)
         missing_column = f"{role}__descriptor_missing"
-        output[missing_column] = ~found.to_numpy()
+        role_payload[missing_column] = ~found.to_numpy()
         role_missing_columns.append(missing_column)
         for feature in features:
-            output[f"{role}__{feature}"] = ids.map(indexed[feature]).to_numpy()
+            role_payload[f"{role}__{feature}"] = ids.map(indexed[feature]).to_numpy()
         raw_status = (
             ids.map(indexed[status_column])
             if status_column in indexed.columns
@@ -240,8 +249,12 @@ def aggregate_formulation_features(
         role_status = raw_status.map(_status_kind)
         role_status.loc[~found] = "missing_component_descriptor"
         status_output = f"{role}__descriptor_status"
-        output[status_output] = role_status.to_numpy()
+        role_payload[status_output] = role_status.to_numpy()
         role_status_columns.append(status_output)
+
+    output = pd.concat(
+        [output, pd.DataFrame(role_payload, index=output.index)], axis=1, copy=False
+    )
 
     missing_count = output[role_missing_columns].sum(axis=1).astype(int)
     output["component_descriptor_missing_count"] = missing_count
@@ -261,7 +274,7 @@ def aggregate_formulation_features(
         output["conformer_uncertainty_status"] = "not_provided"
     else:
         uncertainty_output = [
-            f"{role}__{column}" for role in ROLE_ID_COLUMNS for column in uncertainty
+            f"{role}__{column}" for role in role_map for column in uncertainty
         ]
         all_present = output[uncertainty_output].notna().all(axis=1)
         output["conformer_uncertainty_status"] = np.where(

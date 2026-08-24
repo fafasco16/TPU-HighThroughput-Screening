@@ -1,0 +1,53 @@
+{
+  "counts": {
+    "components": 19,
+    "formulations": 980
+  },
+  "descriptor_fidelity_counts": {
+    "crest_ensemble": 14,
+    "single_conformer_proxy": 5
+  },
+  "files": {
+    "构件量化描述符.csv": {
+      "bytes": 25496,
+      "sha256": "349dd5f7c4c8b1d70761d91b28a5a1bbafbab7cd90f4a000bea587e0e6192e4b"
+    },
+    "配方量化描述符.csv": {
+      "bytes": 3844247,
+      "sha256": "f47892decfc65e392880e80b100cb41484a5393b1c7368ac80e7f1586a0bdded"
+    }
+  },
+  "inputs": {
+    "commercial_components": {
+      "bytes": 8895,
+      "path": "E:\\数据\\TPU\\数据\\现实库\\构件.csv",
+      "sha256": "923e69e87d66b01a92d16af37c124b2aa96f7588316a164261505fa7babca438"
+    },
+    "commercial_formulations": {
+      "bytes": 910942,
+      "path": "E:\\数据\\TPU\\数据\\现实库\\配方.csv",
+      "sha256": "071bfaa691fda37d5b285508974ee712ad078f36d8202c65bcaef691357601e3"
+    },
+    "discrete_component_ensembles": {
+      "bytes": 19661,
+      "path": "E:\\数据\\TPU\\计算\\现实xTB系综\\聚合\\构件系综描述符.csv",
+      "sha256": "09a67e2f62ab61fdbbce661a3abafe77dff4ab0743b64bb27aa353369110be1c"
+    },
+    "formulation_applicability_domain": {
+      "bytes": 1183979,
+      "path": "E:\\数据\\TPU\\数据\\现实库\\配方适用域.csv",
+      "sha256": "9983ef77a7e2f371cc93f29afe17a07f8174982f9d8bc8ac7ccd290901574e8c"
+    },
+    "ptmg_single_conformer_proxies": {
+      "bytes": 7302,
+      "path": "E:\\数据\\TPU\\计算\\现实PTMG_xTB\\聚合\\构件系综描述符.csv",
+      "sha256": "b26f35685bc9a464d881054a4488db796fdfd089316596f8ba66b4463c013b91"
+    }
+  },
+  "interpretation_limit": "quantum proxy screening only; PTMG uses one deterministic oligomer chain; no direct TPU mechanical-performance claim",
+  "release_id": "tpu-reality-quantum-formulations-20260825-v1",
+  "status": "completed",
+  "status_counts": {
+    "ready_for_quantum_proxy_screen_outside_gnn_domain": 980
+  }
+}

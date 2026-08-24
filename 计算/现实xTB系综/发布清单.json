@@ -1,0 +1,65 @@
+{
+  "release_id": "tpu-reality-xtb-ensemble-20260825-v1",
+  "status": "completed",
+  "source_host_scope": "authorized_ubuntu_instance",
+  "source_root": "/root/TPU高通量筛选/现实xTB系综",
+  "calculation": {
+    "crest_version": "3.0.2",
+    "crest_completed_components": 14,
+    "xtb_version": "6.7.1",
+    "xtb_binary_sha256": "debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a",
+    "method": "GFN2-xTB",
+    "environment_model": "gas_phase",
+    "electronic_temperature_k": 300.0,
+    "ensemble_temperature_k": 298.15,
+    "workers": 16,
+    "threads_per_worker": 1,
+    "conformer_tasks": 1445,
+    "component_ensembles": 14,
+    "failed_tasks": 0,
+    "started_utc": "2026-08-24T16:04:53Z",
+    "finished_utc": "2026-08-24T16:05:17Z"
+  },
+  "files": [
+    {
+      "path": "xTB构象任务清单.csv",
+      "bytes": 874029,
+      "sha256": "bc3205c363aa428098b5b854628d25580f15ff3b5dd1b06b802e3f052fd42654"
+    },
+    {
+      "path": "聚合/逐构象描述符.csv",
+      "bytes": 1910164,
+      "sha256": "932979679a620d61c04d8cd5e537249e469c4b95a4ef37ed37ebfe37bf02c0ea"
+    },
+    {
+      "path": "聚合/构件系综描述符.csv",
+      "bytes": 19661,
+      "sha256": "09a67e2f62ab61fdbbce661a3abafe77dff4ab0743b64bb27aa353369110be1c"
+    },
+    {
+      "path": "聚合/失败明细.csv",
+      "bytes": 128,
+      "sha256": "89f66398bdde07c237a9e4e62ccfb8bceb8f8569f8a190dd210945045f01a3a0"
+    },
+    {
+      "path": "批次状态.txt",
+      "bytes": 98,
+      "sha256": "e763b160a02669e968a730670a454d71a83abd99b87ebd625bee928139149811"
+    },
+    {
+      "path": "生成.log",
+      "bytes": 48,
+      "sha256": "3e54c1d79b5a369585124426adb8443758f34de6e110cf1c1a9d1c20c0fc3538"
+    },
+    {
+      "path": "聚合.log",
+      "bytes": 54,
+      "sha256": "b208cdc9fc1e195c969a8273f24a618fa96ca46d48740dde90109d80798ba8d5"
+    }
+  ],
+  "interpretation_limits": [
+    "These are gas-phase GFN2-xTB descriptors, not direct TPU mechanical-property labels.",
+    "All fourteen components are discrete commercial diisocyanates or chain extenders.",
+    "PTMG commercial grades are excluded from this release and require separately labelled oligomer proxies."
+  ]
+}

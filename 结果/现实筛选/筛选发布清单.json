@@ -1,0 +1,90 @@
+{
+  "counts": {
+    "diversity_clusters": 32,
+    "pareto_base_systems": 84,
+    "pareto_frontier": 336,
+    "quantum_screen_eligible": 980,
+    "review_queue": 40,
+    "review_queue_base_systems": 26,
+    "review_queue_chain_extenders": 7,
+    "review_queue_diisocyanates": 7,
+    "review_queue_macrodiols": 5,
+    "total_formulations": 980
+  },
+  "files": {
+    "DFT_MD复核队列.csv": {
+      "bytes": 190054,
+      "sha256": "bf5c27a6cf9257e73f4b8be3e7c4a5865c8d4f951b2d459b461bfdcd5e91a012"
+    },
+    "Pareto前沿.csv": {
+      "bytes": 1496026,
+      "sha256": "52a6d6808aec45fa4196b1523b0cfc924e27dc235b11b04b644fa5875ec50028"
+    },
+    "筛选报告.md": {
+      "bytes": 1399,
+      "sha256": "7fe57fb95c43e54976b872a28297ab7d384f2600e007a1501cf97af1b73fa0e8"
+    },
+    "首轮候选.csv": {
+      "bytes": 4318882,
+      "sha256": "dc85196ae1adc89b9c1737c9cc9aabbb4a3a79ea4f5a5491f132dd01cd738767"
+    }
+  },
+  "interpretation_limit": "quantum proxy stage only; not a tensile-strength, toughness, synthesis, or final performance ranking",
+  "objectives": {
+    "objective_discrete_conformer_burden": "min",
+    "objective_discrete_conformer_uncertainty": "min",
+    "objective_homo_lumo_gap_floor": "max",
+    "objective_nco_oh_charge_complementarity": "max",
+    "objective_reactive_site_accessibility_floor": "max"
+  },
+  "release_id": "tpu-reality-first-round-quantum-screen-20260825-v1",
+  "scope": "quantum_proxy_stage_not_final",
+  "source": {
+    "bytes": 3844247,
+    "path": "E:\\数据\\TPU\\数据\\现实库\\配方量化描述符.csv",
+    "sha256": "f47892decfc65e392880e80b100cb41484a5393b1c7368ac80e7f1586a0bdded"
+  },
+  "standardization_parameters": {
+    "formulation_domain_floor": {
+      "constant": false,
+      "mean": 0.19936227065820408,
+      "scale": 0.03889509935807489
+    },
+    "hard_segment_mass_fraction_target": {
+      "constant": false,
+      "mean": 0.4,
+      "scale": 0.05000000000000002
+    },
+    "macrodiol_nominal_mn_g_mol": {
+      "constant": false,
+      "mean": 1370.0,
+      "scale": 497.59421218498915
+    },
+    "objective_discrete_conformer_burden": {
+      "constant": false,
+      "mean": 57.345770826847144,
+      "scale": 56.37702313789811
+    },
+    "objective_discrete_conformer_uncertainty": {
+      "constant": false,
+      "mean": 0.08922777545859317,
+      "scale": 0.047758134994120294
+    },
+    "objective_homo_lumo_gap_floor": {
+      "constant": false,
+      "mean": 4.7035795248467345,
+      "scale": 1.2600821463548573
+    },
+    "objective_nco_oh_charge_complementarity": {
+      "constant": false,
+      "mean": 0.7593387793602857,
+      "scale": 0.004987977650791501
+    },
+    "objective_reactive_site_accessibility_floor": {
+      "constant": false,
+      "mean": 0.13601439191620288,
+      "scale": 0.05688084145804614
+    }
+  },
+  "status": "completed"
+}
