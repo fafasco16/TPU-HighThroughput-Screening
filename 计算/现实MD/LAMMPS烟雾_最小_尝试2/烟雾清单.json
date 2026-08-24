@@ -1,0 +1,31 @@
+{
+  "release_id": "tpu-reality-md-lammps-min-smoke-20260825-v1",
+  "status": "completed_smoke_production_md_blocked",
+  "formulation_id": "commercial_system_0a4072d5b07dec7f_aa4e010292f6d778",
+  "atom_count": 198,
+  "forcefield": "GAFF2_with_alternate_parameters",
+  "charge_method": "gasteiger_smoke_only",
+  "radonpy_version": "1.0b2",
+  "lammps_version": 20250722,
+  "minimization": {
+    "style": "cg",
+    "iterations": 1189,
+    "stopping_criterion": "energy tolerance",
+    "initial_potential_energy_kcal_mol": 103.007437157897,
+    "final_potential_energy_kcal_mol": 48.7658551289789,
+    "initial_force_two_norm": 207.11951,
+    "final_force_two_norm": 0.26071179,
+    "wall_seconds": 2.00842
+  },
+  "files": {
+    "min.in": {"bytes": 1151, "sha256": "d8bfce0653e0911f274096176a2d54e612f9b54a4afeb2e608df735117425068"},
+    "min.log": {"bytes": 259, "sha256": "85da49216bc09a419498d518c8202825e0599366b7094cd8219f256af3d28f8f"},
+    "radon_md_1.rst": {"bytes": 67201, "sha256": "8b6e014449b81b86f80534ef7348e5e489ba2550b8765158689639ae5f79b156"},
+    "radon_md_last.data": {"bytes": 40454, "sha256": "920736eba3d8adfa820f3758d4fb31867a68fa8527e40adead7f6169d8a61aae"},
+    "radon_md_last.dump": {"bytes": 19084, "sha256": "c3fa4c108fd3cbbfbcbafb678d961b1296bd6870fdaccf44e30e49c1940b7955"},
+    "radon_md_lmp.data": {"bytes": 45906, "sha256": "8921b366a17ebebc9316ba19a03921df38dd10516ac03d5ea80a3cb4632da6fd"},
+    "radon_md.dump": {"bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    "radon_md.log": {"bytes": 6828, "sha256": "3af0b3b124f8ec21c03696f8f867636be33b5c20118f196032f76b00e3925e44"}
+  },
+  "interpretation_limit": "Execution-chain smoke only; GAFF2 alternate urethane parameters and Gasteiger charges are not validated for production TPU MD."
+}

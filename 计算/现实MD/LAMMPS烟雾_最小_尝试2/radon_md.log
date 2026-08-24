@@ -1,0 +1,147 @@
+units real
+atom_style full
+boundary p p p
+
+pair_style lj/charmm/coul/long 8.0 12.0
+kspace_style pppm 1e-6
+dielectric 1.000000
+bond_style harmonic
+angle_style harmonic
+dihedral_style fourier
+improper_style cvff
+special_bonds amber
+pair_modify mix arithmetic
+neighbor 2.0 bin
+neigh_modify delay 0 every 1 check yes
+read_data radon_md_lmp.data
+Reading data file ...
+  orthogonal box = (-16.428291 -16.428291 -16.428291) to (16.428291 16.428291 16.428291)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  198 atoms
+  scanning bonds ...
+  4 = max bonds/atom
+  scanning angles ...
+  6 = max angles/atom
+  scanning dihedrals ...
+  27 = max dihedrals/atom
+  scanning impropers ...
+  1 = max impropers/atom
+  orthogonal box = (-16.428291 -16.428291 -16.428291) to (16.428291 16.428291 16.428291)
+  1 by 1 by 1 MPI processor grid
+  reading bonds ...
+  199 bonds
+  reading angles ...
+  380 angles
+  reading dihedrals ...
+  532 dihedrals
+  reading impropers ...
+  6 impropers
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0.5     
+  special bond factors coul:  0        0        0.8333333333333334
+     4 = max # of 1-2 neighbors
+    12 = max # of 1-3 neighbors
+    24 = max # of 1-4 neighbors
+    27 = max # of special neighbors
+  special bonds CPU = 0.000 seconds
+  read_data CPU = 0.007 seconds
+
+
+thermo_style custom step time temp press enthalpy etotal ke pe ebond eangle edihed eimp evdwl ecoul elong etail vol lx ly lz density pxx pyy pzz pxy pxz pyz
+thermo_modify flush yes
+thermo 1000
+
+dump dump0 all custom 1000 radon_md.dump id type mol x y z ix iy iz vx vy vz
+restart 10000 radon_md_1.rst radon_md_2.rst
+
+undump dump0
+min_style cg
+minimize 0.000001 0.000000 5000 50000
+PPPM initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.22387951
+  grid = 15 15 15
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00026024656
+  estimated relative force accuracy = 7.8372478e-07
+  using double precision KISS FFT
+  3d grid and FFT values/proc = 8000 3375
+Generated 66 of 66 mixed pair_coeff terms from arithmetic mixing rule
+Last active /omp style is kspace_style pppm/omp
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 7, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/charmm/coul/long/omp, perpetual
+      attributes: half, newton on, omp
+      pair build: half/bin/newton/omp
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 20.52 | 20.52 | 20.52 Mbytes
+   Step          Time           Temp          Press         Enthalpy        TotEng         KinEng         PotEng         E_bond        E_angle        E_dihed        E_impro         E_vdwl         E_coul         E_long         E_tail         Volume           Lx             Ly             Lz          Density          Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         0   0              0              807.15758      520.55056      103.00744      0              103.00744      2.8383472      46.217201      101.33685      0.020077578    2.6748923      93.487811     -143.56774      0              35470.485      32.856581      32.856581      32.856581      0.054942723    897.86026      885.54885      638.06361      107.94855      60.87175       28.952177    
+      1000   1000           0             -0.62237026     48.593427      48.91538       0              48.91538       4.3729701      15.15878       96.440398      0.079786123   -16.639659      93.207481     -143.70438      0              35470.485      32.856581      32.856581      32.856581      0.054942723   -3.1777209     -1.3940335      2.7046437      5.2941295     -2.2866568     -1.5004808    
+      1189   1189           0             -0.59401553     48.458571      48.765855      0              48.765855      4.3536098      15.036968      96.475956      0.090545188   -16.772645      93.271626     -143.69021      0              35470.485      32.856581      32.856581      32.856581      0.054942723   -0.87142535    -0.7311724     -0.17944884     0.92964579     0.36698564    -0.88978082   
+Loop time of 1.75767 on 1 procs for 1189 steps with 198 atoms
+
+99.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+      103.007437157897   48.7658964921003   48.7658551289789
+  Force two-norm initial, final = 207.11951 0.26071179
+  Force max component initial, final = 101.76853 0.064187369
+  Final line search alpha, max atom move = 1 0.064187369
+  Iterations, force evaluations = 1189 2377
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.62477    | 0.62477    | 0.62477    |   0.0 | 35.55
+Bond    | 0.10757    | 0.10757    | 0.10757    |   0.0 |  6.12
+Kspace  | 1.0089     | 1.0089     | 1.0089     |   0.0 | 57.40
+Neigh   | 0.0022136  | 0.0022136  | 0.0022136  |   0.0 |  0.13
+Comm    | 0.0050715  | 0.0050715  | 0.0050715  |   0.0 |  0.29
+Output  | 5.3328e-05 | 5.3328e-05 | 5.3328e-05 |   0.0 |  0.00
+Modify  | 0.0023121  | 0.0023121  | 0.0023121  |   0.0 |  0.13
+Other   |            | 0.006811   |            |       |  0.39
+
+Nlocal:            198 ave         198 max         198 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            565 ave         565 max         565 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:          16200 ave       16200 max       16200 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 16200
+Ave neighs/atom = 81.818182
+Ave special neighs/atom = 11.161616
+Neighbor list builds = 6
+Dangerous builds = 0
+reset_timestep 0
+dump dump0 all custom 1000 radon_md.dump id type mol x y z ix iy iz vx vy vz
+
+write_dump all custom radon_md_last.dump id x y z xu yu zu vx vy vz fx fy fz modify sort id
+
+thermo_style custom step time temp press enthalpy etotal ke pe ebond eangle edihed eimp evdwl ecoul elong etail vol lx ly lz density pxx pyy pzz pxy pxz pyz
+WARNING: New thermo_style command, previous thermo_modify settings will be lost (src/src/output.cpp:912)
+thermo_modify flush yes
+write_data radon_md_last.data
+System init for write_data ...
+PPPM initialization ...
+  using 12-bit tables for long-range coulomb
+  G vector (1/distance) = 0.22387951
+  grid = 15 15 15
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00026024656
+  estimated relative force accuracy = 7.8372478e-07
+  using double precision KISS FFT
+  3d grid and FFT values/proc = 8000 3375
+Generated 66 of 66 mixed pair_coeff terms from arithmetic mixing rule
+Last active /omp style is kspace_style pppm/omp
+quit

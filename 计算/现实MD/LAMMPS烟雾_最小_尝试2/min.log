@@ -1,0 +1,9 @@
+LAMMPS (22 Jul 2025 - Update 4)
+  using 1 OpenMP thread(s) per MPI task
+package omp 1
+using multi-threaded neighbor list subroutines
+log radon_md.log append
+ /opt/tpu-md-venv/bin/lmp -sf omp -pk omp 1 -in min.in -sc none -log min.log
+
+
+LAMMPS returncode = 0 
