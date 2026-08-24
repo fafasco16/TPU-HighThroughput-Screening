@@ -1,0 +1,4 @@
+$constrain
+ force constant=0.5
+ distance: 15,35,2.700000
+$end

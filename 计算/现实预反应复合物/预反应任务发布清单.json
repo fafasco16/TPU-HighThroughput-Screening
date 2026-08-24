@@ -1,0 +1,38 @@
+{
+  "counts": {
+    "blocked_tasks": 8,
+    "pairs": 22,
+    "ready_tasks": 80,
+    "tasks": 88
+  },
+  "files": {
+    "配对清单.csv": {
+      "bytes": 4672,
+      "sha256": "0078773b31ad991c3084ba7a48f0a759bd0451cdb6776ceb94ac795b53676a73"
+    },
+    "预反应复合物任务.csv": {
+      "bytes": 65849,
+      "sha256": "e811b0b00e0d23b9a0f990db6a17e0d1652cbb78537156fbfe105a16324a5a63"
+    }
+  },
+  "protocol": {
+    "attack_angle_deg": 105.0,
+    "constraint_force_constant": 0.5,
+    "environment_model": "gas_phase",
+    "interpretation_limit": "constrained prereaction association proxy; not a DFT barrier, reaction rate, or TPU performance label",
+    "method": "GFN2-xTB",
+    "optimization_level": "tight",
+    "reactive_distance_a": 2.7,
+    "starts_per_pair": 4,
+    "torsion_starts_deg": [
+      0.0,
+      90.0,
+      180.0,
+      270.0
+    ],
+    "xtb_binary_sha256": "debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a",
+    "xtb_version": "6.7.1"
+  },
+  "release_id": "tpu-reality-prereaction-complexes-20260825-v1",
+  "status": "ready"
+}
