@@ -1,0 +1,15 @@
+{
+  "aggregate_xyz_sha256": "e8205ecfa7ef0123de465edddcc47946733fb65cb10b2234e8a139bfb0915928",
+  "counts": {
+    "discrete": 14,
+    "monomers": 19,
+    "ptmg_proxies": 5
+  },
+  "release_id": "tpu-reality-prereaction-monomers-20260825-v1",
+  "status": "completed",
+  "table": {
+    "bytes": 7410,
+    "path": "单体结构清单.csv",
+    "sha256": "e99c2f8fba424ff987cdcf6494e32506e44827d122610d45f141c459720dd207"
+  }
+}
