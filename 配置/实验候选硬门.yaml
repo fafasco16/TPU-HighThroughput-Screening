@@ -1,0 +1,29 @@
+schema_version: "1.0"
+
+allowed_identity_kind:
+  diisocyanate:
+    - discrete_substance
+  chain_extender:
+    - discrete_substance
+  macrodiol:
+    - commercial_polyol_grade
+
+required_status:
+  synthesis_feasibility_status: established_or_standard_route
+  commercial_evidence_status: catalog_or_manufacturer_evidence
+  ehs_review_status: requires_human_sds_review
+
+formulation_grid:
+  hard_segment_mass_fraction_target:
+    - 0.35
+    - 0.45
+  nco_oh_ratio_target:
+    - 1.00
+    - 1.02
+
+release_policy:
+  component_gate_pass: passed_for_planning
+  experiment_release_status: blocked_pending_quote_sds_and_local_approval
+  vendor_directory_hit_is_not_live_stock: true
+  require_manual_china_procurement_check: true
+  require_local_sds_and_ehs_approval: true
