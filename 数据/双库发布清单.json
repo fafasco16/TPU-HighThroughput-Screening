@@ -1,0 +1,72 @@
+{
+  "configuration": {
+    "path": "E:\\数据\\TPU\\配置\\双库筛选.yaml",
+    "sha256": "615efdfe46a5545de522117ffc40d3bccfa56dd2680e933bdc93da72a7b7be47"
+  },
+  "counts": {
+    "calculation_tasks": 15,
+    "ptmg_models": 2,
+    "reality_components": 7,
+    "reality_evidence": 7,
+    "reality_formulations": 32,
+    "screening_queue": 32,
+    "virtual_asset_index": 7
+  },
+  "experiment_release_status": "blocked_pending_quote_sds_and_local_approval",
+  "gold_files_mutated": false,
+  "inputs": {
+    "commercial_components": {
+      "path": "候选/实验可行构件.csv",
+      "sha256": "c39595d348d9bb240c2fb7f82acf957f0c791da3f544634905cccf37bad88176"
+    },
+    "commercial_evidence": {
+      "path": "候选/商用构件证据.csv",
+      "sha256": "8497793793c00670d1c9ceb924ab1fad45b238017e5417d6c6f10d8a188ee829"
+    },
+    "commercial_formulations": {
+      "path": "候选/实验合理组合.csv",
+      "sha256": "8583819151c89648c3baa5a382115fe6541a415c6bccaf7cc44d282ecd5bc499"
+    },
+    "procurement_summary": {
+      "path": "候选/当前82构件采购查询.csv",
+      "sha256": "aab9a727e7504dffb369278c255e932fe76d427276e0b384f92c23affa969da3"
+    },
+    "release_manifest": {
+      "path": "结果/可用数据集/发布清单.json",
+      "sha256": "304a51978ba33bef23373143aacd243535e3c18068d310eb1347d1d9bcbb2635"
+    }
+  },
+  "outputs": {
+    "calculation_tasks": {
+      "path": "数据/现实库/计算任务.csv",
+      "sha256": "e5e77eb6d20ae29ac1c8448af39dcc34715c3128c0da5b930124ebae624aab90"
+    },
+    "ptmg_models": {
+      "path": "数据/现实库/PTMG代表模型.csv",
+      "sha256": "cbc434dfcda48ed3eb3226409eb69e1c0c5721a5a426de8f7c81b74a58a054f7"
+    },
+    "reality_components": {
+      "path": "数据/现实库/构件.csv",
+      "sha256": "e842e344cb0150e579b44e6b37b11fbc2cc76ea2bb05a4f1a587ae5427dad0e2"
+    },
+    "reality_evidence": {
+      "path": "数据/现实库/来源与证据.csv",
+      "sha256": "87111b9b0d56821d1a561ce6cf4a7607d7d5b0d8a20548faed3f4dab755ec6b9"
+    },
+    "reality_formulations": {
+      "path": "数据/现实库/配方.csv",
+      "sha256": "959c154208e7a990ec57ff80c0b1ee3ded0a312d186e105bc5d9775b28d39ee7"
+    },
+    "screening_queue": {
+      "path": "数据/现实库/筛选队列.csv",
+      "sha256": "04074d1959ba7d4f681fad5ab47d81c7f907fd89a5fed8bdeea5d77327a950cb"
+    },
+    "virtual_asset_index": {
+      "path": "数据/虚拟库/资产索引.csv",
+      "sha256": "7279673bb0cb6c614b452137dbd698163db58f884fef067ce060f39d8eea938c"
+    }
+  },
+  "release_id": "tpu-dual-library-2026-08-24-v1",
+  "status": "completed",
+  "virtual_to_reality_component_leakage_count": 0
+}

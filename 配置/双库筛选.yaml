@@ -1,0 +1,62 @@
+schema_version: "1.0"
+release_id: tpu-dual-library-2026-08-24-v1
+
+virtual_assets:
+  - asset_id: virtual_computational_observations
+    path: 结果/可用数据集/计算观测.csv.gz
+    layer: Gold-C-task-view
+    row_count_source: release_manifest:computational_rows
+    allowed_use: ML_pretraining_and_low_fidelity_targets
+  - asset_id: virtual_experimental_observations
+    path: 结果/可用数据集/实验观测.csv.gz
+    layer: Gold-E-task-view
+    row_count_source: release_manifest:experimental_rows
+    allowed_use: experimental_calibration_and_validation
+  - asset_id: virtual_candidate_structures
+    path: 结果/可用数据集/候选结构.csv.gz
+    layer: Gold-V-task-view
+    row_count_source: release_manifest:candidate_rows
+    allowed_use: representation_learning_and_virtual_screening
+  - asset_id: virtual_formulations
+    path: 候选/可合成配方候选.csv.gz
+    layer: virtual-formulation
+    row_count_source: csv
+    allowed_use: stoichiometric_virtual_hypotheses
+  - asset_id: virtual_dft_queue
+    path: 候选/DFT_MD复核队列.csv
+    layer: virtual-quantum-queue
+    row_count_source: csv
+    allowed_use: component_quantum_reference
+  - asset_id: virtual_stage_screen
+    path: 计算/阶段筛选/阶段配方特征.csv
+    layer: virtual-stage-screen
+    row_count_source: csv
+    allowed_use: stage_only_descriptor_screen
+  - asset_id: virtual_gnn_predictions
+    path: 模型/GNN结果/逐样本预测.csv.gz
+    layer: computational-model-output
+    row_count_source: csv
+    allowed_use: model_diagnostics_not_gold_truth
+
+inputs:
+  release_manifest: 结果/可用数据集/发布清单.json
+  commercial_components: 候选/实验可行构件.csv
+  commercial_formulations: 候选/实验合理组合.csv
+  commercial_evidence: 候选/商用构件证据.csv
+  procurement_summary: 候选/当前82构件采购查询.csv
+
+ptmg_model:
+  end_group_mass_g_mol: 18.015
+  repeat_mass_g_mol: 72.106
+  repeat_smiles_fragment: CCCCO
+  approximation_status: single_oligomer_proxy_for_product_distribution
+
+outputs:
+  virtual_asset_index: 数据/虚拟库/资产索引.csv
+  reality_components: 数据/现实库/构件.csv
+  reality_formulations: 数据/现实库/配方.csv
+  reality_evidence: 数据/现实库/来源与证据.csv
+  ptmg_models: 数据/现实库/PTMG代表模型.csv
+  calculation_tasks: 数据/现实库/计算任务.csv
+  screening_queue: 数据/现实库/筛选队列.csv
+  manifest: 数据/双库发布清单.json
