@@ -237,4 +237,3 @@ def test_weight_validation_rejects_invalid_inputs():
     for values, weights in (([], []), ([1], [0.5]), ([1, 2], [1])):
         with pytest.raises(parser.XtbOutputError):
             parser.weighted_scalar_summary(values, weights)
-

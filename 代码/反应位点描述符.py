@@ -400,4 +400,3 @@ def describe_task_xyz(
             }
         )
     return rows
-
