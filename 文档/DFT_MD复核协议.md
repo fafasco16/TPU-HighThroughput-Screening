@@ -134,3 +134,5 @@ CREST结束后的逐构象单点命令、JSON字段、Boltzmann代理权重和NC
 [179] Grimme, S.; Hansen, A.; Ehlert, S.; Mewes, J.-M. r2SCAN-3c: A “Swiss Army Knife” Composite Electronic-Structure Method. *The Journal of Chemical Physics* **2021**, *154* (6), 064103. https://doi.org/10.1063/5.0040021.
 
 [180] Pracht, P.; Grimme, S.; Bannwarth, C.; et al. CREST—A Program for the Exploration of Low-Energy Molecular Chemical Space. *The Journal of Chemical Physics* **2024**, *160* (11), 114110. https://doi.org/10.1063/5.0197592.
+
+[181] Neese, F. Software Update: The ORCA Program System—Version 6.0. *Wiley Interdisciplinary Reviews: Computational Molecular Science* **2025**, *15* (2), e70019. https://doi.org/10.1002/wcms.70019.
