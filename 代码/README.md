@@ -13,6 +13,10 @@ run_pipeline.py     历史v0.1四源管道；不要用于重建v0.2权威总账
 CREST系综分析.py    解析多帧构象、Boltzmann权重、构象熵和低能窗口
 发布CREST结果.py    终态与哈希核验后生成确定性精简结果包
 配方系综特征.py     严格连接三类构件描述符并生成无总分Pareto输入
+xTB系综任务.py      拆分CREST构象并生成稳定ID、单帧哈希和任务清单
+运行xTB构象任务.py  xTB 6.7.1单点、锁、断点续算和分片结果包
+xTB输出解析.py      严格解析JSON/WBO/极化率并做完整系综聚合
+反应位点描述符.py   计算NCO/OH位点SASA、净间隙与双位点差异
 ```
 
 注意：`run_pipeline.py manifest` 会扫描整个本地 `数据/原始`，只用于显式重建历史兼容清单；不要把它当作 v0.2 日常入口。v0.2 的权威产物是 `结果/数据规模总账.csv`、`结果/样本清单.csv.gz`、`结果/Gold_V_候选.csv.gz`、`结果/Gold_C_计算性能.csv.gz` 和 `结果/Gold_E_实验表格.csv.gz`。
