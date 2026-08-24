@@ -6,6 +6,14 @@
 
 48 条配方包含 48 个不同二异氰酸酯、16 个宏二醇代理和 22 个二醇扩链剂，共 86 个唯一构件。第一层计算按唯一构件去重，每个构件只计算一次，再通过稳定 `candidate_id` 回连到配方。构件的 SMILES 来自 Gold-V；宏二醇仍是小分子双醇结构代理，目标 Mn 是未来真实低聚物的假设，两者不能混为同一分子。
 
+### 1.1 2026-08-25现实商业队列增量
+
+虚拟48条队列继续保留为模型训练和结构空间参考，但实验主线已经建立独立现实库。现实库含7个二异氰酸酯、5个PTMG商品牌号和7个扩链剂，共245个三构件基础体系、980个计量配方。14个离散构件完成CREST 3.0.2和1,445个xTB 6.7.1单点；5个PTMG牌号完成单代表链段xTB代理。全部19个构件已经连接到980条配方，并生成40条DFT/MD复核队列。
+
+`结果/现实筛选/高层DFT候选12.csv`从40条队列中保留4条小型商业对照，并以确定性集合覆盖规则补充8条，使12条同时覆盖全部7个二异氰酸酯、5个PTMG和7个扩链剂。该文件不是性能前12名；它是下一层预反应复合物和正式反应路径的覆盖子集。
+
+当前Ubuntu和Slurm环境均未发现授权可执行的ORCA、Gaussian、Psi4、NWChem或CP2K，因此`dft_engine_status=blocked_no_authorized_r2scan3c_engine`。本项目只允许继续准备高层DFT输入，并先用GFN2-xTB做NCO–OH预反应复合物多起点筛选；xTB缔合能不得改名为DFT能垒。获得合规程序后再执行r2SCAN-3c几何/频率或等价的已论证协议。
+
 ## 2. Tier 0：输入和人工门
 
 任何量化计算开始前，逐构件完成：
@@ -103,3 +111,5 @@ CREST结束后的逐构象单点命令、JSON字段、Boltzmann代理权重和NC
 [178] Pracht, P.; Bohle, F.; Grimme, S. Automated Exploration of the Low-Energy Chemical Space with Fast Quantum Chemical Methods. *Physical Chemistry Chemical Physics* **2020**, *22* (14), 7169–7192. https://doi.org/10.1039/C9CP06869D.
 
 [179] Grimme, S.; Hansen, A.; Ehlert, S.; Mewes, J.-M. r2SCAN-3c: A “Swiss Army Knife” Composite Electronic-Structure Method. *The Journal of Chemical Physics* **2021**, *154* (6), 064103. https://doi.org/10.1063/5.0040021.
+
+[180] Pracht, P.; Grimme, S.; Bannwarth, C.; et al. CREST—A Program for the Exploration of Low-Energy Molecular Chemical Space. *The Journal of Chemical Physics* **2024**, *160* (11), 114110. https://doi.org/10.1063/5.0197592.

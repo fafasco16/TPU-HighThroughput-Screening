@@ -1,0 +1,26 @@
+{
+  "counts": {
+    "chain_extenders": 7,
+    "diisocyanates": 7,
+    "macrodiols": 5,
+    "selected_formulations": 12,
+    "source_queue": 40
+  },
+  "files": {
+    "高层DFT候选12.csv": {
+      "bytes": 66454,
+      "sha256": "06ce22524c23eba042ce40b0cda0945531aed6e515488ee1d7f6ab272c75f5ae"
+    },
+    "高层DFT执行门.md": {
+      "bytes": 629,
+      "sha256": "337b6bb32b88fc9400abcf920cfd294d80b3f3815aec031e71c5a276a194691f"
+    }
+  },
+  "release_id": "tpu-reality-high-level-dft-subset-20260825-v1",
+  "source": {
+    "bytes": 190054,
+    "path": "E:\\数据\\TPU\\结果\\现实筛选\\DFT_MD复核队列.csv",
+    "sha256": "bf5c27a6cf9257e73f4b8be3e7c4a5865c8d4f951b2d459b461bfdcd5e91a012"
+  },
+  "status": "ready_input_preparation_dft_execution_blocked"
+}
