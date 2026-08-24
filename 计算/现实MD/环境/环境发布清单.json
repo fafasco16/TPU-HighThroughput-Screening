@@ -1,0 +1,26 @@
+{
+  "release_id": "tpu-reality-md-radonpy-environment-20260825-v1",
+  "status": "environment_smoke_ready_production_md_blocked",
+  "radonpy_commit": "5d14893515376a4518e9f1373a1ebc4bb756db14",
+  "radonpy_wheel_sha256": "446cb1a94d92a758a162c71f0bfbce3d70e4bc308cd9e8e7b6ff1a8a448a2cba",
+  "files": {
+    "RadonPy环境清单.json": {
+      "bytes": 1139,
+      "sha256": "9894df8e7431feb58f7925a13874ad07f71aabffd6a2d80d63bf2148f315144c"
+    },
+    "pip_freeze.txt": {
+      "bytes": 472,
+      "sha256": "f439fb30ec04a082324f8e5b8c082fcddcdcaa1919e71d8c5ae7ec90dabd70a8"
+    },
+    "libmpich12版本.txt": {
+      "bytes": 217,
+      "sha256": "404c21f39b1cb844408dd3f14b8143b2ffa46a7bf02affe2a1ff870ec953e108"
+    }
+  },
+  "production_blockers": [
+    "urethane_alternate_parameter_validation",
+    "RESP_or_equivalent_charge_protocol",
+    "multi_chain_distribution",
+    "packing_equilibration_and_replicates"
+  ]
+}

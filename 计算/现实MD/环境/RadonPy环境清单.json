@@ -1,0 +1,29 @@
+{
+  "forcefield_smoke": "GAFF2_assignment_with_gasteiger_completed_on_198_atom_proxy",
+  "generated_utc": "2026-08-24T20:58:59.248046+00:00",
+  "lammps_python_smoke": "passed",
+  "lammps_runtime_version": 20250722,
+  "mpi_runtime_package": "libmpich12 4.2.0-5build3",
+  "packages": {
+    "lammps": "2025.7.22.4.0",
+    "mdtraj": "1.11.1.post2",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "radonpy-pypi": "1.0b2",
+    "rdkit": "2026.3.5",
+    "scipy": "1.18.1"
+  },
+  "platform": "Linux-6.8.0-50-generic-x86_64-with-glibc2.39",
+  "production_blockers": [
+    "urethane_alternate_parameter_validation",
+    "RESP_or_equivalent_charge_protocol",
+    "multi_chain_distribution",
+    "packing_equilibration_and_replicates"
+  ],
+  "python_version": "3.12.3",
+  "radonpy_commit": "5d14893515376a4518e9f1373a1ebc4bb756db14",
+  "radonpy_repository": "https://github.com/RadonPy/RadonPy",
+  "radonpy_wheel": "/opt/tpu-software/RadonPy-5d148935/dist/radonpy_pypi-1.0b2-py3-none-any.whl",
+  "radonpy_wheel_sha256": "446cb1a94d92a758a162c71f0bfbce3d70e4bc308cd9e8e7b6ff1a8a448a2cba",
+  "status": "environment_smoke_ready_production_md_blocked"
+}

@@ -120,6 +120,10 @@ Tier 1 可以比较同一方法下的构象柔性、局部电性、NCO/OH 位点
 
 当前Linux xTB 6.7.1二进制的GFN-FF尺寸烟雾结果冻结在`计算/现实MD/GFNFF尺寸烟雾审计.csv`：198和489原子案例正常收敛，867、991、1118、1259和1564原子案例均在`xtb_gfnff_neighbor`初始化处发生SIGSEGV并无优化结构。故本环境生产门暂定不超过489原子；490–866原子区间未测试，不外推为安全。该门是二进制/环境特定证据，不是GFN-FF方法的普遍尺寸极限；超限链保留ETKDG/MMFF种子并等待替代预优化和生产力场方案。
 
+Ubuntu上另建了隔离`/opt/tpu-md-venv`，固定RadonPy develop提交`5d14893515376a4518e9f1373a1ebc4bb756db14`、RadonPy 1.0b2 wheel SHA-256 `446cb1a94d92a758a162c71f0bfbce3d70e4bc308cd9e8e7b6ff1a8a448a2cba`、LAMMPS 2025.7.22.4.0和MPICH 4.2.0；LAMMPS Python最小启动通过。环境清单和完整pip冻结见`计算/现实MD/环境/`。
+
+`计算/现实MD/GAFF2审计/GAFF2参数覆盖审计.csv`显示12/12低聚链均可由RadonPy GAFF2生成原子、键、角、二面角和improper参数，全部原子获得Gasteiger电荷，电荷和绝对误差不高于约`4.3e-15 e`。然而每条链都出现34–39类独特替代参数提示，主要涉及氨基甲酸酯`ns/cg`相关键、角、二面角和improper。GAFF2分配成功只证明拓扑文件可生成；Gasteiger电荷和替代参数未经过本TPU体系的DFT/实验验证，故`production_md_permission`继续阻断。
+
 ## 5. 从计算到实验的决策门
 
 建议按以下顺序缩小候选：

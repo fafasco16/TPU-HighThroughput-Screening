@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "assignment_success": 12,
+    "graphs": 12,
+    "with_alternate_parameters": 12
+  },
+  "files": {
+    "GAFF2参数覆盖审计.csv": {
+      "bytes": 39398,
+      "sha256": "97e6e4dc18c62522a8f1a97cb3960b60b01314001918457b1f04d4814d3746fd"
+    },
+    "GAFF2参数覆盖说明.md": {
+      "bytes": 489,
+      "sha256": "d3520985a4d57b549fbf20a112fb4c922bdc0c572986c0b463fadc3576c89eb6"
+    }
+  },
+  "input": {
+    "bytes": 1596,
+    "path": "/root/TPU高通量筛选/现实MD/低聚链化学图.csv.gz",
+    "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+  },
+  "production_md_permission": "blocked_urethane_alternate_parameter_and_charge_validation",
+  "release_id": "tpu-reality-md-gaff2-audit-20260825-v1",
+  "status": "assignment_audited_production_md_blocked"
+}

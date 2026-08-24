@@ -1,0 +1,7 @@
+libmpich12:
+  Installed: 4.2.0-5build3
+  Candidate: 4.2.0-5build3
+  Version table:
+ *** 4.2.0-5build3 500
+        500 http://cn.archive.ubuntu.com/ubuntu noble/universe amd64 Packages
+        100 /var/lib/dpkg/status
