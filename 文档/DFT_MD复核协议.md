@@ -70,6 +70,27 @@ Tier 1 可以比较同一方法下的构象柔性、局部电性、NCO/OH 位点
 
 如果需要比较真实反应活性，下一层应针对二异氰酸酯—醇模型对建立反应物复合物、过渡态和产物路径，报告自由能垒及构象/溶剂敏感性。单独用 HOMO/LUMO 或某一种原子电荷作为反应速率结论是不充分的。
 
+### 3.4 现实构件NCO–OH预反应复合物协议
+
+2026-08-25现实高层DFT子集形成22个唯一配对：10个二异氰酸酯–扩链剂配对和12个二异氰酸酯–PTMG配对。每个配对按两个NCO碳位点×两个OH氧位点生成4个确定性起点，共88项。初始NCO碳–OH氧距离固定为2.70 Å，进攻角固定为105°；端基/取向冲突通过记录化的方位角与扭转角搜索处理，无法消除的小于0.70 Å片段碰撞不强行修复，而是保留为`blocked_initial_interfragment_collision`。
+
+80项通过几何门的任务使用官方xTB 6.7.1、气相GFN2-xTB、`tight`优化和NCO碳–OH氧距离约束。单体参考能来自完全相同xTB版本下的离散构件最低能成功构象或PTMG单链代理。正式代理量为：
+
+\[
+\Delta E_{\mathrm{assoc,proxy}}=(E_{\mathrm{complex}}-E_{\mathrm{DII}}-E_{\mathrm{OH}})\times 627.509474\quad\mathrm{kcal\ mol^{-1}}.
+\]
+
+该数包含约束、构象形变和气相方法误差，既不是无约束结合自由能，也不是反应能垒。逐任务必须同时满足：退出码0、`GEOMETRY OPTIMIZATION CONVERGED`、无`.sccnotconverged`、最终约束距离2.3–3.1 Å、JSON总能量有限、4个规定输出及SHA-256闭合。xTB即使写出`normal termination`，只要日志含`FAILED TO CONVERGE GEOMETRY OPTIMIZATION`仍判为未收敛。
+
+逐配对采用“宽准入、严标注”：
+
+- 全部可运行起点收敛：`complete/admitted_reference`；
+- 初始碰撞起点被阻断、其余至少2项收敛：`complete_with_blocked_starts/conditional_reference`；
+- 仅有几何未收敛起点、其余至少2项收敛且无程序/哈希/SCC错误：`conditional_nonconverged_starts/conditional_reference`；
+- 少于2项收敛，或存在程序失败、SCC失败、身份/输出哈希错误：`incomplete/blocked`。
+
+条件参考可以用于选择后续r2SCAN-3c输入，但必须携带多起点缺失警告，不能与四起点完整配对等权。`代码/更新预反应优先级.py`分别连接二异氰酸酯–PTMG与二异氰酸酯–扩链剂代理，不生成黑箱总分；`代码/生成ORCA_r2SCAN3c输入包.py`只有在配对资格、最佳任务状态和4个xTB输出哈希闭合后才生成ORCA优化/频率输入。
+
 ## 4. MD 启动门与建议层级
 
 当前全部队列的 `md_stage` 为 `on_hold_pending_real_macrodiol_identity_Mn_Mw_PDI`。只有同时闭合下列信息才允许启动原子级 MD：
