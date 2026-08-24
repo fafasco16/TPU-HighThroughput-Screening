@@ -19,6 +19,7 @@
 - `计算任务.csv`：构件、PTMG代表、配方DFT和块体MD的依赖任务；
 - `筛选队列.csv`：ML/DFT/MD阶段门和下一动作。
 - `采购查询.csv`、`采购接口证据.csv`和`采购接口运行清单.json`：14个离散现实构件的PubChem/molbloom/eMolecules结果；
-- `待建模宏二醇.csv`：已有商业证据但尚未建立PCL/PCDL代表链的3个牌号。
+- `待建模宏二醇.csv`：已有商业证据但尚未建立PCL/PCDL/PPG代表链的5个牌号；
+- `构件适用域.csv`、`配方适用域.csv`和[适用域说明](适用域说明.md)：现实构件相对旧GNN训练结构的边界诊断；不输出性能预测。
 
 现实库中的“可行”仍只表示可以进入实验规划。询价、国内库存、COA、SDS、本单位EHS和具体工艺审核完成前，全部保持`blocked_pending_quote_sds_and_local_approval`。

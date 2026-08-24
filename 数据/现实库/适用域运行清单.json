@@ -1,0 +1,24 @@
+{
+  "component_status_counts": {
+    "near_training_domain_boundary": 5,
+    "outside_training_structure_domain": 14
+  },
+  "counts": {
+    "reality_components": 19,
+    "reality_formulations": 980,
+    "training_observation_rows": 26176,
+    "unique_training_structures": 7558
+  },
+  "formulation_status_counts": {
+    "blocked_component_outside_training_domain": 980
+  },
+  "interpretation_limit": "component-level structural AD only; no multicomponent TPU performance prediction",
+  "method": "Morgan_radius2_2048bit_max_Tanimoto",
+  "status": "completed",
+  "targets_defining_training_view": [
+    "Rg",
+    "density",
+    "bulk_modulus",
+    "thermal_conductivity"
+  ]
+}
