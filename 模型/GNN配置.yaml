@@ -1,0 +1,43 @@
+release:
+  id: tpu-usable-2026-07-21-v1
+  data: 结果/可用数据集/计算观测.csv.gz
+
+task:
+  task_id: 计算_结构多任务预训练
+  targets:
+    - name: Rg
+      unit: angstrom
+    - name: density
+      unit: g/cm^3
+    - name: bulk_modulus
+      unit: Pa
+    - name: thermal_conductivity
+      unit: W/(m*K)
+  training_modes:
+    - primary_only
+    - primary_plus_aux
+
+model:
+  hidden_dim: 96
+  message_passing_steps: 3
+  dropout: 0.10
+  use_edge_features: true
+
+training:
+  random_seed: 20260722
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  maximum_epochs: 300
+  early_stopping_patience: 25
+  minimum_improvement: 0.0001
+
+source_family_holdout:
+  enabled: true
+  minimum_groups:
+    train: 100
+    validation: 20
+    test: 50
+
+output:
+  csv_float_format: "%.12g"

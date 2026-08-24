@@ -1,0 +1,88 @@
+{
+  "status": "completed",
+  "seed": 20260722,
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.8.0-50-generic-x86_64-with-glibc2.39",
+    "torch": "2.13.0+cu130",
+    "torch_cuda": "13.0",
+    "cuda_available": true,
+    "device": "cuda",
+    "gpu": "NVIDIA L40"
+  },
+  "rows": {
+    "samples": 26176,
+    "predictions": 2866,
+    "metrics": 20
+  },
+  "source_family_holdouts": {
+    "primary_only": [
+      "family_openpolymer_challenge_2025"
+    ],
+    "primary_plus_aux": [
+      "family_openpolymer_challenge_2025"
+    ]
+  },
+  "inputs": {
+    "data": {
+      "path": "结果/可用数据集/计算观测.csv.gz",
+      "sha256": "0c8f5888034ca2d746063539a8780df284d6697e44b0ba71c698eaecfbba6918"
+    },
+    "config": {
+      "path": "模型/GNN配置.yaml",
+      "sha256": "1c6dc7fd888a6497d8ba94f8b6fac8839b22d94b303e431b922d482d1d007b25"
+    },
+    "GNN数据.py": {
+      "path": "/root/TPU高通量筛选/代码/GNN数据.py",
+      "sha256": "9efe7742042206d981393608acbdb41776cfd5c2f351169292871f05451db8b5"
+    },
+    "GNN模型.py": {
+      "path": "/root/TPU高通量筛选/代码/GNN模型.py",
+      "sha256": "c1e38d164d5773ffeac6335690d456b8d2d1dab4fd14b4e09e6108916b7f43bd"
+    },
+    "训练GNN基线.py": {
+      "path": "/root/TPU高通量筛选/代码/训练GNN基线.py",
+      "sha256": "4e16dad685cd77dd480eecff73733a50160a3a8b8f31be97610ab73f5b513aca"
+    }
+  },
+  "checkpoints": {
+    "primary_only": {
+      "path": "checkpoint/primary_only.pt",
+      "sha256": "fdbc92be1b93a72b1d72c090b18e378e58b1a3ba97f63805c827432cad697df2",
+      "best_epoch": 78,
+      "epochs_ran": 103,
+      "best_validation_loss": 0.4547528165789926
+    },
+    "primary_only::family_openpolymer_challenge_2025": {
+      "path": "checkpoint/来源族留出/primary_only/family_openpolymer_challenge_2025.pt",
+      "sha256": "5ede3a907e83b216175378e69195a195a33f196414c185eaa5954164a7f5726d",
+      "best_epoch": 87,
+      "epochs_ran": 112,
+      "best_validation_loss": 0.4537532490695736
+    },
+    "primary_plus_aux": {
+      "path": "checkpoint/primary_plus_aux.pt",
+      "sha256": "62fbe869dd1d1a95e5c4553c32f29b5e6d201aab5aaacf6e7db6aa7166ea6e73",
+      "best_epoch": 52,
+      "epochs_ran": 77,
+      "best_validation_loss": 0.3934275442613068
+    },
+    "primary_plus_aux::family_openpolymer_challenge_2025": {
+      "path": "checkpoint/来源族留出/primary_plus_aux/family_openpolymer_challenge_2025.pt",
+      "sha256": "d7dca58132c6d0086f937468af624fd0623f7993dd359bb06161c91bf1745467",
+      "best_epoch": 50,
+      "epochs_ran": 75,
+      "best_validation_loss": 0.4039127381353038
+    }
+  },
+  "outputs": {
+    "metrics": {
+      "path": "指标.csv",
+      "sha256": "baf227a8fa04bf8c5fbb1561e1e40e9b2aef809b6a394b2226ab894444348a4c"
+    },
+    "predictions": {
+      "path": "逐样本预测.csv.gz",
+      "sha256": "4fbeb014780572686445a88ead04aa411d532c315bf2c73a2fd0cb430ecd9f23"
+    }
+  }
+}
