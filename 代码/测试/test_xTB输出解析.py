@@ -50,6 +50,12 @@ def test_official_json_fields_units_and_frontier_are_parsed():
     assert result["homo_lumo_gap_ev"] == 3.0
     assert result["dipole_magnitude_debye"] == pytest.approx(3 * parser.AU_DIPOLE_TO_DEBYE)
     assert result["partial_charge_sum_e"] == pytest.approx(0)
+    tagged = parser.parse_xtbout_json(
+        _official_json(**{"xtb version": "6.7.1 (edcfbbe)"}),
+        expected_total_charge=0,
+        expected_atom_count=2,
+    )
+    assert tagged["xtb_version_full"] == "6.7.1 (edcfbbe)"
 
 
 def test_json_file_hash_and_d_exponent_support(tmp_path):
@@ -141,10 +147,9 @@ def test_alpha_requires_explicit_unique_label_and_unit():
 
 def _write_run(directory: Path, *, with_alpha=True):
     directory.mkdir()
-    (directory / ".xtbok").write_text("", encoding="utf-8")
     (directory / "xtbout.json").write_text(json.dumps(_official_json()), encoding="utf-8")
     (directory / "wbo").write_text("1 2 1.1\n", encoding="utf-8")
-    stdout = "Mol. α(0) /au : 14.0\n" if with_alpha else "normal termination\n"
+    stdout = "Mol. α(0) /au : 14.0\nnormal termination of xtb\n" if with_alpha else "normal termination of xtb\n"
     (directory / "xtb.out").write_text(stdout, encoding="utf-8")
 
 
@@ -163,8 +168,8 @@ def test_directory_gate_and_optional_alpha_degradation(tmp_path):
 def test_directory_requires_success_and_scc_convergence(tmp_path):
     missing_marker = tmp_path / "missing"
     _write_run(missing_marker)
-    (missing_marker / ".xtbok").unlink()
-    with pytest.raises(parser.XtbOutputError, match=".xtbok"):
+    (missing_marker / "xtb.out").write_text("abnormal stop\n", encoding="utf-8")
+    with pytest.raises(parser.XtbOutputError, match="normal termination"):
         parser.parse_conformer_directory(missing_marker, expected_total_charge=0)
     not_converged = tmp_path / "not-converged"
     _write_run(not_converged)

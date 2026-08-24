@@ -109,8 +109,13 @@ def parse_xtbout_json(
     data, source_hash = _load_json(source)
     if data.get("method") != expected_method:
         raise XtbOutputError(f"method mismatch: {data.get('method')!r} != {expected_method!r}")
-    if str(data.get("xtb version", "")).strip() != expected_version:
-        raise XtbOutputError(f"xtb version mismatch: {data.get('xtb version')!r} != {expected_version!r}")
+    actual_version = str(data.get("xtb version", "")).strip()
+    if actual_version != expected_version and not actual_version.startswith(
+        expected_version + " "
+    ):
+        raise XtbOutputError(
+            f"xtb version mismatch: {actual_version!r} does not match {expected_version!r}"
+        )
 
     energy = _finite_number(data.get("total energy"), "total energy")
     reported_gap = _finite_number(data.get("HOMO-LUMO gap / eV"), "HOMO-LUMO gap / eV")
@@ -136,6 +141,7 @@ def parse_xtbout_json(
     return {
         "method": expected_method,
         "xtb_version": expected_version,
+        "xtb_version_full": actual_version,
         "total_energy_hartree": energy,
         "homo_ev": homo,
         "lumo_ev": lumo,
@@ -245,10 +251,18 @@ def parse_conformer_directory(
     directory = Path(directory)
     if not directory.is_dir():
         raise XtbOutputError(f"missing conformer directory: {directory}")
-    if not (directory / ".xtbok").is_file():
-        raise XtbOutputError("missing .xtbok success marker")
     if (directory / ".sccnotconverged").exists():
         raise XtbOutputError("SCC did not converge")
+    stdout_path = directory / "xtb.out"
+    if not stdout_path.is_file():
+        raise XtbOutputError("missing xtb.out")
+    nonempty_lines = [
+        line.strip().lower()
+        for line in stdout_path.read_text(encoding="utf-8", errors="replace").splitlines()
+        if line.strip()
+    ]
+    if not nonempty_lines or nonempty_lines[-1] != "normal termination of xtb":
+        raise XtbOutputError("missing normal termination of xtb")
     json_result = parse_xtbout_json(
         directory / "xtbout.json",
         expected_total_charge=expected_total_charge,
@@ -258,7 +272,7 @@ def parse_conformer_directory(
     wbo = parse_wbo(wbo_path)
     result = {**json_result, "wbo": wbo, "wbo_sha256": sha256(wbo_path), "run_status": "success", "warning_codes": []}
     try:
-        result.update(parse_polarizability_stdout(directory / "xtb.out"))
+        result.update(parse_polarizability_stdout(stdout_path))
     except XtbOutputError as exc:
         if str(exc) != "missing_polarizability_output":
             raise
@@ -266,7 +280,7 @@ def parse_conformer_directory(
             gfn2_d4_alpha0_au=None,
             gfn2_d4_atomic_alpha0_au=[],
             polarizability_source_line="",
-            stdout_sha256=sha256(directory / "xtb.out") if (directory / "xtb.out").is_file() else "",
+            stdout_sha256=sha256(stdout_path),
             run_status="partial_property",
             warning_codes=["missing_polarizability_output"],
         )

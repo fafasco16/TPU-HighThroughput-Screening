@@ -172,7 +172,7 @@ def test_runner_success_then_hash_verified_skip(tmp_path, monkeypatch):
             json.dumps({"total energy": -10.0}), encoding="utf-8"
         )
         (work / "wbo").write_text("1 2 1.0\n", encoding="utf-8")
-        (work / ".xtbok").write_text("", encoding="utf-8")
+        kwargs["stdout"].write("normal termination of xtb\n")
         return SimpleNamespace(returncode=0)
 
     monkeypatch.setattr(runner.subprocess, "run", fake_run)
@@ -205,6 +205,7 @@ def test_runner_records_failure_without_false_completion(tmp_path, monkeypatch, 
             (Path(kwargs["cwd"]) / "xtbout.json").write_text(
                 json.dumps({"total energy": -1}), encoding="utf-8"
             )
+            kwargs["stdout"].write("normal termination of xtb\n")
             return SimpleNamespace(returncode=0)
         return SimpleNamespace(returncode=7)
 
@@ -434,7 +435,7 @@ def test_runner_version_scc_and_invalid_json_fail_closed(tmp_path, monkeypatch):
                 encoding="utf-8",
             )
             (work / "wbo").write_text("1 2 1\n", encoding="utf-8")
-            (work / ".xtbok").write_text("", encoding="utf-8")
+            kwargs["stdout"].write("normal termination of xtb\n")
             if mode == "scc":
                 (work / ".sccnotconverged").write_text("", encoding="utf-8")
             return SimpleNamespace(returncode=0)

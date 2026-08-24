@@ -77,10 +77,23 @@ def _version(executable: Path) -> str:
 
 
 def _output_hashes(attempt_dir: Path) -> dict[str, str] | None:
-    required = ("xtbout.json", "xtb.out", "wbo", ".xtbok")
+    required = ("xtbout.json", "xtb.out", "wbo")
     if not all((attempt_dir / name).is_file() for name in required):
         return None
-    return {name: sha256(attempt_dir / name) for name in required}
+    optional = tuple(
+        name for name in ("charges", "xtbtopo.mol") if (attempt_dir / name).is_file()
+    )
+    return {name: sha256(attempt_dir / name) for name in (*required, *optional)}
+
+
+def _normal_termination(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    try:
+        lines = [line.strip().lower() for line in path.read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
+    except OSError:
+        return False
+    return bool(lines) and lines[-1] == "normal termination of xtb"
 
 
 def _task_shard(conformer_id: str) -> str:
@@ -363,6 +376,8 @@ def run_task(root: Path, index: int, xtb_executable: str = "xtb") -> dict[str, A
             failure_reason = "nonzero_exit_code"
         elif (attempt_dir / ".sccnotconverged").exists():
             failure_reason = "scc_not_converged"
+        elif not _normal_termination(log_path):
+            failure_reason = "missing_normal_termination"
         elif _output_hashes(attempt_dir) is None:
             failure_reason = "missing_required_output"
         else:
