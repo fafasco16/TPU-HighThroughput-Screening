@@ -1,0 +1,49 @@
+{
+  "counts": {
+    "atoms": 57,
+    "completed": 4,
+    "fragments": 4,
+    "validation_families": 4
+  },
+  "files": {
+    "RESP片段汇总.csv": {
+      "bytes": 1241,
+      "sha256": "19c933ca156afe2d41d63539ecc05960cf6bfe0d3f5cd50d4335bfe0d1aea7e0"
+    },
+    "RESP片段逐原子电荷.csv": {
+      "bytes": 6594,
+      "sha256": "cf3cf28f807c113a5f764ffd4069d7bcc6e6b792a551f96874b69703ab5f355c"
+    },
+    "RESP片段验证说明.md": {
+      "bytes": 613,
+      "sha256": "6680e548bc882a4728815446b654e557cb6fe0815477ed59885bfc99aea73791"
+    }
+  },
+  "inputs": {
+    "ethyl_isocyanate": {
+      "directory": "E:\\数据\\TPU\\计算\\现实MD\\RESP片段_脂肪族异氰酸酯",
+      "manifest_bytes": 2417,
+      "manifest_sha256": "e0360fc54587c124d560269966cdcdc4de90085bf3791949b6a97f7fd23a01a0"
+    },
+    "methyl_n_methyl_carbamate": {
+      "directory": "E:\\数据\\TPU\\计算\\现实MD\\RESP烟雾_小片段_尝试5",
+      "manifest_bytes": 2447,
+      "manifest_sha256": "ea252b327f722b3902b75a4a5821c0adad586a32cf34f517eac3e623207a953a"
+    },
+    "methyl_n_phenyl_carbamate": {
+      "directory": "E:\\数据\\TPU\\计算\\现实MD\\RESP片段_芳香族氨基甲酸酯",
+      "manifest_bytes": 2455,
+      "manifest_sha256": "7c9214000020cce85fbb841d1a5acbe38f368193202256f6c67793f51dd8bda5"
+    },
+    "phenyl_isocyanate": {
+      "directory": "E:\\数据\\TPU\\计算\\现实MD\\RESP片段_芳香族异氰酸酯_尝试2",
+      "manifest_bytes": 2495,
+      "manifest_sha256": "8008076fef05034cc19091cdb9aea249cff867173e4ef14131316f4896352b28"
+    }
+  },
+  "maximum_absolute_stage2_charge_sum_error_e": 2.3592239273284576e-16,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_multiconformer_transfer_validation",
+  "release_id": "tpu-reality-md-resp-four-fragment-20260825-v1",
+  "status": "four_fragment_resp_coverage_completed_transfer_validation_pending"
+}

@@ -1,0 +1,76 @@
+{
+  "atom_count": 10,
+  "basis": "6-31G(d)",
+  "charge_metrics": {
+    "stage1_esp_charge_sum_e": 3.8163916471489756e-17,
+    "stage1_resp_charge_sum_e": 1.0408340855860843e-17,
+    "stage1_to_stage2_resp_rms_e": 0.026296762425560147,
+    "stage2_esp_charge_sum_e": 2.949029909160572e-17,
+    "stage2_resp_charge_sum_e": 6.938893903907228e-17,
+    "stage2_resp_max_e": 0.7810706143398372,
+    "stage2_resp_min_e": -0.5932139985857
+  },
+  "elapsed_seconds": 1.926,
+  "files": {
+    "1_ethyl_isocyanate_grid.dat": {
+      "bytes": 30000,
+      "sha256": "b8608dd4bb03b4c2606e67b1e076752ac1e13f4493d37a05a01930ef9c265713"
+    },
+    "1_ethyl_isocyanate_grid_esp.dat": {
+      "bytes": 10000,
+      "sha256": "558fe17bbb12d414530eec8195eba4c0d6b5c21b1f7aca9d056b882b7fb60df9"
+    },
+    "fragment_with_resp.sdf": {
+      "bytes": 894,
+      "sha256": "19a2827828f737f3a81ccd74f579d3a65190ddc6842bca3e1d01b5ece5a629e0"
+    },
+    "psi4_resp.log": {
+      "bytes": 9918,
+      "sha256": "89636cdbb84d0e2a6059859ba28eacc2b36c333c7035c3b2d22e8f53c9429e0e"
+    },
+    "resp_charges.csv": {
+      "bytes": 783,
+      "sha256": "9e883531b56527f26ec6d6450a5430498122cf286da9521d4c11acca96720d5b"
+    },
+    "stage1_results.out": {
+      "bytes": 1368,
+      "sha256": "b9a8a3eb0079cf388b0aabb9022c21ca33ca8fca613b298729faf5d0164a2199"
+    },
+    "stage2_results.out": {
+      "bytes": 1266,
+      "sha256": "cfc5b691a10752b9dd8ebc6c977f9faf321bb6a5a8fea1d09445af9f4a27d7fc"
+    }
+  },
+  "fragment_name": "ethyl_isocyanate",
+  "interpretation_limit": "Native two-stage RESP execution smoke on one MMFF geometry; not yet a transferable TPU production charge set.",
+  "memory_gb": 8,
+  "method": "HF",
+  "mmff_status_code": 0,
+  "multiplicity": 1,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_fragment_and_conformer_validation_pending",
+  "random_seed": 20260825,
+  "release_id": "tpu-resp-fragment-aliphatic-isocyanate-20260825-v1",
+  "resp_b": 0.1,
+  "resp_stage1_a": 0.0005,
+  "resp_stage2_a": 0.001,
+  "smiles": "CCN=C=O",
+  "status": "completed_native_two_stage_resp_smoke",
+  "target_total_charge_e": 0,
+  "threads": 1,
+  "vdw_point_density": 1.0,
+  "vdw_scale_factors": [
+    1.4,
+    1.6,
+    1.8,
+    2.0
+  ],
+  "versions": {
+    "numpy": "2.5.2",
+    "psi4": "1.10.2",
+    "python": "3.12.14",
+    "radonpy_pypi": "1.0b2",
+    "rdkit": "2026.3.5",
+    "resp": "1.0.0"
+  }
+}

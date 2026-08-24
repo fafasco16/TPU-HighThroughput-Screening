@@ -22,6 +22,7 @@ xTB输出解析.py      严格解析JSON/WBO/极化率并做完整系综聚合
 运行现实MD多链烟雾.py 以最小现实低聚链验证RadonPy装箱、GAFF2导出、LAMMPS最小化/NVT执行链
 审计现实MD生产参数门.py 展开GAFF2替代映射，连接氨基甲酸酯计数并合并RESP运行证据
 运行RESP小片段烟雾.py 用Psi4/RESP对含氨基甲酸酯小片段执行可复现两阶段电荷烟雾
+汇总RESP片段验证.py 严格核验四类关键片段的逐文件哈希、电荷和与家族覆盖
 ```
 
 注意：`run_pipeline.py manifest` 会扫描整个本地 `数据/原始`，只用于显式重建历史兼容清单；不要把它当作 v0.2 日常入口。v0.2 的权威产物是 `结果/数据规模总账.csv`、`结果/样本清单.csv.gz`、`结果/Gold_V_候选.csv.gz`、`结果/Gold_C_计算性能.csv.gz` 和 `结果/Gold_E_实验表格.csv.gz`。

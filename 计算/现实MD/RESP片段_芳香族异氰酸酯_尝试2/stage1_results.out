@@ -1,0 +1,43 @@
+Electrostatic potential parameters
+    van der Waals radii (Angstrom):
+                                      O   1.400
+                                      C   1.500
+                                      N   1.500
+                                      H   1.200
+    VDW scale factors:                1.40  1.60  1.80  2.00
+    VDW point density:                1.000
+    ESP method:                       HF
+    ESP basis set:                    6-31G(d)
+
+Grid information (see 1_phenyl_isocyanate_grid.dat in Angstrom)
+    Number of grid points:            804
+
+Quantum electrostatic potential (see 1_phenyl_isocyanate_grid_esp.dat)
+
+Constraints
+
+Restraint
+    Hyperbolic restraint to a charge of zero
+    Hydrogen atoms are not restrained
+    resp_a:                           0.0005
+    resp_b:                           0.1000
+
+Fit
+
+Electrostatic Potential Charges
+   Center  Symbol       ESP      RESP
+      1    O      -0.44595465 -0.43606426
+      2    C       0.76500780  0.74591794
+      3    N      -0.55830804 -0.51191440
+      4    C       0.40630915  0.22336634
+      5    C      -0.29522675 -0.13696824
+      6    C      -0.09394379 -0.20159845
+      7    C      -0.18517456 -0.09090243
+      8    C      -0.12492794 -0.23160281
+      9    C      -0.25953304 -0.10437105
+     10    H       0.17475011  0.14245064
+     11    H       0.14727128  0.16254865
+     12    H       0.15059074  0.13587815
+     13    H       0.15539241  0.17035846
+     14    H       0.16374728  0.13290144
+Total Charge:     -0.00000000  0.00000000

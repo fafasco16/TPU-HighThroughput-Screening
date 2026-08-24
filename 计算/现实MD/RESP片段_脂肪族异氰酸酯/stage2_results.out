@@ -1,0 +1,38 @@
+Electrostatic potential parameters
+
+Grid information (see 1_ethyl_isocyanate_grid.dat in Angstrom)
+    Number of grid points:            625
+
+Quantum electrostatic potential (see 1_ethyl_isocyanate_grid_esp.dat)
+
+Constraints
+    Charge constraints
+        Total charge of  -0.59321400 on the set   3
+        Total charge of   0.78107061 on the set   4
+        Total charge of  -0.46903534 on the set   5
+    Equality constraints
+        Equal charges on atoms
+                                  6   7   8
+                                  9  10
+
+Restraint
+    Hyperbolic restraint to a charge of zero
+    Hydrogen atoms are not restrained
+    resp_a:                           0.0010
+    resp_b:                           0.1000
+
+Fit
+
+Electrostatic Potential Charges
+   Center  Symbol       ESP      RESP
+      1    C      -0.27080064 -0.09796818
+      2    C       0.30635677  0.25937557
+      3    N      -0.59321400 -0.59321400
+      4    C       0.78107061  0.78107061
+      5    O      -0.46903534 -0.46903534
+      6    H       0.07900509  0.03401063
+      7    H       0.07900509  0.03401063
+      8    H       0.07900509  0.03401063
+      9    H       0.00430367  0.00886972
+     10    H       0.00430367  0.00886972
+Total Charge:      0.00000000  0.00000000

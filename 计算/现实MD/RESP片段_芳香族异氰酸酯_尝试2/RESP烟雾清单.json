@@ -1,0 +1,77 @@
+{
+  "atom_count": 14,
+  "basis": "6-31G(d)",
+  "charge_metrics": {
+    "stage1_esp_charge_sum_e": -9.71445146547012e-17,
+    "stage1_resp_charge_sum_e": 8.326672684688674e-17,
+    "stage1_to_stage2_resp_rms_e": 6.351013295074462e-15,
+    "stage2_esp_charge_sum_e": 8.049116928532385e-16,
+    "stage2_resp_charge_sum_e": 2.3592239273284576e-16,
+    "stage2_resp_max_e": 0.7459179375364481,
+    "stage2_resp_min_e": -0.5119143980780686
+  },
+  "elapsed_seconds": 3.641,
+  "esp_linear_solver": "solve_with_conditioned_lstsq_fallback",
+  "files": {
+    "1_phenyl_isocyanate_grid.dat": {
+      "bytes": 38592,
+      "sha256": "a17c8c42db48bd78b3142429b0f94225f153d721a6236ee1aeaae8b2b07479ee"
+    },
+    "1_phenyl_isocyanate_grid_esp.dat": {
+      "bytes": 12864,
+      "sha256": "1d6f73d993c142e51b5abc6ded98b5297107453271ea475375703aa7779ab74a"
+    },
+    "fragment_with_resp.sdf": {
+      "bytes": 1239,
+      "sha256": "4aef2a180e3062a0b167d24790f51961e8e6d9057f78365231f4a32dd8a5341c"
+    },
+    "psi4_resp.log": {
+      "bytes": 11732,
+      "sha256": "bcd3caceaaabad4312d9eed58dddbe5c1961c267bbae34421348bf4665bd6052"
+    },
+    "resp_charges.csv": {
+      "bytes": 1034,
+      "sha256": "381f10ef46aefc70b38afb8b61d0ed0cbb0e567c6f57104977a3396f9d6aad1b"
+    },
+    "stage1_results.out": {
+      "bytes": 1538,
+      "sha256": "ab240f54895e2d1866ed5db2613acf3cee87ce34bd3e276f657f8d16698a7d87"
+    },
+    "stage2_results.out": {
+      "bytes": 1868,
+      "sha256": "a6a635e569353046cd84a12a859fdfbc75595329f4119309998fe2749b45c452"
+    }
+  },
+  "fragment_name": "phenyl_isocyanate",
+  "interpretation_limit": "Native two-stage RESP execution smoke on one MMFF geometry; not yet a transferable TPU production charge set.",
+  "memory_gb": 8,
+  "method": "HF",
+  "mmff_status_code": 0,
+  "multiplicity": 1,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_fragment_and_conformer_validation_pending",
+  "random_seed": 20260825,
+  "release_id": "tpu-resp-fragment-aromatic-isocyanate-20260825-v2",
+  "resp_b": 0.1,
+  "resp_stage1_a": 0.0005,
+  "resp_stage2_a": 0.001,
+  "smiles": "O=C=Nc1ccccc1",
+  "status": "completed_native_two_stage_resp_smoke",
+  "target_total_charge_e": 0,
+  "threads": 1,
+  "vdw_point_density": 1.0,
+  "vdw_scale_factors": [
+    1.4,
+    1.6,
+    1.8,
+    2.0
+  ],
+  "versions": {
+    "numpy": "2.5.2",
+    "psi4": "1.10.2",
+    "python": "3.12.14",
+    "radonpy_pypi": "1.0b2",
+    "rdkit": "2026.3.5",
+    "resp": "1.0.0"
+  }
+}

@@ -69,6 +69,17 @@ def validate_charge_arrays(
     }
 
 
+def robust_esp_solve(matrix: np.ndarray, vector: np.ndarray) -> np.ndarray:
+    """RESP线性方程奇异或病态时使用最小二乘，口径与RadonPy防护一致。"""
+    try:
+        charges = np.linalg.solve(matrix, vector)
+    except np.linalg.LinAlgError:
+        charges = np.linalg.lstsq(matrix, vector, rcond=None)[0]
+    if np.linalg.cond(matrix) > 1 / np.finfo(matrix.dtype).eps:
+        charges = np.linalg.lstsq(matrix, vector, rcond=None)[0]
+    return charges
+
+
 def _distribution_version(name: str) -> str:
     try:
         return importlib.metadata.version(name)
@@ -125,6 +136,8 @@ def run_smoke(
         from rdkit.Chem import AllChem
         import psi4
         import resp
+
+        resp.espfit.esp_solve = robust_esp_solve
 
         molecule = Chem.AddHs(Chem.MolFromSmiles(smiles))
         if molecule is None:
@@ -237,6 +250,7 @@ def run_smoke(
             },
             "threads": threads,
             "memory_gb": memory_gb,
+            "esp_linear_solver": "solve_with_conditioned_lstsq_fallback",
             "elapsed_seconds": round(time.monotonic() - started, 3),
             "files": files,
         }

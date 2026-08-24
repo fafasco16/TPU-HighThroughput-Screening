@@ -47,3 +47,11 @@ def test_charge_validation_rejects_charge_sum_error() -> None:
             atom_count=2,
             target_charge=0.0,
         )
+
+
+def test_robust_esp_solver_falls_back_for_singular_matrix() -> None:
+    matrix = np.array([[1.0, 1.0], [2.0, 2.0]])
+    vector = np.array([1.0, 2.0])
+    solution = MODULE.robust_esp_solve(matrix, vector)
+    assert np.allclose(matrix @ solution, vector)
+    assert np.all(np.isfinite(solution))
