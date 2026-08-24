@@ -1,0 +1,28 @@
+{
+  "counts": {
+    "graphs_completed": 12,
+    "plans": 12
+  },
+  "file": {
+    "bytes": 1596,
+    "path": "低聚链化学图.csv.gz",
+    "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+  },
+  "inputs": {
+    "PTMG代表模型.csv": {
+      "bytes": 1594,
+      "sha256": "667832ca8cde5376034d50f6c5fa827ab916f9ac301220b798ea4ca834fa8f25"
+    },
+    "低聚链计量计划.csv": {
+      "bytes": 6984,
+      "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
+    },
+    "构件.csv": {
+      "bytes": 8895,
+      "sha256": "923e69e87d66b01a92d16af37c124b2aa96f7588316a164261505fa7babca438"
+    }
+  },
+  "interpretation_limit": "single deterministic 2D oligomer graph; no 3D conformation, forcefield, chain distribution, morphology, or TPU performance claim",
+  "release_id": "tpu-reality-md-oligomer-graphs-20260825-v1",
+  "status": "chemical_graph_ready_3d_and_forcefield_blocked"
+}

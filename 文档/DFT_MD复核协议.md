@@ -112,6 +112,8 @@ Tier 1 可以比较同一方法下的构象柔性、局部电性、NCO/OH 位点
 
 单链骨架固定为一个NCO端和一个OH端的1:1交替连接。对于`NCO/OH=1.02`的配方，2% NCO过量作为批次/多链分布上下文单列保存，不通过51个以上二醇单元的超长单链伪造精确比例。该计量计划仍是`single_sequence_oligomer_proxy`；PTMG商品分布、CoA、力场覆盖、部分电荷、多链端基比例和盒模型未闭合，因此`md_execution_status`继续阻断。
 
+`计算/现实MD/低聚链化学图.csv.gz`进一步按未反应NCO与OH的指定原子索引逐步形成氨基甲酸酯键。12条二维图均通过RDKit价态/芳香性规范化和SMILES回读；每条恰好保留1个NCO端、1个OH端，氨基甲酸酯键数为`2×二异氰酸酯数−1`，原子数与构件计量求和一致。该产物只证明确定性二维连接规则闭合，`three_dimensional_status=not_generated`、`forcefield_status=not_parameterized`，不能据此启动MD或宣称形貌/性能。
+
 ## 5. 从计算到实验的决策门
 
 建议按以下顺序缩小候选：
