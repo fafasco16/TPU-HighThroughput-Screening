@@ -1,0 +1,39 @@
+schema_version: "1.0"
+
+cache_path: 候选/采购接口缓存.json
+evidence_output: 候选/采购接口证据.csv
+summary_output: 候选/当前82构件采购查询.csv
+manifest_output: 候选/采购接口运行清单.json
+
+pubchem_vendor:
+  enabled: true
+  timeout_seconds: 30
+  minimum_delay_seconds: 0.25
+  reuse_existing_summary: true
+
+molbloom:
+  enabled: true
+  catalog: zinc-instock-mini
+  preferred_catalog_when_download_available: zinc-instock
+  fallback_reason: full_filter_dropbox_unreachable_on_current_network
+  canonicalize: true
+  check_common: true
+
+smallworld:
+  integrated: true
+  enabled_by_default: false
+  max_candidates: 8
+  minimum_delay_seconds: 5
+  distance: 0
+  database: zinc
+
+emolecules_link:
+  enabled: true
+  search_type: exact
+
+aggregation:
+  counted_signals:
+    - pubchem_vendor
+    - molbloom
+    - smallworld
+  experiment_release_status: blocked_pending_quote_sds_and_local_approval

@@ -65,6 +65,7 @@ assert review_queue["dft_md_status"].eq("not_calculated").all()
 
 ```powershell
 uv run python .\代码\商用构件筛选.py --查询PubChem
+uv run python .\代码\查询构件采购.py --输入 .\候选\当前82构件实验门审计.csv
 ```
 
 当前82个构件中，46个虚拟二异氰酸酯没有供应商目录命中；14个宏二醇项虽然是可购小分子，但仍只是结构代理。因此原82构件没有完整组合通过实验硬门。新增的4,4'-MDI、IPDI、H12MDI、HDI、PTMG-1000/2000和1,4-BDO单独标记为`added_commercial_control`，尚未获得原82构件的CREST/xTB结果。
@@ -72,6 +73,8 @@ uv run python .\代码\商用构件筛选.py --查询PubChem
 主要输出：
 
 - `当前82构件采购查询.csv`：PubChem CID和供应商目录预筛；
+- `采购接口证据.csv`：PubChem、molbloom和eMolecules统一长表；
+- `采购接口运行清单.json`：配置、输入输出哈希、依赖版本、缓存和查询状态；
 - `当前82构件实验门审计.csv`：保留82行及明确阻断原因；
 - `商用构件证据.csv`：制造商/供应商证据；
 - `实验可行构件.csv`：通过规划门的商业构件；
@@ -79,6 +82,8 @@ uv run python .\代码\商用构件筛选.py --查询PubChem
 - [商用可合成筛选报告](商用可合成筛选报告.md)和[采购接口说明](商用构件证据说明.md)。
 
 `catalog_index_hit`只表示目录中曾出现，不代表当前库存、地区可买、价格有效或EHS已批准。所有实验规划行仍保持`blocked_pending_quote_sds_and_local_approval`。
+
+SmallWorld已作为可选的短名单相似可购接口接入，使用`--启用SmallWorld`时最多查询配置规定的8条并执行5秒间隔；不得用于批量轰炸公共服务。molbloom完整目录不可下载时自动/人工选择`zinc-instock-mini`，必须连同其较高假阳性率解释结果。
 
 ## 数据来源与论文引用
 

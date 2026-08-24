@@ -291,6 +291,19 @@ def build_current82_audit(
             "pubchem_distinct_vendor_count", "pubchem_vendor_names", "catalog_prefilter_status",
             "queried_utc",
         ]
+        optional_columns = [
+            "pubchem_vendor_hit",
+            "molbloom_hit",
+            "molbloom_catalog",
+            "smallworld_hit",
+            "smallworld_result_count",
+            "emolecules_exact_url",
+            "catalog_signal_count",
+            "unified_catalog_status",
+            "direct_commercial_evidence_status",
+            "experiment_release_status",
+        ]
+        columns.extend(column for column in optional_columns if column in query.columns)
         output = output.merge(query[columns], on="inchi_key", how="left", validate="one_to_one")
     output["experimental_gate_status"] = "blocked"
     output["experimental_gate_reason"] = output["component_role"].map(
