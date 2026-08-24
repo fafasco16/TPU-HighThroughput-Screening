@@ -121,6 +121,33 @@ def test_missing_and_identity_mismatched_states_are_not_treated_as_success(tmp_p
     assert statuses["run_status"].tolist() == ["invalid_state_identity", "pending"]
 
 
+def test_two_or_more_converged_starts_allow_conditional_nonconvergence_reference():
+    statuses = pd.DataFrame(
+        [
+            {
+                "pair_id": "pair-c",
+                "pair_type": "diisocyanate_chain_extender",
+                "diisocyanate_id": "di-1",
+                "oh_component_id": "ce-1",
+                "task_slug": f"task-{index}",
+                "geometry_status": "ready",
+                "run_status": "completed" if index < 3 else "invalid_completed_state",
+                "run_issue": "" if index < 3 else "completed_state_geometry_not_converged",
+                "association_energy_proxy_kcal_mol": -5.0 - index if index < 3 else None,
+                "final_reactive_distance_a": 2.7 if index < 3 else None,
+            }
+            for index in range(4)
+        ]
+    )
+    pair = aggregate.aggregate_pair_results(statuses).iloc[0]
+    assert pair["pair_status"] == "conditional_nonconverged_starts"
+    assert pair["pair_quality_tier"] == "conditional_reference"
+    assert pair["pair_release_eligible"]
+    assert pair["completed_starts"] == 3
+    assert pair["nonconverged_starts"] == 1
+    assert pair["quality_warning"] == "one_or_more_multistart_geometries_not_converged"
+
+
 def test_writer_outputs_task_pair_tables_and_manifest(tmp_path):
     root = tmp_path / "root"
     root.mkdir()

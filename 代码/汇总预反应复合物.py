@@ -187,19 +187,34 @@ def aggregate_pair_results(statuses: pd.DataFrame) -> pd.DataFrame:
         energies = energies.loc[valid_energy]
         blocked_expected = group["geometry_status"].ne("ready")
         blocked_observed = group["run_status"].eq("blocked_input_geometry")
+        nonconverged = (
+            group["run_status"].eq("invalid_completed_state")
+            & group["run_issue"].eq("completed_state_geometry_not_converged")
+        ) | (
+            group["run_status"].eq("failed")
+            & group["run_issue"].eq("geometry_optimization_not_converged")
+        )
         unexpected = ~group["run_status"].isin(
             ["completed", "blocked_input_geometry"]
-        )
+        ) & ~nonconverged
         blocked_mismatch = bool((blocked_expected != blocked_observed).any())
         if unexpected.any() or blocked_mismatch:
             pair_status = "incomplete"
+            quality_tier = "blocked"
+        elif nonconverged.any() and len(completed) >= 2:
+            pair_status = "conditional_nonconverged_starts"
+            quality_tier = "conditional_reference"
         elif blocked_expected.any():
             pair_status = "complete_with_blocked_starts"
+            quality_tier = "conditional_reference"
         else:
             pair_status = "complete"
-        eligible = pair_status in {"complete", "complete_with_blocked_starts"} and len(
-            completed
-        ) >= 2
+            quality_tier = "admitted_reference"
+        eligible = pair_status in {
+            "complete",
+            "complete_with_blocked_starts",
+            "conditional_nonconverged_starts",
+        } and len(completed) >= 2
         if completed.empty:
             best_slug = ""
             best_energy = np.nan
@@ -224,8 +239,10 @@ def aggregate_pair_results(statuses: pd.DataFrame) -> pd.DataFrame:
                 "ready_starts": int(group["geometry_status"].eq("ready").sum()),
                 "blocked_starts": int(blocked_expected.sum()),
                 "completed_starts": len(completed),
+                "nonconverged_starts": int(nonconverged.sum()),
                 "failed_or_pending_starts": int(unexpected.sum()),
                 "pair_status": pair_status,
+                "pair_quality_tier": quality_tier,
                 "pair_release_eligible": bool(eligible),
                 "best_task_slug": best_slug,
                 "best_association_energy_proxy_kcal_mol": best_energy,
@@ -234,6 +251,13 @@ def aggregate_pair_results(statuses: pd.DataFrame) -> pd.DataFrame:
                 "best_final_reactive_distance_a": best_distance,
                 "interpretation_limit": (
                     "constrained_GFN2-xTB_prereaction_association_proxy_not_DFT_barrier"
+                ),
+                "quality_warning": (
+                    "one_or_more_multistart_geometries_not_converged"
+                    if nonconverged.any()
+                    else "blocked_initial_orientation_retained"
+                    if blocked_expected.any()
+                    else ""
                 ),
             }
         )
