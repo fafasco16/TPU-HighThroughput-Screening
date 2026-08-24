@@ -1,0 +1,71 @@
+{
+  "counts": {
+    "conformers_per_fragment": 3,
+    "fragments": 4,
+    "joint_atomic_charge_rows": 57
+  },
+  "files": {
+    "原始归档定位.json": {
+      "bytes": 213,
+      "sha256": "d55526d70bb1d18550b4364b0b930c1629161e8fff41122a9c94e97bc82b9d44"
+    },
+    "联合RESP片段汇总.csv": {
+      "bytes": 998,
+      "sha256": "decaf50231c13bc5a41f7690da6840b97d94bf960b6857d1ebb4b71e9702b406"
+    },
+    "联合RESP说明.md": {
+      "bytes": 647,
+      "sha256": "53e731e100c074d1f371351d0beedd59ccbf8a544be7a9e17ce892d57db100d5"
+    },
+    "联合RESP逐原子比较.csv": {
+      "bytes": 11689,
+      "sha256": "7fba5bebd53b1daede3f297980ea173e4f3016696fdac6abb1c634edc4bc0f22"
+    }
+  },
+  "inputs": {
+    "joint_manifests": {
+      "ethyl_isocyanate": {
+        "fragment_name": "ethyl_isocyanate",
+        "manifest_bytes": 3750,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/RESP联合_脂肪族异氰酸酯/RESP联合清单.json",
+        "manifest_sha256": "5a4954509b5a03a73814eda56255aa38025a24b31c500804db86b4e9eb1f0a27"
+      },
+      "methyl_n_methyl_carbamate": {
+        "fragment_name": "methyl_n_methyl_carbamate",
+        "manifest_bytes": 3841,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/RESP联合_脂肪族氨基甲酸酯/RESP联合清单.json",
+        "manifest_sha256": "09876e7900ae6cbe7a7e01971cc730e6ad90488633bd39ec5192b3d251f5e33c"
+      },
+      "methyl_n_phenyl_carbamate": {
+        "fragment_name": "methyl_n_phenyl_carbamate",
+        "manifest_bytes": 3848,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/RESP联合_芳香族氨基甲酸酯/RESP联合清单.json",
+        "manifest_sha256": "0fa5819a37ee6a9cc00667e39bbbb0f31873149d46a097568bbcd43129f4c0aa"
+      },
+      "phenyl_isocyanate": {
+        "fragment_name": "phenyl_isocyanate",
+        "manifest_bytes": 3768,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/RESP联合_芳香族异氰酸酯/RESP联合清单.json",
+        "manifest_sha256": "d3e4bc1da721074419f054223f34a7e3f1bf135175177a9aa80fde41101c9c2f"
+      }
+    },
+    "sensitivity_charge_table": {
+      "bytes": 13001,
+      "path": "计算/现实MD/RESP敏感性/RESP敏感性逐原子电荷.csv.gz",
+      "sha256": "7889ce1510704202c4a597de38ebec9c93cb9a35a7b0d6aa4a39c9be41d7e70e"
+    }
+  },
+  "maximum_core_absolute_joint_minus_independent_mean_e": 0.040576103763666715,
+  "maximum_core_independent_conformer_sample_std_e": 0.04728878116471706,
+  "maximum_raw_joint_charge_sum_error_e": 1.734723475976807e-15,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_fragment_to_polymer_transfer_and_forcefield_validation",
+  "raw_archive": {
+    "bytes": 220546,
+    "path": "计算/现实MD/RESP联合原始_20260825.tar.gz",
+    "sha256": "523d891d7b1abf0c266234548eed9f053ea6f8d9ed61c705108eb1b75e8dfb78",
+    "storage": "server_only_not_committed_to_git"
+  },
+  "release_id": "tpu-reality-md-joint-resp-four-family-20260825-v1",
+  "status": "four_family_joint_multiconformer_resp_completed_transfer_pending"
+}

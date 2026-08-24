@@ -268,11 +268,18 @@ def write_release(
     release_id: str,
     resp_smoke_path: Path | None = None,
     radonpy_resp_failure_path: Path | None = None,
+    resp_sensitivity_path: Path | None = None,
+    joint_resp_path: Path | None = None,
 ) -> dict[str, Any]:
     required_paths = [audit_path, plan_path, environment_manifest_path]
     optional_paths = [
         path
-        for path in (resp_smoke_path, radonpy_resp_failure_path)
+        for path in (
+            resp_smoke_path,
+            radonpy_resp_failure_path,
+            resp_sensitivity_path,
+            joint_resp_path,
+        )
         if path is not None
     ]
     for path in [*required_paths, *optional_paths]:
@@ -307,6 +314,39 @@ def write_release(
             "path": str(radonpy_resp_failure_path),
             "sha256": sha256(radonpy_resp_failure_path),
         }
+    if resp_sensitivity_path is not None:
+        sensitivity = json.loads(
+            resp_sensitivity_path.read_text(encoding="utf-8")
+        )
+        runtime["resp_sensitivity_matrix"] = {
+            "status": sensitivity.get("status"),
+            "counts": sensitivity.get("counts"),
+            "maximum_core_across_seed_sample_std_e": sensitivity.get(
+                "maximum_core_across_seed_sample_std_e"
+            ),
+            "maximum_core_across_density_sample_std_e": sensitivity.get(
+                "maximum_core_across_density_sample_std_e"
+            ),
+            "maximum_core_overall_range_e": sensitivity.get(
+                "maximum_core_overall_range_e"
+            ),
+            "path": str(resp_sensitivity_path),
+            "sha256": sha256(resp_sensitivity_path),
+        }
+    if joint_resp_path is not None:
+        joint = json.loads(joint_resp_path.read_text(encoding="utf-8"))
+        runtime["joint_multiconformer_resp"] = {
+            "status": joint.get("status"),
+            "counts": joint.get("counts"),
+            "maximum_core_absolute_joint_minus_independent_mean_e": joint.get(
+                "maximum_core_absolute_joint_minus_independent_mean_e"
+            ),
+            "maximum_raw_joint_charge_sum_error_e": joint.get(
+                "maximum_raw_joint_charge_sum_error_e"
+            ),
+            "path": str(joint_resp_path),
+            "sha256": sha256(joint_resp_path),
+        }
     if (
         runtime.get("native_resp_smoke", {}).get("status")
         == "completed_native_two_stage_resp_smoke"
@@ -316,6 +356,14 @@ def write_release(
         runtime["charge_gate_status"] = (
             "native_two_stage_resp_ready_radonpy_wrapper_density20_blocked_"
             "fragment_transfer_validation_pending"
+        )
+    if (
+        runtime.get("joint_multiconformer_resp", {}).get("status")
+        == "four_family_joint_multiconformer_resp_completed_transfer_pending"
+    ):
+        runtime["charge_gate_status"] = (
+            "joint_multiconformer_fragment_resp_ready_"
+            "polymer_transfer_validation_pending"
         )
     environment_manifest = json.loads(
         environment_manifest_path.read_text(encoding="utf-8")
@@ -355,7 +403,15 @@ def write_release(
         json.dumps(gate, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
     )
     family = summary["validation_family_counts"]
-    if runtime["charge_gate_status"].startswith("native_two_stage_resp_ready"):
+    if runtime["charge_gate_status"].startswith(
+        "joint_multiconformer_fragment_resp_ready"
+    ):
+        charge_note = (
+            "四类局部化学家族已完成4×3×3构象/点密度敏感性矩阵，并在"
+            "标准点密度1.0下以三个构象等权共同拟合原子电荷。当前放行到"
+            "片段多构象联合RESP，不放行片段到完整TPU链的电荷转移或生产MD。"
+        )
+    elif runtime["charge_gate_status"].startswith("native_two_stage_resp_ready"):
         charge_note = (
             "独立Psi4/RESP环境已在一个含氨基甲酸酯键的13原子小片段上完成"
             "HF/6-31G(d)原生两阶段RESP；但RadonPy包装器硬编码点密度20的"
@@ -440,6 +496,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument("--RESP烟雾清单", type=Path)
     parser.add_argument("--RadonPyRESP失败审计", type=Path)
+    parser.add_argument("--RESP敏感性清单", type=Path)
+    parser.add_argument("--RESP联合清单", type=Path)
     parser.add_argument(
         "--发布ID", default="tpu-reality-md-production-parameter-gate-20260825-v1"
     )
@@ -452,6 +510,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         release_id=args.发布ID,
         resp_smoke_path=args.RESP烟雾清单,
         radonpy_resp_failure_path=args.RadonPyRESP失败审计,
+        resp_sensitivity_path=args.RESP敏感性清单,
+        joint_resp_path=args.RESP联合清单,
     )
     print(json.dumps(manifest["counts"], ensure_ascii=False, sort_keys=True))
     return 0

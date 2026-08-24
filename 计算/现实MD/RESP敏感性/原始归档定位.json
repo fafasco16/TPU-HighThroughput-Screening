@@ -1,0 +1,7 @@
+{
+  "archive_protocol": "GNU tar --sort=name --mtime=UTC_2026-08-25 --owner=0 --group=0 --numeric-owner -czf",
+  "bytes": 878941,
+  "path": "计算/现实MD/RESP敏感性原始_20260825.tar.gz",
+  "sha256": "81dff9418d34babab2811ce309389a5ce597db9a2faee7158002de1979b02cb6",
+  "storage": "server_only_not_committed_to_git"
+}

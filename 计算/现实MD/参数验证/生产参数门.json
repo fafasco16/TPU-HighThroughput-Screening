@@ -1,6 +1,18 @@
 {
   "charge_gate": {
-    "charge_gate_status": "native_two_stage_resp_ready_radonpy_wrapper_density20_blocked_fragment_transfer_validation_pending",
+    "charge_gate_status": "joint_multiconformer_fragment_resp_ready_polymer_transfer_validation_pending",
+    "joint_multiconformer_resp": {
+      "counts": {
+        "conformers_per_fragment": 3,
+        "fragments": 4,
+        "joint_atomic_charge_rows": 57
+      },
+      "maximum_core_absolute_joint_minus_independent_mean_e": 0.040576103763666715,
+      "maximum_raw_joint_charge_sum_error_e": 1.734723475976807e-15,
+      "path": "计算/现实MD/RESP联合验证/联合RESP发布清单.json",
+      "sha256": "7250afea86cb219ad73a2103b8fcf52a2397aff1a7be6f49bdd9fa004575b959",
+      "status": "four_family_joint_multiconformer_resp_completed_transfer_pending"
+    },
     "module_availability": {
       "distutils": true,
       "psi4": true,
@@ -51,6 +63,21 @@
       "sha256": "35254c585372c1df9c0eb61b7b77e06e48d27916e68a484a5caff0fb24f7313a",
       "status": "radonpy_resp_wrapper_blocked_reproducible_segmentation_fault",
       "vdw_point_density": 20.0
+    },
+    "resp_sensitivity_matrix": {
+      "counts": {
+        "atomic_charge_rows": 513,
+        "fragments": 4,
+        "point_densities": 3,
+        "seeds": 3,
+        "tasks": 36
+      },
+      "maximum_core_across_density_sample_std_e": 0.2326982770719936,
+      "maximum_core_across_seed_sample_std_e": 0.04728878116471706,
+      "maximum_core_overall_range_e": 0.46381547166,
+      "path": "计算/现实MD/RESP敏感性/RESP敏感性发布清单.json",
+      "sha256": "c164534c02e75ad89b667a0296870bdafe39c482cec3736589134bd442ddbc5d",
+      "status": "sensitivity_matrix_completed_joint_fit_pending"
     }
   },
   "environment_identity": {
@@ -78,6 +105,6 @@
   },
   "performance_claim_status": "no_performance_claim",
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v3",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v4",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }

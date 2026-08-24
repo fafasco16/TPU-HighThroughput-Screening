@@ -1,0 +1,70 @@
+{
+  "aggregate_task_manifest_sha256": "94e23882fe1c65e7a501f3bf9e2ba52b9902e078c10446ed4637275be9778a38",
+  "counts": {
+    "atomic_charge_rows": 513,
+    "fragments": 4,
+    "point_densities": 3,
+    "seeds": 3,
+    "tasks": 36
+  },
+  "files": {
+    "RESP敏感性任务汇总.csv": {
+      "bytes": 12785,
+      "sha256": "264e7c93090ed916f741eb1d2666da18281c97f5293b4a837baf6f90d8b8265f"
+    },
+    "RESP敏感性说明.md": {
+      "bytes": 765,
+      "sha256": "77b6f1416d787d616c7bde6f6ce6c8869255b0057f122093e98031cee83f1af2"
+    },
+    "RESP敏感性逐原子电荷.csv.gz": {
+      "bytes": 13001,
+      "sha256": "7889ce1510704202c4a597de38ebec9c93cb9a35a7b0d6aa4a39c9be41d7e70e"
+    },
+    "原始归档定位.json": {
+      "bytes": 325,
+      "sha256": "a32523099b83677b7184298a44c97c7ae241a7349618399e1adcb241aa839590"
+    },
+    "构象敏感性逐原子.csv": {
+      "bytes": 26212,
+      "sha256": "4916839c3b673b303fe10ec10cf11d00339beec7265580c560da5c95c91e27f0"
+    },
+    "点密度敏感性逐原子.csv": {
+      "bytes": 27200,
+      "sha256": "2376a9a3661ec3b6ed9093dd77c070c4f65be240478c76d972c5e203493c50ba"
+    },
+    "片段敏感性汇总.csv": {
+      "bytes": 1067,
+      "sha256": "605b702ce7f09b4afda5c6d130f400c4e73d457150090f79a5616acc144af813"
+    }
+  },
+  "inputs": {
+    "任务状态.csv": {
+      "bytes": 6368,
+      "sha256": "6811eb1244f513b5b9840e963ed6c76092c15454ab2c674a7b8b6f3abe6c1e0f"
+    },
+    "任务计划.csv": {
+      "bytes": 5768,
+      "sha256": "5a059b0f5f68bf85e6233d6fce15dad53d5a3698f788ad9727a62c3440aa0a38"
+    },
+    "批次状态.json": {
+      "bytes": 370,
+      "sha256": "53a341c8ebb6a0b8d8af68f4925646c7641588e1050da57f041310f868ad6cd4"
+    }
+  },
+  "maximum_core_across_density_sample_std_e": 0.2326982770719936,
+  "maximum_core_across_seed_sample_std_e": 0.04728878116471706,
+  "maximum_core_overall_range_e": 0.46381547166,
+  "maximum_raw_stage2_charge_sum_error_e": 1.6445178552260131e-15,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_joint_multiconformer_fit_and_transfer",
+  "raw_archive": {
+    "archive_protocol": "GNU tar --sort=name --mtime=UTC_2026-08-25 --owner=0 --group=0 --numeric-owner -czf",
+    "bytes": 878941,
+    "path": "计算/现实MD/RESP敏感性原始_20260825.tar.gz",
+    "sha256": "81dff9418d34babab2811ce309389a5ce597db9a2faee7158002de1979b02cb6",
+    "storage": "server_only_not_committed_to_git"
+  },
+  "raw_storage_policy": "server_only_grids_logs_compact_repository_release",
+  "release_id": "tpu-reality-md-resp-sensitivity-20260825-v1",
+  "status": "sensitivity_matrix_completed_joint_fit_pending"
+}
