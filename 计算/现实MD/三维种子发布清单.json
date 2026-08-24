@@ -1,0 +1,30 @@
+{
+  "aggregate_xyz_sha256": "7b26be5103ad40a921d9d56cdfc0f9a02d245d47fb308fe9843f3f7182fc62f7",
+  "counts": {
+    "embedded": 12,
+    "graphs": 12,
+    "mmff_converged": 1,
+    "mmff_not_converged_or_unavailable": 11
+  },
+  "input": {
+    "bytes": 1596,
+    "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链化学图.csv.gz",
+    "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+  },
+  "md_execution_status": "blocked_forcefield_and_bulk_protocol_missing",
+  "protocol": {
+    "base_seed": 20260825,
+    "embedding": "ETKDGv3_random_coordinates",
+    "interpretation_limit": "single-chain 3D seed only; not a forcefield-validated, packed, equilibrated, or production-MD structure",
+    "max_embedding_iterations": 1000,
+    "max_mmff_iterations": 1000,
+    "mmff_variant": "MMFF94s"
+  },
+  "release_id": "tpu-reality-md-3d-seeds-20260825-v1",
+  "status": "seed_geometry_completed_md_execution_blocked",
+  "table": {
+    "bytes": 6798,
+    "path": "三维种子清单.csv",
+    "sha256": "74f92a490a07b8f49a49b0e2b7453146a7e8cbdfc087ca9a76e993acbfa98d8c"
+  }
+}
