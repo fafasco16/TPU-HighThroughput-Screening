@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "cases": 7,
+    "converged": 2,
+    "sigsegv": 5
+  },
+  "files": {
+    "GFNFF尺寸烟雾审计.csv": {
+      "bytes": 2692,
+      "sha256": "8575047084159c081cbc36faa4f754c8f3c7eb69c4511bd0e7cbbd9579a80fd2"
+    },
+    "GFNFF尺寸门.json": {
+      "bytes": 569,
+      "sha256": "292f6229a69cdbfc87b30e99044c062f2b5ae9e3e804c2fdd72b0afdc4bcd23c"
+    },
+    "GFNFF尺寸门说明.md": {
+      "bytes": 548,
+      "sha256": "543208d1528f9a05550d1e249cf339efcf775be11f68e946dc9b7200643e6569"
+    }
+  },
+  "raw_evidence_aggregate_sha256": "713bbf6218eaa3883abb2d5e03436900790729f5b22e39e3368c2a0aa47fd90d",
+  "raw_evidence_root": "E:\\数据\\TPU\\计算\\现实MD\\GFNFF预优化",
+  "release_id": "tpu-reality-md-gfnff-size-gate-20260825-v1",
+  "status": "completed"
+}

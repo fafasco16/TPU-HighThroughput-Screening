@@ -1,0 +1,12 @@
+{
+  "failure_location": "xtb_gfnff_neighbor_initialization",
+  "interpretation_limit": "environment- and binary-specific smoke evidence; not a universal GFN-FF limit",
+  "max_converged_atom_count": 489,
+  "min_sigsegv_atom_count": 867,
+  "production_atom_limit": 489,
+  "raw_evidence_aggregate_sha256": "713bbf6218eaa3883abb2d5e03436900790729f5b22e39e3368c2a0aa47fd90d",
+  "status": "empirical_binary_specific_gate",
+  "untested_interval": "490-866",
+  "xtb_binary_sha256": "debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a",
+  "xtb_version": "6.7.1"
+}
