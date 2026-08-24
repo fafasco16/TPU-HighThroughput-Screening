@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "formulations": 12,
+    "within_tolerance": 12
+  },
+  "files": {
+    "低聚链计量计划.csv": {
+      "bytes": 6984,
+      "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
+    },
+    "使用边界.md": {
+      "bytes": 696,
+      "sha256": "ff0cbc3c92c3857cdc54fc88538b2a2ec37c6d1e02f4a09168e792d5e61dd524"
+    }
+  },
+  "inputs": {
+    "PTMG代表模型.csv": {
+      "bytes": 1594,
+      "sha256": "667832ca8cde5376034d50f6c5fa827ab916f9ac301220b798ea4ca834fa8f25"
+    },
+    "构件.csv": {
+      "bytes": 8895,
+      "sha256": "923e69e87d66b01a92d16af37c124b2aa96f7588316a164261505fa7babca438"
+    },
+    "高层DFT候选12.csv": {
+      "bytes": 66454,
+      "sha256": "06ce22524c23eba042ce40b0cda0945531aed6e515488ee1d7f6ab272c75f5ae"
+    }
+  },
+  "maximum_hard_segment_fraction_error": 0.015,
+  "release_id": "tpu-reality-md-stoichiometry-20260825-v1",
+  "status": "stoichiometry_ready_md_execution_blocked"
+}
