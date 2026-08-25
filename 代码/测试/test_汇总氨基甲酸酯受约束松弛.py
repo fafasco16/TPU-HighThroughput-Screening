@@ -116,5 +116,5 @@ def test_retry_requires_difficult_v2_profile() -> None:
     )
     retry = pd.DataFrame([_attempt(90, "completed", -9.9, "retry_v2")])
     retry.loc[0, "optimizer_profile"] = "standard_v1"
-    with pytest.raises(ValueError, match="difficult_v2"):
+    with pytest.raises(ValueError, match="difficult系列"):
         MODULE.reconcile_relaxed_attempts(base, retry)

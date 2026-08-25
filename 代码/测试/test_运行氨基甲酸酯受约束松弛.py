@@ -56,6 +56,15 @@ def test_difficult_optimizer_profile_adds_documented_robustness_options() -> Non
     assert options["optking__intrafrag_step_limit"] == pytest.approx(0.1)
 
 
+def test_hessian_profile_adds_initial_hessian_without_changing_other_options() -> None:
+    options = MODULE.build_optking_options(
+        "1 2 3 4", 200, "difficult_hessian_v3"
+    )
+    assert options["optking__dynamic_level"] == 1
+    assert options["optking__opt_coordinates"] == "BOTH"
+    assert options["optking__full_hess_every"] == 0
+
+
 def test_unknown_optimizer_profile_fails_closed() -> None:
     with pytest.raises(ValueError, match="未知OptKing优化策略"):
         MODULE.build_optking_options("1 2 3 4", 200, "invented")
@@ -101,3 +110,22 @@ def test_checkpoint_can_be_finalized_explicitly() -> None:
     )
     assert checkpoint["status"] == "completed_point_checkpoint"
     assert checkpoint["counts"]["remaining"] == 0
+
+
+def test_hot_start_loads_only_matching_angle_and_preserves_atom_order(
+    tmp_path: Path,
+) -> None:
+    from rdkit import Chem
+    from rdkit.Chem import AllChem
+
+    molecule = Chem.AddHs(Chem.MolFromSmiles("COC(=O)NC"))
+    assert AllChem.EmbedMolecule(molecule, randomSeed=7) == 0
+    molecule.SetIntProp("requested_angle_degrees", -180)
+    path = tmp_path / "hot.sdf"
+    writer = Chem.SDWriter(str(path))
+    writer.write(molecule)
+    writer.close()
+    coordinates = MODULE.load_initial_sdf_coordinates(path, molecule, -180)
+    assert coordinates.shape == (molecule.GetNumAtoms(), 3)
+    with pytest.raises(ValueError, match="不是1个"):
+        MODULE.load_initial_sdf_coordinates(path, molecule, -60)

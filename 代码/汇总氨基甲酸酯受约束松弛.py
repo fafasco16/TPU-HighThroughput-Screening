@@ -109,8 +109,10 @@ def reconcile_relaxed_attempts(
         if overwritten_completed.any():
             bad = list(overwritten_completed.index[overwritten_completed])
             raise ValueError(f"重试不得覆盖v1已完成点: {bad}")
-        if not retry_frame["optimizer_profile"].eq("difficult_v2").all():
-            raise ValueError("重试点必须声明difficult_v2优化策略")
+        if not retry_frame["optimizer_profile"].astype(str).str.startswith(
+            "difficult_"
+        ).all():
+            raise ValueError("重试点必须声明difficult系列优化策略")
 
     selected = base_indexed.copy()
     selected["base_point_status"] = selected["point_status"]

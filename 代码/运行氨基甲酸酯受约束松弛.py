@@ -29,7 +29,7 @@ from 运行氨基甲酸酯刚性扫描 import (
 )
 
 
-OPTIMIZER_PROFILES = {"standard_v1", "difficult_v2"}
+OPTIMIZER_PROFILES = {"standard_v1", "difficult_v2", "difficult_hessian_v3"}
 
 
 def _utc_now() -> str:
@@ -139,7 +139,7 @@ def build_optking_options(
         "optking__geom_maxiter": max_iterations,
         "optking__g_convergence": "QCHEM",
     }
-    if optimizer_profile == "difficult_v2":
+    if optimizer_profile in {"difficult_v2", "difficult_hessian_v3"}:
         options.update(
             {
                 "optking__dynamic_level": 1,
@@ -147,7 +147,41 @@ def build_optking_options(
                 "optking__intrafrag_step_limit": 0.1,
             }
         )
+    if optimizer_profile == "difficult_hessian_v3":
+        options["optking__full_hess_every"] = 0
     return options
+
+
+def load_initial_sdf_coordinates(
+    path: Path,
+    reference_molecule: Chem.Mol,
+    source_angle_degrees: int,
+) -> np.ndarray:
+    if not path.is_file():
+        raise ValueError(f"受约束松弛热启动SDF不存在: {path}")
+    molecules = [
+        molecule
+        for molecule in Chem.SDMolSupplier(str(path), removeHs=False)
+        if molecule is not None
+        and molecule.HasProp("requested_angle_degrees")
+        and molecule.GetIntProp("requested_angle_degrees") == source_angle_degrees
+    ]
+    if len(molecules) != 1:
+        raise ValueError(
+            f"受约束松弛热启动角度匹配不是1个: {source_angle_degrees}"
+        )
+    selected = molecules[0]
+    if selected.GetNumAtoms() != reference_molecule.GetNumAtoms():
+        raise ValueError("受约束松弛热启动原子数不一致")
+    if [atom.GetSymbol() for atom in selected.GetAtoms()] != [
+        atom.GetSymbol() for atom in reference_molecule.GetAtoms()
+    ]:
+        raise ValueError("受约束松弛热启动原子顺序不一致")
+    reference_smiles = Chem.MolToSmiles(Chem.RemoveHs(Chem.Mol(reference_molecule)))
+    selected_smiles = Chem.MolToSmiles(Chem.RemoveHs(Chem.Mol(selected)))
+    if selected_smiles != reference_smiles:
+        raise ValueError("受约束松弛热启动分子连接不一致")
+    return np.asarray(selected.GetConformer().GetPositions(), dtype=float).copy()
 
 
 def select_plan_rows(
@@ -203,6 +237,8 @@ def run_relaxed_scan(
     max_iterations: int,
     optimizer_profile: str,
     point_wall_seconds: int,
+    initial_sdf_path: Path | None,
+    initial_sdf_angle: int | None,
     release_id: str,
 ) -> dict[str, Any]:
     output_root = output_root.resolve()
@@ -216,6 +252,10 @@ def run_relaxed_scan(
         raise ValueError("单点墙钟上限不能为负")
     if point_wall_seconds > 0 and os.name != "posix":
         raise ValueError("正墙钟上限只允许在POSIX计算节点使用")
+    if (initial_sdf_path is None) != (initial_sdf_angle is None):
+        raise ValueError("热启动SDF与热启动角度必须同时提供")
+    if initial_sdf_path is not None and not initial_sdf_path.is_file():
+        raise ValueError(f"热启动SDF不存在: {initial_sdf_path}")
     if optimizer_profile not in OPTIMIZER_PROFILES:
         raise ValueError(f"未知OptKing优化策略: {optimizer_profile}")
     plan = select_plan_rows(
@@ -240,10 +280,19 @@ def run_relaxed_scan(
         "geom_maxiter": max_iterations,
         "optimizer_profile": optimizer_profile,
         "point_wall_seconds": point_wall_seconds,
+        "initial_geometry": (
+            {
+                "path": str(initial_sdf_path),
+                "sha256": sha256(initial_sdf_path),
+                "source_angle_degrees": initial_sdf_angle,
+            }
+            if initial_sdf_path is not None
+            else {"source": "deterministic_etkdg_mmff"}
+        ),
         "optimizer_profile_rationale": (
             "Psi4/OptKing difficult-optimization guidance: dynamic level 1, "
             "redundant internals plus Cartesian coordinates, initial step limit 0.1 au."
-            if optimizer_profile == "difficult_v2"
+            if optimizer_profile in {"difficult_v2", "difficult_hessian_v3"}
             else "Original v1 OptKing defaults with explicit QCHEM convergence."
         ),
         "production_md_permission": "blocked_parameter_refit_and_mm_relaxed_comparison",
@@ -272,8 +321,14 @@ def run_relaxed_scan(
                 molecule, maxIters=1000, mmffVariant="MMFF94s"
             )
         )
-        base_coordinates = np.array(
-            molecule.GetConformer().GetPositions(), dtype=float, copy=True
+        base_coordinates = (
+            load_initial_sdf_coordinates(
+                initial_sdf_path, molecule, int(initial_sdf_angle)
+            )
+            if initial_sdf_path is not None
+            else np.array(
+                molecule.GetConformer().GetPositions(), dtype=float, copy=True
+            )
         )
         os.chdir(output_root)
         psi4.set_num_threads(threads)
@@ -482,6 +537,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=0,
         help="0表示不限制；正值仅在POSIX计算节点用SIGALRM限制每个角度。",
     )
+    parser.add_argument("--热启动SDF", type=Path)
+    parser.add_argument("--热启动角度", type=int)
     parser.add_argument("--发布ID", required=True)
     args = parser.parse_args(argv)
     manifest = run_relaxed_scan(
@@ -497,6 +554,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         max_iterations=args.最大优化步,
         optimizer_profile=args.优化策略,
         point_wall_seconds=args.单点墙钟秒,
+        initial_sdf_path=args.热启动SDF,
+        initial_sdf_angle=args.热启动角度,
         release_id=args.发布ID,
     )
     print(json.dumps(manifest, ensure_ascii=False, sort_keys=True))
