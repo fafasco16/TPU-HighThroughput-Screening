@@ -1,0 +1,45 @@
+{
+  "release_id": "tpu-relaxed-checkpoint-smoke-aliphatic-zero-20260825-v1-compact",
+  "status": "checkpoint_smoke_completed_compact_release",
+  "counts": {
+    "planned": 1,
+    "completed": 1,
+    "failed": 0,
+    "remaining": 0
+  },
+  "method": "wb97m-d3bj/6-31G(d,p)",
+  "optimizer_profile": "standard_v1",
+  "point_wall_seconds": 600,
+  "checkpoint_status": "completed_point_checkpoint",
+  "server_full_manifest": {
+    "path": "/root/TPU高通量筛选/计算/现实MD/松弛检查点烟雾_脂肪族0/受约束松弛清单.json",
+    "bytes": 2158,
+    "sha256": "7ce46a856a083c1c60d4fcd359b96458f1d1a272519a013600fe4eaf271c4666"
+  },
+  "server_only_raw_files": {
+    "psi4_relaxed_scan.log": {
+      "bytes": 403404,
+      "sha256": "f5daa6bbf859ed73befde85d949c3143924860d605c2bd70349dc968002b8577"
+    },
+    "relaxed_geometries.sdf": {
+      "bytes": 1233,
+      "sha256": "5e282660b8e35e30018fbca3097aa5beab95618c93266c8e0007e9866a40d42f"
+    }
+  },
+  "files": {
+    "relaxed_scan.csv": {
+      "bytes": 342,
+      "sha256": "c84b2473d5770244d0534772c2919dc84e164a3aab3dab2b72fff419bcbfcc6b"
+    },
+    "relaxed_scan_checkpoint.csv": {
+      "bytes": 303,
+      "sha256": "007160891bf07cd1b95e90301f0069a35f280dd7a01d290922e440cf02cdd94b"
+    },
+    "受约束松弛检查点.json": {
+      "bytes": 961,
+      "sha256": "95602fa00c60b6482ac86ad81f0f8492bbbc08619cb054cba20d1b471a211870"
+    }
+  },
+  "production_md_permission": "blocked",
+  "performance_claim_status": "no_performance_claim"
+}

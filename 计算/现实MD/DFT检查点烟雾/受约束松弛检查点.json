@@ -1,0 +1,30 @@
+{
+  "basis": "6-31G(d,p)",
+  "constraint": "frozen_dihedral_current_value",
+  "counts": {
+    "attempted": 1,
+    "completed": 1,
+    "failed": 0,
+    "planned": 1,
+    "remaining": 0
+  },
+  "fragment_name": "methyl_n_methyl_carbamate",
+  "g_convergence": "QCHEM",
+  "geom_maxiter": 50,
+  "last_attempted_angle_degrees": 0,
+  "method": "wb97m-d3bj",
+  "optimizer_profile": "standard_v1",
+  "optimizer_profile_rationale": "Original v1 OptKing defaults with explicit QCHEM convergence.",
+  "performance_claim_status": "no_performance_claim",
+  "planned_angles_degrees": [
+    0
+  ],
+  "point_wall_seconds": 600,
+  "production_md_permission": "blocked_parameter_refit_and_mm_relaxed_comparison",
+  "random_seed": 20260825,
+  "release_id": "tpu-relaxed-checkpoint-smoke-aliphatic-zero-20260825-v1",
+  "smiles": "COC(=O)NC",
+  "status": "completed_point_checkpoint",
+  "updated_utc": "2026-08-25T12:19:18.582354+00:00",
+  "validation_family": "aliphatic_urethane"
+}

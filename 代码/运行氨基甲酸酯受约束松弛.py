@@ -66,13 +66,17 @@ def point_wall_clock_limit(seconds: int):
 
 
 def build_checkpoint(
-    base: dict[str, Any], rows: Sequence[dict[str, Any]], planned_count: int
+    base: dict[str, Any],
+    rows: Sequence[dict[str, Any]],
+    planned_count: int,
+    *,
+    checkpoint_status: str = "running_with_point_checkpoint",
 ) -> dict[str, Any]:
     completed = sum(row.get("point_status") == "completed" for row in rows)
     failed = len(rows) - completed
     return {
         **base,
-        "status": "running_with_point_checkpoint",
+        "status": checkpoint_status,
         "counts": {
             "planned": int(planned_count),
             "attempted": len(rows),
@@ -92,6 +96,8 @@ def write_checkpoint(
     base: dict[str, Any],
     rows: Sequence[dict[str, Any]],
     planned_count: int,
+    *,
+    checkpoint_status: str = "running_with_point_checkpoint",
 ) -> None:
     table = pd.DataFrame(rows)
     if not table.empty:
@@ -103,7 +109,12 @@ def write_checkpoint(
     _atomic_text(
         output_root / "受约束松弛检查点.json",
         json.dumps(
-            build_checkpoint(base, rows, planned_count),
+            build_checkpoint(
+                base,
+                rows,
+                planned_count,
+                checkpoint_status=checkpoint_status,
+            ),
             ensure_ascii=False,
             indent=2,
             sort_keys=True,
@@ -368,6 +379,17 @@ def run_relaxed_scan(
         for final in final_molecules:
             writer.write(final)
         writer.close()
+        write_checkpoint(
+            output_root,
+            base,
+            rows,
+            len(plan),
+            checkpoint_status=(
+                "completed_point_checkpoint"
+                if successful.all()
+                else "completed_point_loop_with_failures"
+            ),
+        )
         os.chdir(cwd)
         files = {
             path.name: {"bytes": path.stat().st_size, "sha256": sha256(path)}

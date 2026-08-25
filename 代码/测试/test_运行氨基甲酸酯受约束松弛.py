@@ -90,3 +90,14 @@ def test_checkpoint_counts_completed_failed_and_remaining() -> None:
         "remaining": 4,
     }
     assert checkpoint["last_attempted_angle_degrees"] == 60
+
+
+def test_checkpoint_can_be_finalized_explicitly() -> None:
+    checkpoint = MODULE.build_checkpoint(
+        {"release_id": "r"},
+        [{"requested_angle_degrees": 0, "point_status": "completed"}],
+        1,
+        checkpoint_status="completed_point_checkpoint",
+    )
+    assert checkpoint["status"] == "completed_point_checkpoint"
+    assert checkpoint["counts"]["remaining"] == 0

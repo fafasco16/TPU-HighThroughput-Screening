@@ -1,0 +1,2 @@
+fragment_name,validation_family,requested_angle_degrees,selection_reason,final_angle_degrees,angle_drift_degrees,relaxed_dft_energy_hartree,point_status,elapsed_seconds
+methyl_n_methyl_carbamate,aliphatic_urethane,0,dft_rigid_minimum,8.72177573827e-05,8.72177573827e-05,-323.835317224,completed,131.282
