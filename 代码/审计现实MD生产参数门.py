@@ -271,6 +271,7 @@ def write_release(
     resp_sensitivity_path: Path | None = None,
     joint_resp_path: Path | None = None,
     resp_core_transfer_path: Path | None = None,
+    rigid_scan_path: Path | None = None,
 ) -> dict[str, Any]:
     required_paths = [audit_path, plan_path, environment_manifest_path]
     optional_paths = [
@@ -281,6 +282,7 @@ def write_release(
             resp_sensitivity_path,
             joint_resp_path,
             resp_core_transfer_path,
+            rigid_scan_path,
         )
         if path is not None
     ]
@@ -368,6 +370,23 @@ def write_release(
             "path": str(resp_core_transfer_path),
             "sha256": sha256(resp_core_transfer_path),
         }
+    if rigid_scan_path is not None:
+        rigid_scan = json.loads(rigid_scan_path.read_text(encoding="utf-8"))
+        runtime["urethane_rigid_scan"] = {
+            "status": rigid_scan.get("status"),
+            "counts": rigid_scan.get("counts"),
+            "maximum_curve_rmse_kcal_mol": rigid_scan.get(
+                "maximum_curve_rmse_kcal_mol"
+            ),
+            "maximum_absolute_barrier_difference_kcal_mol": rigid_scan.get(
+                "maximum_absolute_barrier_difference_kcal_mol"
+            ),
+            "minimum_curve_pearson_r": rigid_scan.get(
+                "minimum_curve_pearson_r"
+            ),
+            "path": str(rigid_scan_path),
+            "sha256": sha256(rigid_scan_path),
+        }
     if (
         runtime.get("native_resp_smoke", {}).get("status")
         == "completed_native_two_stage_resp_smoke"
@@ -412,7 +431,12 @@ def write_release(
         "release_id": release_id,
         "status": "production_md_blocked_parameter_and_charge_validation",
         "forcefield_parameter_gate": {
-            "status": "blocked_repeating_urethane_ns_substitution",
+            "status": (
+                "failed_aromatic_urethane_rigid_scan_parameter_refit_required"
+                if runtime.get("urethane_rigid_scan", {}).get("status")
+                == "rigid_scan_completed_aromatic_forcefield_validation_failed"
+                else "blocked_repeating_urethane_ns_substitution"
+            ),
             **summary,
         },
         "charge_gate": runtime,
@@ -538,6 +562,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--RESP敏感性清单", type=Path)
     parser.add_argument("--RESP联合清单", type=Path)
     parser.add_argument("--RESP核心转移清单", type=Path)
+    parser.add_argument("--刚性扫描清单", type=Path)
     parser.add_argument(
         "--发布ID", default="tpu-reality-md-production-parameter-gate-20260825-v1"
     )
@@ -553,6 +578,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         resp_sensitivity_path=args.RESP敏感性清单,
         joint_resp_path=args.RESP联合清单,
         resp_core_transfer_path=args.RESP核心转移清单,
+        rigid_scan_path=args.刚性扫描清单,
     )
     print(json.dumps(manifest["counts"], ensure_ascii=False, sort_keys=True))
     return 0

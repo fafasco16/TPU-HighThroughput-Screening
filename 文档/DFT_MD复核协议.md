@@ -142,6 +142,8 @@ Ubuntu上另建了隔离`/opt/tpu-md-venv`，固定RadonPy develop提交`5d14893
 
 `计算/现实MD/RESP核心转移/`将四家族联合电荷按`OC(=O)N`和`N=C=O`角色映射回12条现实低聚链，并依据N外部重原子是否芳香选择脂肪族或芳香族参数。共识别134个氨基甲酸酯和12个残余NCO，与整数计量计划逐链完全一致；572条核心原子映射无重叠。核心仅覆盖各链11.68%–19.08%的重原子，联合RESP与整链Gasteiger在映射原子上的最大差为0.51381 e，主要来自异氰酸酯碳。该差异说明Gasteiger不能升级为生产电荷，也不能在不做完整电荷闭合的情况下把核心RESP直接写入LAMMPS。电荷门现为`joint_fragment_core_mapping_completed_full_chain_charge_assignment_pending`。
 
+力场P0门使用完全相同的刚性几何，对脂肪族与芳香族`O=C–N–R`扭转分别扫描-180°至165°、15°间隔24点，同时计算ωB97M-D3BJ/6-31G(d,p)与GAFF2+三构象联合RESP总势能。脂肪族DFT/GAFF2刚性势垒为23.27/22.56 kcal mol⁻¹，最低点均为0°、Pearson r=0.939、曲线RMSE=3.17 kcal mol⁻¹，保留为条件参考。芳香族DFT/GAFF2势垒为19.97/40.25 kcal mol⁻¹，势垒高估20.28 kcal mol⁻¹、r=0.543、RMSE=9.62 kcal mol⁻¹，明确触发项目失败门。原始归档SHA-256为`483f4e1eb53912da8fb65840300bb8210ff0cce3e05a6f04f3725d96ba420f68`，紧凑结果见`计算/现实MD/氨基甲酸酯刚性扫描/`。刚性扫描不是松弛参数化，但已足以禁止芳香族体系沿用当前GAFF2替代参数进入生产MD；下一步按Psi4/OptKing冻结二面角协议[185]对8个信息互补角度松弛其余自由度。
+
 ## 5. 从计算到实验的决策门
 
 建议按以下顺序缩小候选：
@@ -178,3 +180,5 @@ CREST结束后的逐构象单点命令、JSON字段、Boltzmann代理权重和NC
 [183] Bayly, C. I.; Cieplak, P.; Cornell, W. D.; Kollman, P. A. A Well-Behaved Electrostatic Potential Based Method Using Charge Restraints for Deriving Atomic Charges: The RESP Model. *The Journal of Physical Chemistry* **1993**, *97* (40), 10269–10280. https://doi.org/10.1021/j100142a004.
 
 [184] Alenaizan, A.; Burns, L. A.; Sherrill, C. D. Python Implementation of the Restrained Electrostatic Potential Charge Model. *International Journal of Quantum Chemistry* **2020**, *120* (2), e26035. https://doi.org/10.1002/qua.26035.
+
+[185] Psi4 Project. *Geometry Optimization: Frozen Dihedral Constraints*, Psi4 1.10.x Manual. https://psicode.org/psi4manual/1.10.x/optking.html (accessed 2026-08-25).

@@ -1,0 +1,16 @@
+{
+  "basis": "6-31G(d,p)",
+  "dftd3_python_version": "1.5.0",
+  "energy_hartree": -323.833492566385,
+  "log": {
+    "bytes": 13340,
+    "path": "计算/现实MD/势能扫描环境测试/wb97m_d3bj_ready.log",
+    "sha256": "d4aae64402c7b1c3fa9174bbe92b21bf2c14b32eda6b3912680d0847d0b56d77"
+  },
+  "method": "wb97m-d3bj",
+  "model_smiles": "COC(=O)NC",
+  "performance_claim_status": "no_performance_claim",
+  "psi4_version": "1.10.2",
+  "release_id": "tpu-wb97m-d3bj-method-smoke-20260825-v1",
+  "status": "completed"
+}

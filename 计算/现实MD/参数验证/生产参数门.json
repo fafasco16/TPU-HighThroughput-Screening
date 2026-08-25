@@ -93,6 +93,20 @@
       "path": "计算/现实MD/RESP敏感性/RESP敏感性发布清单.json",
       "sha256": "c164534c02e75ad89b667a0296870bdafe39c482cec3736589134bd442ddbc5d",
       "status": "sensitivity_matrix_completed_joint_fit_pending"
+    },
+    "urethane_rigid_scan": {
+      "counts": {
+        "failed_rigid_screens": 1,
+        "fragments": 2,
+        "relaxed_candidate_points": 8,
+        "scan_points": 48
+      },
+      "maximum_absolute_barrier_difference_kcal_mol": 20.281289184686987,
+      "maximum_curve_rmse_kcal_mol": 9.620506214766102,
+      "minimum_curve_pearson_r": 0.5434155843418857,
+      "path": "计算/现实MD/氨基甲酸酯刚性扫描/刚性扫描发布清单.json",
+      "sha256": "324d23098e140b13cf743f98951156f0b32c364b5f2be2170dd0fcc6270d696f",
+      "status": "rigid_scan_completed_aromatic_forcefield_validation_failed"
     }
   },
   "environment_identity": {
@@ -110,7 +124,7 @@
       "dihedral": 28,
       "improper": 4
     },
-    "status": "blocked_repeating_urethane_ns_substitution",
+    "status": "failed_aromatic_urethane_rigid_scan_parameter_refit_required",
     "unique_substitution_count": 70,
     "urethane_bond_vs_substitution_event_pearson_r": 0.9913027044620191,
     "validation_family_counts": {
@@ -120,6 +134,6 @@
   },
   "performance_claim_status": "no_performance_claim",
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v6",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v7",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }

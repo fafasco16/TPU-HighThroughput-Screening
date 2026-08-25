@@ -133,6 +133,19 @@
         },
         {
             "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 2,
+            "build_string": "py312h703531f_2",
+            "channel": "conda-forge",
+            "dist_name": "cffi-2.1.1-py312h703531f_2",
+            "md5": "3101547f7c22db267bd40988f67d7ab1",
+            "name": "cffi",
+            "platform": "linux-64",
+            "sha256": "b649eacfd07be8fb889ef609601436dff831b2e9d095ef029601f3f10946c7d6",
+            "url": "https://conda.anaconda.org/conda-forge/linux-64/cffi-2.1.1-py312h703531f_2.conda",
+            "version": "2.1.1"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
             "build_number": 0,
             "build_string": "pyhd8ed1ab_0",
             "channel": "conda-forge",
@@ -208,6 +221,19 @@
             "sha256": "7684da83306bb69686c0506fb09aa7074e1a55ade50c3a879e4e5df6eebb1009",
             "url": "https://conda.anaconda.org/conda-forge/linux-64/cyrus-sasl-2.1.28-hac629b4_1.conda",
             "version": "2.1.28"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 0,
+            "build_string": "py312h4c3975b_0",
+            "channel": "conda-forge",
+            "dist_name": "dftd3-python-1.5.0-py312h4c3975b_0",
+            "md5": "01e0e882afc7f028516d1696ebc42c3b",
+            "name": "dftd3-python",
+            "platform": "linux-64",
+            "sha256": "f2beb0162e3d989e0037b046513b0f16bd3973d5d17732be940c1eb28525bee2",
+            "url": "https://conda.anaconda.org/conda-forge/linux-64/dftd3-python-1.5.0-py312h4c3975b_0.conda",
+            "version": "1.5.0"
         },
         {
             "base_url": "https://conda.anaconda.org/conda-forge",
@@ -507,6 +533,19 @@
             "sha256": "9f07834f0c546ab14d885ce0366285f61f44e326c0edd1fc63b8294e113ae432",
             "url": "https://conda.anaconda.org/conda-forge/linux-64/icu-78.3-py310h44b86e0_2.conda",
             "version": "78.3"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 0,
+            "build_string": "gfortran_h956d735_0",
+            "channel": "conda-forge",
+            "dist_name": "jonquil-0.3.2-gfortran_h956d735_0",
+            "md5": "1fabe35a1947d6d27d774ac67e9de881",
+            "name": "jonquil",
+            "platform": "linux-64",
+            "sha256": "aeed4b6fe715a6cac77f3181554386f7bfb4e3264182c11a9cd7d017b605482b",
+            "url": "https://conda.anaconda.org/conda-forge/linux-64/jonquil-0.3.2-gfortran_h956d735_0.conda",
+            "version": "0.3.2"
         },
         {
             "base_url": "https://conda.anaconda.org/conda-forge",
@@ -1303,6 +1342,19 @@
         },
         {
             "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 0,
+            "build_string": "gfortran_h956d735_0",
+            "channel": "conda-forge",
+            "dist_name": "mctc-lib-0.5.2-gfortran_h956d735_0",
+            "md5": "fedeece5fe9ec527bb72b909b88505cc",
+            "name": "mctc-lib",
+            "platform": "linux-64",
+            "sha256": "829a35807f672a69fd6f5d1bb2f6a5a47cb681d6d9eb3a43d2021fe6abb6c683",
+            "url": "https://conda.anaconda.org/conda-forge/linux-64/mctc-lib-0.5.2-gfortran_h956d735_0.conda",
+            "version": "0.5.2"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
             "build_number": 12,
             "build_string": "h0e700b2_12",
             "channel": "conda-forge",
@@ -1670,6 +1722,19 @@
             "build_number": 0,
             "build_string": "pyhcf101f3_0",
             "channel": "conda-forge",
+            "dist_name": "pycparser-3.0-pyhcf101f3_0",
+            "md5": "9c5491066224083c41b6d5635ed7107b",
+            "name": "pycparser",
+            "platform": "noarch",
+            "sha256": "e27e0473fc6723311a0bd48b89b616fa1b996a2f7a2b555338cbbcfb9c640568",
+            "url": "https://conda.anaconda.org/conda-forge/noarch/pycparser-3.0-pyhcf101f3_0.conda",
+            "version": "3.0"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 0,
+            "build_string": "pyhcf101f3_0",
+            "channel": "conda-forge",
             "dist_name": "pydantic-2.13.4-pyhcf101f3_0",
             "md5": "729843edafc0899b3348bd3f19525b9d",
             "name": "pydantic",
@@ -1940,6 +2005,19 @@
         },
         {
             "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 0,
+            "build_string": "gfortran_h956d735_0",
+            "channel": "conda-forge",
+            "dist_name": "simple-dftd3-1.5.0-gfortran_h956d735_0",
+            "md5": "91cd035d228ab546b17317829e690223",
+            "name": "simple-dftd3",
+            "platform": "linux-64",
+            "sha256": "6b68227cfa3606e6282513a55d842a62d760dade5fc4d7141a6033997f949503",
+            "url": "https://conda.anaconda.org/conda-forge/linux-64/simple-dftd3-1.5.0-gfortran_h956d735_0.conda",
+            "version": "1.5.0"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
             "build_number": 1,
             "build_string": "pyhe01879c_1",
             "channel": "conda-forge",
@@ -2015,6 +2093,19 @@
             "sha256": "a1a241d172c1ccab067ba245206dd048bc3c2d1b84504b53c9468e99adfc16a1",
             "url": "https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_h1df4ec4_4.conda",
             "version": "8.6.13"
+        },
+        {
+            "base_url": "https://conda.anaconda.org/conda-forge",
+            "build_number": 0,
+            "build_string": "gfortran_h956d735_0",
+            "channel": "conda-forge",
+            "dist_name": "toml-f-0.5.2-gfortran_h956d735_0",
+            "md5": "0e7c1fba9c117ff1b71eff6418cbfb18",
+            "name": "toml-f",
+            "platform": "linux-64",
+            "sha256": "3ac706421c1bee724dfb83652bdc1160e624e44e23d7706e5eeaeff0da58e9f7",
+            "url": "https://conda.anaconda.org/conda-forge/linux-64/toml-f-0.5.2-gfortran_h956d735_0.conda",
+            "version": "0.5.2"
         },
         {
             "base_url": "https://conda.anaconda.org/conda-forge",

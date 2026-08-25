@@ -25,8 +25,8 @@
       "sha256": "240d1354406f857ad8875ed9604f294e7ec411ff9a023c661ed9273f32d54c3a"
     },
     "生产参数门.json": {
-      "bytes": 5494,
-      "sha256": "6a4d36cda7ace54731d4148b31be63e4b683db0c0bfe34f4cafbb9f78b50fcf2"
+      "bytes": 6134,
+      "sha256": "65dad72c435ee0d65cd3fbd446924838810b646ff7bb1f967b640aa642b645ec"
     },
     "生产参数门说明.md": {
       "bytes": 1059,
@@ -69,6 +69,11 @@
       "path": "参数门输入/低聚链计量计划.csv",
       "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
     },
+    "刚性扫描发布清单.json": {
+      "bytes": 2266,
+      "path": "计算/现实MD/氨基甲酸酯刚性扫描/刚性扫描发布清单.json",
+      "sha256": "324d23098e140b13cf743f98951156f0b32c364b5f2be2170dd0fcc6270d696f"
+    },
     "联合RESP发布清单.json": {
       "bytes": 3116,
       "path": "计算/现实MD/RESP联合验证/联合RESP发布清单.json",
@@ -76,6 +81,6 @@
     }
   },
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v6",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v7",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }

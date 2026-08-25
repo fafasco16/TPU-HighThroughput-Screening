@@ -67,8 +67,10 @@ https://conda.anaconda.org/conda-forge/linux-64/xorg-libx11-1.8.13-he1eb515_1.co
 https://conda.anaconda.org/conda-forge/linux-64/xorg-libxext-1.3.7-h7cc23a3_1.conda#e5b6b28536b81b3f4cb20db4668a4642
 https://conda.anaconda.org/conda-forge/linux-64/xorg-libxrender-0.9.12-hb03c661_1.conda#e470d224a7a5be1b1d021bded7abb536
 https://conda.anaconda.org/conda-forge/linux-64/cairo-1.18.4-he90730b_1.conda#bb6c4808bfa69d6f7f6b07e5846ced37
-https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.5.1-pyhd8ed1ab_0.conda#e0ac3accc64e23e40969d660e5f58ac8
+https://conda.anaconda.org/conda-forge/noarch/pycparser-3.0-pyhcf101f3_0.conda#9c5491066224083c41b6d5635ed7107b
 https://conda.anaconda.org/conda-forge/noarch/python_abi-3.12-8_cp312.conda#c3efd25ac4d74b1584d2f7a57195ddf1
+https://conda.anaconda.org/conda-forge/linux-64/cffi-2.1.1-py312h703531f_2.conda#3101547f7c22db267bd40988f67d7ab1
+https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.5.1-pyhd8ed1ab_0.conda#e0ac3accc64e23e40969d660e5f58ac8
 https://conda.anaconda.org/conda-forge/linux-64/numpy-2.5.2-py312h33ff503_0.conda#3e15aca2584b6c69dc09ba2aa5ae1503
 https://conda.anaconda.org/conda-forge/linux-64/contourpy-1.3.3-py312h0a2e395_4.conda#43c2bc96af3ae5ed9e8a10ded942aa50
 https://conda.anaconda.org/conda-forge/linux-64/cpp-argparse-3.2-h84d6215_1.conda#33440a1511ac3261947a457709c99933
@@ -80,6 +82,11 @@ https://conda.anaconda.org/conda-forge/linux-64/libedit-3.1.20250104-pl5321h3733
 https://conda.anaconda.org/conda-forge/linux-64/krb5-1.22.2-hbc21106_2.conda#53318d715316929a574f83591308b1f8
 https://conda.anaconda.org/conda-forge/linux-64/libntlm-1.8-hb9d3cd8_0.conda#7c7927b404672409d9917d49bff5f2d6
 https://conda.anaconda.org/conda-forge/linux-64/cyrus-sasl-2.1.28-hac629b4_1.conda#af491aae930edc096b58466c51c4126c
+https://conda.anaconda.org/conda-forge/linux-64/toml-f-0.5.2-gfortran_h956d735_0.conda#0e7c1fba9c117ff1b71eff6418cbfb18
+https://conda.anaconda.org/conda-forge/linux-64/jonquil-0.3.2-gfortran_h956d735_0.conda#1fabe35a1947d6d27d774ac67e9de881
+https://conda.anaconda.org/conda-forge/linux-64/mctc-lib-0.5.2-gfortran_h956d735_0.conda#fedeece5fe9ec527bb72b909b88505cc
+https://conda.anaconda.org/conda-forge/linux-64/simple-dftd3-1.5.0-gfortran_h956d735_0.conda#91cd035d228ab546b17317829e690223
+https://conda.anaconda.org/conda-forge/linux-64/dftd3-python-1.5.0-py312h4c3975b_0.conda#01e0e882afc7f028516d1696ebc42c3b
 https://conda.anaconda.org/conda-forge/linux-64/dkh-1.2-ha94c79b_3.conda#4795b1e107258b306da7c16cd46b43b7
 https://conda.anaconda.org/conda-forge/linux-64/eigen-abi-5.0.1.80-hf414acd_0.conda#a85c1768af7780d67c6446c17848b76f
 https://conda.anaconda.org/conda-forge/linux-64/fftw-3.3.11-nompi_h3b011a4_100.conda#0717f4eb3d18259358a1fa77edb18917

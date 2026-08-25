@@ -1,0 +1,57 @@
+{
+  "counts": {
+    "failed_rigid_screens": 1,
+    "fragments": 2,
+    "relaxed_candidate_points": 8,
+    "scan_points": 48
+  },
+  "files": {
+    "刚性扫描曲线.csv": {
+      "bytes": 11047,
+      "sha256": "d75ef22538e73080f84b56fc5992ea734369fde4e122934b2c2b3f6435cad6e3"
+    },
+    "刚性扫描汇总.csv": {
+      "bytes": 823,
+      "sha256": "2dcc4c4d730a943f4a7dacd62fb1e854d5321a2d635a175f83d0a20febc615d9"
+    },
+    "刚性扫描说明.md": {
+      "bytes": 772,
+      "sha256": "d5f2e8c51600c83a2b4a00765772f93a4349f81782260cfb54c76f06895dedeb"
+    },
+    "原始归档定位.json": {
+      "bytes": 229,
+      "sha256": "26043a0b0b571abdca9eb26aed17b957f7a866a92c284dec01946e2937be24bb"
+    },
+    "受约束松弛候选.csv": {
+      "bytes": 764,
+      "sha256": "b665a67bc0a98be3f332f733b1da4376e8671b2aa6f4506d71fa8ec523fdfe7e"
+    }
+  },
+  "inputs": {
+    "methyl_n_methyl_carbamate": {
+      "fragment_name": "methyl_n_methyl_carbamate",
+      "manifest_bytes": 2304,
+      "manifest_path": "/root/TPU高通量筛选/计算/现实MD/刚性扫描_脂肪族氨基甲酸酯/刚性扫描清单.json",
+      "manifest_sha256": "25528580e6870a81c7329191eccac6b067f702496f3c84c326afbdb772a84f44"
+    },
+    "methyl_n_phenyl_carbamate": {
+      "fragment_name": "methyl_n_phenyl_carbamate",
+      "manifest_bytes": 2307,
+      "manifest_path": "/root/TPU高通量筛选/计算/现实MD/刚性扫描_芳香族氨基甲酸酯/刚性扫描清单.json",
+      "manifest_sha256": "ad5fbf52a814705d0176f2c87077f2955582dfb27bfd04590a6a3b283500bc6f"
+    }
+  },
+  "maximum_absolute_barrier_difference_kcal_mol": 20.281289184686987,
+  "maximum_curve_rmse_kcal_mol": 9.620506214766102,
+  "minimum_curve_pearson_r": 0.5434155843418857,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_relaxed_scan_and_parameter_refit",
+  "raw_archive": {
+    "bytes": 97848,
+    "path": "计算/现实MD/氨基甲酸酯刚性扫描原始_20260825.tar.gz",
+    "sha256": "483f4e1eb53912da8fb65840300bb8210ff0cce3e05a6f04f3725d96ba420f68",
+    "storage": "server_only_not_committed_to_git"
+  },
+  "release_id": "tpu-reality-md-urethane-rigid-scan-20260825-v2",
+  "status": "rigid_scan_completed_aromatic_forcefield_validation_failed"
+}
