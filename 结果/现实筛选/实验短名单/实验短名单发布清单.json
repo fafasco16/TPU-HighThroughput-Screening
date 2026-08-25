@@ -1,0 +1,44 @@
+{
+  "counts": {
+    "candidates": 6,
+    "chain_extenders": 4,
+    "diisocyanates": 5,
+    "macrodiol_grades": 5,
+    "stages": {
+      "A_calibration": 3,
+      "B_priority_exploration": 2,
+      "C_specialty_deferred": 1
+    }
+  },
+  "experiment_release_status": "blocked_pending_quote_sds_coa_and_local_approval",
+  "files": {
+    "实验短名单6.csv": {
+      "bytes": 5064,
+      "sha256": "0fffd724c2ccb392dc5c3a4135d5743f4cb286ea48034e81e2e8148facf2b60c"
+    },
+    "实验短名单说明.md": {
+      "bytes": 998,
+      "sha256": "1ba6910748b0dd39668995f24b31d51ae066d829c9252f610b34ac821b2e67c0"
+    }
+  },
+  "inputs": {
+    "GAFF2替代参数逐配方.csv": {
+      "bytes": 2233,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\参数验证\\GAFF2替代参数逐配方.csv",
+      "sha256": "240d1354406f857ad8875ed9604f294e7ec411ff9a023c661ed9273f32d54c3a"
+    },
+    "低聚链计量计划.csv": {
+      "bytes": 6984,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链计量计划.csv",
+      "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
+    },
+    "高层DFT候选_预反应更新.csv": {
+      "bytes": 75594,
+      "path": "E:\\数据\\TPU\\计算\\现实预反应复合物\\筛选更新\\高层DFT候选_预反应更新.csv",
+      "sha256": "a50dc28f8faf054f1c2e84176c4c952f1b9b99200432ba49db97c0533a4b9f3d"
+    }
+  },
+  "performance_claim_status": "no_performance_claim",
+  "release_id": "tpu-reality-experiment-shortlist-20260825-v1",
+  "status": "six_candidate_experiment_design_selected_execution_blocked"
+}
