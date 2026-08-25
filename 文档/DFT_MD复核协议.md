@@ -12,7 +12,7 @@
 
 `结果/现实筛选/高层DFT候选12.csv`从40条队列中保留4条小型商业对照，并以确定性集合覆盖规则补充8条，使12条同时覆盖全部7个二异氰酸酯、5个PTMG和7个扩链剂。该文件不是性能前12名；它是下一层预反应复合物和正式反应路径的覆盖子集。
 
-当前Ubuntu和Slurm环境均未发现授权可执行的ORCA、Gaussian、Psi4、NWChem或CP2K，因此`dft_engine_status=blocked_no_authorized_r2scan3c_engine`。本项目只允许继续准备高层DFT输入，并先用GFN2-xTB做NCO–OH预反应复合物多起点筛选；xTB缔合能不得改名为DFT能垒。获得合规程序后再执行r2SCAN-3c几何/频率或等价的已论证协议。
+当前Ubuntu已建立隔离Psi4 1.10.2环境，可执行HF/6-31G(d) RESP及ωB97M-D3BJ/6-31G(d,p)小片段扭转验证；这不等于获得ORCA，也不等于Psi4已经实现本项目预定的r2SCAN-3c复合协议。Ubuntu和Slurm仍未发现授权可执行的ORCA、Gaussian、NWChem或CP2K，因此22个现实NCO–OH配对的ORCA输入只完成生成与哈希核验，正式r2SCAN-3c优化/频率继续标为`blocked_no_authorized_r2scan3c_engine`。GFN2-xTB缔合能仍不得改名为DFT能垒。
 
 ## 2. Tier 0：输入和人工门
 

@@ -37,3 +37,33 @@ def test_missing_mm_point_fails_closed() -> None:
     mm = pd.DataFrame(columns=["fragment_name", "validation_family", "requested_angle_degrees", "point_status", "relaxed_gaff2_relative_energy_kcal_mol", "angle_drift_degrees"])
     with pytest.raises(ValueError, match="未完全连接"):
         MODULE.compare_relaxed_surfaces(dft, mm)
+
+
+def test_all_completed_points_are_comparable() -> None:
+    dft = pd.DataFrame(
+        [
+            {
+                "fragment_name": "f",
+                "validation_family": "a",
+                "requested_angle_degrees": angle,
+                "point_status": "completed",
+                "relaxed_dft_relative_energy_kcal_mol": energy,
+            }
+            for angle, energy in [(0, 0.0), (90, 2.0)]
+        ]
+    )
+    mm = pd.DataFrame(
+        [
+            {
+                "fragment_name": "f",
+                "validation_family": "a",
+                "requested_angle_degrees": angle,
+                "point_status": "completed",
+                "relaxed_gaff2_relative_energy_kcal_mol": energy,
+                "angle_drift_degrees": 0.1,
+            }
+            for angle, energy in [(0, 0.0), (90, 3.0)]
+        ]
+    )
+    result = MODULE.compare_relaxed_surfaces(dft, mm)
+    assert result["comparison_status"].eq("comparable_relaxed_point").all()

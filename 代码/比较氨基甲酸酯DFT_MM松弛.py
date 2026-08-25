@@ -148,6 +148,7 @@ def write_release(
     summary = pd.DataFrame(summary_rows).sort_values(
         "validation_family", kind="stable"
     )
+    all_points_comparable = bool(summary["blocked_points"].astype(int).eq(0).all())
     output_root.mkdir(parents=True, exist_ok=True)
     comparison_out = output_root / "DFT_MM同角度松弛对比.csv"
     summary_out = output_root / "DFT_MM松弛家族汇总.csv"
@@ -162,10 +163,15 @@ def write_release(
             [
                 "# 氨基甲酸酯DFT–MM同角度松弛比较",
                 "",
-                "比较只使用DFT和MM均完成的同一目标角。DFT达到50步未收敛的角度保持阻断，不用刚性能量或插值补齐。",
+                "比较只使用DFT和MM均完成的同一目标角。未收敛角度保持阻断，不用刚性能量或插值补齐。",
                 "DFT采用ωB97M-D3BJ/6-31G(d,p)冻结二面角优化；MM采用GAFF2替代参数、三构象联合RESP和LAMMPS K=5000 kcal mol⁻¹ rad⁻²约束最小化，解除约束后读取能量。",
                 "",
-                "当前收敛点不足以拟合完整周期松弛势能：脂肪族只有3点、芳香族只有2点。可比较的非零角均显示GAFF2相对能高于DFT；结果用于确认参数偏差方向，不生成最终扭转系数。",
+                (
+                    "当前8/8点均可比较，每家族4个信息互补角已达到候选重拟合的最小点数门；"
+                    "这只允许进入扭转参数拟合与外部片段验证，不直接放行生产MD。"
+                    if all_points_comparable
+                    else "当前仍有DFT或MM未完成点；只允许判断已完成角度的参数偏差方向，不生成最终扭转系数。"
+                ),
                 "",
             ]
         ),
@@ -176,7 +182,11 @@ def write_release(
     ]
     manifest = {
         "release_id": release_id,
-        "status": "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points",
+        "status": (
+            "relaxed_dft_mm_comparison_completed_refit_candidate"
+            if all_points_comparable
+            else "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
+        ),
         "counts": {
             "planned_points": len(comparison),
             "comparable_points": len(comparable),

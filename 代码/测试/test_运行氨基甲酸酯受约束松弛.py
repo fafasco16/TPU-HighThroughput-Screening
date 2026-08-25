@@ -37,3 +37,25 @@ def test_duplicate_angles_fail_closed() -> None:
     duplicated = pd.concat([_plan(), _plan().iloc[[0]]], ignore_index=True)
     with pytest.raises(ValueError, match="重复"):
         MODULE.select_plan_rows(duplicated, "a")
+
+
+def test_standard_optimizer_profile_preserves_v1_options() -> None:
+    options = MODULE.build_optking_options("1 2 3 4", 50, "standard_v1")
+    assert options == {
+        "optking__frozen_dihedral": "1 2 3 4",
+        "optking__geom_maxiter": 50,
+        "optking__g_convergence": "QCHEM",
+    }
+
+
+def test_difficult_optimizer_profile_adds_documented_robustness_options() -> None:
+    options = MODULE.build_optking_options("1 2 3 4", 200, "difficult_v2")
+    assert options["optking__geom_maxiter"] == 200
+    assert options["optking__dynamic_level"] == 1
+    assert options["optking__opt_coordinates"] == "BOTH"
+    assert options["optking__intrafrag_step_limit"] == pytest.approx(0.1)
+
+
+def test_unknown_optimizer_profile_fails_closed() -> None:
+    with pytest.raises(ValueError, match="未知OptKing优化策略"):
+        MODULE.build_optking_options("1 2 3 4", 200, "invented")

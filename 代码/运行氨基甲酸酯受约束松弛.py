@@ -26,6 +26,36 @@ from 运行氨基甲酸酯刚性扫描 import (
 )
 
 
+OPTIMIZER_PROFILES = {"standard_v1", "difficult_v2"}
+
+
+def build_optking_options(
+    frozen_dihedral: str,
+    max_iterations: int,
+    optimizer_profile: str,
+) -> dict[str, Any]:
+    """返回可审计的OptKing配置；困难点配置不改变DFT方法和冻结角定义。"""
+
+    if optimizer_profile not in OPTIMIZER_PROFILES:
+        raise ValueError(f"未知OptKing优化策略: {optimizer_profile}")
+    if max_iterations < 1:
+        raise ValueError("最大优化步必须为正")
+    options: dict[str, Any] = {
+        "optking__frozen_dihedral": frozen_dihedral,
+        "optking__geom_maxiter": max_iterations,
+        "optking__g_convergence": "QCHEM",
+    }
+    if optimizer_profile == "difficult_v2":
+        options.update(
+            {
+                "optking__dynamic_level": 1,
+                "optking__opt_coordinates": "BOTH",
+                "optking__intrafrag_step_limit": 0.1,
+            }
+        )
+    return options
+
+
 def select_plan_rows(
     plan: pd.DataFrame,
     fragment_name: str,
@@ -77,6 +107,7 @@ def run_relaxed_scan(
     threads: int,
     memory_gb: int,
     max_iterations: int,
+    optimizer_profile: str,
     release_id: str,
 ) -> dict[str, Any]:
     output_root = output_root.resolve()
@@ -86,6 +117,8 @@ def run_relaxed_scan(
         raise ValueError(f"受约束松弛计划不存在: {plan_path}")
     if threads < 1 or memory_gb < 1 or max_iterations < 1:
         raise ValueError("受约束松弛线程、内存和最大步数必须为正")
+    if optimizer_profile not in OPTIMIZER_PROFILES:
+        raise ValueError(f"未知OptKing优化策略: {optimizer_profile}")
     plan = select_plan_rows(
         pd.read_csv(plan_path), fragment_name, explicit_angles=explicit_angles
     )
@@ -106,6 +139,13 @@ def run_relaxed_scan(
         "constraint": "frozen_dihedral_current_value",
         "g_convergence": "QCHEM",
         "geom_maxiter": max_iterations,
+        "optimizer_profile": optimizer_profile,
+        "optimizer_profile_rationale": (
+            "Psi4/OptKing difficult-optimization guidance: dynamic level 1, "
+            "redundant internals plus Cartesian coordinates, initial step limit 0.1 au."
+            if optimizer_profile == "difficult_v2"
+            else "Original v1 OptKing defaults with explicit QCHEM convergence."
+        ),
         "production_md_permission": "blocked_parameter_refit_and_mm_relaxed_comparison",
         "performance_claim_status": "no_performance_claim",
     }
@@ -158,13 +198,10 @@ def run_relaxed_scan(
                 )
             geometry_lines.extend(["symmetry c1", "no_reorient", "no_com"])
             psi4_molecule = psi4.geometry("\n".join(geometry_lines))
-            psi4.set_options(
-                {
-                    "optking__frozen_dihedral": frozen,
-                    "optking__geom_maxiter": max_iterations,
-                    "optking__g_convergence": "QCHEM",
-                }
+            optking_options = build_optking_options(
+                frozen, max_iterations, optimizer_profile
             )
+            psi4.set_options(optking_options)
             point_started = time.monotonic()
             try:
                 energy, wavefunction = psi4.optimize(
@@ -272,6 +309,9 @@ def run_relaxed_scan(
                 "dftd3_python": _version("dftd3-python"),
                 "optking": _version("optking"),
             },
+            "optking_options": build_optking_options(
+                frozen, max_iterations, optimizer_profile
+            ),
             "elapsed_seconds": round(time.monotonic() - started, 3),
             "files": files,
             "interpretation_limit": (
@@ -318,6 +358,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--线程", type=int, default=1)
     parser.add_argument("--内存GB", type=int, default=8)
     parser.add_argument("--最大优化步", type=int, default=50)
+    parser.add_argument(
+        "--优化策略",
+        choices=sorted(OPTIMIZER_PROFILES),
+        default="standard_v1",
+    )
     parser.add_argument("--发布ID", required=True)
     args = parser.parse_args(argv)
     manifest = run_relaxed_scan(
@@ -331,6 +376,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         threads=args.线程,
         memory_gb=args.内存GB,
         max_iterations=args.最大优化步,
+        optimizer_profile=args.优化策略,
         release_id=args.发布ID,
     )
     print(json.dumps(manifest, ensure_ascii=False, sort_keys=True))
