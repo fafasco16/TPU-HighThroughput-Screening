@@ -1,0 +1,4 @@
+fragment_name,validation_family,periodicity,coefficient_for_cos_nphi_minus_one_kcal_mol,amber_candidate_magnitude_kcal_mol,amber_candidate_phase_degrees,fourier_order
+methyl_n_methyl_carbamate,aliphatic_urethane,1,1.39842452235,1.39842452235,0,2
+methyl_n_methyl_carbamate,aliphatic_urethane,2,5.32034153943,5.32034153943,0,2
+methyl_n_phenyl_carbamate,aromatic_urethane,1,2.45750286872,2.45750286872,0,1

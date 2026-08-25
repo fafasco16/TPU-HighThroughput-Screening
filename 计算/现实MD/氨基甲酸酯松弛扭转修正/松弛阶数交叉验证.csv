@@ -1,0 +1,5 @@
+fragment_name,validation_family,fourier_order,training_rmse_kcal_mol,leave_one_angle_out_rmse_kcal_mol
+methyl_n_methyl_carbamate,aliphatic_urethane,1,4.80872662182,6.00869348991
+methyl_n_methyl_carbamate,aliphatic_urethane,2,0.47512295577,2.67882270821
+methyl_n_phenyl_carbamate,aromatic_urethane,1,0.198990413765,0.352108956653
+methyl_n_phenyl_carbamate,aromatic_urethane,2,0.198706153229,1.12033853356

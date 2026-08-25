@@ -1,0 +1,40 @@
+{
+  "basis": "cos(n*phi)-1; zero correction at phi=0 degrees",
+  "counts": {
+    "coefficient_rows": 3,
+    "families": 2,
+    "training_points": 8
+  },
+  "files": {
+    "松弛扭转修正候选系数.csv": {
+      "bytes": 403,
+      "sha256": "057a5ebda9333057ca80b0e8c1f90fa9709079938eac27b349c3ee437c0fa5e2"
+    },
+    "松弛扭转修正指标.csv": {
+      "bytes": 325,
+      "sha256": "4b86094a73024de93b6dfa3d5e1b3888c4e5c2427e2f71090fedf11faf80f008"
+    },
+    "松弛扭转修正说明.md": {
+      "bytes": 495,
+      "sha256": "cabe74b907b04c8214fc76b8af623f34d5d7a007e588d6199842c8f206bf313f"
+    },
+    "松弛训练点修正评估.csv": {
+      "bytes": 4032,
+      "sha256": "d35e69a8f9f657a7fed5cc70c24a1f20447a05834b35ec3dab067623f2d4b936"
+    },
+    "松弛阶数交叉验证.csv": {
+      "bytes": 404,
+      "sha256": "ec9f51d8b19a0e304479b4a2d1c07899bd27f1edb107d2941b5773bd89dba89c"
+    }
+  },
+  "input": {
+    "bytes": 3637,
+    "path": "计算/现实MD/氨基甲酸酯松弛比较_v2/DFT_MM同角度松弛对比.csv",
+    "sha256": "0cd968225e38125cb0b389af9a8d022ddcfd2d47f482ad7370612e8297fa4419"
+  },
+  "maximum_allowed_order": 2,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_external_fragment_and_holdout_angle_validation",
+  "release_id": "tpu-reality-md-urethane-relaxed-torsion-candidate-20260825-v1",
+  "status": "relaxed_low_order_family_fit_completed_external_validation_pending"
+}

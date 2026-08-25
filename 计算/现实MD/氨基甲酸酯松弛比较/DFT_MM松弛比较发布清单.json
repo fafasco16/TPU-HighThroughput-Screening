@@ -1,40 +1,40 @@
 {
   "all_nonzero_comparable_points_gaff2_above_dft": true,
   "counts": {
-    "blocked_points": 3,
-    "comparable_points": 5,
+    "blocked_points": 0,
+    "comparable_points": 8,
     "fragments": 2,
     "planned_points": 8
   },
   "files": {
     "DFT_MM同角度松弛对比.csv": {
-      "bytes": 2679,
-      "sha256": "e7735aa146cd408a3f8c3dcb38c214ad843e5d015a1514badb7ef1e56fd5bd86"
+      "bytes": 3637,
+      "sha256": "0cd968225e38125cb0b389af9a8d022ddcfd2d47f482ad7370612e8297fa4419"
     },
     "DFT_MM松弛家族汇总.csv": {
-      "bytes": 616,
-      "sha256": "e0ff556862d9a4820aa92e6bba4404dd97427340633ee20b1cf5d3143b8ba882"
+      "bytes": 594,
+      "sha256": "765b314cacd7c61146332043885488c74d4ce144906aee2b7e0f1974c8b91bd0"
     },
     "DFT_MM松弛比较说明.md": {
-      "bytes": 603,
-      "sha256": "e0815d31fcfdcf71b40bbd58bf6bf541062b1acdd92b50ce08f046e912f266b8"
+      "bytes": 546,
+      "sha256": "980b616af5410a322af9b1ca559ca11927ed09e4d7499721f8996bae8cd8ce73"
     }
   },
   "inputs": {
     "MM松弛与刚性对比.csv": {
       "bytes": 1662,
-      "path": "E:\\数据\\TPU\\计算\\现实MD\\氨基甲酸酯MM约束松弛\\MM松弛与刚性对比.csv",
+      "path": "计算/现实MD/氨基甲酸酯MM约束松弛/MM松弛与刚性对比.csv",
       "sha256": "4121b699e462a8edb6e3fb42aa8303376567e2c7435e420d23d8ae2fc1d5a004"
     },
     "松弛与刚性对比.csv": {
-      "bytes": 1964,
-      "path": "E:\\数据\\TPU\\计算\\现实MD\\氨基甲酸酯DFT约束松弛\\松弛与刚性对比.csv",
-      "sha256": "2aed585d9cd12be99c8726ff33b0030fdfeb4430a10e7d350610c4d237c4dd0b"
+      "bytes": 2974,
+      "path": "计算/现实MD/氨基甲酸酯DFT约束松弛_v2/松弛与刚性对比.csv",
+      "sha256": "563ab1df30aa89c9cba88244293ffd1d0561aaf5a946a7950be38bef342dfc7c"
     }
   },
-  "maximum_absolute_relaxed_energy_error_kcal_mol": 4.544136636349999,
+  "maximum_absolute_relaxed_energy_error_kcal_mol": 12.22049005557128,
   "performance_claim_status": "no_performance_claim",
   "production_md_permission": "blocked_parameter_refit_and_external_validation",
-  "release_id": "tpu-reality-md-urethane-relaxed-dft-mm-20260825-v1",
-  "status": "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
+  "release_id": "tpu-reality-md-urethane-relaxed-dft-mm-20260825-v2",
+  "status": "relaxed_dft_mm_comparison_completed_refit_candidate"
 }
