@@ -72,7 +72,7 @@
     },
     "virtual_asset_index": {
       "path": "数据/虚拟库/资产索引.csv",
-      "sha256": "7279673bb0cb6c614b452137dbd698163db58f884fef067ce060f39d8eea938c"
+      "sha256": "d870ec42264687f1049cf68ddeae8743aab971a8eed2c5cc9f5313c13585af9e"
     }
   },
   "release_id": "tpu-dual-library-2026-08-24-v1",

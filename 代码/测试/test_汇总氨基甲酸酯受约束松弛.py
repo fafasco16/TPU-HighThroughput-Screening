@@ -84,6 +84,9 @@ def test_retry_replaces_only_failed_point_and_rezeros_family_energy() -> None:
             _attempt(90, "failed_OptimizationConvergenceError", None, "base_v1"),
         ]
     )
+    base.loc[base["requested_angle_degrees"].eq(90), "error_message"] = (
+        "v1 did not converge"
+    )
     retry = pd.DataFrame([_attempt(90, "completed", -9.99, "retry_v2")])
     selected, audit = MODULE.reconcile_relaxed_attempts(base, retry)
     zero = selected.loc[selected["requested_angle_degrees"].eq(0)].iloc[0]
@@ -92,6 +95,7 @@ def test_retry_replaces_only_failed_point_and_rezeros_family_energy() -> None:
     assert ninety["selected_attempt"] == "retry_v2"
     assert ninety["base_point_status"].startswith("failed_")
     assert ninety["retry_point_status"] == "completed"
+    assert pd.isna(ninety["error_message"])
     assert float(zero["relaxed_dft_relative_energy_kcal_mol"]) == pytest.approx(0.0)
     assert float(ninety["relaxed_dft_relative_energy_kcal_mol"]) == pytest.approx(
         0.01 * 627.5094740631

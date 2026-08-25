@@ -58,7 +58,9 @@ def leave_one_out_rmse(
         mask[index] = False
         coefficients = fit_zero_at_planar(angles[mask], values[mask], order)
         predictions[index] = float(
-            zero_at_planar_design(angles[[index]], order) @ coefficients
+            (
+                zero_at_planar_design(angles[[index]], order) @ coefficients
+            ).item()
         )
     return float(np.sqrt(np.mean(np.square(predictions - values))))
 

@@ -119,8 +119,9 @@ def reconcile_relaxed_attempts(
     if not retry_frame.empty:
         for key, retry in retry_indexed.iterrows():
             for column in base.columns:
-                if column in retry.index:
-                    selected.loc[key, column] = retry[column]
+                selected.loc[key, column] = (
+                    retry[column] if column in retry.index else pd.NA
+                )
             selected.loc[key, "retry_point_status"] = retry["point_status"]
             selected.loc[key, "selected_attempt"] = "retry_v2"
     selected = selected.reset_index(drop=True)

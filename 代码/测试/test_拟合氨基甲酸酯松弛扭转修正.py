@@ -26,6 +26,7 @@ def test_low_order_fit_recovers_synthetic_coefficients() -> None:
     target = MODULE.zero_at_planar_design(angles, 2) @ expected
     actual = MODULE.fit_zero_at_planar(angles, target, 2)
     assert actual == pytest.approx(expected)
+    assert np.isfinite(MODULE.leave_one_out_rmse(angles, target, 2))
 
 
 def test_validation_requires_two_families_with_four_completed_points() -> None:

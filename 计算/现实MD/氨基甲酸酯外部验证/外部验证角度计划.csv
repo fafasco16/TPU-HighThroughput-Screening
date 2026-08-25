@@ -1,0 +1,13 @@
+fragment_name,validation_family,angle_degrees,selection_reason,smiles,validation_role
+ethyl_n_ethyl_carbamate,aliphatic_urethane,-180,external_fragment_holdout_grid,CCOC(=O)NCC,external_holdout
+ethyl_n_ethyl_carbamate,aliphatic_urethane,-120,external_fragment_holdout_grid,CCOC(=O)NCC,external_holdout
+ethyl_n_ethyl_carbamate,aliphatic_urethane,-60,external_fragment_holdout_grid,CCOC(=O)NCC,external_holdout
+ethyl_n_ethyl_carbamate,aliphatic_urethane,0,external_fragment_holdout_grid,CCOC(=O)NCC,external_holdout
+ethyl_n_ethyl_carbamate,aliphatic_urethane,60,external_fragment_holdout_grid,CCOC(=O)NCC,external_holdout
+ethyl_n_ethyl_carbamate,aliphatic_urethane,120,external_fragment_holdout_grid,CCOC(=O)NCC,external_holdout
+ethyl_n_p_tolyl_carbamate,aromatic_urethane,-180,external_fragment_holdout_grid,CCOC(=O)Nc1ccc(C)cc1,external_holdout
+ethyl_n_p_tolyl_carbamate,aromatic_urethane,-120,external_fragment_holdout_grid,CCOC(=O)Nc1ccc(C)cc1,external_holdout
+ethyl_n_p_tolyl_carbamate,aromatic_urethane,-60,external_fragment_holdout_grid,CCOC(=O)Nc1ccc(C)cc1,external_holdout
+ethyl_n_p_tolyl_carbamate,aromatic_urethane,0,external_fragment_holdout_grid,CCOC(=O)Nc1ccc(C)cc1,external_holdout
+ethyl_n_p_tolyl_carbamate,aromatic_urethane,60,external_fragment_holdout_grid,CCOC(=O)Nc1ccc(C)cc1,external_holdout
+ethyl_n_p_tolyl_carbamate,aromatic_urethane,120,external_fragment_holdout_grid,CCOC(=O)Nc1ccc(C)cc1,external_holdout
