@@ -59,3 +59,34 @@ def test_difficult_optimizer_profile_adds_documented_robustness_options() -> Non
 def test_unknown_optimizer_profile_fails_closed() -> None:
     with pytest.raises(ValueError, match="未知OptKing优化策略"):
         MODULE.build_optking_options("1 2 3 4", 200, "invented")
+
+
+def test_zero_wall_clock_limit_is_noop() -> None:
+    with MODULE.point_wall_clock_limit(0):
+        value = 2 + 2
+    assert value == 4
+
+
+def test_negative_wall_clock_limit_fails_closed() -> None:
+    with pytest.raises(ValueError, match="不能为负"):
+        with MODULE.point_wall_clock_limit(-1):
+            pass
+
+
+def test_checkpoint_counts_completed_failed_and_remaining() -> None:
+    checkpoint = MODULE.build_checkpoint(
+        {"release_id": "r"},
+        [
+            {"requested_angle_degrees": 0, "point_status": "completed"},
+            {"requested_angle_degrees": 60, "point_status": "failed_TimeoutError"},
+        ],
+        6,
+    )
+    assert checkpoint["counts"] == {
+        "planned": 6,
+        "attempted": 2,
+        "completed": 1,
+        "failed": 1,
+        "remaining": 4,
+    }
+    assert checkpoint["last_attempted_angle_degrees"] == 60

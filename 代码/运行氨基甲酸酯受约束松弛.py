@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import importlib.metadata
 import json
 import math
 import os
 import platform
+import signal
 import time
 import traceback
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -27,6 +30,86 @@ from 运行氨基甲酸酯刚性扫描 import (
 
 
 OPTIMIZER_PROFILES = {"standard_v1", "difficult_v2"}
+
+
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+@contextlib.contextmanager
+def point_wall_clock_limit(seconds: int):
+    """在POSIX主进程中为单个Psi4优化设置可审计墙钟上限。"""
+
+    if seconds < 0:
+        raise ValueError("单点墙钟上限不能为负")
+    if seconds == 0:
+        yield
+        return
+    if os.name != "posix":
+        raise RuntimeError("正墙钟上限只在POSIX计算节点受支持")
+    old_handler = signal.getsignal(signal.SIGALRM)
+    old_timer = signal.getitimer(signal.ITIMER_REAL)
+    if old_timer[0] > 0:
+        raise RuntimeError("检测到既有ITIMER_REAL，拒绝覆盖")
+
+    def _timeout_handler(signum: int, frame: object) -> None:
+        del signum, frame
+        raise TimeoutError(f"Psi4单点墙钟超过{seconds}秒")
+
+    signal.signal(signal.SIGALRM, _timeout_handler)
+    signal.setitimer(signal.ITIMER_REAL, float(seconds))
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0.0)
+        signal.signal(signal.SIGALRM, old_handler)
+
+
+def build_checkpoint(
+    base: dict[str, Any], rows: Sequence[dict[str, Any]], planned_count: int
+) -> dict[str, Any]:
+    completed = sum(row.get("point_status") == "completed" for row in rows)
+    failed = len(rows) - completed
+    return {
+        **base,
+        "status": "running_with_point_checkpoint",
+        "counts": {
+            "planned": int(planned_count),
+            "attempted": len(rows),
+            "completed": completed,
+            "failed": failed,
+            "remaining": int(planned_count) - len(rows),
+        },
+        "last_attempted_angle_degrees": (
+            int(rows[-1]["requested_angle_degrees"]) if rows else None
+        ),
+        "updated_utc": _utc_now(),
+    }
+
+
+def write_checkpoint(
+    output_root: Path,
+    base: dict[str, Any],
+    rows: Sequence[dict[str, Any]],
+    planned_count: int,
+) -> None:
+    table = pd.DataFrame(rows)
+    if not table.empty:
+        table = table.sort_values("requested_angle_degrees", kind="stable")
+    _atomic_text(
+        output_root / "relaxed_scan_checkpoint.csv",
+        table.to_csv(index=False, float_format="%.12g"),
+    )
+    _atomic_text(
+        output_root / "受约束松弛检查点.json",
+        json.dumps(
+            build_checkpoint(base, rows, planned_count),
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+    )
 
 
 def build_optking_options(
@@ -108,6 +191,7 @@ def run_relaxed_scan(
     memory_gb: int,
     max_iterations: int,
     optimizer_profile: str,
+    point_wall_seconds: int,
     release_id: str,
 ) -> dict[str, Any]:
     output_root = output_root.resolve()
@@ -117,6 +201,10 @@ def run_relaxed_scan(
         raise ValueError(f"受约束松弛计划不存在: {plan_path}")
     if threads < 1 or memory_gb < 1 or max_iterations < 1:
         raise ValueError("受约束松弛线程、内存和最大步数必须为正")
+    if point_wall_seconds < 0:
+        raise ValueError("单点墙钟上限不能为负")
+    if point_wall_seconds > 0 and os.name != "posix":
+        raise ValueError("正墙钟上限只允许在POSIX计算节点使用")
     if optimizer_profile not in OPTIMIZER_PROFILES:
         raise ValueError(f"未知OptKing优化策略: {optimizer_profile}")
     plan = select_plan_rows(
@@ -140,6 +228,7 @@ def run_relaxed_scan(
         "g_convergence": "QCHEM",
         "geom_maxiter": max_iterations,
         "optimizer_profile": optimizer_profile,
+        "point_wall_seconds": point_wall_seconds,
         "optimizer_profile_rationale": (
             "Psi4/OptKing difficult-optimization guidance: dynamic level 1, "
             "redundant internals plus Cartesian coordinates, initial step limit 0.1 au."
@@ -204,11 +293,12 @@ def run_relaxed_scan(
             psi4.set_options(optking_options)
             point_started = time.monotonic()
             try:
-                energy, wavefunction = psi4.optimize(
-                    "wb97m-d3bj/6-31G(d,p)",
-                    molecule=psi4_molecule,
-                    return_wfn=True,
-                )
+                with point_wall_clock_limit(point_wall_seconds):
+                    energy, wavefunction = psi4.optimize(
+                        "wb97m-d3bj/6-31G(d,p)",
+                        molecule=psi4_molecule,
+                        return_wfn=True,
+                    )
                 optimized = wavefunction.molecule()
                 coordinates = (
                     np.asarray(optimized.geometry().to_array(), dtype=float)
@@ -264,6 +354,7 @@ def run_relaxed_scan(
                 )
             finally:
                 psi4.core.clean()
+            write_checkpoint(output_root, base, rows, len(plan))
         table = pd.DataFrame(rows).sort_values("requested_angle_degrees")
         successful = table["point_status"].eq("completed")
         if successful.any():
@@ -363,6 +454,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=sorted(OPTIMIZER_PROFILES),
         default="standard_v1",
     )
+    parser.add_argument(
+        "--单点墙钟秒",
+        type=int,
+        default=0,
+        help="0表示不限制；正值仅在POSIX计算节点用SIGALRM限制每个角度。",
+    )
     parser.add_argument("--发布ID", required=True)
     args = parser.parse_args(argv)
     manifest = run_relaxed_scan(
@@ -377,6 +474,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         memory_gb=args.内存GB,
         max_iterations=args.最大优化步,
         optimizer_profile=args.优化策略,
+        point_wall_seconds=args.单点墙钟秒,
         release_id=args.发布ID,
     )
     print(json.dumps(manifest, ensure_ascii=False, sort_keys=True))
