@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "blocked": 6,
+    "ready": 0,
+    "systems": 6
+  },
+  "files": {
+    "实验GoldE准入状态.csv": {
+      "bytes": 16834,
+      "sha256": "4f4eef703ac60eab2fdaa5a1fae17f396a0795decf73e21a161e73777adfec65"
+    },
+    "实验GoldE准入说明.md": {
+      "bytes": 349,
+      "sha256": "df25f1809ed0949899909d0a859234adccf7b101a33dafb2afbe9c2e20c0a2c5"
+    }
+  },
+  "inputs": {
+    "实验批次回填模板.csv": {
+      "bytes": 2638,
+      "path": "结果\\现实筛选\\实验短名单\\实验批次回填模板.csv",
+      "sha256": "c1e1fc34f944d7f1cdb1b3dca54c38e808e72589738e006d78cd536ebfa032d9"
+    },
+    "实验测量计划模板.csv": {
+      "bytes": 9985,
+      "path": "结果\\现实筛选\\实验短名单\\实验测量计划模板.csv",
+      "sha256": "8590f8589fab7ff0413cdfd7e495a395a0530c072da244e9bfd126051b3b6d0f"
+    }
+  },
+  "mandatory_measurements": [
+    "DMA_temperature_sweep",
+    "FTIR_NCO_conversion",
+    "GPC_Mn_Mw_PDI",
+    "density",
+    "tensile_full_curve"
+  ],
+  "performance_claim_status": "no_claim_before_qc",
+  "release_id": "tpu-experimental-gold-e-admission-20260825-v1",
+  "status": "experimental_gold_e_admission_blocked_missing_real_evidence"
+}
