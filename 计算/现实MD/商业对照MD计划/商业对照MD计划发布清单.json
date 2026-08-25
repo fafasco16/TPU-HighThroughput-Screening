@@ -1,0 +1,39 @@
+{
+  "counts": {
+    "aliphatic_replicas": 3,
+    "aromatic_replicas": 3,
+    "replicas": 6,
+    "systems": 2
+  },
+  "files": {
+    "商业对照MD计划.csv": {
+      "bytes": 3507,
+      "sha256": "5d3f0d376034a8a2acf10e992636f7879dafcfcda14110eaadd9e69d837269c0"
+    },
+    "商业对照MD计划说明.md": {
+      "bytes": 727,
+      "sha256": "d010a602d950899a244eb38bcbace28ad9ef8a79a83a9682c5b2c327935e3c57"
+    }
+  },
+  "inputs": {
+    "低聚链化学图.csv.gz": {
+      "bytes": 1596,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链化学图.csv.gz",
+      "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+    },
+    "实验短名单6.csv": {
+      "bytes": 5064,
+      "path": "E:\\数据\\TPU\\结果\\现实筛选\\实验短名单\\实验短名单6.csv",
+      "sha256": "0fffd724c2ccb392dc5c3a4135d5743f4cb286ea48034e81e2e8148facf2b60c"
+    },
+    "生产参数门.json": {
+      "bytes": 8306,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\参数验证\\生产参数门.json",
+      "sha256": "05f4e4b171546674ac5435da7e0f0e0c9f5ac39121a0d45ba614e49f07637779"
+    }
+  },
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked",
+  "release_id": "tpu-reality-md-commercial-controls-preregistered-20260825-v1",
+  "status": "commercial_control_md_preregistered_execution_blocked"
+}
