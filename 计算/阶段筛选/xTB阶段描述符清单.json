@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "components": 83,
+    "conformers": 30647,
+    "failures": 0
+  },
+  "ensemble_status_counts": {
+    "complete": 83
+  },
+  "outputs": {
+    "xTB失败与阻断清单.csv": {
+      "bytes": 127,
+      "sha256": "4bd4adbd126325624b97bd5e27d63f81892d16406a386fd837dae3556bd816af"
+    },
+    "xTB构件级系综描述符.csv": {
+      "bytes": 88294,
+      "sha256": "1b2210cdbd778b27467b269a77c4496ba72418b86cf57ce1f9721ff92062ec83"
+    },
+    "xTB构象级描述符.csv.gz": {
+      "bytes": 13376344,
+      "sha256": "d75630d1e2518a7c1ee52bb2ee08f28a7199ea53b8d7708fbf8bd3ff2c627bdd"
+    }
+  },
+  "parent_release_id": "xtb-stage82-descriptors-20260824-v1",
+  "release_gate": "stage_only_not_final_one_crest_task_running_job_8519",
+  "release_id": "xtb-stage83-descriptors-20260825-v1",
+  "scope": "83个严格完成CREST构件的阶段性描述符；任务84续算中，非84构件最终发布",
+  "source_evidence": {
+    "crest_output_sha256": "20ceb5e1dd21d8ec1a34225c7bbf0b1844f31229cc1467f283f23e3114eff4e84",
+    "slurm_job_id": "8307",
+    "source_task_index": 75,
+    "xtb_binary_sha256": "debf27a9e0fa4bfb5ca75aafe4b90d8211f08ec2f4a482f375a4987212eaa12a",
+    "xtb_version": "6.7.1"
+  },
+  "supplement_release_id": "xtb-stage83-supplement75-20260825-v1"
+}
