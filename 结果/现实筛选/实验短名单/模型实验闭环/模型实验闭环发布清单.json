@@ -1,0 +1,39 @@
+{
+  "automatic_retraining_permission": "blocked_requires_reviewed_calibration_analysis",
+  "calibration_tasks": [
+    "FTIR_NCO_conversion",
+    "GPC_Mn_Mw_PDI",
+    "DMA_temperature_sweep",
+    "tensile_full_curve",
+    "density"
+  ],
+  "counts": {
+    "blocked": 30,
+    "ready_residuals": 0,
+    "rows": 30
+  },
+  "files": {
+    "模型实验闭环模板.csv": {
+      "bytes": 8297,
+      "sha256": "d7977c76d15b847425019bd9e63da66772e477016834a39ff41bacf51835a8e8"
+    },
+    "模型实验闭环说明.md": {
+      "bytes": 337,
+      "sha256": "53402615a630f83ac2165d4b72960ca4422c2b739726fe2e502a6585e923295e"
+    }
+  },
+  "inputs": {
+    "实验GoldE准入状态.csv": {
+      "bytes": 17224,
+      "path": "结果\\现实筛选\\实验短名单\\GoldE准入\\实验GoldE准入状态.csv",
+      "sha256": "4657920d75ad0c25440f55d8085523fb768e386530141c615dd1d94ef754523b"
+    },
+    "实验短名单6.csv": {
+      "bytes": 5064,
+      "path": "结果\\现实筛选\\实验短名单\\实验短名单6.csv",
+      "sha256": "0fffd724c2ccb392dc5c3a4135d5743f4cb286ea48034e81e2e8148facf2b60c"
+    }
+  },
+  "release_id": "tpu-model-experiment-loop-20260825-v1",
+  "status": "model_experiment_loop_blocked_no_real_gold_e_pairs"
+}
