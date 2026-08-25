@@ -266,6 +266,10 @@ def decide_forcefield_parameter_status(runtime: dict[str, Any]) -> str:
     if external_status == "external_fragment_validation_failed":
         return "failed_external_fragment_torsion_validation"
     if external_status == (
+        "external_fragment_validation_partial_family_passed_other_family_pending"
+    ):
+        return "candidate_external_partial_other_family_pending"
+    if external_status == (
         "external_fragment_validation_passed_full_chain_validation_pending"
     ):
         return "candidate_external_pass_full_chain_and_condensed_phase_pending"
@@ -305,6 +309,14 @@ def build_forcefield_note(runtime: dict[str, Any]) -> str:
         return (
             "低阶家族候选未通过预声明的独立取代片段六角度DFT/MM门；"
             "不得提高四点训练阶数规避失败，生产力场继续阻断。"
+        )
+    if external.get("status") == (
+        "external_fragment_validation_partial_family_passed_other_family_pending"
+    ):
+        counts = external.get("counts") or {}
+        return (
+            f"外部片段已评估{counts.get('families_evaluated', 0)}/2个家族且当前通过；"
+            "另一家族未闭合，partial结果不放行生产力场。"
         )
     if external.get("status") == (
         "external_fragment_validation_passed_full_chain_validation_pending"

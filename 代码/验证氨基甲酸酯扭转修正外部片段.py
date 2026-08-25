@@ -184,8 +184,8 @@ def write_release(
     *,
     release_id: str,
 ) -> dict[str, Any]:
-    if len(dft_paths) != 2 or len(mm_paths) != 2:
-        raise ValueError("外部扭转验证必须包含两个DFT目录和两个MM目录")
+    if len(dft_paths) not in {1, 2} or len(mm_paths) != len(dft_paths):
+        raise ValueError("外部扭转验证必须包含一至两个、且DFT/MM数量相等的家族目录")
     for path in [*dft_paths, *mm_paths, coefficient_path]:
         if not path.exists():
             raise ValueError(f"外部扭转验证输入不存在: {path}")
@@ -220,6 +220,8 @@ def write_release(
         pd.read_csv(coefficient_path),
     )
     all_pass = bool(metrics["external_validation_pass"].all())
+    evaluated_family_count = int(metrics["validation_family"].nunique())
+    complete_family_coverage = evaluated_family_count == 2
     output_root.mkdir(parents=True, exist_ok=True)
     evaluated_out = output_root / "外部片段逐角评估.csv"
     metrics_out = output_root / "外部片段验证指标.csv"
@@ -239,6 +241,8 @@ def write_release(
                 "",
                 (
                     "两个家族均通过外部片段门；下一步仍是完整低聚链映射和凝聚相商业对照验证。"
+                    if all_pass and complete_family_coverage
+                    else "当前已评估家族通过，但另一家族仍待完成；partial结果不放行生产力场。"
                     if all_pass
                     else "至少一个家族未通过外部片段门；不得把候选系数写入生产力场，也不得通过提高四点训练阶数规避失败。"
                 ),
@@ -251,12 +255,16 @@ def write_release(
         "release_id": release_id,
         "status": (
             "external_fragment_validation_passed_full_chain_validation_pending"
+            if all_pass and complete_family_coverage
+            else "external_fragment_validation_partial_family_passed_other_family_pending"
             if all_pass
             else "external_fragment_validation_failed"
         ),
         "counts": {
             "fragments": metrics["fragment_name"].nunique(),
             "points": len(evaluated),
+            "families_evaluated": evaluated_family_count,
+            "families_planned": 2,
             "families_passed": int(metrics["external_validation_pass"].sum()),
         },
         "thresholds": {
@@ -277,6 +285,8 @@ def write_release(
         },
         "production_md_permission": (
             "blocked_full_chain_mapping_and_condensed_phase_control_validation"
+            if all_pass and complete_family_coverage
+            else "blocked_other_external_family_pending"
             if all_pass
             else "blocked_external_fragment_validation_failed"
         ),
@@ -305,7 +315,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         release_id=args.发布ID,
     )
     print(json.dumps(manifest, ensure_ascii=False, sort_keys=True))
-    return 0 if manifest["status"].startswith("external_fragment_validation_passed") else 1
+    return 0 if (
+        manifest["status"].startswith("external_fragment_validation_passed")
+        or manifest["status"].startswith("external_fragment_validation_partial")
+    ) else 1
 
 
 if __name__ == "__main__":

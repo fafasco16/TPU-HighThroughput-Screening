@@ -74,3 +74,14 @@ def test_blocked_dft_point_fails_closed() -> None:
     dft.loc[0, "point_status"] = "failed"
     with pytest.raises(ValueError, match="全部完成"):
         MODULE.validate_and_score(dft, mm, coefficients)
+
+
+def test_single_family_surface_can_be_scored_without_claiming_other_family() -> None:
+    dft, mm, coefficients = _surfaces()
+    dft = dft.query("validation_family == 'aliphatic_urethane'")
+    mm = mm.query("validation_family == 'aliphatic_urethane'")
+    coefficients = coefficients.query("validation_family == 'aliphatic_urethane'")
+    evaluated, metrics = MODULE.validate_and_score(dft, mm, coefficients)
+    assert len(evaluated) == 6
+    assert len(metrics) == 1
+    assert metrics.iloc[0]["external_validation_pass"]

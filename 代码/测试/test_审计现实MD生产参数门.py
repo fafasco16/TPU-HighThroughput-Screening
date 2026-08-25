@@ -117,3 +117,16 @@ def test_external_validation_failure_has_priority() -> None:
         "failed_external_fragment_torsion_validation"
     )
     assert "不得提高" in MODULE.build_forcefield_note(runtime)
+
+
+def test_external_partial_pass_does_not_release_forcefield() -> None:
+    runtime = {
+        "urethane_external_torsion_validation": {
+            "status": "external_fragment_validation_partial_family_passed_other_family_pending",
+            "counts": {"families_evaluated": 1},
+        }
+    }
+    assert MODULE.decide_forcefield_parameter_status(runtime) == (
+        "candidate_external_partial_other_family_pending"
+    )
+    assert "1/2" in MODULE.build_forcefield_note(runtime)
