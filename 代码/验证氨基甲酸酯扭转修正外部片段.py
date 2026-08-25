@@ -17,6 +17,25 @@ EXPECTED_ANGLES = {-180, -120, -60, 0, 60, 120}
 KEYS = ["fragment_name", "validation_family", "requested_angle_degrees"]
 
 
+def verify_manifest_files(directory: Path, manifest: dict[str, Any]) -> None:
+    files = manifest.get("files")
+    if not isinstance(files, dict) or not files:
+        raise ValueError(f"外部扭转验证清单缺文件表: {directory}")
+    root = directory.resolve()
+    for name, record in files.items():
+        path = (root / str(name)).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError as exc:
+            raise ValueError(f"外部扭转验证文件越界: {name}") from exc
+        if (
+            not path.is_file()
+            or path.stat().st_size != int(record["bytes"])
+            or sha256(path) != record["sha256"]
+        ):
+            raise ValueError(f"外部扭转验证文件哈希不闭合: {path}")
+
+
 def _atomic_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
@@ -198,6 +217,7 @@ def write_release(
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest.get("status") != "completed_constrained_relaxed_dft_points":
             raise ValueError(f"外部DFT未完成: {directory}")
+        verify_manifest_files(directory, manifest)
         dft_tables.append(pd.read_csv(table_path))
         input_records[str(directory)] = {
             "manifest_sha256": sha256(manifest_path),
@@ -209,6 +229,7 @@ def write_release(
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest.get("status") != "completed_mm_constrained_relaxed_points":
             raise ValueError(f"外部MM未完成: {directory}")
+        verify_manifest_files(directory, manifest)
         mm_tables.append(pd.read_csv(table_path))
         input_records[str(directory)] = {
             "manifest_sha256": sha256(manifest_path),

@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
+import hashlib
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "验证氨基甲酸酯扭转修正外部片段.py"
@@ -85,3 +86,20 @@ def test_single_family_surface_can_be_scored_without_claiming_other_family() -> 
     assert len(evaluated) == 6
     assert len(metrics) == 1
     assert metrics.iloc[0]["external_validation_pass"]
+
+
+def test_manifest_file_verification_checks_size_and_hash(tmp_path: Path) -> None:
+    payload = tmp_path / "result.csv"
+    payload.write_bytes(b"ok")
+    manifest = {
+        "files": {
+            payload.name: {
+                "bytes": 2,
+                "sha256": hashlib.sha256(b"ok").hexdigest(),
+            }
+        }
+    }
+    MODULE.verify_manifest_files(tmp_path, manifest)
+    payload.write_bytes(b"changed")
+    with pytest.raises(ValueError, match="哈希不闭合"):
+        MODULE.verify_manifest_files(tmp_path, manifest)
