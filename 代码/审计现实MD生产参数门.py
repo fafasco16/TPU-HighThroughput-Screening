@@ -259,6 +259,99 @@ def probe_radonpy_charge_runtime() -> dict[str, Any]:
     return result
 
 
+def decide_forcefield_parameter_status(runtime: dict[str, Any]) -> str:
+    external_status = runtime.get("urethane_external_torsion_validation", {}).get(
+        "status"
+    )
+    if external_status == "external_fragment_validation_failed":
+        return "failed_external_fragment_torsion_validation"
+    if external_status == (
+        "external_fragment_validation_passed_full_chain_validation_pending"
+    ):
+        return "candidate_external_pass_full_chain_and_condensed_phase_pending"
+    mapping_status = runtime.get(
+        "urethane_torsion_candidate_chain_mapping", {}
+    ).get("status")
+    if mapping_status == (
+        "twelve_chain_torsion_candidate_mapping_completed_external_validation_pending"
+    ):
+        return "candidate_mapped_to_twelve_chains_external_validation_pending"
+    fit_status = runtime.get("urethane_relaxed_torsion_candidate_fit", {}).get(
+        "status"
+    )
+    if fit_status == (
+        "relaxed_low_order_family_fit_completed_external_validation_pending"
+    ):
+        return "candidate_relaxed_torsion_fit_external_validation_pending"
+    comparison_status = runtime.get(
+        "urethane_dft_mm_relaxed_comparison", {}
+    ).get("status")
+    if comparison_status == "relaxed_dft_mm_comparison_completed_refit_candidate":
+        return "candidate_relaxed_refit_external_validation_pending"
+    if comparison_status == (
+        "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
+    ):
+        return "failed_relaxed_scan_incomplete_parameter_refit_blocked"
+    if runtime.get("urethane_rigid_scan", {}).get("status") == (
+        "rigid_scan_completed_aromatic_forcefield_validation_failed"
+    ):
+        return "failed_aromatic_urethane_rigid_scan_parameter_refit_required"
+    return "blocked_repeating_urethane_ns_substitution"
+
+
+def build_forcefield_note(runtime: dict[str, Any]) -> str:
+    external = runtime.get("urethane_external_torsion_validation", {})
+    if external.get("status") == "external_fragment_validation_failed":
+        return (
+            "低阶家族候选未通过预声明的独立取代片段六角度DFT/MM门；"
+            "不得提高四点训练阶数规避失败，生产力场继续阻断。"
+        )
+    if external.get("status") == (
+        "external_fragment_validation_passed_full_chain_validation_pending"
+    ):
+        return (
+            "低阶家族候选已通过独立取代片段六角度DFT/MM门，但完整链参数写入、"
+            "电荷和凝聚相商业对照尚未闭合，生产MD继续阻断。"
+        )
+    mapping = runtime.get("urethane_torsion_candidate_chain_mapping", {})
+    if mapping.get("status"):
+        counts = mapping.get("counts") or {}
+        return (
+            "8/8个训练角均已完成并形成低阶家族候选；候选已映射到"
+            f"{counts.get('formulations', 0)}条现实链的"
+            f"{counts.get('urethane_torsion_instances', 0)}个氨基甲酸酯扭转，"
+            "但映射只作审计，未修改力场。独立片段与凝聚相验证前继续阻断。"
+        )
+    fit = runtime.get("urethane_relaxed_torsion_candidate_fit", {})
+    if fit.get("status"):
+        return (
+            "冻结二面角DFT/MM松弛8/8点已闭合并形成一至二阶家族候选；"
+            "候选尚未完成现实链映射和独立片段验证，生产力场继续阻断。"
+        )
+    comparison = runtime.get("urethane_dft_mm_relaxed_comparison", {})
+    if comparison.get("status") == "relaxed_dft_mm_comparison_completed_refit_candidate":
+        return (
+            "冻结二面角DFT/MM松弛8/8点均可比较；最大相对能差为"
+            f"{comparison.get('maximum_absolute_relaxed_energy_error_kcal_mol'):.3f} kcal/mol。"
+            "当前只放行低阶候选拟合，不放行生产力场。"
+        )
+    if comparison.get("status"):
+        counts = comparison.get("counts") or {}
+        return (
+            f"冻结二面角DFT/MM松弛计划仍有{counts.get('blocked_points', 0)}个阻断点；"
+            "收敛覆盖不足，生产力场继续阻断。"
+        )
+    if runtime.get("urethane_rigid_scan", {}).get("status"):
+        return (
+            "刚性扭转扫描已发现芳香族GAFF2曲线显著失配；冻结二面角松弛"
+            "和参数重拟合未闭合，生产力场继续阻断。"
+        )
+    return (
+        "当前仅确认GAFF2替代参数随氨基甲酸酯键数累积；量化势能验证"
+        "未闭合，生产力场继续阻断。"
+    )
+
+
 def write_release(
     audit_path: Path,
     plan_path: Path,
@@ -275,6 +368,9 @@ def write_release(
     hybrid_charge_path: Path | None = None,
     dft_relaxed_path: Path | None = None,
     dft_mm_relaxed_comparison_path: Path | None = None,
+    relaxed_torsion_fit_path: Path | None = None,
+    torsion_chain_mapping_path: Path | None = None,
+    external_torsion_validation_path: Path | None = None,
 ) -> dict[str, Any]:
     required_paths = [audit_path, plan_path, environment_manifest_path]
     optional_paths = [
@@ -289,6 +385,9 @@ def write_release(
             hybrid_charge_path,
             dft_relaxed_path,
             dft_mm_relaxed_comparison_path,
+            relaxed_torsion_fit_path,
+            torsion_chain_mapping_path,
+            external_torsion_validation_path,
         )
         if path is not None
     ]
@@ -440,6 +539,40 @@ def write_release(
             "path": str(dft_mm_relaxed_comparison_path),
             "sha256": sha256(dft_mm_relaxed_comparison_path),
         }
+    if relaxed_torsion_fit_path is not None:
+        fit = json.loads(relaxed_torsion_fit_path.read_text(encoding="utf-8"))
+        runtime["urethane_relaxed_torsion_candidate_fit"] = {
+            "status": fit.get("status"),
+            "counts": fit.get("counts"),
+            "maximum_allowed_order": fit.get("maximum_allowed_order"),
+            "production_md_permission": fit.get("production_md_permission"),
+            "path": str(relaxed_torsion_fit_path),
+            "sha256": sha256(relaxed_torsion_fit_path),
+        }
+    if torsion_chain_mapping_path is not None:
+        mapping = json.loads(
+            torsion_chain_mapping_path.read_text(encoding="utf-8")
+        )
+        runtime["urethane_torsion_candidate_chain_mapping"] = {
+            "status": mapping.get("status"),
+            "counts": mapping.get("counts"),
+            "mapping_scope": mapping.get("mapping_scope"),
+            "production_md_permission": mapping.get("production_md_permission"),
+            "path": str(torsion_chain_mapping_path),
+            "sha256": sha256(torsion_chain_mapping_path),
+        }
+    if external_torsion_validation_path is not None:
+        external = json.loads(
+            external_torsion_validation_path.read_text(encoding="utf-8")
+        )
+        runtime["urethane_external_torsion_validation"] = {
+            "status": external.get("status"),
+            "counts": external.get("counts"),
+            "thresholds": external.get("thresholds"),
+            "production_md_permission": external.get("production_md_permission"),
+            "path": str(external_torsion_validation_path),
+            "sha256": sha256(external_torsion_validation_path),
+        }
     if (
         runtime.get("native_resp_smoke", {}).get("status")
         == "completed_native_two_stage_resp_smoke"
@@ -484,18 +617,7 @@ def write_release(
         "release_id": release_id,
         "status": "production_md_blocked_parameter_and_charge_validation",
         "forcefield_parameter_gate": {
-            "status": (
-                "failed_relaxed_scan_incomplete_parameter_refit_blocked"
-                if runtime.get("urethane_dft_mm_relaxed_comparison", {}).get(
-                    "status"
-                )
-                == "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
-                else
-                "failed_aromatic_urethane_rigid_scan_parameter_refit_required"
-                if runtime.get("urethane_rigid_scan", {}).get("status")
-                == "rigid_scan_completed_aromatic_forcefield_validation_failed"
-                else "blocked_repeating_urethane_ns_substitution"
-            ),
+            "status": decide_forcefield_parameter_status(runtime),
             **summary,
         },
         "charge_gate": runtime,
@@ -546,24 +668,7 @@ def write_release(
             "再以`HF/6-31G(d)`拟合RESP。当前固定环境的Psi4/RESP或兼容"
             "包装未完成实算验证，不能把Gasteiger电荷升级命名为生产电荷。"
         )
-    if runtime.get("urethane_dft_mm_relaxed_comparison", {}).get("status"):
-        comparison = runtime["urethane_dft_mm_relaxed_comparison"]
-        forcefield_note = (
-            "冻结二面角DFT–MM松弛计划8点中仅5点可比较、3点DFT未收敛；"
-            f"成功点最大相对能差为{comparison.get('maximum_absolute_relaxed_energy_error_kcal_mol'):.3f} kcal/mol，"
-            "所有非零可比较点均为GAFF2高于DFT。收敛角不足以拟合完整周期，"
-            "芳香/脂肪P0参数继续阻断。"
-        )
-    elif runtime.get("urethane_rigid_scan", {}).get("status"):
-        forcefield_note = (
-            "刚性扭转扫描已发现芳香族GAFF2曲线显著失配；冻结二面角松弛"
-            "和参数重拟合未闭合，生产力场继续阻断。"
-        )
-    else:
-        forcefield_note = (
-            "当前仅确认GAFF2替代参数随氨基甲酸酯键数累积；量化势能验证"
-            "未闭合，生产力场继续阻断。"
-        )
+    forcefield_note = build_forcefield_note(runtime)
     _atomic_text(
         report_path,
         "\n".join(
@@ -645,6 +750,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--混合电荷诊断清单", type=Path)
     parser.add_argument("--DFT松弛清单", type=Path)
     parser.add_argument("--DFT_MM松弛比较清单", type=Path)
+    parser.add_argument("--松弛扭转拟合清单", type=Path)
+    parser.add_argument("--现实链扭转映射清单", type=Path)
+    parser.add_argument("--外部扭转验证清单", type=Path)
     parser.add_argument(
         "--发布ID", default="tpu-reality-md-production-parameter-gate-20260825-v1"
     )
@@ -664,6 +772,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         hybrid_charge_path=args.混合电荷诊断清单,
         dft_relaxed_path=args.DFT松弛清单,
         dft_mm_relaxed_comparison_path=args.DFT_MM松弛比较清单,
+        relaxed_torsion_fit_path=args.松弛扭转拟合清单,
+        torsion_chain_mapping_path=args.现实链扭转映射清单,
+        external_torsion_validation_path=args.外部扭转验证清单,
     )
     print(json.dumps(manifest["counts"], ensure_ascii=False, sort_keys=True))
     return 0

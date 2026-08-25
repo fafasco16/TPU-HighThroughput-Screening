@@ -77,3 +77,43 @@ def test_analysis_counts_and_correlation() -> None:
     assert len(formulations) == 2
     assert summary["unique_substitution_count"] == 2
     assert summary["urethane_bond_vs_substitution_event_pearson_r"] == pytest.approx(1.0)
+
+
+def test_forcefield_gate_tracks_chain_mapping_without_releasing_md() -> None:
+    runtime = {
+        "urethane_dft_mm_relaxed_comparison": {
+            "status": "relaxed_dft_mm_comparison_completed_refit_candidate",
+            "maximum_absolute_relaxed_energy_error_kcal_mol": 12.22,
+        },
+        "urethane_relaxed_torsion_candidate_fit": {
+            "status": "relaxed_low_order_family_fit_completed_external_validation_pending"
+        },
+        "urethane_torsion_candidate_chain_mapping": {
+            "status": "twelve_chain_torsion_candidate_mapping_completed_external_validation_pending",
+            "counts": {
+                "formulations": 12,
+                "urethane_torsion_instances": 134,
+            },
+        },
+    }
+    assert MODULE.decide_forcefield_parameter_status(runtime) == (
+        "candidate_mapped_to_twelve_chains_external_validation_pending"
+    )
+    note = MODULE.build_forcefield_note(runtime)
+    assert "12条现实链" in note
+    assert "134个" in note
+
+
+def test_external_validation_failure_has_priority() -> None:
+    runtime = {
+        "urethane_external_torsion_validation": {
+            "status": "external_fragment_validation_failed"
+        },
+        "urethane_torsion_candidate_chain_mapping": {
+            "status": "twelve_chain_torsion_candidate_mapping_completed_external_validation_pending"
+        },
+    }
+    assert MODULE.decide_forcefield_parameter_status(runtime) == (
+        "failed_external_fragment_torsion_validation"
+    )
+    assert "不得提高" in MODULE.build_forcefield_note(runtime)

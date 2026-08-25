@@ -1,0 +1,50 @@
+{
+  "counts": {
+    "aliphatic_urethane_instances": 77,
+    "aromatic_urethane_instances": 57,
+    "coefficient_term_assignments": 211,
+    "formulations": 12,
+    "urethane_torsion_instances": 134
+  },
+  "files": {
+    "现实链扭转候选映射.csv.gz": {
+      "bytes": 2904,
+      "sha256": "a549324208b261eb9f00b0ecf90b2f33633906866cc7753dd2fde3174dc54aa9"
+    },
+    "现实链扭转候选映射说明.md": {
+      "bytes": 475,
+      "sha256": "fba30fe26333994e84dde1eba9beade014da6fc3eb006ed3d9d4652602878984"
+    },
+    "现实链扭转候选逐配方.csv": {
+      "bytes": 2226,
+      "sha256": "04161f1a179ab7c06f3d433f62168a20da45ac46f058ef65aa98620d705dac56"
+    }
+  },
+  "inputs": {
+    "RESP核心转移逐配方.csv": {
+      "bytes": 3336,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\RESP核心转移\\RESP核心转移逐配方.csv",
+      "sha256": "b8b010d9e424a5a7c1060312a97ef702ee9323b73bba51ec39ea61cc8018d407"
+    },
+    "低聚链化学图.csv.gz": {
+      "bytes": 1596,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链化学图.csv.gz",
+      "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+    },
+    "低聚链计量计划.csv": {
+      "bytes": 6984,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链计量计划.csv",
+      "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
+    },
+    "松弛扭转修正候选系数.csv": {
+      "bytes": 403,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\氨基甲酸酯松弛扭转修正\\松弛扭转修正候选系数.csv",
+      "sha256": "057a5ebda9333057ca80b0e8c1f90fa9709079938eac27b349c3ee437c0fa5e2"
+    }
+  },
+  "mapping_scope": "candidate_only_not_written_to_forcefield",
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_external_and_condensed_phase_validation",
+  "release_id": "tpu-reality-md-chain-torsion-candidate-mapping-20260825-v1",
+  "status": "twelve_chain_torsion_candidate_mapping_completed_external_validation_pending"
+}

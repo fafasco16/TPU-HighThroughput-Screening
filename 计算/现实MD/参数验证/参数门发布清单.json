@@ -17,85 +17,95 @@
   },
   "files": {
     "GAFF2替代参数逐类型.csv": {
-      "bytes": 9829,
-      "sha256": "83a9d12fb62ff7cdd67a6d6a552f43eb364c7a2b80ea24c7f6355664cc834406"
+      "bytes": 9900,
+      "sha256": "ab76c44a63da49d7cdff1a21365da22fa4f8467b0beaa866e9fa36d561a75bff"
     },
     "GAFF2替代参数逐配方.csv": {
-      "bytes": 2233,
-      "sha256": "240d1354406f857ad8875ed9604f294e7ec411ff9a023c661ed9273f32d54c3a"
+      "bytes": 2246,
+      "sha256": "22d6f7797b776aa96b6c986496eff20634df11a612296d87329d81d2f8a3d98f"
     },
     "生产参数门.json": {
-      "bytes": 7911,
-      "sha256": "e27d18c69d9a2bcdc1d0ca66e92faa85de183418c2eb2db0882d26100cf52177"
+      "bytes": 8306,
+      "sha256": "05f4e4b171546674ac5435da7e0f0e0c9f5ac39121a0d45ba614e49f07637779"
     },
     "生产参数门说明.md": {
-      "bytes": 1310,
-      "sha256": "98c08cc4f95f8dc0ff428d942ba739345d0ca245923561a1840e226115a16578"
+      "bytes": 1273,
+      "sha256": "7c3ad172dd24b31a6de4b5a25c8b4b19d5100d85ba0d803c44858f9a1704248f"
     }
   },
   "inputs": {
     "DFT_MM松弛比较发布清单.json": {
-      "bytes": 1535,
-      "path": "参数门输入/DFT_MM松弛比较发布清单.json",
-      "sha256": "a925a4e68b47250b6ea0478b25583538e40281ec05a81357b842cbf926789681"
+      "bytes": 1479,
+      "path": "计算\\现实MD\\氨基甲酸酯松弛比较\\DFT_MM松弛比较发布清单.json",
+      "sha256": "a92f47f980e8b9187b06082be40f57d7336d34ffbaede72c72463ec536547251"
     },
     "GAFF2参数覆盖审计.csv": {
       "bytes": 39398,
-      "path": "参数门输入/GAFF2参数覆盖审计.csv",
+      "path": "计算\\现实MD\\GAFF2审计\\GAFF2参数覆盖审计.csv",
       "sha256": "97e6e4dc18c62522a8f1a97cb3960b60b01314001918457b1f04d4814d3746fd"
     },
     "RESP敏感性发布清单.json": {
       "bytes": 2659,
-      "path": "计算/现实MD/RESP敏感性/RESP敏感性发布清单.json",
+      "path": "计算\\现实MD\\RESP敏感性\\RESP敏感性发布清单.json",
       "sha256": "c164534c02e75ad89b667a0296870bdafe39c482cec3736589134bd442ddbc5d"
     },
     "RESP核心转移发布清单.json": {
       "bytes": 1966,
-      "path": "计算/现实MD/RESP核心转移/RESP核心转移发布清单.json",
+      "path": "计算\\现实MD\\RESP核心转移\\RESP核心转移发布清单.json",
       "sha256": "e561645392278f5f6ec39848d0bd01478806695a2546ec7e71b6cc8c22207b39"
     },
     "RESP烟雾清单.json": {
       "bytes": 2447,
-      "path": "计算/现实MD/RESP烟雾_小片段_尝试5/RESP烟雾清单.json",
+      "path": "计算\\现实MD\\RESP烟雾_小片段_尝试5\\RESP烟雾清单.json",
       "sha256": "ea252b327f722b3902b75a4a5821c0adad586a32cf34f517eac3e623207a953a"
     },
     "RadonPy_RESP失败审计.json": {
       "bytes": 2362,
-      "path": "计算/现实MD/RESP环境/RadonPy_RESP失败审计.json",
+      "path": "计算\\现实MD\\RESP环境\\RadonPy_RESP失败审计.json",
       "sha256": "35254c585372c1df9c0eb61b7b77e06e48d27916e68a484a5caff0fb24f7313a"
     },
     "RadonPy环境清单.json": {
       "bytes": 1139,
-      "path": "参数门输入/RadonPy环境清单.json",
+      "path": "计算\\现实MD\\环境\\RadonPy环境清单.json",
       "sha256": "9894df8e7431feb58f7925a13874ad07f71aabffd6a2d80d63bf2148f315144c"
     },
     "低聚链计量计划.csv": {
       "bytes": 6984,
-      "path": "参数门输入/低聚链计量计划.csv",
+      "path": "计算\\现实MD\\低聚链计量计划.csv",
       "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
     },
     "刚性扫描发布清单.json": {
       "bytes": 2266,
-      "path": "计算/现实MD/氨基甲酸酯刚性扫描/刚性扫描发布清单.json",
+      "path": "计算\\现实MD\\氨基甲酸酯刚性扫描\\刚性扫描发布清单.json",
       "sha256": "324d23098e140b13cf743f98951156f0b32c364b5f2be2170dd0fcc6270d696f"
     },
     "受约束松弛发布清单.json": {
-      "bytes": 2349,
-      "path": "计算/现实MD/氨基甲酸酯DFT约束松弛/受约束松弛发布清单.json",
-      "sha256": "6ebdbbaf1ad8ea9aec52783bd9a907c0ec2b14e5ee427f1b8297626e0f2b47c6"
+      "bytes": 3567,
+      "path": "计算\\现实MD\\氨基甲酸酯DFT约束松弛\\受约束松弛发布清单.json",
+      "sha256": "210c016719c9fb263ce72827a4cc220e94d20152656883fb23089d8744392d7b"
+    },
+    "松弛扭转修正发布清单.json": {
+      "bytes": 1467,
+      "path": "计算\\现实MD\\氨基甲酸酯松弛扭转修正\\松弛扭转修正发布清单.json",
+      "sha256": "b067b17f99f134b12870bbac6bb2397a60ddfca0c5d226f4918f7220e8b20d87"
     },
     "混合诊断电荷发布清单.json": {
       "bytes": 1893,
-      "path": "参数门输入/混合诊断电荷发布清单.json",
+      "path": "计算\\现实MD\\混合电荷诊断\\混合诊断电荷发布清单.json",
       "sha256": "14a2e4e032a512149755679eda04e69aae223ddc07f81f89412ca0484a885f9a"
+    },
+    "现实链扭转候选映射发布清单.json": {
+      "bytes": 2047,
+      "path": "计算\\现实MD\\现实链扭转候选映射\\现实链扭转候选映射发布清单.json",
+      "sha256": "6fbe3b1abf6ba8345d428e03f92ee0b138569fd68d5ca4f5b1c1c3ca4f822acb"
     },
     "联合RESP发布清单.json": {
       "bytes": 3116,
-      "path": "计算/现实MD/RESP联合验证/联合RESP发布清单.json",
+      "path": "计算\\现实MD\\RESP联合验证\\联合RESP发布清单.json",
       "sha256": "7250afea86cb219ad73a2103b8fcf52a2397aff1a7be6f49bdd9fa004575b959"
     }
   },
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v9",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v2",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }
