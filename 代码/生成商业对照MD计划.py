@@ -153,8 +153,26 @@ def write_release(
     )
     output_root.mkdir(parents=True, exist_ok=True)
     plan_out = output_root / "商业对照MD计划.csv"
+    trajectory_template_out = output_root / "商业对照MD轨迹模板.csv"
     report_out = output_root / "商业对照MD计划说明.md"
     _atomic_text(plan_out, plan.to_csv(index=False, float_format="%.12g"))
+    _atomic_text(
+        trajectory_template_out,
+        pd.DataFrame(
+            columns=[
+                "formulation_id",
+                "replica_index",
+                "time_ps",
+                "density_g_cm3",
+                "potential_energy_kcal_mol",
+                "volume_a3",
+                "radius_of_gyration_a",
+                "end_to_end_distance_a",
+                "temperature_k",
+                "pressure_atm",
+            ]
+        ).to_csv(index=False),
+    )
     _atomic_text(
         report_out,
         "\n".join(
@@ -170,7 +188,7 @@ def write_release(
             ]
         ),
     )
-    files = [plan_out, report_out]
+    files = [plan_out, trajectory_template_out, report_out]
     manifest = {
         "release_id": release_id,
         "status": "commercial_control_md_preregistered_execution_blocked",
@@ -198,6 +216,7 @@ def write_release(
         },
         "production_md_permission": "blocked",
         "performance_claim_status": "no_performance_claim",
+        "convergence_validator": "代码/验证商业对照MD收敛.py",
     }
     _atomic_text(
         output_root / "商业对照MD计划发布清单.json",

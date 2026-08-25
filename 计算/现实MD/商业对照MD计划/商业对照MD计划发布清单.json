@@ -1,4 +1,5 @@
 {
+  "convergence_validator": "代码/验证商业对照MD收敛.py",
   "counts": {
     "aliphatic_replicas": 3,
     "aromatic_replicas": 3,
@@ -13,6 +14,10 @@
     "商业对照MD计划说明.md": {
       "bytes": 727,
       "sha256": "d010a602d950899a244eb38bcbace28ad9ef8a79a83a9682c5b2c327935e3c57"
+    },
+    "商业对照MD轨迹模板.csv": {
+      "bytes": 158,
+      "sha256": "d73b399292463af528c3289639813012d34faeb7f29ac653376204371a1a9611"
     }
   },
   "inputs": {
