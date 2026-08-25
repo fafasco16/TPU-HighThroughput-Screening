@@ -1,0 +1,47 @@
+{
+  "aggregate_xyz_manifest_sha256": "7b26be5103ad40a921d9d56cdfc0f9a02d245d47fb308fe9843f3f7182fc62f7",
+  "counts": {
+    "atomic_charge_rows": 9086,
+    "fixed_resp_core_atoms": 572,
+    "formulations": 12,
+    "unmapped_atoms": 8514
+  },
+  "files": {
+    "混合诊断电荷说明.md": {
+      "bytes": 643,
+      "sha256": "bead165b75c1fd4a5dd02c92ccbf15882d5db4a54edf2ae5b85dff3be4f9f782"
+    },
+    "混合诊断电荷逐原子.csv.gz": {
+      "bytes": 49554,
+      "sha256": "f5ee28f4c4669ef3aff17fbe66b6aeffa3e5aeb96f1d771b85653c531df80f01"
+    },
+    "混合诊断电荷逐配方.csv": {
+      "bytes": 4435,
+      "sha256": "2d65b49bc6e9cc095893e5f44c015648b58691086eba3d34ab70529bbd94ec18"
+    }
+  },
+  "inputs": {
+    "RESP核心转移映射.csv.gz": {
+      "bytes": 6413,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\RESP核心转移\\RESP核心转移映射.csv.gz",
+      "sha256": "2e9fd7c69c14e935eed318d1aa6e89b04552917eb1ee4e9c5ccfdf62b06519bf"
+    },
+    "三维种子清单.csv": {
+      "bytes": 6798,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\三维种子清单.csv",
+      "sha256": "74f92a490a07b8f49a49b0e2b7453146a7e8cbdfc087ca9a76e993acbfa98d8c"
+    },
+    "低聚链化学图.csv.gz": {
+      "bytes": 1596,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链化学图.csv.gz",
+      "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+    }
+  },
+  "maximum_absolute_hybrid_total_charge_e": 6.938893903907228e-18,
+  "maximum_absolute_uniform_unmapped_correction_e": 0.00252690012602279,
+  "maximum_dipole_change_norm_debye": 71.09886481564166,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_unvalidated_unmapped_charges",
+  "release_id": "tpu-reality-md-hybrid-charge-diagnostic-20260825-v1",
+  "status": "neutral_full_chain_charge_diagnostic_completed_not_production"
+}

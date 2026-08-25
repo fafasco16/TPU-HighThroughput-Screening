@@ -272,6 +272,7 @@ def write_release(
     joint_resp_path: Path | None = None,
     resp_core_transfer_path: Path | None = None,
     rigid_scan_path: Path | None = None,
+    hybrid_charge_path: Path | None = None,
 ) -> dict[str, Any]:
     required_paths = [audit_path, plan_path, environment_manifest_path]
     optional_paths = [
@@ -283,6 +284,7 @@ def write_release(
             joint_resp_path,
             resp_core_transfer_path,
             rigid_scan_path,
+            hybrid_charge_path,
         )
         if path is not None
     ]
@@ -386,6 +388,23 @@ def write_release(
             ),
             "path": str(rigid_scan_path),
             "sha256": sha256(rigid_scan_path),
+        }
+    if hybrid_charge_path is not None:
+        hybrid = json.loads(hybrid_charge_path.read_text(encoding="utf-8"))
+        runtime["hybrid_full_chain_charge_diagnostic"] = {
+            "status": hybrid.get("status"),
+            "counts": hybrid.get("counts"),
+            "maximum_absolute_hybrid_total_charge_e": hybrid.get(
+                "maximum_absolute_hybrid_total_charge_e"
+            ),
+            "maximum_absolute_uniform_unmapped_correction_e": hybrid.get(
+                "maximum_absolute_uniform_unmapped_correction_e"
+            ),
+            "maximum_dipole_change_norm_debye": hybrid.get(
+                "maximum_dipole_change_norm_debye"
+            ),
+            "path": str(hybrid_charge_path),
+            "sha256": sha256(hybrid_charge_path),
         }
     if (
         runtime.get("native_resp_smoke", {}).get("status")
@@ -563,6 +582,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--RESP联合清单", type=Path)
     parser.add_argument("--RESP核心转移清单", type=Path)
     parser.add_argument("--刚性扫描清单", type=Path)
+    parser.add_argument("--混合电荷诊断清单", type=Path)
     parser.add_argument(
         "--发布ID", default="tpu-reality-md-production-parameter-gate-20260825-v1"
     )
@@ -579,6 +599,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         joint_resp_path=args.RESP联合清单,
         resp_core_transfer_path=args.RESP核心转移清单,
         rigid_scan_path=args.刚性扫描清单,
+        hybrid_charge_path=args.混合电荷诊断清单,
     )
     print(json.dumps(manifest["counts"], ensure_ascii=False, sort_keys=True))
     return 0
