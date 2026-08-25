@@ -1,0 +1,31 @@
+{
+  "counts": {
+    "measurement_families": 8,
+    "measurement_task_rows": 48,
+    "planned_formulations": 6
+  },
+  "experiment_authorization": "not_granted_by_template",
+  "files": {
+    "实验回填字段说明.md": {
+      "bytes": 876,
+      "sha256": "0684dc3a887070e01aaf9b6238db9925e536384eaa8de07e65d8ddfdd8e7b175"
+    },
+    "实验批次回填模板.csv": {
+      "bytes": 2638,
+      "sha256": "c1e1fc34f944d7f1cdb1b3dca54c38e808e72589738e006d78cd536ebfa032d9"
+    },
+    "实验测量计划模板.csv": {
+      "bytes": 9985,
+      "sha256": "8590f8589fab7ff0413cdfd7e495a395a0530c072da244e9bfd126051b3b6d0f"
+    }
+  },
+  "gold_e_ingestion_status": "blocked_until_real_batches_and_qc",
+  "input": {
+    "bytes": 5064,
+    "path": "E:\\数据\\TPU\\结果\\现实筛选\\实验短名单\\实验短名单6.csv",
+    "sha256": "0fffd724c2ccb392dc5c3a4135d5743f4cb286ea48034e81e2e8148facf2b60c"
+  },
+  "performance_claim_status": "no_performance_claim",
+  "release_id": "tpu-reality-experiment-capture-template-20260825-v1",
+  "status": "empty_experiment_capture_templates_ready_no_experiment_authorization"
+}
