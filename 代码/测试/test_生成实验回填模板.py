@@ -36,6 +36,7 @@ def test_batch_template_has_six_empty_real_batch_ids() -> None:
     table = MODULE.build_batch_template(_shortlist())
     assert len(table) == 6
     assert table["batch_id"].eq("").all()
+    assert table["macrodiol_coa_path"].eq("").all()
     assert table["gold_e_ingestion_status"].eq("not_ready_missing_real_batch").all()
 
 

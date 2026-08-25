@@ -7,12 +7,12 @@
   "experiment_authorization": "not_granted_by_template",
   "files": {
     "实验回填字段说明.md": {
-      "bytes": 876,
-      "sha256": "0684dc3a887070e01aaf9b6238db9925e536384eaa8de07e65d8ddfdd8e7b175"
+      "bytes": 1113,
+      "sha256": "68b846e8d9f1228ff9b68149fea189f58c708587ad68da8835308d328123eb38"
     },
     "实验批次回填模板.csv": {
-      "bytes": 2638,
-      "sha256": "c1e1fc34f944d7f1cdb1b3dca54c38e808e72589738e006d78cd536ebfa032d9"
+      "bytes": 2721,
+      "sha256": "8150b8caeb45950ce1736a108c80c0e492f44f91440d618453d5a26db9823719"
     },
     "实验测量计划模板.csv": {
       "bytes": 9985,

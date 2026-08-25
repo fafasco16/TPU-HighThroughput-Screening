@@ -30,6 +30,9 @@ BATCH_REQUIRED_TEXT = [
     "diisocyanate_lot",
     "macrodiol_lot",
     "chain_extender_lot",
+    "diisocyanate_coa_path",
+    "macrodiol_coa_path",
+    "chain_extender_coa_path",
     "diisocyanate_coa_sha256",
     "macrodiol_coa_sha256",
     "chain_extender_coa_sha256",
@@ -84,7 +87,33 @@ def _valid_sha(value: object) -> bool:
     return not _missing(value) and bool(SHA256_PATTERN.fullmatch(str(value).lower()))
 
 
-def audit_batch_metadata(row: dict[str, Any]) -> tuple[bool, list[str]]:
+def _evidence_issue(
+    path_value: object,
+    sha_value: object,
+    evidence_root: Path | None,
+    label: str,
+) -> str | None:
+    if evidence_root is None or _missing(path_value) or _missing(sha_value):
+        return None
+    relative = Path(str(path_value))
+    if relative.is_absolute():
+        return f"{label}:absolute_path_not_allowed"
+    root = evidence_root.resolve()
+    candidate = (root / relative).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        return f"{label}:path_outside_evidence_root"
+    if not candidate.is_file():
+        return f"{label}:file_missing"
+    if sha256(candidate) != str(sha_value).lower():
+        return f"{label}:sha256_mismatch"
+    return None
+
+
+def audit_batch_metadata(
+    row: dict[str, Any], evidence_root: Path | None = None
+) -> tuple[bool, list[str]]:
     missing = [name for name in BATCH_REQUIRED_TEXT if _missing(row.get(name))]
     for name in BATCH_REQUIRED_NUMERIC:
         value = pd.to_numeric(row.get(name), errors="coerce")
@@ -108,6 +137,15 @@ def audit_batch_metadata(row: dict[str, Any]) -> tuple[bool, list[str]]:
     ):
         if not _missing(row.get(name)) and not _valid_sha(row.get(name)):
             missing.append(f"{name}:invalid_sha256")
+    for prefix in ("diisocyanate", "macrodiol", "chain_extender"):
+        issue = _evidence_issue(
+            row.get(f"{prefix}_coa_path"),
+            row.get(f"{prefix}_coa_sha256"),
+            evidence_root,
+            f"{prefix}_coa",
+        )
+        if issue:
+            missing.append(issue)
     masses_value = row.get("actual_component_masses_g_json")
     if not _missing(masses_value):
         try:
@@ -125,11 +163,22 @@ def audit_batch_metadata(row: dict[str, Any]) -> tuple[bool, list[str]]:
     return not missing, missing
 
 
-def measurement_ready(row: dict[str, Any]) -> tuple[bool, list[str]]:
+def measurement_ready(
+    row: dict[str, Any], evidence_root: Path | None = None
+) -> tuple[bool, list[str]]:
     missing = [name for name in MEASUREMENT_REQUIRED_TEXT if _missing(row.get(name))]
     for name in ("raw_file_sha256", "processed_file_sha256"):
         if not _missing(row.get(name)) and not _valid_sha(row.get(name)):
             missing.append(f"{name}:invalid_sha256")
+    for prefix in ("raw_file", "processed_file"):
+        issue = _evidence_issue(
+            row.get(f"{prefix}_path"),
+            row.get(f"{prefix}_sha256"),
+            evidence_root,
+            prefix,
+        )
+        if issue:
+            missing.append(issue)
     if row.get("unit_status") != "verified":
         missing.append("unit_status:verified_required")
     if row.get("qc_status") != "passed":
@@ -141,7 +190,9 @@ def measurement_ready(row: dict[str, Any]) -> tuple[bool, list[str]]:
 
 
 def audit_gold_e_admission(
-    batches: pd.DataFrame, measurements: pd.DataFrame
+    batches: pd.DataFrame,
+    measurements: pd.DataFrame,
+    evidence_root: Path | None = None,
 ) -> pd.DataFrame:
     for frame, label, required in [
         (batches, "批次", {"formulation_id", *BATCH_REQUIRED_TEXT, *BATCH_REQUIRED_NUMERIC}),
@@ -157,7 +208,7 @@ def audit_gold_e_admission(
         orient="records"
     ):
         formulation_id = str(batch["formulation_id"])
-        batch_ready, batch_missing = audit_batch_metadata(batch)
+        batch_ready, batch_missing = audit_batch_metadata(batch, evidence_root)
         subset = measurements.loc[
             measurements["formulation_id"].astype(str).eq(formulation_id)
         ].copy()
@@ -167,7 +218,7 @@ def audit_gold_e_admission(
         ready_tasks = set()
         measurement_missing: dict[str, list[str]] = {}
         for measurement in subset.to_dict(orient="records"):
-            ready, missing = measurement_ready(measurement)
+            ready, missing = measurement_ready(measurement, evidence_root)
             task = str(measurement["measurement_task"])
             if ready:
                 ready_tasks.add(task)
@@ -210,12 +261,15 @@ def write_release(
     output_root: Path,
     *,
     release_id: str,
+    evidence_root: Path | None = None,
 ) -> dict[str, Any]:
     for path in (batch_path, measurement_path):
         if not path.is_file():
             raise ValueError(f"实验Gold-E准入输入不存在: {path}")
     audit = audit_gold_e_admission(
-        pd.read_csv(batch_path), pd.read_csv(measurement_path)
+        pd.read_csv(batch_path),
+        pd.read_csv(measurement_path),
+        evidence_root=evidence_root,
     )
     output_root.mkdir(parents=True, exist_ok=True)
     audit_out = output_root / "实验GoldE准入状态.csv"
@@ -256,6 +310,14 @@ def write_release(
             for path in files
         },
         "performance_claim_status": "no_claim_before_qc",
+        "evidence_file_verification": (
+            {
+                "status": "enabled",
+                "root": str(evidence_root.resolve()),
+            }
+            if evidence_root is not None
+            else {"status": "not_requested"}
+        ),
     }
     _atomic_text(
         output_root / "实验GoldE准入发布清单.json",
@@ -270,9 +332,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--测量", type=Path, required=True)
     parser.add_argument("--输出目录", type=Path, required=True)
     parser.add_argument("--发布ID", required=True)
+    parser.add_argument("--证据根目录", type=Path)
     args = parser.parse_args(argv)
     manifest = write_release(
-        args.批次, args.测量, args.输出目录, release_id=args.发布ID
+        args.批次,
+        args.测量,
+        args.输出目录,
+        release_id=args.发布ID,
+        evidence_root=args.证据根目录,
     )
     print(json.dumps(manifest, ensure_ascii=False, sort_keys=True))
     return 0

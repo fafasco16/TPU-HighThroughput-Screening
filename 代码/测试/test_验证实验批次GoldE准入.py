@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 
@@ -88,3 +89,22 @@ def test_missing_mandatory_measurement_is_blocked() -> None:
         assert "必需测量计划不闭合" in str(exc)
     else:
         raise AssertionError("missing mandatory task must fail closed")
+
+
+def test_evidence_root_verifies_file_hashes(tmp_path: Path) -> None:
+    raw = tmp_path / "raw.dat"
+    raw.write_bytes(b"raw")
+    row = _ready_measurement("density")
+    row["raw_file_path"] = raw.name
+    row["raw_file_sha256"] = hashlib.sha256(raw.read_bytes()).hexdigest()
+    processed = tmp_path / "processed.csv"
+    processed.write_bytes(b"processed")
+    row["processed_file_path"] = processed.name
+    row["processed_file_sha256"] = hashlib.sha256(processed.read_bytes()).hexdigest()
+    ready, missing = MODULE.measurement_ready(row, tmp_path)
+    assert ready
+    assert missing == []
+    row["raw_file_sha256"] = "0" * 64
+    ready, missing = MODULE.measurement_ready(row, tmp_path)
+    assert not ready
+    assert "raw_file:sha256_mismatch" in missing
