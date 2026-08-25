@@ -146,6 +146,8 @@ Ubuntu上另建了隔离`/opt/tpu-md-venv`，固定RadonPy develop提交`5d14893
 
 `计算/现实MD/氨基甲酸酯扭转修正/`对刚性同几何残差先做±角度对称平均，再用`cos(nφ)`、阶数1–6逐绝对角留一交叉验证。脂肪族与芳香族分别拟合均选择6阶，修正后完整刚性曲线RMSE分别降至0.240和0.905 kcal mol⁻¹、相关系数为0.9995和0.9907；芳香族留一RMSE仍为1.99 kcal mol⁻¹。若两家族共用同一个3阶修正，脂肪/芳香完整曲线RMSE为5.78/3.81 kcal mol⁻¹，证明当前原子类型必须区分脂肪与芳香环境。该拟合只筛查参数形式，未使用冻结二面角松弛面，也未做独立片段外部验证，系数不得直接写入生产力场。
 
+MM侧按LAMMPS `fix restrain dihedral`与`fix_modify energy yes`协议[186]对相同8个角度做K=5000 kcal mol⁻¹ rad⁻²约束最小化，解除约束后`run 0`读取GAFF2能量。RDKit与LAMMPS二面角定义存在180°偏移，输入显式使用`LAMMPS phi0=wrap(RDKit angle+180°)`；修正前烟雾的179.97°漂移作为失败证据保留。正式8点全部完成，最大角漂移0.195°。脂肪族松弛相对能在0/−180/−150/−90°为0/4.62/6.53/23.98 kcal mol⁻¹；芳香族在0/150/−180/−90°为0/7.49/7.71/14.46 kcal mol⁻¹。相对刚性曲线最大松弛变化32.55 kcal mol⁻¹，证明同约束松弛比较是必要的。原始归档SHA-256为`bac2942d12470cd2fe9e0ec320d2f8dbd547e978eddcc08d4e8db631739dad1b`，紧凑结果见`计算/现实MD/氨基甲酸酯MM约束松弛/`。
+
 `计算/现实MD/混合电荷诊断/`固定572个已验证RESP核心原子，对其余8514个原子保留整链Gasteiger起点并施加满足总电荷为0的最小L2均匀修正。12条链共9086个原子均达到数值中性，最大总电荷残差约`6.94×10^-18 e`，未映射原子最大均匀修正仅0.00253 e；然而相同ETKDG/MMFF坐标上的点电荷偶极变化最高71.10 D。该结果表明小的逐原子中性化修正会沿长链产生显著整体静电变化，总电荷闭合不能替代化学等价约束、局部偶极和片段边界验证。混合电荷只作缺口诊断，不写入LAMMPS。
 
 ## 5. 从计算到实验的决策门
@@ -186,3 +188,5 @@ CREST结束后的逐构象单点命令、JSON字段、Boltzmann代理权重和NC
 [184] Alenaizan, A.; Burns, L. A.; Sherrill, C. D. Python Implementation of the Restrained Electrostatic Potential Charge Model. *International Journal of Quantum Chemistry* **2020**, *120* (2), e26035. https://doi.org/10.1002/qua.26035.
 
 [185] Psi4 Project. *Geometry Optimization: Frozen Dihedral Constraints*, Psi4 1.10.x Manual. https://psicode.org/psi4manual/1.10.x/optking.html (accessed 2026-08-25).
+
+[186] LAMMPS Developers. *fix restrain command: Dihedral Restraints and Energy Minimization*. https://docs.lammps.org/latest/fix_restrain.html (accessed 2026-08-25).

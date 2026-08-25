@@ -1,0 +1,57 @@
+{
+  "counts": {
+    "completed_points": 8,
+    "fragments": 2
+  },
+  "files": {
+    "MM松弛与刚性对比.csv": {
+      "bytes": 1662,
+      "sha256": "4121b699e462a8edb6e3fb42aa8303376567e2c7435e420d23d8ae2fc1d5a004"
+    },
+    "MM约束松弛汇总.csv": {
+      "bytes": 597,
+      "sha256": "b2e29fa20ef7e101a8e8eea390fc35601fe1c9c62cfc8034cea839a9d50f4a17"
+    },
+    "MM约束松弛说明.md": {
+      "bytes": 582,
+      "sha256": "ee8177fe4083de6a3ffbf8e8625de2379d011a253656bc8ca67105807a9d5405"
+    },
+    "原始归档定位.json": {
+      "bytes": 231,
+      "sha256": "09078673bb77c91f31c251747fd34d00a7a6d2f8553411e74e5f595d21cb408f"
+    }
+  },
+  "inputs": {
+    "mm_manifests": {
+      "methyl_n_methyl_carbamate": {
+        "fragment_name": "methyl_n_methyl_carbamate",
+        "manifest_bytes": 5920,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/MM松弛扫描_脂肪族氨基甲酸酯/MM约束松弛清单.json",
+        "manifest_sha256": "3dacc453bba98400785884ebeeae47433913553a61f021b7569e6f351a4ce848"
+      },
+      "methyl_n_phenyl_carbamate": {
+        "fragment_name": "methyl_n_phenyl_carbamate",
+        "manifest_bytes": 5925,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/MM松弛扫描_芳香族氨基甲酸酯/MM约束松弛清单.json",
+        "manifest_sha256": "8a2168905080a85f353dbb5af4403bd6782bb3cb987f8ace873a99369a7896e2"
+      }
+    },
+    "rigid_curve": {
+      "bytes": 11047,
+      "path": "计算/现实MD/氨基甲酸酯刚性扫描/刚性扫描曲线.csv",
+      "sha256": "d75ef22538e73080f84b56fc5992ea734369fde4e122934b2c2b3f6435cad6e3"
+    }
+  },
+  "maximum_absolute_mm_relaxation_change_kcal_mol": 32.540245114419996,
+  "maximum_angle_drift_degrees": 0.194987877949,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_dft_relaxed_comparison_and_refit",
+  "raw_archive": {
+    "bytes": 25849,
+    "path": "计算/现实MD/氨基甲酸酯MM约束松弛原始_20260825.tar.gz",
+    "sha256": "bac2942d12470cd2fe9e0ec320d2f8dbd547e978eddcc08d4e8db631739dad1b",
+    "storage": "server_only_not_committed_to_git"
+  },
+  "release_id": "tpu-reality-md-urethane-mm-constrained-relax-20260825-v1",
+  "status": "eight_mm_constrained_relaxed_points_completed_dft_comparison_pending"
+}

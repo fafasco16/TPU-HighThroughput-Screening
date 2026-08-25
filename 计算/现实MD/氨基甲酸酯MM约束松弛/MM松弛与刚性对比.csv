@@ -1,0 +1,9 @@
+fragment_name,validation_family,requested_angle_degrees,selection_reason,final_angle_degrees,angle_drift_degrees,unrestrained_gaff2_energy_kcal_mol,point_status,returncode,elapsed_seconds,relaxed_gaff2_relative_energy_kcal_mol,gaff2_relative_energy_kcal_mol,mm_relaxation_change_from_rigid_kcal_mol
+methyl_n_methyl_carbamate,aliphatic_urethane,-180,largest_rigid_curve_error,179.997266191,0.0027338091125,-13.3849319628,completed,0,0.26,4.62047475284,8.84225472327,-4.22177997043
+methyl_n_methyl_carbamate,aliphatic_urethane,-150,planarity_breaking_shoulder_abs150,-150.069091578,0.0690915776051,-11.4770846691,completed,0,0.254,6.52832204656,11.9313446349,-5.40302258834
+methyl_n_methyl_carbamate,aliphatic_urethane,-90,dft_rigid_maximum,-89.8050121221,0.194987877949,5.97075692114,completed,0,0.252,23.9761636368,22.559215352,1.4169482848
+methyl_n_methyl_carbamate,aliphatic_urethane,0,dft_rigid_minimum,-7.98591772171e-05,7.98591772171e-05,-18.0054067156,completed,0,0.258,0,0,0
+methyl_n_phenyl_carbamate,aromatic_urethane,-180,largest_rigid_curve_error,179.985926731,0.0140732688778,-28.2795293199,completed,0,0.242,7.70625996598,40.2465050804,-32.5402451144
+methyl_n_phenyl_carbamate,aromatic_urethane,-90,dft_rigid_maximum,-89.8832455784,0.116754421556,-21.5247107245,completed,0,0.252,14.4610785613,22.0422165885,-7.5811380272
+methyl_n_phenyl_carbamate,aromatic_urethane,0,dft_rigid_minimum,0.000935929123081,0.000935929123081,-35.9857892858,completed,0,0.258,0,0,0
+methyl_n_phenyl_carbamate,aromatic_urethane,150,planarity_breaking_shoulder_abs150,150.079350392,0.0793503922777,-28.4995027172,completed,0,0.251,7.48628656861,17.4648743729,-9.97858780429
