@@ -25,15 +25,20 @@
       "sha256": "240d1354406f857ad8875ed9604f294e7ec411ff9a023c661ed9273f32d54c3a"
     },
     "生产参数门.json": {
-      "bytes": 6134,
-      "sha256": "65dad72c435ee0d65cd3fbd446924838810b646ff7bb1f967b640aa642b645ec"
+      "bytes": 7911,
+      "sha256": "e27d18c69d9a2bcdc1d0ca66e92faa85de183418c2eb2db0882d26100cf52177"
     },
     "生产参数门说明.md": {
-      "bytes": 1059,
-      "sha256": "cf05e3ea4c55e014f7aacab464e73ce27c39e4987e3e0d6ebafbd69116bbde4c"
+      "bytes": 1310,
+      "sha256": "98c08cc4f95f8dc0ff428d942ba739345d0ca245923561a1840e226115a16578"
     }
   },
   "inputs": {
+    "DFT_MM松弛比较发布清单.json": {
+      "bytes": 1535,
+      "path": "参数门输入/DFT_MM松弛比较发布清单.json",
+      "sha256": "a925a4e68b47250b6ea0478b25583538e40281ec05a81357b842cbf926789681"
+    },
     "GAFF2参数覆盖审计.csv": {
       "bytes": 39398,
       "path": "参数门输入/GAFF2参数覆盖审计.csv",
@@ -74,6 +79,16 @@
       "path": "计算/现实MD/氨基甲酸酯刚性扫描/刚性扫描发布清单.json",
       "sha256": "324d23098e140b13cf743f98951156f0b32c364b5f2be2170dd0fcc6270d696f"
     },
+    "受约束松弛发布清单.json": {
+      "bytes": 2349,
+      "path": "计算/现实MD/氨基甲酸酯DFT约束松弛/受约束松弛发布清单.json",
+      "sha256": "6ebdbbaf1ad8ea9aec52783bd9a907c0ec2b14e5ee427f1b8297626e0f2b47c6"
+    },
+    "混合诊断电荷发布清单.json": {
+      "bytes": 1893,
+      "path": "参数门输入/混合诊断电荷发布清单.json",
+      "sha256": "14a2e4e032a512149755679eda04e69aae223ddc07f81f89412ca0484a885f9a"
+    },
     "联合RESP发布清单.json": {
       "bytes": 3116,
       "path": "计算/现实MD/RESP联合验证/联合RESP发布清单.json",
@@ -81,6 +96,6 @@
     }
   },
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v7",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v9",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }

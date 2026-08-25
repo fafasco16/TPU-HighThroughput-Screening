@@ -1,0 +1,59 @@
+{
+  "counts": {
+    "completed_points": 5,
+    "failed_points": 3,
+    "fragments": 2,
+    "planned_points": 8
+  },
+  "files": {
+    "原始归档定位.json": {
+      "bytes": 234,
+      "sha256": "4719b0e3852e5447385eb7b4bdcea59867c42c2c4b6a14316359c35eddb83215"
+    },
+    "受约束松弛汇总.csv": {
+      "bytes": 556,
+      "sha256": "b263dd9708571d198cf1a165cc668f1fe3592bf84555f6e5314ee4b02c2926a3"
+    },
+    "受约束松弛说明.md": {
+      "bytes": 626,
+      "sha256": "6f673c2e5d33245cb3248ec709fd10e34ed8bb051a6219460abd75abd1a3c21d"
+    },
+    "松弛与刚性对比.csv": {
+      "bytes": 1964,
+      "sha256": "2aed585d9cd12be99c8726ff33b0030fdfeb4430a10e7d350610c4d237c4dd0b"
+    }
+  },
+  "inputs": {
+    "relaxed_manifests": {
+      "methyl_n_methyl_carbamate": {
+        "fragment_name": "methyl_n_methyl_carbamate",
+        "manifest_bytes": 1580,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/松弛扫描_脂肪族氨基甲酸酯/受约束松弛清单.json",
+        "manifest_sha256": "a58c1e8a25d002e1b84363b8b4458e9d5dd9f8f43d98bc3657947b0b9f7e9386"
+      },
+      "methyl_n_phenyl_carbamate": {
+        "fragment_name": "methyl_n_phenyl_carbamate",
+        "manifest_bytes": 1584,
+        "manifest_path": "/root/TPU高通量筛选/计算/现实MD/松弛扫描_芳香族氨基甲酸酯/受约束松弛清单.json",
+        "manifest_sha256": "49e7100560b0bbc7bdb22c0f18a25fb8aad560a674d8095cb001e2ab2b48bdf2"
+      }
+    },
+    "rigid_curve": {
+      "bytes": 11047,
+      "path": "计算/现实MD/氨基甲酸酯刚性扫描/刚性扫描曲线.csv",
+      "sha256": "d75ef22538e73080f84b56fc5992ea734369fde4e122934b2c2b3f6435cad6e3"
+    }
+  },
+  "maximum_absolute_relaxation_change_kcal_mol": 5.040527873093077,
+  "maximum_angle_drift_degrees": 0.0003774905031548,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_mm_relaxed_refit_and_external_validation",
+  "raw_archive": {
+    "bytes": 1573369,
+    "path": "计算/现实MD/氨基甲酸酯DFT约束松弛原始_20260825.tar.gz",
+    "sha256": "70ef7ea01dd0c093a5f038bc6d80360bfb2583d8e0838cad3b62ac80d038db3d",
+    "storage": "server_only_not_committed_to_git"
+  },
+  "release_id": "tpu-reality-md-urethane-constrained-relax-20260825-v1",
+  "status": "constrained_relaxed_dft_subset_incomplete"
+}

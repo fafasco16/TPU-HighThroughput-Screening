@@ -1,6 +1,20 @@
 {
   "charge_gate": {
     "charge_gate_status": "joint_fragment_core_mapping_completed_full_chain_charge_assignment_pending",
+    "hybrid_full_chain_charge_diagnostic": {
+      "counts": {
+        "atomic_charge_rows": 9086,
+        "fixed_resp_core_atoms": 572,
+        "formulations": 12,
+        "unmapped_atoms": 8514
+      },
+      "maximum_absolute_hybrid_total_charge_e": 6.938893903907228e-18,
+      "maximum_absolute_uniform_unmapped_correction_e": 0.00252690012602279,
+      "maximum_dipole_change_norm_debye": 71.09886481564166,
+      "path": "参数门输入/混合诊断电荷发布清单.json",
+      "sha256": "14a2e4e032a512149755679eda04e69aae223ddc07f81f89412ca0484a885f9a",
+      "status": "neutral_full_chain_charge_diagnostic_completed_not_production"
+    },
     "joint_multiconformer_resp": {
       "counts": {
         "conformers_per_fragment": 3,
@@ -94,6 +108,32 @@
       "sha256": "c164534c02e75ad89b667a0296870bdafe39c482cec3736589134bd442ddbc5d",
       "status": "sensitivity_matrix_completed_joint_fit_pending"
     },
+    "urethane_dft_constrained_relaxation": {
+      "counts": {
+        "completed_points": 5,
+        "failed_points": 3,
+        "fragments": 2,
+        "planned_points": 8
+      },
+      "maximum_absolute_relaxation_change_kcal_mol": 5.040527873093077,
+      "maximum_angle_drift_degrees": 0.0003774905031548,
+      "path": "计算/现实MD/氨基甲酸酯DFT约束松弛/受约束松弛发布清单.json",
+      "sha256": "6ebdbbaf1ad8ea9aec52783bd9a907c0ec2b14e5ee427f1b8297626e0f2b47c6",
+      "status": "constrained_relaxed_dft_subset_incomplete"
+    },
+    "urethane_dft_mm_relaxed_comparison": {
+      "all_nonzero_comparable_points_gaff2_above_dft": true,
+      "counts": {
+        "blocked_points": 3,
+        "comparable_points": 5,
+        "fragments": 2,
+        "planned_points": 8
+      },
+      "maximum_absolute_relaxed_energy_error_kcal_mol": 4.544136636349999,
+      "path": "参数门输入/DFT_MM松弛比较发布清单.json",
+      "sha256": "a925a4e68b47250b6ea0478b25583538e40281ec05a81357b842cbf926789681",
+      "status": "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
+    },
     "urethane_rigid_scan": {
       "counts": {
         "failed_rigid_screens": 1,
@@ -124,7 +164,7 @@
       "dihedral": 28,
       "improper": 4
     },
-    "status": "failed_aromatic_urethane_rigid_scan_parameter_refit_required",
+    "status": "failed_relaxed_scan_incomplete_parameter_refit_blocked",
     "unique_substitution_count": 70,
     "urethane_bond_vs_substitution_event_pearson_r": 0.9913027044620191,
     "validation_family_counts": {
@@ -134,6 +174,6 @@
   },
   "performance_claim_status": "no_performance_claim",
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v7",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v9",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }

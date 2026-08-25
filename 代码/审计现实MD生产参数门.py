@@ -273,6 +273,8 @@ def write_release(
     resp_core_transfer_path: Path | None = None,
     rigid_scan_path: Path | None = None,
     hybrid_charge_path: Path | None = None,
+    dft_relaxed_path: Path | None = None,
+    dft_mm_relaxed_comparison_path: Path | None = None,
 ) -> dict[str, Any]:
     required_paths = [audit_path, plan_path, environment_manifest_path]
     optional_paths = [
@@ -285,6 +287,8 @@ def write_release(
             resp_core_transfer_path,
             rigid_scan_path,
             hybrid_charge_path,
+            dft_relaxed_path,
+            dft_mm_relaxed_comparison_path,
         )
         if path is not None
     ]
@@ -406,6 +410,36 @@ def write_release(
             "path": str(hybrid_charge_path),
             "sha256": sha256(hybrid_charge_path),
         }
+    if dft_relaxed_path is not None:
+        dft_relaxed = json.loads(dft_relaxed_path.read_text(encoding="utf-8"))
+        runtime["urethane_dft_constrained_relaxation"] = {
+            "status": dft_relaxed.get("status"),
+            "counts": dft_relaxed.get("counts"),
+            "maximum_angle_drift_degrees": dft_relaxed.get(
+                "maximum_angle_drift_degrees"
+            ),
+            "maximum_absolute_relaxation_change_kcal_mol": dft_relaxed.get(
+                "maximum_absolute_relaxation_change_kcal_mol"
+            ),
+            "path": str(dft_relaxed_path),
+            "sha256": sha256(dft_relaxed_path),
+        }
+    if dft_mm_relaxed_comparison_path is not None:
+        relaxed_comparison = json.loads(
+            dft_mm_relaxed_comparison_path.read_text(encoding="utf-8")
+        )
+        runtime["urethane_dft_mm_relaxed_comparison"] = {
+            "status": relaxed_comparison.get("status"),
+            "counts": relaxed_comparison.get("counts"),
+            "maximum_absolute_relaxed_energy_error_kcal_mol": relaxed_comparison.get(
+                "maximum_absolute_relaxed_energy_error_kcal_mol"
+            ),
+            "all_nonzero_comparable_points_gaff2_above_dft": relaxed_comparison.get(
+                "all_nonzero_comparable_points_gaff2_above_dft"
+            ),
+            "path": str(dft_mm_relaxed_comparison_path),
+            "sha256": sha256(dft_mm_relaxed_comparison_path),
+        }
     if (
         runtime.get("native_resp_smoke", {}).get("status")
         == "completed_native_two_stage_resp_smoke"
@@ -451,6 +485,12 @@ def write_release(
         "status": "production_md_blocked_parameter_and_charge_validation",
         "forcefield_parameter_gate": {
             "status": (
+                "failed_relaxed_scan_incomplete_parameter_refit_blocked"
+                if runtime.get("urethane_dft_mm_relaxed_comparison", {}).get(
+                    "status"
+                )
+                == "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
+                else
                 "failed_aromatic_urethane_rigid_scan_parameter_refit_required"
                 if runtime.get("urethane_rigid_scan", {}).get("status")
                 == "rigid_scan_completed_aromatic_forcefield_validation_failed"
@@ -506,6 +546,24 @@ def write_release(
             "再以`HF/6-31G(d)`拟合RESP。当前固定环境的Psi4/RESP或兼容"
             "包装未完成实算验证，不能把Gasteiger电荷升级命名为生产电荷。"
         )
+    if runtime.get("urethane_dft_mm_relaxed_comparison", {}).get("status"):
+        comparison = runtime["urethane_dft_mm_relaxed_comparison"]
+        forcefield_note = (
+            "冻结二面角DFT–MM松弛计划8点中仅5点可比较、3点DFT未收敛；"
+            f"成功点最大相对能差为{comparison.get('maximum_absolute_relaxed_energy_error_kcal_mol'):.3f} kcal/mol，"
+            "所有非零可比较点均为GAFF2高于DFT。收敛角不足以拟合完整周期，"
+            "芳香/脂肪P0参数继续阻断。"
+        )
+    elif runtime.get("urethane_rigid_scan", {}).get("status"):
+        forcefield_note = (
+            "刚性扭转扫描已发现芳香族GAFF2曲线显著失配；冻结二面角松弛"
+            "和参数重拟合未闭合，生产力场继续阻断。"
+        )
+    else:
+        forcefield_note = (
+            "当前仅确认GAFF2替代参数随氨基甲酸酯键数累积；量化势能验证"
+            "未闭合，生产力场继续阻断。"
+        )
     _atomic_text(
         report_path,
         "\n".join(
@@ -522,6 +580,8 @@ def write_release(
                 "强相关表明问题随主链氨基甲酸酯数增长，不是少量无关警告。优先验证重复主链的键、角、二面角和improper；末端NCO参数应在明确封端或残余NCO比例后单独验证。",
                 "",
                 charge_note,
+                "",
+                forcefield_note,
                 "",
                 "下一步验证单元应至少覆盖脂肪族氨基甲酸酯、芳香族氨基甲酸酯和残余异氰酸酯端基；对P0二面角需做量化扫描并比较GAFF2替代势能曲线，不能只检查LAMMPS是否运行。",
                 "",
@@ -583,6 +643,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--RESP核心转移清单", type=Path)
     parser.add_argument("--刚性扫描清单", type=Path)
     parser.add_argument("--混合电荷诊断清单", type=Path)
+    parser.add_argument("--DFT松弛清单", type=Path)
+    parser.add_argument("--DFT_MM松弛比较清单", type=Path)
     parser.add_argument(
         "--发布ID", default="tpu-reality-md-production-parameter-gate-20260825-v1"
     )
@@ -600,6 +662,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         resp_core_transfer_path=args.RESP核心转移清单,
         rigid_scan_path=args.刚性扫描清单,
         hybrid_charge_path=args.混合电荷诊断清单,
+        dft_relaxed_path=args.DFT松弛清单,
+        dft_mm_relaxed_comparison_path=args.DFT_MM松弛比较清单,
     )
     print(json.dumps(manifest["counts"], ensure_ascii=False, sort_keys=True))
     return 0

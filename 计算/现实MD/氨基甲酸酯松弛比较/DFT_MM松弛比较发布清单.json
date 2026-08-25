@@ -1,0 +1,40 @@
+{
+  "all_nonzero_comparable_points_gaff2_above_dft": true,
+  "counts": {
+    "blocked_points": 3,
+    "comparable_points": 5,
+    "fragments": 2,
+    "planned_points": 8
+  },
+  "files": {
+    "DFT_MM同角度松弛对比.csv": {
+      "bytes": 2679,
+      "sha256": "e7735aa146cd408a3f8c3dcb38c214ad843e5d015a1514badb7ef1e56fd5bd86"
+    },
+    "DFT_MM松弛家族汇总.csv": {
+      "bytes": 616,
+      "sha256": "e0ff556862d9a4820aa92e6bba4404dd97427340633ee20b1cf5d3143b8ba882"
+    },
+    "DFT_MM松弛比较说明.md": {
+      "bytes": 603,
+      "sha256": "e0815d31fcfdcf71b40bbd58bf6bf541062b1acdd92b50ce08f046e912f266b8"
+    }
+  },
+  "inputs": {
+    "MM松弛与刚性对比.csv": {
+      "bytes": 1662,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\氨基甲酸酯MM约束松弛\\MM松弛与刚性对比.csv",
+      "sha256": "4121b699e462a8edb6e3fb42aa8303376567e2c7435e420d23d8ae2fc1d5a004"
+    },
+    "松弛与刚性对比.csv": {
+      "bytes": 1964,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\氨基甲酸酯DFT约束松弛\\松弛与刚性对比.csv",
+      "sha256": "2aed585d9cd12be99c8726ff33b0030fdfeb4430a10e7d350610c4d237c4dd0b"
+    }
+  },
+  "maximum_absolute_relaxed_energy_error_kcal_mol": 4.544136636349999,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_parameter_refit_and_external_validation",
+  "release_id": "tpu-reality-md-urethane-relaxed-dft-mm-20260825-v1",
+  "status": "relaxed_dft_mm_comparison_completed_refit_blocked_by_failed_dft_points"
+}
