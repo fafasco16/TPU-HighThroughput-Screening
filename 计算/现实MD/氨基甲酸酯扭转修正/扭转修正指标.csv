@@ -1,0 +1,5 @@
+fit_scope,validation_family,model_name,fourier_order,symmetrized_training_rmse_kcal_mol,symmetrized_leave_angle_out_rmse_kcal_mol,corrected_full_curve_rmse_kcal_mol,corrected_full_curve_pearson_r,corrected_barrier_difference_kcal_mol,maximum_plus_minus_asymmetry_half_range_kcal_mol
+family_specific,aliphatic_urethane,family_specific::aliphatic_urethane,6,0.00799107427675,0.0182624937836,0.239692742186,0.999541737227,0.0470494756323,0.35833488042
+family_specific,aromatic_urethane,family_specific::aromatic_urethane,6,0.850243924781,1.98957565421,0.90530807428,0.990656940027,0.848312984417,8.08924699998e-05
+pooled_common,aliphatic_urethane,pooled_common,3,4.40558450019,5.52623264198,5.7773197882,0.96308367922,6.77439122389,0.35833488042
+pooled_common,aromatic_urethane,pooled_common,3,4.40558450019,5.52623264198,3.80717891507,0.862601263447,3.56990765617,8.08924699998e-05

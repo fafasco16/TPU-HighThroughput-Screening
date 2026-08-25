@@ -1,0 +1,42 @@
+{
+  "best_family_specific_max_rmse_kcal_mol": 0.9053080742800108,
+  "counts": {
+    "coefficient_rows": 18,
+    "evaluation_rows": 96,
+    "models": 3,
+    "symmetrized_points": 26
+  },
+  "family_specific_typing_required_by_rigid_screen": true,
+  "files": {
+    "傅里叶修正系数.csv": {
+      "bytes": 1092,
+      "sha256": "9acd2a12ebd8a4f430354eaaddd93179d3d6c20101e3f34ce383f10fbc57d6e4"
+    },
+    "刚性曲线修正评估.csv": {
+      "bytes": 28366,
+      "sha256": "ce8825df5ff88d5c32814c40ad16a57ce8e16bf8b79ffe826fb5eb5789a4a744"
+    },
+    "扭转修正指标.csv": {
+      "bytes": 885,
+      "sha256": "35f8a547c75fdd268870990afeb86c8e4e7280a70e122eb0ecec6566a04fe1da"
+    },
+    "扭转修正说明.md": {
+      "bytes": 595,
+      "sha256": "a05c962ef83cf4106d4b3b8ff1f62f8a23070db95e5d6ef10862c99f4ad4da7e"
+    },
+    "阶数交叉验证.csv": {
+      "bytes": 1161,
+      "sha256": "b514fb21a41eef588cbca9ea559bc6356083430e07db2a0900af83998cb59f74"
+    }
+  },
+  "input": {
+    "bytes": 11047,
+    "path": "E:\\数据\\TPU\\计算\\现实MD\\氨基甲酸酯刚性扫描\\刚性扫描曲线.csv",
+    "sha256": "d75ef22538e73080f84b56fc5992ea734369fde4e122934b2c2b3f6435cad6e3"
+  },
+  "performance_claim_status": "no_performance_claim",
+  "pooled_common_max_rmse_kcal_mol": 5.777319788196373,
+  "production_md_permission": "blocked_relaxed_scan_and_external_validation",
+  "release_id": "tpu-reality-md-urethane-torsion-correction-20260825-v1",
+  "status": "rigid_curve_fourier_screen_completed_relaxed_fit_pending"
+}
