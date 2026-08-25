@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "candidates": 6,
+    "close_prior_art_deferred": 1,
+    "known_reference_controls": 3,
+    "potential_combinations_requiring_closed_database": 2
+  },
+  "files": {
+    "新颖性开放检索初筛.csv": {
+      "bytes": 3923,
+      "sha256": "6fba29a4180ae02993dc9be44e802ab87604630a73b86933597c82b83e63247b"
+    },
+    "新颖性检索边界.md": {
+      "bytes": 799,
+      "sha256": "7949dcbf4a1c313853733e4a727addb3b1a8d9ad1bb32958de69cadaf0f22902"
+    }
+  },
+  "input": {
+    "bytes": 5064,
+    "path": "E:\\数据\\TPU\\结果\\现实筛选\\实验短名单\\实验短名单6.csv",
+    "sha256": "0fffd724c2ccb392dc5c3a4135d5743f4cb286ea48034e81e2e8148facf2b60c"
+  },
+  "novelty_claim_permission": "blocked_pending_closed_database_and_claim_review",
+  "performance_claim_status": "no_performance_claim",
+  "release_id": "tpu-reality-shortlist-open-novelty-20260825-v1",
+  "status": "open_novelty_prescreen_completed_all_claims_blocked"
+}
