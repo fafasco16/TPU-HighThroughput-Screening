@@ -7,8 +7,8 @@
   "experiment_authorization": "not_granted_by_template",
   "files": {
     "实验回填字段说明.md": {
-      "bytes": 1354,
-      "sha256": "c3de7f5b5a9b782c0d7bfa2d2678720b873f3560084e23498d54d97ac0443ec7"
+      "bytes": 1540,
+      "sha256": "dcb244651d77a560393ac1946b8502705e2eb657def1f412f851dab425605115"
     },
     "实验批次回填模板.csv": {
       "bytes": 2721,

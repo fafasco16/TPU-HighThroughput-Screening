@@ -37,7 +37,7 @@ def _ready_batch() -> dict:
     return row
 
 
-def _ready_measurement(task: str) -> dict:
+def _ready_measurement(task: str, replicate_id: str = "r1") -> dict:
     row = {name: "x" for name in MODULE.MEASUREMENT_REQUIRED_TEXT}
     row.update(
         {
@@ -48,6 +48,7 @@ def _ready_measurement(task: str) -> dict:
             "unit_status": "verified",
             "qc_status": "passed",
             "gold_e_record_status": "ready_for_gold_e",
+            "replicate_id": replicate_id,
         }
     )
     return row
@@ -56,7 +57,11 @@ def _ready_measurement(task: str) -> dict:
 def test_complete_batch_and_mandatory_measurements_become_ready() -> None:
     batches = pd.DataFrame([_ready_batch()])
     measurements = pd.DataFrame(
-        [_ready_measurement(task) for task in sorted(MODULE.MANDATORY_TASKS)]
+        [
+            _ready_measurement(task, f"r{replica}")
+            for task, count in MODULE.MANDATORY_REPLICATES.items()
+            for replica in range(1, count + 1)
+        ]
     )
     audit = MODULE.audit_gold_e_admission(batches, measurements)
     assert audit.iloc[0]["gold_e_admission_status"] == "ready_for_gold_e_ingestion"
@@ -68,7 +73,11 @@ def test_blank_batch_remains_blocked_without_fabricating_defaults() -> None:
     batch["batch_id"] = pd.NA
     batches = pd.DataFrame([batch])
     measurements = pd.DataFrame(
-        [_ready_measurement(task) for task in sorted(MODULE.MANDATORY_TASKS)]
+        [
+            _ready_measurement(task, f"r{replica}")
+            for task, count in MODULE.MANDATORY_REPLICATES.items()
+            for replica in range(1, count + 1)
+        ]
     )
     audit = MODULE.audit_gold_e_admission(batches, measurements)
     assert audit.iloc[0]["gold_e_admission_status"].startswith("blocked_")
@@ -108,3 +117,20 @@ def test_evidence_root_verifies_file_hashes(tmp_path: Path) -> None:
     ready, missing = MODULE.measurement_ready(row, tmp_path)
     assert not ready
     assert "raw_file:sha256_mismatch" in missing
+
+
+def test_single_tensile_replicate_is_not_enough_for_gold_e() -> None:
+    batches = pd.DataFrame([_ready_batch()])
+    measurements = []
+    for task, count in MODULE.MANDATORY_REPLICATES.items():
+        actual_count = 1 if task == "tensile_full_curve" else count
+        measurements.extend(
+            _ready_measurement(task, f"r{replica}")
+            for replica in range(1, actual_count + 1)
+        )
+    audit = MODULE.audit_gold_e_admission(
+        batches, pd.DataFrame(measurements)
+    )
+    assert audit.iloc[0]["gold_e_admission_status"].startswith("blocked_")
+    issues = json.loads(audit.iloc[0]["mandatory_measurements_missing_json"])
+    assert "ready_replicates:1/5" in issues["tensile_full_curve"]

@@ -9,8 +9,8 @@
   },
   "files": {
     "实验GoldE准入状态.csv": {
-      "bytes": 17224,
-      "sha256": "4657920d75ad0c25440f55d8085523fb768e386530141c615dd1d94ef754523b"
+      "bytes": 18004,
+      "sha256": "8d2f8731d4516a1456037fe24cc939aee7691355124c0f1c9695fbdcc385dd37"
     },
     "实验GoldE准入说明.md": {
       "bytes": 349,
@@ -36,6 +36,13 @@
     "density",
     "tensile_full_curve"
   ],
+  "mandatory_replicates": {
+    "DMA_temperature_sweep": 3,
+    "FTIR_NCO_conversion": 1,
+    "GPC_Mn_Mw_PDI": 1,
+    "density": 3,
+    "tensile_full_curve": 5
+  },
   "performance_claim_status": "no_claim_before_qc",
   "release_id": "tpu-experimental-gold-e-admission-20260825-v1",
   "status": "experimental_gold_e_admission_blocked_missing_real_evidence"

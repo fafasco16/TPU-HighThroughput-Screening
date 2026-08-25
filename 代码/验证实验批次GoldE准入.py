@@ -15,13 +15,14 @@ from 汇总RESP敏感性 import sha256
 
 ROOT = Path(__file__).resolve().parents[1]
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
-MANDATORY_TASKS = {
-    "FTIR_NCO_conversion",
-    "GPC_Mn_Mw_PDI",
-    "DMA_temperature_sweep",
-    "tensile_full_curve",
-    "density",
+MANDATORY_REPLICATES = {
+    "FTIR_NCO_conversion": 1,
+    "GPC_Mn_Mw_PDI": 1,
+    "DMA_temperature_sweep": 3,
+    "tensile_full_curve": 5,
+    "density": 3,
 }
+MANDATORY_TASKS = set(MANDATORY_REPLICATES)
 BATCH_REQUIRED_TEXT = [
     "batch_id",
     "synthesis_date",
@@ -215,15 +216,31 @@ def audit_gold_e_admission(
         planned_tasks = set(subset["measurement_task"].astype(str))
         if not MANDATORY_TASKS.issubset(planned_tasks):
             raise ValueError(f"实验Gold-E必需测量计划不闭合: {formulation_id}")
-        ready_tasks = set()
-        measurement_missing: dict[str, list[str]] = {}
+        ready_replicates: dict[str, set[str]] = {
+            task: set() for task in MANDATORY_TASKS
+        }
+        measurement_missing: dict[str, list[str]] = {
+            task: [] for task in MANDATORY_TASKS
+        }
         for measurement in subset.to_dict(orient="records"):
             ready, missing = measurement_ready(measurement, evidence_root)
             task = str(measurement["measurement_task"])
+            if task not in MANDATORY_TASKS:
+                continue
             if ready:
+                ready_replicates[task].add(str(measurement["replicate_id"]))
+            else:
+                measurement_missing[task].extend(missing)
+        ready_tasks = set()
+        for task, required_replicates in MANDATORY_REPLICATES.items():
+            observed = len(ready_replicates[task])
+            if observed >= required_replicates:
                 ready_tasks.add(task)
-            elif task in MANDATORY_TASKS:
-                measurement_missing[task] = missing
+            else:
+                measurement_missing[task].append(
+                    f"ready_replicates:{observed}/{required_replicates}"
+                )
+            measurement_missing[task] = sorted(set(measurement_missing[task]))
         mandatory_ready = MANDATORY_TASKS.issubset(ready_tasks)
         admission_ready = batch_ready and mandatory_ready
         rows.append(
@@ -301,6 +318,7 @@ def write_release(
         ),
         "counts": {"systems": len(audit), "ready": ready, "blocked": len(audit) - ready},
         "mandatory_measurements": sorted(MANDATORY_TASKS),
+        "mandatory_replicates": MANDATORY_REPLICATES,
         "inputs": {
             path.name: {"path": str(path), "bytes": path.stat().st_size, "sha256": sha256(path)}
             for path in (batch_path, measurement_path)
