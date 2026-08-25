@@ -270,6 +270,7 @@ def write_release(
     radonpy_resp_failure_path: Path | None = None,
     resp_sensitivity_path: Path | None = None,
     joint_resp_path: Path | None = None,
+    resp_core_transfer_path: Path | None = None,
 ) -> dict[str, Any]:
     required_paths = [audit_path, plan_path, environment_manifest_path]
     optional_paths = [
@@ -279,6 +280,7 @@ def write_release(
             radonpy_resp_failure_path,
             resp_sensitivity_path,
             joint_resp_path,
+            resp_core_transfer_path,
         )
         if path is not None
     ]
@@ -347,6 +349,25 @@ def write_release(
             "path": str(joint_resp_path),
             "sha256": sha256(joint_resp_path),
         }
+    if resp_core_transfer_path is not None:
+        transfer = json.loads(
+            resp_core_transfer_path.read_text(encoding="utf-8")
+        )
+        runtime["resp_core_transfer"] = {
+            "status": transfer.get("status"),
+            "counts": transfer.get("counts"),
+            "minimum_mapped_heavy_atom_fraction": transfer.get(
+                "minimum_mapped_heavy_atom_fraction"
+            ),
+            "maximum_mapped_heavy_atom_fraction": transfer.get(
+                "maximum_mapped_heavy_atom_fraction"
+            ),
+            "maximum_absolute_transfer_minus_gasteiger_e": transfer.get(
+                "maximum_absolute_transfer_minus_gasteiger_e"
+            ),
+            "path": str(resp_core_transfer_path),
+            "sha256": sha256(resp_core_transfer_path),
+        }
     if (
         runtime.get("native_resp_smoke", {}).get("status")
         == "completed_native_two_stage_resp_smoke"
@@ -358,8 +379,17 @@ def write_release(
             "fragment_transfer_validation_pending"
         )
     if (
+        runtime.get("resp_core_transfer", {}).get("status")
+        == "twelve_chain_core_mapping_completed_full_charge_assignment_pending"
+    ):
+        runtime["charge_gate_status"] = (
+            "joint_fragment_core_mapping_completed_"
+            "full_chain_charge_assignment_pending"
+        )
+    if (
         runtime.get("joint_multiconformer_resp", {}).get("status")
         == "four_family_joint_multiconformer_resp_completed_transfer_pending"
+        and "resp_core_transfer" not in runtime
     ):
         runtime["charge_gate_status"] = (
             "joint_multiconformer_fragment_resp_ready_"
@@ -404,6 +434,15 @@ def write_release(
     )
     family = summary["validation_family_counts"]
     if runtime["charge_gate_status"].startswith(
+        "joint_fragment_core_mapping_completed"
+    ):
+        charge_note = (
+            "四类三构象联合RESP核心已逐一映射到12条现实TPU低聚链，"
+            "氨基甲酸酯与残余NCO计数全部闭合；但核心只覆盖约12%–19%"
+            "重原子。当前放行到核心定位，不放行未覆盖原子电荷补全、整链"
+            "总电荷/局部偶极验证或生产MD。"
+        )
+    elif runtime["charge_gate_status"].startswith(
         "joint_multiconformer_fragment_resp_ready"
     ):
         charge_note = (
@@ -498,6 +537,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--RadonPyRESP失败审计", type=Path)
     parser.add_argument("--RESP敏感性清单", type=Path)
     parser.add_argument("--RESP联合清单", type=Path)
+    parser.add_argument("--RESP核心转移清单", type=Path)
     parser.add_argument(
         "--发布ID", default="tpu-reality-md-production-parameter-gate-20260825-v1"
     )
@@ -512,6 +552,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         radonpy_resp_failure_path=args.RadonPyRESP失败审计,
         resp_sensitivity_path=args.RESP敏感性清单,
         joint_resp_path=args.RESP联合清单,
+        resp_core_transfer_path=args.RESP核心转移清单,
     )
     print(json.dumps(manifest["counts"], ensure_ascii=False, sort_keys=True))
     return 0

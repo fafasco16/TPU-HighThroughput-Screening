@@ -1,0 +1,51 @@
+{
+  "counts": {
+    "core_parameter_rows": 14,
+    "formulations": 12,
+    "mapped_atom_rows": 572,
+    "terminal_nco_occurrences": 12,
+    "urethane_occurrences": 134
+  },
+  "files": {
+    "RESP核心参数.csv": {
+      "bytes": 1415,
+      "sha256": "edc9d6a322db3cb5abce78c2426b9fcd3c682c9af5db5a71949aa7ee06bc8dbc"
+    },
+    "RESP核心转移映射.csv.gz": {
+      "bytes": 6413,
+      "sha256": "2e9fd7c69c14e935eed318d1aa6e89b04552917eb1ee4e9c5ccfdf62b06519bf"
+    },
+    "RESP核心转移说明.md": {
+      "bytes": 822,
+      "sha256": "92d6ca66cdd5382954758114c05608eae4a7ff651196824d42b7661372c65d32"
+    },
+    "RESP核心转移逐配方.csv": {
+      "bytes": 3336,
+      "sha256": "b8b010d9e424a5a7c1060312a97ef702ee9323b73bba51ec39ea61cc8018d407"
+    }
+  },
+  "inputs": {
+    "低聚链化学图.csv.gz": {
+      "bytes": 1596,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链化学图.csv.gz",
+      "sha256": "7484fabfd51f6a52338070d842d0262503b84a2155ab70392e69baf267c2d647"
+    },
+    "低聚链计量计划.csv": {
+      "bytes": 6984,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\低聚链计量计划.csv",
+      "sha256": "d34cd6ee06bf6b920d412bb253bed4ffc7ad4af0cee9d93e3a4ade20f8a555f4"
+    },
+    "联合RESP逐原子比较.csv": {
+      "bytes": 11689,
+      "path": "E:\\数据\\TPU\\计算\\现实MD\\RESP联合验证\\联合RESP逐原子比较.csv",
+      "sha256": "7fba5bebd53b1daede3f297980ea173e4f3016696fdac6abb1c634edc4bc0f22"
+    }
+  },
+  "maximum_absolute_transfer_minus_gasteiger_e": 0.5138101137629518,
+  "maximum_mapped_heavy_atom_fraction": 0.19078947368421054,
+  "minimum_mapped_heavy_atom_fraction": 0.116751269035533,
+  "performance_claim_status": "no_performance_claim",
+  "production_md_permission": "blocked_unmapped_atoms_and_forcefield_validation",
+  "release_id": "tpu-reality-md-resp-core-transfer-20260825-v1",
+  "status": "twelve_chain_core_mapping_completed_full_charge_assignment_pending"
+}

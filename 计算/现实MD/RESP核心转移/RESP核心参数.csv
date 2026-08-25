@@ -1,0 +1,15 @@
+fragment_name,validation_family,core_type,core_role,source_atom_index_zero_based,element,joint_resp_charge_e
+ethyl_isocyanate,aliphatic_terminal_isocyanate,isocyanate,isocyanate_nitrogen,2,N,-0.555313471736
+ethyl_isocyanate,aliphatic_terminal_isocyanate,isocyanate,isocyanate_carbon,3,C,0.748246581072
+ethyl_isocyanate,aliphatic_terminal_isocyanate,isocyanate,isocyanate_oxygen,4,O,-0.460004143493
+methyl_n_methyl_carbamate,aliphatic_urethane,urethane,alkoxy_oxygen,1,O,-0.445731352596
+methyl_n_methyl_carbamate,aliphatic_urethane,urethane,carbonyl_carbon,2,C,0.852569117543
+methyl_n_methyl_carbamate,aliphatic_urethane,urethane,carbonyl_oxygen,3,O,-0.601737716066
+methyl_n_methyl_carbamate,aliphatic_urethane,urethane,urethane_nitrogen,4,N,-0.514188264775
+phenyl_isocyanate,aromatic_terminal_isocyanate,isocyanate,isocyanate_oxygen,0,O,-0.436772723741
+phenyl_isocyanate,aromatic_terminal_isocyanate,isocyanate,isocyanate_carbon,1,C,0.748037393947
+phenyl_isocyanate,aromatic_terminal_isocyanate,isocyanate,isocyanate_nitrogen,2,N,-0.507137853457
+methyl_n_phenyl_carbamate,aromatic_urethane,urethane,alkoxy_oxygen,1,O,-0.40460443737
+methyl_n_phenyl_carbamate,aromatic_urethane,urethane,carbonyl_carbon,2,C,0.864736747981
+methyl_n_phenyl_carbamate,aromatic_urethane,urethane,carbonyl_oxygen,3,O,-0.578221471856
+methyl_n_phenyl_carbamate,aromatic_urethane,urethane,urethane_nitrogen,4,N,-0.502866967526

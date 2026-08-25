@@ -1,6 +1,6 @@
 {
   "charge_gate": {
-    "charge_gate_status": "joint_multiconformer_fragment_resp_ready_polymer_transfer_validation_pending",
+    "charge_gate_status": "joint_fragment_core_mapping_completed_full_chain_charge_assignment_pending",
     "joint_multiconformer_resp": {
       "counts": {
         "conformers_per_fragment": 3,
@@ -64,6 +64,21 @@
       "status": "radonpy_resp_wrapper_blocked_reproducible_segmentation_fault",
       "vdw_point_density": 20.0
     },
+    "resp_core_transfer": {
+      "counts": {
+        "core_parameter_rows": 14,
+        "formulations": 12,
+        "mapped_atom_rows": 572,
+        "terminal_nco_occurrences": 12,
+        "urethane_occurrences": 134
+      },
+      "maximum_absolute_transfer_minus_gasteiger_e": 0.5138101137629518,
+      "maximum_mapped_heavy_atom_fraction": 0.19078947368421054,
+      "minimum_mapped_heavy_atom_fraction": 0.116751269035533,
+      "path": "计算/现实MD/RESP核心转移/RESP核心转移发布清单.json",
+      "sha256": "e561645392278f5f6ec39848d0bd01478806695a2546ec7e71b6cc8c22207b39",
+      "status": "twelve_chain_core_mapping_completed_full_charge_assignment_pending"
+    },
     "resp_sensitivity_matrix": {
       "counts": {
         "atomic_charge_rows": 513,
@@ -105,6 +120,6 @@
   },
   "performance_claim_status": "no_performance_claim",
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v4",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v6",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }

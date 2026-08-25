@@ -140,6 +140,8 @@ Ubuntu上另建了隔离`/opt/tpu-md-venv`，固定RadonPy develop提交`5d14893
 
 在点密度1.0下，四个家族又分别将三个构象的ESP等权放入同一线性系统，共同拟合一组共享原子电荷，而不是简单平均三套独立电荷。四项联合拟合均完成；联合电荷相对三个独立拟合均值的核心原子最大绝对差为0.04058 e，最大电荷和误差约`1.73×10^-15 e`。紧凑结果见`计算/现实MD/RESP联合验证/`，服务器原始归档SHA-256为`523d891d7b1abf0c266234548eed9f053ea6f8d9ed61c705108eb1b75e8dfb78`。电荷门已推进到`joint_multiconformer_fragment_resp_ready_polymer_transfer_validation_pending`；完整TPU链的等价原子映射、总电荷/局部偶极验证以及P0二面角势能仍阻断生产MD。
 
+`计算/现实MD/RESP核心转移/`将四家族联合电荷按`OC(=O)N`和`N=C=O`角色映射回12条现实低聚链，并依据N外部重原子是否芳香选择脂肪族或芳香族参数。共识别134个氨基甲酸酯和12个残余NCO，与整数计量计划逐链完全一致；572条核心原子映射无重叠。核心仅覆盖各链11.68%–19.08%的重原子，联合RESP与整链Gasteiger在映射原子上的最大差为0.51381 e，主要来自异氰酸酯碳。该差异说明Gasteiger不能升级为生产电荷，也不能在不做完整电荷闭合的情况下把核心RESP直接写入LAMMPS。电荷门现为`joint_fragment_core_mapping_completed_full_chain_charge_assignment_pending`。
+
 ## 5. 从计算到实验的决策门
 
 建议按以下顺序缩小候选：

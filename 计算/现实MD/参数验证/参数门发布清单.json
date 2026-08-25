@@ -25,12 +25,12 @@
       "sha256": "240d1354406f857ad8875ed9604f294e7ec411ff9a023c661ed9273f32d54c3a"
     },
     "生产参数门.json": {
-      "bytes": 4808,
-      "sha256": "4617c7cb45bf66a9d9334268b6a49a69c09d46e19fdacc5b581a481b07fcf8c9"
+      "bytes": 5494,
+      "sha256": "6a4d36cda7ace54731d4148b31be63e4b683db0c0bfe34f4cafbb9f78b50fcf2"
     },
     "生产参数门说明.md": {
-      "bytes": 1028,
-      "sha256": "5243bbbd966ef34da821aab11bc075c01118a18438c099f8a28433428f692edd"
+      "bytes": 1059,
+      "sha256": "cf05e3ea4c55e014f7aacab464e73ce27c39e4987e3e0d6ebafbd69116bbde4c"
     }
   },
   "inputs": {
@@ -43,6 +43,11 @@
       "bytes": 2659,
       "path": "计算/现实MD/RESP敏感性/RESP敏感性发布清单.json",
       "sha256": "c164534c02e75ad89b667a0296870bdafe39c482cec3736589134bd442ddbc5d"
+    },
+    "RESP核心转移发布清单.json": {
+      "bytes": 1966,
+      "path": "计算/现实MD/RESP核心转移/RESP核心转移发布清单.json",
+      "sha256": "e561645392278f5f6ec39848d0bd01478806695a2546ec7e71b6cc8c22207b39"
     },
     "RESP烟雾清单.json": {
       "bytes": 2447,
@@ -71,6 +76,6 @@
     }
   },
   "production_md_permission": "blocked",
-  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v4",
+  "release_id": "tpu-reality-md-production-parameter-gate-20260825-v6",
   "status": "production_md_blocked_parameter_and_charge_validation"
 }
