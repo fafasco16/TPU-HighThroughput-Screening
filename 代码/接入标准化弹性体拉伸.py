@@ -61,8 +61,8 @@ def build_release():
                     "chemistry_mapping_status": "commercial_grade_identity_only",
                     "usage_mode": "auxiliary_train",
                     "source_locator": f"{SOURCE.relative_to(ROOT).as_posix()}#{name}",
-                    "license": "source_license_pending_manifest_confirmation",
-                    "citation_keys": "zenodo-14983287",
+                    "license": "CC-BY-4.0",
+                    "citation_keys": "reference-40;reference-41",
                 }
             )
     return (

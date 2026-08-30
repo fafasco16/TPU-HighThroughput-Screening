@@ -66,7 +66,7 @@ SPECS = [
         "toughness",
         "标准化热塑性弹性体拉伸端点.csv",
         "标准化热塑性弹性体拉伸发布清单.json",
-        "license_pending_manifest",
+        "CC-BY-4.0",
         "commercial_grade_only",
     ),
     (
@@ -74,7 +74,7 @@ SPECS = [
         "thermal_stability",
         "标准化热塑性弹性体TGA端点.csv",
         "标准化热塑性弹性体TGA发布清单.json",
-        "license_pending_manifest",
+        "CC-BY-4.0",
         "commercial_grade_only",
     ),
     (

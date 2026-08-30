@@ -52,8 +52,8 @@ def build_release():
                     "source_member": name,
                     "member_sha256": hashlib.sha256(raw).hexdigest(),
                     "source_locator": f"{SOURCE.relative_to(ROOT).as_posix()}#{name}",
-                    "license": "source_license_pending_manifest_confirmation",
-                    "citation_keys": "zenodo-14983287",
+                    "license": "CC-BY-4.0",
+                    "citation_keys": "reference-40;reference-41",
                 }
             )
     return pd.DataFrame(rows)
