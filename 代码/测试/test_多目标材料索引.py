@@ -15,6 +15,8 @@ def test_release():
         .all()
     )
     assert (f.objective_coverage_count == 3).sum() > 0
+    assert f.loc[f.objective_coverage_count.eq(3), "missing_objectives"].eq("").all()
+    assert f.loc[f.objective_coverage_count.eq(2), "objective_gap_count"].eq(1).all()
 
 
 def test_command():

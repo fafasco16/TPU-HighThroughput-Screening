@@ -95,7 +95,7 @@ def build_release():
                 "citation_keys": row.citation_keys,
             }
         )
-    return (
+    frame = (
         pd.DataFrame(rows)
         .sort_values(
             ["objective_coverage_count", "source_family", "material_key"],
@@ -103,6 +103,22 @@ def build_release():
         )
         .reset_index(drop=True)
     )
+    target_columns = {
+        "toughness": "has_toughness",
+        "cyclic_recovery": "has_cyclic_recovery",
+        "thermal_stability": "has_thermal_stability",
+    }
+    frame["missing_objectives"] = frame.apply(
+        lambda row: ";".join(
+            target for target, column in target_columns.items() if not row[column]
+        ),
+        axis=1,
+    )
+    frame["objective_gap_count"] = 3 - frame["objective_coverage_count"]
+    frame["completion_priority"] = frame["objective_gap_count"].map(
+        {0: "complete_three_objectives", 1: "high_complete_third_objective", 2: "medium_single_objective"}
+    )
+    return frame
 
 
 def write(f):
