@@ -117,6 +117,30 @@ SPECS = [
         "CC-BY-4.0",
         "monomer_set_hard_segment_mapped",
     ),
+    (
+        "dib_shape_memory_tensile",
+        "toughness_transfer",
+        "DataInBrief形状记忆PU拉伸端点.csv",
+        "DataInBrief形状记忆PU发布清单.json",
+        "CC-BY-4.0",
+        "monomer_set_molar_composition_mapped",
+    ),
+    (
+        "dib_shape_memory_cycle_proxy",
+        "cyclic_stress_retention_hysteresis_transfer",
+        "DataInBrief形状记忆PU循环端点.csv",
+        "DataInBrief形状记忆PU发布清单.json",
+        "CC-BY-4.0",
+        "monomer_set_molar_composition_mapped",
+    ),
+    (
+        "dib_shape_memory_thermal",
+        "thermal_stability_transfer",
+        "DataInBrief形状记忆PU热稳定端点.csv",
+        "DataInBrief形状记忆PU发布清单.json",
+        "CC-BY-4.0",
+        "monomer_set_molar_composition_mapped",
+    ),
 ]
 
 
@@ -137,6 +161,7 @@ def build_release():
         "material_code_only": 0.25,
         "commercial_identity_unresolved": 0.15,
         "monomer_set_hard_segment_mapped": 0.88,
+        "monomer_set_molar_composition_mapped": 0.92,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -147,6 +172,25 @@ def build_release():
         "material_code_only": "恢复材料代码对应配方",
         "commercial_identity_unresolved": "确认商业TPU基体身份",
         "monomer_set_hard_segment_mapped": "补Pripol 2033与HEDS逐配方精确摩尔投料和唯一结构",
+        "monomer_set_molar_composition_mapped": "补物理试样跨工作簿身份；保持交联PU迁移层边界",
+    }
+    layers = {
+        "drum_tensile": "core_tpuu_experimental",
+        "drum_cycle": "core_tpuu_experimental",
+        "drum_tga": "core_tpuu_experimental",
+        "low_ceiling_cycle": "core_tpuu_experimental",
+        "zenodo_porous": "auxiliary_experimental",
+        "figshare_healing": "core_tpu_experimental",
+        "standard_tensile": "commercial_elastomer_auxiliary",
+        "standard_tga": "commercial_elastomer_auxiliary",
+        "phcu_dual": "polyurethane_adjacent_experimental",
+        "date_seed_tga": "pu_pir_transfer",
+        "qub_self_healing_tensile": "core_tpu_experimental",
+        "qub_self_healing_cycle_proxy": "core_tpu_experimental",
+        "qub_self_healing_tga": "core_tpu_experimental",
+        "dib_shape_memory_tensile": "polyurethane_transfer",
+        "dib_shape_memory_cycle_proxy": "polyurethane_transfer",
+        "dib_shape_memory_thermal": "polyurethane_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
@@ -163,6 +207,7 @@ def build_release():
                 "row_count": len(f),
                 "material_count": f[material_col].nunique(dropna=True),
                 "mapping_tier": mapping,
+                "model_admission_layer": layers[package],
                 "mapping_completeness_score": scores[mapping],
                 "next_mapping_action": actions[mapping],
                 "expansion_priority_score": round(priority_score, 4),

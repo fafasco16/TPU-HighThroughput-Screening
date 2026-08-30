@@ -213,6 +213,9 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("QUB生物基自修复TPU拉伸端点.csv", "QUB_生物基三重自修复TPU", "toughness"),
         ("QUB生物基自修复TPU循环端点.csv", "QUB_生物基三重自修复TPU", "cyclic_recovery"),
         ("QUB生物基自修复TPUTGA端点.csv", "QUB_生物基三重自修复TPU", "thermal_stability"),
+        ("DataInBrief形状记忆PU拉伸端点.csv", "DataInBrief_聚氨酯形状记忆多模态原始数据", "toughness"),
+        ("DataInBrief形状记忆PU循环端点.csv", "DataInBrief_聚氨酯形状记忆多模态原始数据", "cyclic_recovery"),
+        ("DataInBrief形状记忆PU热稳定端点.csv", "DataInBrief_聚氨酯形状记忆多模态原始数据", "thermal_stability"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

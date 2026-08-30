@@ -1,0 +1,84 @@
+{
+  "release_id": "pu-shape-memory-dib-2020-v1",
+  "counts": {
+    "formulation_count": 12,
+    "failure_test_run_count": 37,
+    "cyclic_test_run_count": 24,
+    "measurement_cycle_endpoint_count": 240,
+    "tga_curve_count": 12,
+    "raw_source_point_rows": 975903,
+    "published_endpoint_rows": 289
+  },
+  "counting_note": "975903是来源曲线点数；发布层只保留37次失效测试、24次循环测试的240个依赖循环端点和12条TGA端点。测试运行不自动等于独立物理试样。",
+  "source": {
+    "dataset_doi": "10.1016/j.dib.2020.106294",
+    "companion_article_doi": "10.1016/j.jmbbm.2018.08.037",
+    "license": "CC-BY-4.0",
+    "inputs": [
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/内容审计摘要.json",
+        "bytes": 6681,
+        "sha256": "647450872b6b9523484a285669579d0a9a390200bba8148d12204747d66fe21d"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/来源元数据.json",
+        "bytes": 3012,
+        "sha256": "5ca5361273574ef62ab66748f3923e15b097f9962bed355406f403cbc15c7beb"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/曲线审计清单.tsv",
+        "bytes": 59668,
+        "sha256": "c886d705d1b964eed6cd72805743e41b58b4593ebc1bf8120d5e6bf130f0e82d"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/配方审计清单.tsv",
+        "bytes": 4453,
+        "sha256": "92915f38f968b44a194b2a83a8e2ffeace3a401cadd325189e018c3f1836045b"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/mmc4.xlsx",
+        "bytes": 5447590,
+        "sha256": "95602f21bead7323df157a1bcbd84d6d1c638a33ec8a53268670ef92253037ec"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/mmc6.xlsx",
+        "bytes": 41022679,
+        "sha256": "687f2837d4e4922c1a76981e031ba704c60c36de71566a85cc786f0c7f71e032"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/mmc5.txt",
+        "bytes": 275021,
+        "sha256": "8ca6f66a29ea10d8e363a983a687753238b795844a8f08cd3ea49debfbb2b044"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DataInBrief_聚氨酯形状记忆多模态原始数据/mmc2.txt",
+        "bytes": 263010,
+        "sha256": "9645491e8ccc3bb648eae032abce6bfeb0285196dbcb0ce402186964bdbaf911"
+      }
+    ]
+  },
+  "policy": {
+    "thermoplastic_tpu_core": false,
+    "model_admission_layer": "polyurethane_transfer",
+    "direct_shape_recovery_available": false,
+    "cycle_role": "stress_retention_and_hysteresis_transfer_proxy",
+    "curves_not_republished_reason": "用确定性端点代替975903行曲线长表，原始文件由SHA256和来源定位复现"
+  },
+  "outputs": {
+    "tensile": {
+      "path": "结果/定向筛选/DataInBrief形状记忆PU拉伸端点.csv",
+      "bytes": 31905,
+      "sha256": "571d066efbb571ad54953d8987aaf01087861d260d2cb5c306062a108c83f98b"
+    },
+    "cyclic": {
+      "path": "结果/定向筛选/DataInBrief形状记忆PU循环端点.csv",
+      "bytes": 243884,
+      "sha256": "ede469794b571793ea7710dbfe7bbe318d20075a9bad7ad968f715aea2a41f6e"
+    },
+    "thermal": {
+      "path": "结果/定向筛选/DataInBrief形状记忆PU热稳定端点.csv",
+      "bytes": 9205,
+      "sha256": "731fbfc6e0d3fbd0592d1c6182dafabecd47f14f86b5ce54d629b7c49b2fffe1"
+    }
+  }
+}

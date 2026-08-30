@@ -22,6 +22,9 @@ INPUTS = {
     "qub_tensile": D / "QUB生物基自修复TPU拉伸端点.csv",
     "qub_cycle": D / "QUB生物基自修复TPU循环端点.csv",
     "qub_tga": D / "QUB生物基自修复TPUTGA端点.csv",
+    "dib_tensile": D / "DataInBrief形状记忆PU拉伸端点.csv",
+    "dib_cycle": D / "DataInBrief形状记忆PU循环端点.csv",
+    "dib_tga": D / "DataInBrief形状记忆PU热稳定端点.csv",
 }
 
 
@@ -58,8 +61,22 @@ def build_release():
             "qub_cycle",
             "qub_tga",
         ),
+        (
+            "DataInBrief_交联形状记忆PU",
+            "reference-184;reference-185",
+            "monomer_set_molar_composition_mapped",
+            "dib_tensile",
+            "dib_cycle",
+            "dib_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v) for k, v in INPUTS.items()}
+    model_layers = {
+        "DRUM_TPUU_机械回收": "core_tpuu_experimental",
+        "Zenodo_标准化弹性体表征": "commercial_elastomer_auxiliary",
+        "QUB_生物基三重自修复TPU": "core_tpu_experimental",
+        "DataInBrief_交联形状记忆PU": "polyurethane_transfer",
+    }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
         for key in (tkey, ckey, hkey):
@@ -75,6 +92,8 @@ def build_release():
                 cyclic_evidence = (
                     "hysteresis_proxy_not_direct_recovery"
                     if source == "QUB_生物基三重自修复TPU"
+                    else "stress_retention_hysteresis_proxy_not_shape_recovery"
+                    if source == "DataInBrief_交联形状记忆PU"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -94,6 +113,7 @@ def build_release():
                     else "two_objectives"
                     if coverage == 2
                     else "single_objective",
+                    "model_admission_layer": model_layers[source],
                     "cyclic_evidence_level": cyclic_evidence,
                     "citation_keys": cites,
                 }
@@ -112,6 +132,7 @@ def build_release():
                 "has_thermal_stability": True,
                 "objective_coverage_count": 2,
                 "multiobjective_status": "two_objectives",
+                "model_admission_layer": "polyurethane_adjacent_experimental",
                 "cyclic_evidence_level": "not_available",
                 "citation_keys": row.citation_keys,
             }
@@ -166,6 +187,11 @@ def build_release():
     ].eq("P40-HDO")
     frame.loc[qub_hdo, "gap_evidence_status"] = "no_tga_or_cycle_for_HDO_control"
     frame.loc[qub_hdo, "gap_next_action"] = "search_article_SI_or_measure_HDO_control_thermal_and_cycles"
+    dib = frame["source_family"].eq("DataInBrief_交联形状记忆PU")
+    frame.loc[dib, "multiobjective_status"] = "three_objectives_transfer"
+    frame.loc[dib, "completion_priority"] = "complete_transfer_not_core_tpu"
+    frame.loc[dib, "gap_evidence_status"] = "three_targets_transfer_only_no_direct_shape_recovery"
+    frame.loc[dib, "gap_next_action"] = "retain_low_transfer_weight_and_search_direct_TPU_recovery"
     return frame
 
 

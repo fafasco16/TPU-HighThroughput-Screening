@@ -1,8 +1,8 @@
 {
   "counts": {
-    "material_rows": 35,
-    "two_objective_or_more": 33,
-    "three_objective": 18
+    "material_rows": 47,
+    "two_objective_or_more": 45,
+    "three_objective": 30
   },
   "inputs": {
     "drum_tensile": "0d9c116aefd50b01f472ec8b6f78dae76140947d7a795cc4d38ceb85ccb38c88",
@@ -13,7 +13,10 @@
     "phcu": "f8a2840bf35d996341fc098d9cf29aa7f76eb7d629a8dcab247e9c4b62cac5a7",
     "qub_tensile": "6400c038445d73700e0d01af1b8fd59d4b022548c7e810b0f760084393258bed",
     "qub_cycle": "a1a15089bdc79242bc69e7042bb8cb6da4af65146e3afbc6a528d22c45ea8a70",
-    "qub_tga": "6840806011c94596998c2defaf5a9847fca6dbdc6da8e17a5cda9d27982b79d0"
+    "qub_tga": "6840806011c94596998c2defaf5a9847fca6dbdc6da8e17a5cda9d27982b79d0",
+    "dib_tensile": "571d066efbb571ad54953d8987aaf01087861d260d2cb5c306062a108c83f98b",
+    "dib_cycle": "ede469794b571793ea7710dbfe7bbe318d20075a9bad7ad968f715aea2a41f6e",
+    "dib_tga": "731fbfc6e0d3fbd0592d1c6182dafabecd47f14f86b5ce54d629b7c49b2fffe1"
   },
-  "output_sha256": "2fc7cefe318319b6fe64cdbeec6ab4668d7ac38206382992465a086f339e806f"
+  "output_sha256": "fd60b8c53d740cd1ef1a3710a4fd1cf26c44006cf7d306dae8f0a214b01354a7"
 }

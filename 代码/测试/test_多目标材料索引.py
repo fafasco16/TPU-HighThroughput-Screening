@@ -27,6 +27,16 @@ def test_release():
     assert qub.loc[qub.material_key.eq("P40"), "cyclic_evidence_level"].eq(
         "hysteresis_proxy_not_direct_recovery"
     ).all()
+    dib = f.loc[f.source_family.eq("DataInBrief_交联形状记忆PU")]
+    assert len(dib) == 12
+    assert dib["objective_coverage_count"].eq(3).all()
+    assert dib["model_admission_layer"].eq("polyurethane_transfer").all()
+    assert dib["cyclic_evidence_level"].eq(
+        "stress_retention_hysteresis_proxy_not_shape_recovery"
+    ).all()
+    assert dib["chemistry_mapping_status"].eq(
+        "monomer_set_molar_composition_mapped"
+    ).all()
 
 
 def test_command():

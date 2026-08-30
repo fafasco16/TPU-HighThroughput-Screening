@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 13
+    assert len(f) == 16
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -21,6 +21,14 @@ def test_release():
         "qub_self_healing_tga",
     } <= set(f.package_id)
     assert f.loc[f.package_id.str.startswith("qub_"), "license"].eq("CC-BY-4.0").all()
+    assert {
+        "dib_shape_memory_tensile",
+        "dib_shape_memory_cycle_proxy",
+        "dib_shape_memory_thermal",
+    } <= set(f.package_id)
+    assert f.loc[
+        f.package_id.str.startswith("dib_"), "model_admission_layer"
+    ].eq("polyurethane_transfer").all()
 
 
 def test_command():
