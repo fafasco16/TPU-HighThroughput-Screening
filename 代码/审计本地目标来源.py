@@ -200,8 +200,19 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         )
     expansions = [
         ("DRUM机械回收拉伸端点.csv", "DRUM_TPUU_机械回收", "toughness"),
+        ("DRUM机械回收循环端点.csv", "DRUM_TPUU_机械回收", "cyclic_recovery"),
+        ("DRUM机械回收TGA端点.csv", "DRUM_TPUU_机械回收", "thermal_stability"),
+        ("TPUU循环端点.csv", "DRUM_TPUU_低天花板", "cyclic_recovery"),
         ("Zenodo多孔TPU拉伸端点.csv", "Zenodo_多孔导电TPU纳米复合膜", "toughness"),
         ("Figshare强韧自愈端点.csv", "Figshare_碳酸酯TPU强韧自愈", "toughness"),
+        ("标准化热塑性弹性体拉伸端点.csv", "Zenodo_标准化弹性体表征", "toughness"),
+        ("标准化热塑性弹性体TGA端点.csv", "Zenodo_标准化弹性体表征", "thermal_stability"),
+        ("PHCU双目标端点.csv", "第八批实验_非异氰酸酯PHCU热塑性聚氨酯", "toughness"),
+        ("PHCU双目标端点.csv", "第八批实验_非异氰酸酯PHCU热塑性聚氨酯", "thermal_stability"),
+        ("TGA热稳定端点.csv", "第十三批实验_日期籽油PU-PIR", "thermal_stability"),
+        ("QUB生物基自修复TPU拉伸端点.csv", "QUB_生物基三重自修复TPU", "toughness"),
+        ("QUB生物基自修复TPU循环端点.csv", "QUB_生物基三重自修复TPU", "cyclic_recovery"),
+        ("QUB生物基自修复TPUTGA端点.csv", "QUB_生物基三重自修复TPU", "thermal_stability"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename
@@ -254,6 +265,9 @@ def _audit_source(
         "formulation": context_flags["formulation"],
         "license": context_flags["license"],
     }
+    coverage = directed_coverage.get(source_dir.name, {})
+    for target in ("toughness", "cyclic_recovery", "thermal_stability"):
+        flags[target] = flags[target] or target in coverage
     target_names = [
         name
         for name in ("toughness", "cyclic_recovery", "thermal_stability")
@@ -266,7 +280,6 @@ def _audit_source(
         any(token in path.name.lower() for token in ("manifest", "readme", "来源", "审计"))
         for path in files
     )
-    coverage = directed_coverage.get(source_dir.name, {})
     score = (
         4 * len(target_names)
         + 3 * int(flags["formulation"])
@@ -291,6 +304,12 @@ def _audit_source(
         priority = "low"
         status = "reference_or_manual_review"
         next_action = "只作补充参考，除非高优先级来源仍不足"
+    if target_names and set(target_names) <= set(coverage):
+        status = "materialized_all_detected_targets"
+        next_action = "已接入；仅在补齐化学映射或新增独立模态时继续"
+    elif coverage:
+        status = "partially_materialized"
+        next_action = "保留已接入目标，仅处理尚未物化的目标信号"
     return {
         "release_id": RELEASE_ID,
         "source_directory": source_dir.name,
@@ -349,7 +368,11 @@ def _build_queue(audit: pd.DataFrame) -> pd.DataFrame:
                     "archive_file_count": record["archive_file_count"],
                     "formulation_signal": record["formulation_signal"],
                     "raw_curve_signal": record["raw_curve_signal"],
-                    "next_action": record["next_action"],
+                    "next_action": (
+                        "已接入；仅在新增独立数据或改进映射时更新"
+                        if target in existing_targets
+                        else record["next_action"]
+                    ),
                     "evidence_excerpt": record["evidence_excerpt"],
                 }
             )

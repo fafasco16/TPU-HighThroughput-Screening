@@ -1,0 +1,91 @@
+{
+  "release_id": "tpu-qub-biobased-self-healing-2024-v1",
+  "counts": {
+    "formulation_count": 4,
+    "tensile_curve_count": 41,
+    "cyclic_sequence_count": 1,
+    "dependent_cycle_count": 6,
+    "tga_curve_count": 3,
+    "curve_point_rows": 42920
+  },
+  "counting_note": "41条拉伸曲线是独立试样；6个循环来自同一P40试样，只计1个循环序列；曲线点不是独立材料或独立实验。",
+  "source": {
+    "dataset_doi": "10.17034/83fdb865-0ead-4c8b-81d2-59265a8810f3",
+    "article_doi": "10.1039/D4MA00289J",
+    "license": "CC-BY-4.0",
+    "inputs": [
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/内容审计摘要.json",
+        "bytes": 142412,
+        "sha256": "416bc583bf06bb04bfaa37049dea44c57dfeba31934b970e6b29e47336cf0a37"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/官方DataCite元数据.json",
+        "bytes": 10820,
+        "sha256": "36bee04049f7d36e3e5adf5fed8af4b5ded800e5bfbd2f157274c148cea0dac6"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 3B.csv",
+        "bytes": 25805,
+        "sha256": "9ba7c9f33731e4e9ce716c1fad34dacc1b31637611e24c2df8bdbd98f6421853"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 3C.csv",
+        "bytes": 25336,
+        "sha256": "44f8ba717579b2edcc43887e54694d234ae4ac4a9a8bc151887202ff8a8804b6"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 4A.csv",
+        "bytes": 138163,
+        "sha256": "fb4a2f9c5878f18883853eb5c508c65ca421278d9d7f992c4043605b00d8e8cd"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 4B.csv",
+        "bytes": 18728,
+        "sha256": "3068b1686f0d161a0d44ed1013b1cd4fef97f618217b2a0314157211d4864887"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 6A.csv",
+        "bytes": 135621,
+        "sha256": "d2de3ebef064f514ff99cb0f7fba8f0f632e5fea251c22fe2158eaff5a202189"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 6B.csv",
+        "bytes": 192740,
+        "sha256": "03b8a14a323079eef9f3623710c663acfd0901f16e885c4d5b3ea7fd540f1968"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 6C.csv",
+        "bytes": 133545,
+        "sha256": "62c5069ddf36ef2846fcc587e53e1d9661a17d9cec93806e66c56875eceec99f"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/QUB_生物基三重自修复TPU/解压数据_只读/MA d4ma00289j dataset/MA d4ma00289j dataset_Figure 7.csv",
+        "bytes": 77089,
+        "sha256": "9e122bb8fe23c5b541b6a68c6024aa99cd80095c132c0c1984aa0a876a350737"
+      }
+    ]
+  },
+  "outputs": {
+    "tensile": {
+      "path": "结果/定向筛选/QUB生物基自修复TPU拉伸端点.csv",
+      "bytes": 35830,
+      "sha256": "6400c038445d73700e0d01af1b8fd59d4b022548c7e810b0f760084393258bed"
+    },
+    "cyclic": {
+      "path": "结果/定向筛选/QUB生物基自修复TPU循环端点.csv",
+      "bytes": 6783,
+      "sha256": "a1a15089bdc79242bc69e7042bb8cb6da4af65146e3afbc6a528d22c45ea8a70"
+    },
+    "thermal": {
+      "path": "结果/定向筛选/QUB生物基自修复TPUTGA端点.csv",
+      "bytes": 3122,
+      "sha256": "6840806011c94596998c2defaf5a9847fca6dbdc6da8e17a5cda9d27982b79d0"
+    },
+    "curves": {
+      "path": "结果/定向筛选/QUB生物基自修复TPU曲线.csv.gz",
+      "bytes": 364562,
+      "sha256": "b8a18fa12aeb2dfe1d16ea4e98d1fb5b6c9692a339900a5835202d96d16889e3"
+    }
+  }
+}

@@ -38,6 +38,17 @@ def test_local_audit_covers_all_source_directories():
     assert audit["total_file_count"].gt(0).all()
     assert audit["inventory_fingerprint"].str.len().eq(64).all()
     assert queue["priority_score"].is_monotonic_decreasing
+    qub = queue.loc[queue.source_directory.eq("QUB_生物基三重自修复TPU")]
+    assert set(qub.target_family) == {
+        "toughness",
+        "cyclic_recovery",
+        "thermal_stability",
+    }
+    assert qub["already_in_directed_target"].all()
+    assert qub["next_action"].str.startswith("已接入").all()
+    assert audit.loc[
+        audit.source_directory.eq("QUB_生物基三重自修复TPU"), "audit_status"
+    ].eq("materialized_all_detected_targets").all()
 
 
 def test_release_and_check_command():

@@ -93,6 +93,30 @@ SPECS = [
         "CC-BY-4.0",
         "composition_series_mapped",
     ),
+    (
+        "qub_self_healing_tensile",
+        "toughness_and_self_healing",
+        "QUB生物基自修复TPU拉伸端点.csv",
+        "QUB生物基自修复TPU发布清单.json",
+        "CC-BY-4.0",
+        "monomer_set_hard_segment_mapped",
+    ),
+    (
+        "qub_self_healing_cycle_proxy",
+        "cyclic_hysteresis_proxy",
+        "QUB生物基自修复TPU循环端点.csv",
+        "QUB生物基自修复TPU发布清单.json",
+        "CC-BY-4.0",
+        "monomer_set_hard_segment_mapped",
+    ),
+    (
+        "qub_self_healing_tga",
+        "thermal_stability",
+        "QUB生物基自修复TPUTGA端点.csv",
+        "QUB生物基自修复TPU发布清单.json",
+        "CC-BY-4.0",
+        "monomer_set_hard_segment_mapped",
+    ),
 ]
 
 
@@ -112,6 +136,7 @@ def build_release():
         "formulation_code_only": 0.30,
         "material_code_only": 0.25,
         "commercial_identity_unresolved": 0.15,
+        "monomer_set_hard_segment_mapped": 0.88,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -121,6 +146,7 @@ def build_release():
         "formulation_code_only": "从正文或SI恢复组分和比例",
         "material_code_only": "恢复材料代码对应配方",
         "commercial_identity_unresolved": "确认商业TPU基体身份",
+        "monomer_set_hard_segment_mapped": "补Pripol 2033与HEDS逐配方精确摩尔投料和唯一结构",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

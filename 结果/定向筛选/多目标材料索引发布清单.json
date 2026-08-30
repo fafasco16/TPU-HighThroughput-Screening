@@ -1,8 +1,8 @@
 {
   "counts": {
-    "material_rows": 31,
-    "two_objective_or_more": 30,
-    "three_objective": 17
+    "material_rows": 35,
+    "two_objective_or_more": 33,
+    "three_objective": 18
   },
   "inputs": {
     "drum_tensile": "0d9c116aefd50b01f472ec8b6f78dae76140947d7a795cc4d38ceb85ccb38c88",
@@ -10,7 +10,10 @@
     "drum_tga": "0614873006cb59981c889d623a18d6eb8be496e8ea2b2c5b67a56b7cf0a26f80",
     "std_tensile": "f55f41f48fefb700c71dad16c1587f08748b78482c5737b782e3d9c77bac938b",
     "std_tga": "f2c9c97304565320f68e4c1c28f852f36862c184b4f8a6009640aa58fe8f0a76",
-    "phcu": "f8a2840bf35d996341fc098d9cf29aa7f76eb7d629a8dcab247e9c4b62cac5a7"
+    "phcu": "f8a2840bf35d996341fc098d9cf29aa7f76eb7d629a8dcab247e9c4b62cac5a7",
+    "qub_tensile": "6400c038445d73700e0d01af1b8fd59d4b022548c7e810b0f760084393258bed",
+    "qub_cycle": "a1a15089bdc79242bc69e7042bb8cb6da4af65146e3afbc6a528d22c45ea8a70",
+    "qub_tga": "6840806011c94596998c2defaf5a9847fca6dbdc6da8e17a5cda9d27982b79d0"
   },
-  "output_sha256": "264f3083d2bd13bd57ea03881b2e954b554ece94698e09a2fc95b2789bf9d1fd"
+  "output_sha256": "2fc7cefe318319b6fe64cdbeec6ab4668d7ac38206382992465a086f339e806f"
 }

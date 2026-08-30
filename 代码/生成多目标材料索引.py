@@ -19,6 +19,9 @@ INPUTS = {
     "std_tensile": D / "标准化热塑性弹性体拉伸端点.csv",
     "std_tga": D / "标准化热塑性弹性体TGA端点.csv",
     "phcu": D / "PHCU双目标端点.csv",
+    "qub_tensile": D / "QUB生物基自修复TPU拉伸端点.csv",
+    "qub_cycle": D / "QUB生物基自修复TPU循环端点.csv",
+    "qub_tga": D / "QUB生物基自修复TPUTGA端点.csv",
 }
 
 
@@ -47,17 +50,33 @@ def build_release():
             None,
             "std_tga",
         ),
+        (
+            "QUB_生物基三重自修复TPU",
+            "reference-182;reference-183",
+            "monomer_set_hard_segment_mapped",
+            "qub_tensile",
+            "qub_cycle",
+            "qub_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v) for k, v in INPUTS.items()}
     for source, cites, mapping, tkey, ckey, hkey in specs:
-        materials = set(frames[tkey].formulation_id) | set(frames[hkey].formulation_id)
-        if ckey:
-            materials |= set(frames[ckey].formulation_id)
+        materials = set()
+        for key in (tkey, ckey, hkey):
+            if key:
+                materials |= set(frames[key].formulation_id)
         for m in sorted(materials):
-            tc = int((frames[tkey].formulation_id == m).sum())
+            tc = int((frames[tkey].formulation_id == m).sum()) if tkey else 0
             cc = int((frames[ckey].formulation_id == m).sum()) if ckey else 0
-            hc = int((frames[hkey].formulation_id == m).sum())
+            hc = int((frames[hkey].formulation_id == m).sum()) if hkey else 0
             coverage = sum(x > 0 for x in (tc, cc, hc))
+            cyclic_evidence = "not_available"
+            if cc > 0:
+                cyclic_evidence = (
+                    "hysteresis_proxy_not_direct_recovery"
+                    if source == "QUB_生物基三重自修复TPU"
+                    else "direct_cycle_endpoint"
+                )
             rows.append(
                 {
                     "source_family": source,
@@ -75,6 +94,7 @@ def build_release():
                     else "two_objectives"
                     if coverage == 2
                     else "single_objective",
+                    "cyclic_evidence_level": cyclic_evidence,
                     "citation_keys": cites,
                 }
             )
@@ -92,6 +112,7 @@ def build_release():
                 "has_thermal_stability": True,
                 "objective_coverage_count": 2,
                 "multiobjective_status": "two_objectives",
+                "cyclic_evidence_level": "not_available",
                 "citation_keys": row.citation_keys,
             }
         )
@@ -135,6 +156,16 @@ def build_release():
     thermal_only = frame["material_key"].eq("PMCL-1k-44HS")
     frame.loc[thermal_only, "gap_evidence_status"] = "no_exact_matching_mechanical_formulation"
     frame.loc[thermal_only, "gap_next_action"] = "do_not_merge_with_PMCL_1k_46HS_search_exact_mechanical_match"
+    qub_missing_cycle = frame["source_family"].eq("QUB_生物基三重自修复TPU") & frame[
+        "material_key"
+    ].isin(["P35", "P45"])
+    frame.loc[qub_missing_cycle, "gap_evidence_status"] = "no_direct_cycle_for_exact_formulation"
+    frame.loc[qub_missing_cycle, "gap_next_action"] = "search_or_measure_exact_formulation_cycles"
+    qub_hdo = frame["source_family"].eq("QUB_生物基三重自修复TPU") & frame[
+        "material_key"
+    ].eq("P40-HDO")
+    frame.loc[qub_hdo, "gap_evidence_status"] = "no_tga_or_cycle_for_HDO_control"
+    frame.loc[qub_hdo, "gap_next_action"] = "search_article_SI_or_measure_HDO_control_thermal_and_cycles"
     return frame
 
 
