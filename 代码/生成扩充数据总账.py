@@ -229,6 +229,22 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_foam_grade_density_mapped",
     ),
+    (
+        "tpu1301_tensile_application",
+        "toughness_application",
+        "TPU1301拉伸端点.csv",
+        "TPU1301机械代理发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
+    (
+        "tpu1301_relaxation_proxy",
+        "stress_relaxation_recovery_proxy",
+        "TPU1301应力松弛端点.csv",
+        "TPU1301机械代理发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
 ]
 
 
@@ -298,6 +314,8 @@ def build_release():
         "tpu95a_load_extension_auxiliary": "core_tpu_application_experimental",
         "tpu95a_relaxation_proxy": "core_tpu_application_experimental",
         "pcf20_foam_tension_fracture": "polyurethane_foam_transfer",
+        "tpu1301_tensile_application": "core_tpu_application_experimental",
+        "tpu1301_relaxation_proxy": "core_tpu_application_experimental",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

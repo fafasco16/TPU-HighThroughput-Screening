@@ -114,6 +114,11 @@ def test_local_audit_covers_all_source_directories():
         foam.target_family.eq("cyclic_recovery"),
         "already_in_directed_target",
     ].any()
+    tpu1301 = queue.loc[
+        queue.source_directory.eq("Zenodo_TPU1301热黏弹黏塑本构")
+    ]
+    assert set(tpu1301.target_family) == {"toughness", "cyclic_recovery"}
+    assert tpu1301["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

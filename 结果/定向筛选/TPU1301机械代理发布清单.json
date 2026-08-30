@@ -1,0 +1,28 @@
+{
+  "release_id": "tpu1301_mechanical_proxy_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.15370425",
+    "article_doi": "10.1016/j.ijsolstr.2025.113517",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "988c4d2f972582b98be2d40e3ebc0d76538330ff9059aaff3f885d322cfec7ee"
+  },
+  "counts": {
+    "material_grade_count": 1,
+    "tensile_run_count": 17,
+    "relaxation_run_count": 3,
+    "quarantined_identity_conflict_count": 1,
+    "source_point_count": 92351,
+    "published_compact_row_count": 20
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "quarantined_member": "Relaxation_7H_1E-1_RT_TPU.csv",
+    "quarantine_reason": "filename_7H_embedded_specimen_label_6V",
+    "material_count_rule": "one_commercial_grade_many_runs_and_conditions",
+    "relaxation_is_proxy_not_direct_cycles": true
+  },
+  "outputs": {
+    "TPU1301拉伸端点.csv": "8f131b97bf2b5b8d5e40732b16f08537e9095a5dadbae8193c810409a022d986",
+    "TPU1301应力松弛端点.csv": "1a85fb549c98d6e6f41f421605e8f68caecd0afd9d3a5e237a7b887615649dec"
+  }
+}

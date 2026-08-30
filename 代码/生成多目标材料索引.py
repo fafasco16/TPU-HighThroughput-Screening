@@ -38,6 +38,8 @@ INPUTS = {
     "tpu95a_tensile": D / "TPU95A载荷伸长端点.csv",
     "tpu95a_relaxation": D / "TPU95A应力松弛端点.csv",
     "pcf20_foam": D / "PCF20泡沫拉伸断裂端点.csv",
+    "tpu1301_tensile": D / "TPU1301拉伸端点.csv",
+    "tpu1301_relaxation": D / "TPU1301应力松弛端点.csv",
 }
 
 
@@ -90,6 +92,14 @@ def build_release():
             "dib_cycle",
             "dib_tga",
         ),
+        (
+            "Zenodo_TPU1301热黏弹黏塑本构",
+            "reference-38;reference-39",
+            "commercial_grade_identity_only",
+            "tpu1301_tensile",
+            "tpu1301_relaxation",
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -103,6 +113,9 @@ def build_release():
         "Zenodo_标准化弹性体表征": "commercial_elastomer_auxiliary",
         "QUB_生物基三重自修复TPU": "core_tpu_experimental",
         "DataInBrief_交联形状记忆PU": "polyurethane_transfer",
+        "Zenodo_TPU1301热黏弹黏塑本构": (
+            "core_tpu_application_experimental"
+        ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -122,7 +135,11 @@ def build_release():
                     else "stress_retention_hysteresis_proxy_not_shape_recovery"
                     if source == "DataInBrief_交联形状记忆PU"
                     else "stress_relaxation_proxy_not_direct_cycles"
-                    if source == "Zenodo_标准化弹性体表征"
+                    if source
+                    in {
+                        "Zenodo_标准化弹性体表征",
+                        "Zenodo_TPU1301热黏弹黏塑本构",
+                    }
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -150,6 +167,8 @@ def build_release():
                         if source == "DataInBrief_交联形状记忆PU"
                         else "direct_tensile_curve_area_auxiliary"
                         if source == "Zenodo_标准化弹性体表征"
+                        else "direct_tensile_curve_area_application"
+                        if source == "Zenodo_TPU1301热黏弹黏塑本构"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -445,6 +464,15 @@ def build_release():
     )
     frame.loc[foam, "gap_next_action"] = (
         "retain_as_transfer_and_do_not_seek_TPU_core_completion"
+    )
+    tpu1301 = frame["source_family"].eq(
+        "Zenodo_TPU1301热黏弹黏塑本构"
+    )
+    frame.loc[tpu1301, "gap_evidence_status"] = (
+        "direct_tensile_and_relaxation_proxy_no_TGA"
+    )
+    frame.loc[tpu1301, "gap_next_action"] = (
+        "retain_application_proxy_and_search_exact_grade_TGA"
     )
     return frame
 

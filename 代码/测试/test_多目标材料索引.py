@@ -137,6 +137,18 @@ def test_release():
     assert foam.iloc[0].toughness_evidence_level == (
         "direct_tensile_area_and_SENB_nominal_K_foam_transfer"
     )
+    tpu1301 = f.loc[
+        f.source_family.eq("Zenodo_TPU1301热黏弹黏塑本构")
+    ]
+    assert len(tpu1301) == 1
+    assert tpu1301.iloc[0].material_key == "EOS TPU 1301"
+    assert tpu1301.iloc[0].objective_coverage_count == 2
+    assert tpu1301.iloc[0].model_admission_layer == (
+        "core_tpu_application_experimental"
+    )
+    assert tpu1301.iloc[0].cyclic_evidence_level == (
+        "stress_relaxation_proxy_not_direct_cycles"
+    )
 
 
 def test_command():
