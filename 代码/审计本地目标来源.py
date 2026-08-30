@@ -224,6 +224,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("IIR-OH聚氨酯循环端点.csv", "第十八批实验_IIR-OH聚氨酯", "cyclic_recovery"),
         ("IIR-OH聚氨酯水解保持端点.csv", "第十八批实验_IIR-OH聚氨酯", "cyclic_recovery"),
         ("IIR-OH聚氨酯水解保持端点.csv", "第十八批实验_IIR-OH聚氨酯", "toughness"),
+        ("TPU95A应力松弛端点.csv", "Mendeley_TPU95A_TPMS应变率力学", "cyclic_recovery"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

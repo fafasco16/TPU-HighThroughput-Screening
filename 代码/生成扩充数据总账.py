@@ -189,6 +189,22 @@ SPECS = [
         "CC-BY-4.0",
         "polymer_family_diisocyanate_code_mapped",
     ),
+    (
+        "tpu95a_load_extension_auxiliary",
+        "load_extension_auxiliary_not_toughness",
+        "TPU95A载荷伸长端点.csv",
+        "TPU95A力学代理发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
+    (
+        "tpu95a_relaxation_proxy",
+        "stress_relaxation_recovery_proxy",
+        "TPU95A应力松弛端点.csv",
+        "TPU95A力学代理发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
 ]
 
 
@@ -251,6 +267,8 @@ def build_release():
         "tecoflex_nic_multiperformance": "core_tpu_composite_experimental",
         "iir_oh_100cycle_endpoints": "polyurethane_adjacent_experimental",
         "iir_oh_hydrolytic_retention": "polyurethane_adjacent_experimental",
+        "tpu95a_load_extension_auxiliary": "core_tpu_application_experimental",
+        "tpu95a_relaxation_proxy": "core_tpu_application_experimental",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
@@ -277,6 +295,11 @@ def build_release():
                 "material_count": f[material_col].nunique(dropna=True),
                 "mapping_tier": mapping,
                 "model_admission_layer": layers[package],
+                "source_independence_status": (
+                    "historical_mirror_rematerialized_zero_new_source"
+                    if package.startswith("tpu95a_")
+                    else "governed_materialization"
+                ),
                 "mapping_completeness_score": scores[mapping],
                 "next_mapping_action": actions[mapping],
                 "expansion_priority_score": round(priority_score, 4),

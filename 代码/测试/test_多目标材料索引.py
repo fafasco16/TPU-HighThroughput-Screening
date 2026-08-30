@@ -98,6 +98,16 @@ def test_release():
     assert iir["toughness_evidence_level"].eq(
         "hydrolytic_pair_before_curve_area"
     ).all()
+    tpu95a = f.loc[f.source_family.eq("Mendeley_eSUN_eTPU95A")]
+    assert len(tpu95a) == 1
+    assert tpu95a.iloc[0].material_key == "eSUN eTPU-95A"
+    assert tpu95a.iloc[0].objective_coverage_count == 1
+    assert tpu95a.iloc[0].cyclic_evidence_level == (
+        "stress_relaxation_transfer_proxy_historical_mirror"
+    )
+    assert tpu95a.iloc[0].model_admission_layer == (
+        "core_tpu_application_experimental"
+    )
 
 
 def test_command():

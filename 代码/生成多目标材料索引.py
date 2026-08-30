@@ -31,6 +31,8 @@ INPUTS = {
     "tecoflex_nic": D / "Tecoflex药物复合TPU多性能端点.csv",
     "iir_cyclic": D / "IIR-OH聚氨酯循环端点.csv",
     "iir_aging": D / "IIR-OH聚氨酯水解保持端点.csv",
+    "tpu95a_tensile": D / "TPU95A载荷伸长端点.csv",
+    "tpu95a_relaxation": D / "TPU95A应力松弛端点.csv",
 }
 
 
@@ -271,6 +273,34 @@ def build_release():
                 "citation_keys": "reference-190;reference-191",
             }
         )
+    tpu95a_relaxation = frames["tpu95a_relaxation"]
+    tpu95a_tensile = frames["tpu95a_tensile"]
+    rows.append(
+        {
+            "source_family": "Mendeley_eSUN_eTPU95A",
+            "material_key": "eSUN eTPU-95A",
+            "chemistry_mapping_status": "commercial_grade_identity_only",
+            "toughness_record_count": 0,
+            "cyclic_record_count": len(tpu95a_relaxation),
+            "thermal_record_count": 0,
+            "has_toughness": False,
+            "has_cyclic_recovery": True,
+            "has_thermal_stability": False,
+            "objective_coverage_count": 1,
+            "multiobjective_status": "single_objective_relaxation_proxy",
+            "model_admission_layer": "core_tpu_application_experimental",
+            "toughness_evidence_level": "load_extension_auxiliary_not_toughness",
+            "thermal_evidence_level": "not_available",
+            "cyclic_evidence_level": (
+                "stress_relaxation_transfer_proxy_historical_mirror"
+            ),
+            "source_independence_status": (
+                "historical_mirror_rematerialized_zero_new_source"
+            ),
+            "auxiliary_tensile_run_count": len(tpu95a_tensile),
+            "citation_keys": "reference-192",
+        }
+    )
     frame = (
         pd.DataFrame(rows)
         .sort_values(
@@ -351,6 +381,13 @@ def build_release():
     )
     frame.loc[iir, "gap_next_action"] = (
         "search_exact_formulation_TGA_and_close_numeric_code_semantics"
+    )
+    tpu95a = frame["source_family"].eq("Mendeley_eSUN_eTPU95A")
+    frame.loc[tpu95a, "gap_evidence_status"] = (
+        "relaxation_proxy_only_no_absolute_tensile_stress_or_TGA"
+    )
+    frame.loc[tpu95a, "gap_next_action"] = (
+        "resolve_cross_section_or_find_stress_curve_and_exact_grade_TGA"
     )
     return frame
 

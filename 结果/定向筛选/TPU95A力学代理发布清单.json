@@ -1,0 +1,98 @@
+{
+  "release_id": "esun-etpu95a-mechanical-proxy-2026-v1",
+  "counts": {
+    "material_grade_count": 1,
+    "tensile_run_count": 3,
+    "tensile_source_point_count": 15468,
+    "relaxation_run_count": 6,
+    "relaxation_source_point_count": 21232,
+    "published_compact_row_count": 9,
+    "incremental_scientific_sample_contribution": 0
+  },
+  "source": {
+    "dataset_doi": "10.17632/mc6zh4cwhf.2",
+    "license": "CC-BY-4.0",
+    "metadata": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/官方DataCite元数据.json",
+      "bytes": 6031,
+      "sha256": "8f9dee812d3ee3044a4bd57b8d5a52c2bb72b520a76bdd7cc1e9539aff939d5f"
+    },
+    "source_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/内容审计摘要.json",
+      "bytes": 39800,
+      "sha256": "3ad8b330edec98c5b84560460515a2125a0003bd3f56f6ac02c5cbe711882624"
+    },
+    "curve_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/曲线解析清单.tsv",
+      "bytes": 18310,
+      "sha256": "b67c29374cec28083f059ab9d6aa25b60a49fb23eb1154454c2c7118a73a51db"
+    },
+    "experimental_files": [
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/拉伸/sample1.csv",
+        "bytes": 399826,
+        "sha256": "e57410fca8f05a3998008a7609c593be33ddda586a6e6a60b7417a1f871fedf6"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/拉伸/sample2.csv",
+        "bytes": 390536,
+        "sha256": "5963c3848d5e97c6cf09f4184b3dac02a1b4af19e86ddc1c6b94b6f9cd87e91f"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/拉伸/sample3.csv",
+        "bytes": 394456,
+        "sha256": "171717725429c687393e495ab10db834000f345394e99279244a585d9d51b43e"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/松弛/Strain0_1_sample1.csv",
+        "bytes": 233771,
+        "sha256": "48bc185bd79003f20dd40cbe9a77875fb2996b5fcfc2eb848a4e8ae7fa6a51d2"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/松弛/Strain0_1_sample2.csv",
+        "bytes": 234310,
+        "sha256": "cfa95706eb38469e177982645dc2eef2e3b2b5c61dbcbbf06e7ef83da36c3bb3"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/松弛/Strain0_1_sample3.csv",
+        "bytes": 234388,
+        "sha256": "3cc9bb45545133c4e042544d33647ddb572a32a74e56c485e4d4ecd1a8e0202e"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/松弛/Strain0_2_sample1.csv",
+        "bytes": 465187,
+        "sha256": "6fe1602409da6c82c131d3c66d2e039c2b73b9b0435f918f21427bfabe018e5a"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/松弛/Strain0_2_sample2.csv",
+        "bytes": 234773,
+        "sha256": "6e6c54ddcdfcec3bc6702ff0cf2738301bd4561924239e220e1c3da74cf278a0"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Mendeley_TPU95A_TPMS应变率力学/实验文件/松弛/Strain0_2_sample3.csv",
+        "bytes": 234635,
+        "sha256": "ac3ef57b2fcb990f43516c01d07e2b66b761757929ada2cd4eaa7a0bdc1b0f0b"
+      }
+    ]
+  },
+  "policy": {
+    "historical_mirror_rematerialized": true,
+    "raw_curves_republished": false,
+    "independent_new_source_claimed": false,
+    "absolute_tensile_toughness_available": false,
+    "stress_relaxation_is_recovery_proxy_not_direct_cycle": true,
+    "compression_curves_deferred_as_non_target_duplicate": true
+  },
+  "outputs": {
+    "tensile": {
+      "path": "结果/定向筛选/TPU95A载荷伸长端点.csv",
+      "bytes": 2774,
+      "sha256": "d9b4617d1a397275c6be397650a123fec247b64cc6e0d2a0c5d05de981c13196"
+    },
+    "relaxation": {
+      "path": "结果/定向筛选/TPU95A应力松弛端点.csv",
+      "bytes": 5732,
+      "sha256": "b4d1c0e46e0786169dddb30ce766b10043ca6fb389032c82a95f1854c91594cb"
+    }
+  }
+}

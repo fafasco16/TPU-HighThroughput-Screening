@@ -73,6 +73,18 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(iir.target_family) == {"toughness", "cyclic_recovery"}
     assert iir["already_in_directed_target"].all()
+    tpu95a = queue.loc[
+        queue.source_directory.eq("Mendeley_TPU95A_TPMS应变率力学")
+    ]
+    assert set(tpu95a.target_family) == {"toughness", "cyclic_recovery"}
+    assert tpu95a.loc[
+        tpu95a.target_family.eq("cyclic_recovery"),
+        "already_in_directed_target",
+    ].all()
+    assert not tpu95a.loc[
+        tpu95a.target_family.eq("toughness"),
+        "already_in_directed_target",
+    ].any()
 
 
 def test_release_and_check_command():

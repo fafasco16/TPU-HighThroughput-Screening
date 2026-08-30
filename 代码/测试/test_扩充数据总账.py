@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 22
+    assert len(f) == 24
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -59,6 +59,14 @@ def test_release():
     assert f.loc[
         f.package_id.str.startswith("iir_oh_"), "model_admission_layer"
     ].eq("polyurethane_adjacent_experimental").all()
+    assert {
+        "tpu95a_load_extension_auxiliary",
+        "tpu95a_relaxation_proxy",
+    } <= set(f.package_id)
+    mirrors = f.loc[f.package_id.str.startswith("tpu95a_")]
+    assert mirrors["source_independence_status"].eq(
+        "historical_mirror_rematerialized_zero_new_source"
+    ).all()
 
 
 def test_command():

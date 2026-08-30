@@ -1,6 +1,6 @@
 {
   "counts": {
-    "material_rows": 61,
+    "material_rows": 62,
     "two_objective_or_more": 56,
     "three_objective": 30
   },
@@ -22,7 +22,9 @@
     "elastollan_pcl_shape_memory": "118d99d0a956f05157a0e959ba8711c68efedae8712bcc8510ad04842dc95d91",
     "tecoflex_nic": "0fa9858bf742959410f08b2893967eff81ec5d251c7b739b53d22a61b83c2509",
     "iir_cyclic": "cc759e16d700ef20797734e9f6a508408b7acc36a13675d72af7fa2de488b231",
-    "iir_aging": "a7493737c98531668fccf0d344f6e53536b8e6c33ed6bc124c9703518a74780e"
+    "iir_aging": "a7493737c98531668fccf0d344f6e53536b8e6c33ed6bc124c9703518a74780e",
+    "tpu95a_tensile": "d9b4617d1a397275c6be397650a123fec247b64cc6e0d2a0c5d05de981c13196",
+    "tpu95a_relaxation": "b4d1c0e46e0786169dddb30ce766b10043ca6fb389032c82a95f1854c91594cb"
   },
-  "output_sha256": "1276fdbdc1b2a52133531f4b8b46e99c34c29e04e9ab748b865a3c4d48040cc2"
+  "output_sha256": "1f5200ccca55585c9867918e6f3462ce3173f5155e8e32aaa31a46c1564206e0"
 }
