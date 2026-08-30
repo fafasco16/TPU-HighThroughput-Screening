@@ -1,6 +1,10 @@
 {
   "counts": {
     "commercial_component_rows": 24,
+    "computational_evidence_hard_groups": 8098,
+    "computational_evidence_property_count": 14,
+    "computational_evidence_rows": 49085,
+    "computational_evidence_unique_observations": 40942,
     "objective_count": 5,
     "realistic_formulation_rows": 980,
     "target_family_count": 3,
@@ -19,6 +23,11 @@
       "path": "结果/可用数据集/实验观测.csv.gz",
       "sha256": "4c943e96c247276a6d00ecf007fc7bfd4e706698e5ca8db112b035921c06b3f3"
     },
+    "可用计算观测": {
+      "bytes": 47203198,
+      "path": "结果/可用数据集/计算观测.csv.gz",
+      "sha256": "0c8f5888034ca2d746063539a8780df284d6697e44b0ba71c698eaecfbba6918"
+    },
     "商用构件证据": {
       "bytes": 11398,
       "path": "候选/商用构件证据.csv",
@@ -36,10 +45,15 @@
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
       "sha256": "f0a7b0fc02447ac1944cc4cc187cba6a1a821773d520d487b7b6d629cb694289"
     },
+    "三目标计算证据": {
+      "bytes": 4191123,
+      "path": "结果/定向筛选/三目标计算证据.csv.gz",
+      "sha256": "8ca0ce709679a38a9141834b8c8806e0cd6f668ed307b8a6f283e36d57e61395"
+    },
     "使用说明": {
-      "bytes": 3059,
+      "bytes": 3513,
       "path": "结果/定向筛选/README.md",
-      "sha256": "02aa5d8808a28b49230e5619de74ea1f38f981d5c078e4c8fbb663db4fceb2b1"
+      "sha256": "fbe9ad3d93a6467f91c771efb6129b943b626738f30c7789b006818b37ff949e"
     },
     "现实构件约束": {
       "bytes": 14059,
@@ -57,12 +71,23 @@
       "sha256": "ba161480544a53accd3eef996cb7b0140b5a122fe055ad07df7079e548f4dc76"
     },
     "筛选任务清单": {
-      "bytes": 1592,
+      "bytes": 1808,
       "path": "结果/定向筛选/筛选任务清单.csv",
-      "sha256": "73f65af50eaebd50aaa91764b2b20939e278e12df6f9304cab87d27eb4f4e294"
+      "sha256": "f8bba3370f197fdafcff3f657b224cd1442048b6765ce0ed162f650681c62b8d"
+    },
+    "计算证据审计": {
+      "bytes": 3300,
+      "path": "结果/定向筛选/计算证据审计.csv",
+      "sha256": "6eda5f20b2b013afe6b021c2be095b3665dda9fcea1dd9a24fe49f7d488b1aca"
     }
   },
   "policy": {
+    "computational_evidence_roles": [
+      "direct_low_fidelity_target",
+      "transfer_low_fidelity_target",
+      "process_response_proxy",
+      "mechanistic_proxy"
+    ],
     "deterministic_constraints": [
       "cost",
       "environment"

@@ -8,6 +8,7 @@ import json
 import tempfile
 from pathlib import Path
 
+import duckdb
 import pandas as pd
 
 
@@ -18,6 +19,7 @@ SCHEMA_VERSION = "1.0.0"
 
 INPUT_PATHS = {
     "可用实验观测": ROOT / "结果" / "可用数据集" / "实验观测.csv.gz",
+    "可用计算观测": ROOT / "结果" / "可用数据集" / "计算观测.csv.gz",
     "Gold-E参考表": ROOT / "结果" / "Gold_E_实验表格.csv.gz",
     "商用构件证据": ROOT / "候选" / "商用构件证据.csv",
     "实验合理组合": ROOT / "候选" / "实验合理组合.csv",
@@ -27,6 +29,8 @@ OUTPUT_FILENAMES = {
     "使用说明": "README.md",
     "三目标实验标签": "三目标实验标签.csv.gz",
     "目标标签审计": "目标标签审计.csv",
+    "三目标计算证据": "三目标计算证据.csv.gz",
+    "计算证据审计": "计算证据审计.csv",
     "现实构件约束": "现实构件约束.csv",
     "现实配方候选": "现实配方候选.csv",
     "筛选任务清单": "筛选任务清单.csv",
@@ -76,6 +80,48 @@ PROPERTY_RULES: dict[str, tuple[str, str]] = {
     ),
 }
 
+COMPUTATIONAL_RULES: dict[str, list[tuple[str, str]]] = {
+    "compression_energy_density_to_max_observed_log_strain": [
+        ("toughness", "process_response_proxy")
+    ],
+    "maximum_observed_mises_stress": [
+        ("toughness", "process_response_proxy")
+    ],
+    "mises_stress_at_compressive_log_strain_0_1": [
+        ("toughness", "process_response_proxy")
+    ],
+    "mises_stress_at_compressive_log_strain_0_5": [
+        ("toughness", "process_response_proxy")
+    ],
+    "mises_stress_at_compressive_log_strain_1_0": [
+        ("toughness", "process_response_proxy")
+    ],
+    "tensile_strength": [("toughness", "low_fidelity_target")],
+    "bulk_modulus": [("toughness", "mechanistic_proxy")],
+    "isentropic_bulk_modulus": [("toughness", "mechanistic_proxy")],
+    "cohesive_energy_per_chain": [
+        ("toughness", "mechanistic_proxy"),
+        ("cyclic_recovery", "mechanistic_proxy"),
+        ("thermal_stability", "mechanistic_proxy"),
+    ],
+    "density": [
+        ("toughness", "mechanistic_proxy"),
+        ("cyclic_recovery", "mechanistic_proxy"),
+    ],
+    "Density": [
+        ("toughness", "mechanistic_proxy"),
+        ("cyclic_recovery", "mechanistic_proxy"),
+    ],
+    "mass_density": [
+        ("toughness", "mechanistic_proxy"),
+        ("cyclic_recovery", "mechanistic_proxy"),
+    ],
+    "residual_reactive_sites": [
+        ("cyclic_recovery", "mechanistic_proxy")
+    ],
+    "Tg": [("thermal_stability", "low_fidelity_target")],
+}
+
 PRIMARY_ROLES = {
     "primary_direct_scalar",
     "primary_conditioned_scalar",
@@ -87,6 +133,12 @@ def classify_property(name: str) -> tuple[str, str] | None:
     """返回性质所属目标及监督角色；无关性质返回None。"""
 
     return PROPERTY_RULES.get(name)
+
+
+def classify_computational_property(name: str) -> list[tuple[str, str]]:
+    """返回计算性质可支持的目标和证据角色。"""
+
+    return COMPUTATIONAL_RULES.get(name, [])
 
 
 def _sha256(path: Path) -> str:
@@ -282,6 +334,168 @@ def _build_audit(labels: pd.DataFrame) -> pd.DataFrame:
     ).reset_index(drop=True)
 
 
+def _computational_mapping_scope(status: pd.Series) -> pd.Series:
+    text = status.fillna("").astype(str).str.lower()
+    result = pd.Series("family_or_unresolved", index=status.index, dtype="object")
+    result.loc[text.str.contains("exact_polymer_smiles|rdkit_validated")] = (
+        "exact_structure"
+    )
+    result.loc[text.str.contains("formulation_label")] = "formulation_level"
+    result.loc[text.str.contains("single_nominal_formulation")] = (
+        "single_formulation_process_only"
+    )
+    result.loc[text.str.contains("coarse_grained_component_family")] = (
+        "coarse_grained_family"
+    )
+    return result
+
+
+def _computational_system_relevance(frame: pd.DataFrame) -> pd.Series:
+    role = frame["target_role"].fillna("").astype(str)
+    source = frame["source_id"].fillna("").astype(str)
+    result = pd.Series("polymer_transfer", index=frame.index, dtype="object")
+    result.loc[role.str.contains("tpu_core", case=False)] = "tpu_core"
+    result.loc[source.eq("source_figshare_ma5c03283_si")] = (
+        "pu_family_multiscale"
+    )
+    result.loc[source.eq("ledger_source_106")] = "tpu_formulation_mechanistic"
+    result.loc[source.eq("source_mendeley_n9h66xjk7y_v1")] = (
+        "single_pu_formulation_process_space"
+    )
+    return result
+
+
+def _build_computational_evidence(path: Path) -> pd.DataFrame:
+    properties = sorted(COMPUTATIONAL_RULES)
+    query = """
+        SELECT *
+        FROM read_csv_auto(?, all_varchar=false)
+        WHERE model_ready
+          AND property_name IN (SELECT unnest(?))
+    """
+    computed = duckdb.connect().execute(query, [str(path), properties]).df()
+    if computed.empty:
+        raise ValueError("没有找到三目标可用计算证据")
+
+    expanded: list[pd.DataFrame] = []
+    for property_name, rules in COMPUTATIONAL_RULES.items():
+        source = computed[computed["property_name"].eq(property_name)]
+        for target_family, metric_role in rules:
+            part = source.copy()
+            part["target_family"] = target_family
+            part["computational_metric_role"] = metric_role
+            expanded.append(part)
+    evidence = pd.concat(expanded, ignore_index=True)
+    evidence["mapping_scope"] = _computational_mapping_scope(
+        evidence["structure_identity_status"]
+    )
+    evidence["system_relevance"] = _computational_system_relevance(evidence)
+    evidence["evidence_role"] = evidence["computational_metric_role"]
+    low_fidelity = evidence["computational_metric_role"].eq("low_fidelity_target")
+    direct_domain = evidence["system_relevance"].isin(
+        ["tpu_core", "pu_family_multiscale", "tpu_formulation_mechanistic"]
+    )
+    evidence.loc[low_fidelity & direct_domain, "evidence_role"] = (
+        "direct_low_fidelity_target"
+    )
+    evidence.loc[low_fidelity & ~direct_domain, "evidence_role"] = (
+        "transfer_low_fidelity_target"
+    )
+    evidence["allowed_use"] = evidence["evidence_role"].map(
+        {
+            "direct_low_fidelity_target": "multifidelity_auxiliary_target",
+            "transfer_low_fidelity_target": "representation_pretraining_only",
+            "process_response_proxy": "within_system_process_proxy_only",
+            "mechanistic_proxy": "feature_or_residual_model_only",
+        }
+    )
+    evidence["calibration_requirement"] = evidence["evidence_role"].map(
+        {
+            "direct_low_fidelity_target": (
+                "与同定义实验端点配对后做残差或多保真校准"
+            ),
+            "transfer_low_fidelity_target": (
+                "仅预训练或迁移；不得直接给TPU候选定量排名"
+            ),
+            "process_response_proxy": (
+                "只在同一名义配方和工况域内训练过程代理"
+            ),
+            "mechanistic_proxy": (
+                "作为结构/配方特征；不得替代宏观实验真值"
+            ),
+        }
+    )
+    priority = [
+        "release_id",
+        "target_family",
+        "evidence_role",
+        "computational_metric_role",
+        "property_name",
+        "value",
+        "unit",
+        "method_family",
+        "method_detail",
+        "source_id",
+        "source_family_id",
+        "observation_id",
+        "canonical_structure",
+        "system_identity",
+        "mapping_scope",
+        "system_relevance",
+        "allowed_use",
+        "calibration_requirement",
+        "independent_unit",
+        "leakage_group",
+        "usage_mode",
+        "recommended_loss_weight",
+        "development_split",
+        "source_holdout_fold",
+        "source_locator",
+        "citation_keys",
+    ]
+    remaining = [column for column in evidence.columns if column not in priority]
+    return evidence[priority + remaining].sort_values(
+        [
+            "target_family",
+            "property_name",
+            "source_id",
+            "observation_id",
+            "evidence_role",
+        ],
+        kind="mergesort",
+    ).reset_index(drop=True)
+
+
+def _build_computational_audit(evidence: pd.DataFrame) -> pd.DataFrame:
+    rows: list[dict[str, object]] = []
+    keys = [
+        "target_family",
+        "property_name",
+        "evidence_role",
+        "method_family",
+        "system_relevance",
+        "allowed_use",
+    ]
+    for values, group in evidence.groupby(keys, dropna=False, sort=True):
+        row = dict(zip(keys, values, strict=True))
+        row.update(
+            {
+                "row_count": len(group),
+                "source_count": group["source_id"].nunique(),
+                "independent_unit_count": _nunique_nonblank(
+                    group["independent_unit"]
+                ),
+                "hard_group_count": _nunique_nonblank(group["leakage_group"]),
+                "structure_count": _nunique_nonblank(
+                    group["canonical_structure"]
+                ),
+                "system_count": _nunique_nonblank(group["system_identity"]),
+            }
+        )
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
 def _build_components(source: pd.DataFrame) -> pd.DataFrame:
     components = source.copy()
     components["price_currency"] = pd.NA
@@ -329,7 +543,10 @@ def _build_formulations(source: pd.DataFrame) -> pd.DataFrame:
     return formulations
 
 
-def _build_tasks(labels: pd.DataFrame) -> pd.DataFrame:
+def _build_tasks(
+    labels: pd.DataFrame,
+    computational: pd.DataFrame,
+) -> pd.DataFrame:
     definitions = [
         {
             "objective_id": "toughness",
@@ -413,18 +630,59 @@ def _build_tasks(labels: pd.DataFrame) -> pd.DataFrame:
         )
     summary = pd.DataFrame(summaries)
     tasks = tasks.merge(summary, on="objective_id", how="left")
+    computational_summaries = []
+    for family in ["toughness", "cyclic_recovery", "thermal_stability"]:
+        group = computational[computational["target_family"].eq(family)]
+        direct = group[
+            group["evidence_role"].eq("direct_low_fidelity_target")
+        ]
+        mechanistic = group[group["evidence_role"].eq("mechanistic_proxy")]
+        process = group[group["evidence_role"].eq("process_response_proxy")]
+        computational_summaries.append(
+            {
+                "objective_id": family,
+                "computational_evidence_rows": len(group),
+                "computational_hard_groups": _nunique_nonblank(
+                    group["leakage_group"]
+                ),
+                "direct_low_fidelity_hard_groups": _nunique_nonblank(
+                    direct["leakage_group"]
+                ),
+                "mechanistic_proxy_hard_groups": _nunique_nonblank(
+                    mechanistic["leakage_group"]
+                ),
+                "process_proxy_hard_groups": _nunique_nonblank(
+                    process["leakage_group"]
+                ),
+            }
+        )
+    tasks = tasks.merge(
+        pd.DataFrame(computational_summaries),
+        on="objective_id",
+        how="left",
+    )
     tasks[[
         "current_rows",
         "current_sources",
         "current_formulation_groups",
         "current_primary_formulation_groups",
         "current_chemistry_closed_groups",
+        "computational_evidence_rows",
+        "computational_hard_groups",
+        "direct_low_fidelity_hard_groups",
+        "mechanistic_proxy_hard_groups",
+        "process_proxy_hard_groups",
     ]] = tasks[[
         "current_rows",
         "current_sources",
         "current_formulation_groups",
         "current_primary_formulation_groups",
         "current_chemistry_closed_groups",
+        "computational_evidence_rows",
+        "computational_hard_groups",
+        "direct_low_fidelity_hard_groups",
+        "mechanistic_proxy_hard_groups",
+        "process_proxy_hard_groups",
     ]].fillna(0).astype(int)
     tasks["readiness_status"] = "rule_data_missing"
     model_task = tasks["objective_type"].eq("single_task_model")
@@ -451,12 +709,15 @@ def build_release() -> dict[str, pd.DataFrame]:
     formulations = pd.read_csv(INPUT_PATHS["实验合理组合"], low_memory=False)
 
     labels = _build_labels(experiments, gold_e)
+    computational = _build_computational_evidence(INPUT_PATHS["可用计算观测"])
     return {
         "labels": labels,
         "audit": _build_audit(labels),
+        "computational_evidence": computational,
+        "computational_audit": _build_computational_audit(computational),
         "components": _build_components(commercial),
         "formulations": _build_formulations(formulations),
-        "tasks": _build_tasks(labels),
+        "tasks": _build_tasks(labels, computational),
     }
 
 
@@ -465,7 +726,9 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
     tasks = release["tasks"]
     task_rows = "\n".join(
         f"| {row.objective_name} | {row.objective_type} | "
-        f"{row.current_chemistry_closed_groups} | {row.readiness_status} |"
+        f"{row.current_chemistry_closed_groups} | "
+        f"{row.direct_low_fidelity_hard_groups} | "
+        f"{row.mechanistic_proxy_hard_groups} | {row.readiness_status} |"
         for row in tasks.itertuples(index=False)
     )
     return f"""# TPU/TPUU 定向五目标筛选数据集
@@ -490,8 +753,8 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 ## 当前任务门
 
-| 目标 | 类型 | 已闭合化学配方组 | 状态 |
-|---|---|---:|---|
+| 目标 | 类型 | 实验主目标闭合组 | 直接低保真计算组 | 机理代理组 | 状态 |
+|---|---|---:|---:|---:|---|
 {task_rows}
 
 `已闭合化学配方组`只统计主目标中同一来源内存在组分表的配方；辅助强度、伸长、Tg等不会抬高主目标就绪数，试样重复、曲线点和工况变化也不会扩大为新化学体系。
@@ -500,6 +763,8 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 - `三目标实验标签.csv.gz`：三目标直接值、曲线和辅助性质，保留原条件、来源、划分和权重。
 - `目标标签审计.csv`：逐性质的来源、配方、曲线、独立单元和映射缺口。
+- `三目标计算证据.csv.gz`：与三目标相关的直接低保真、迁移、工况代理和机理代理计算记录。
+- `计算证据审计.csv`：按硬分组审计计算证据，避免把同一配方的工况数当作材料数。
 - `现实构件约束.csv`：24种商用构件，价格和结构化EHS未知时明确留空。
 - `现实配方候选.csv`：980个TPU现实配方；当前没有胺类扩链剂，因此不得宣称覆盖TPUU空间。
 - `筛选任务清单.csv`：三个单任务模型和两个规则目标的最低数据门。
@@ -511,8 +776,9 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 2. 定向补齐韧性、循环恢复和热分解端点的组分—配方—工艺映射。
 3. 为24种商用构件录入同地区同日期报价和结构化SDS/GHS字段。
 4. 增加商业二胺/胺类扩链剂后，单独生成TPUU现实候选。
-5. 三个单任务模型通过来源族留出后，再给980个现实配方做Pareto排序。
-6. 只把前50–100个送低成本量化描述符，前10–20个送MD/高层复核。
+5. 用Gold-C先做结构表示预训练，再以直接低保真头和Gold-E实验残差校准三个任务。
+6. 三个单任务模型通过来源族留出后，再给980个现实配方做Pareto排序。
+7. 只把前50–100个送低成本量化描述符，前10–20个送MD/高层复核。
 
 ## 参考入口
 
@@ -526,6 +792,14 @@ def _write_outputs(release: dict[str, pd.DataFrame], output: Path) -> None:
     output.mkdir(parents=True, exist_ok=True)
     _write_csv(release["labels"], output / OUTPUT_FILENAMES["三目标实验标签"])
     _write_csv(release["audit"], output / OUTPUT_FILENAMES["目标标签审计"])
+    _write_csv(
+        release["computational_evidence"],
+        output / OUTPUT_FILENAMES["三目标计算证据"],
+    )
+    _write_csv(
+        release["computational_audit"],
+        output / OUTPUT_FILENAMES["计算证据审计"],
+    )
     _write_csv(release["components"], output / OUTPUT_FILENAMES["现实构件约束"])
     _write_csv(release["formulations"], output / OUTPUT_FILENAMES["现实配方候选"])
     _write_csv(release["tasks"], output / OUTPUT_FILENAMES["筛选任务清单"])
@@ -536,11 +810,22 @@ def _write_outputs(release: dict[str, pd.DataFrame], output: Path) -> None:
 
 def _counts(release: dict[str, pd.DataFrame]) -> dict[str, int]:
     labels = release["labels"]
+    computational = release["computational_evidence"]
     return {
         "target_label_rows": len(labels),
         "target_property_count": labels["property_name"].nunique(),
         "target_family_count": labels["target_family"].nunique(),
         "target_source_count": labels["source_id"].nunique(),
+        "computational_evidence_rows": len(computational),
+        "computational_evidence_unique_observations": computational[
+            "observation_id"
+        ].nunique(),
+        "computational_evidence_property_count": computational[
+            "property_name"
+        ].nunique(),
+        "computational_evidence_hard_groups": computational[
+            "leakage_group"
+        ].nunique(),
         "commercial_component_rows": len(release["components"]),
         "realistic_formulation_rows": len(release["formulations"]),
         "objective_count": len(release["tasks"]),
@@ -566,6 +851,12 @@ def write_release(release: dict[str, pd.DataFrame]) -> None:
                 "thermal_stability",
             ],
             "deterministic_constraints": ["cost", "environment"],
+            "computational_evidence_roles": [
+                "direct_low_fidelity_target",
+                "transfer_low_fidelity_target",
+                "process_response_proxy",
+                "mechanistic_proxy",
+            ],
             "expensive_calculation_gate": "deferred_until_multitarget_prefilter",
             "tpuu_status": "blocked_until_commercial_amine_extenders_added",
         },
