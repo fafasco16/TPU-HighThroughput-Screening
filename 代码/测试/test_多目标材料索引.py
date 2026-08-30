@@ -11,9 +11,16 @@ def test_release():
     assert {"Cheetah", "Filaflex 60A"} <= set(f.material_key)
     assert (
         f.query("material_key in ['Cheetah','Filaflex 60A']")
-        .objective_coverage_count.eq(2)
+        .objective_coverage_count.eq(3)
         .all()
     )
+    standard = f.loc[f.material_key.isin(["Cheetah", "Filaflex 60A"])]
+    assert standard["cyclic_evidence_level"].eq(
+        "stress_relaxation_proxy_not_direct_cycles"
+    ).all()
+    assert standard["completion_priority"].eq(
+        "complete_proxy_not_direct_cycle"
+    ).all()
     assert (f.objective_coverage_count == 3).sum() > 0
     assert f.loc[f.objective_coverage_count.eq(3), "missing_objectives"].eq("").all()
     assert f.loc[f.objective_coverage_count.eq(2), "objective_gap_count"].eq(1).all()

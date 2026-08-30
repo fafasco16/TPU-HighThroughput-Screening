@@ -742,8 +742,8 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 - 版本：`{RELEASE_ID}`
 - 三目标相关实验记录：{len(labels):,}行
-- 受治理扩充包：25个、1,683行端点/记录
-- 多目标材料索引：63个材料键，其中30个覆盖三类目标证据；12个为交联PU迁移层，5个为商业TPU应用实验层，3个为Elastollan/PCL直接形状记忆文献配方，4个为Tecoflex药物复合实验配方，2个为IIR-OH相邻PU耐久配方，1个为TPU95A历史镜像重新物化，1个为PCF20硬质PU泡沫断裂迁移材料
+- 受治理扩充包：26个、1,685行端点/记录
+- 多目标材料索引：63个材料键，其中32个覆盖三类目标证据；新增闭合的Cheetah与Filaflex 60A循环维度是应力松弛代理而非直接循环；12个为交联PU迁移层，5个为商业TPU应用实验层，3个为Elastollan/PCL直接形状记忆文献配方，4个为Tecoflex药物复合实验配方，2个为IIR-OH相邻PU耐久配方，1个为TPU95A历史镜像重新物化，1个为PCF20硬质PU泡沫断裂迁移材料
 - 商用构件：{len(release['components']):,}种
 - 现实配方：{len(release['formulations']):,}个
 
@@ -783,6 +783,7 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 - `Figshare强韧自愈端点.csv`与`Figshare强韧自愈曲线.csv.gz`：物化7条应力—应变曲线、5组原始/愈合汇总端点及性能保持率。
 - `标准化热塑性弹性体TGA端点.csv`：从Zenodo原始TGA压缩包提取Cheetah和Filaflex 60A的T5/T10/T50，作为商业牌号辅助域。
 - `标准化热塑性弹性体拉伸端点.csv`：物化相同两种商业热塑性弹性体的13条拉伸曲线，与TGA共享材料键。
+- `标准热塑性弹性体松弛端点.csv`：从相同Zenodo来源的1,220,406个原始点提取Cheetah与Filaflex 60A在25%稳定保持段的1–10,000 s归一化应力保持率及90%/80%特征时间；仅作低权重恢复代理，不冒充直接循环或形状恢复。
 - `DRUM机械回收TGA端点.csv`：提取4个软段家族、19个TPUU配方代码的T5/T10/T50，并保留Mn与硬段比例映射。
 - `DRUM机械回收循环端点.csv`：由22条带试样几何的滞回曲线提取240个逐循环物理端点。
 - `QUB生物基自修复TPU拉伸端点.csv`：从CC BY 4.0原始CSV物化41条跨文件去重后的独立本体拉伸试样，覆盖P35、P40、P45和P40-HDO四个配方键。

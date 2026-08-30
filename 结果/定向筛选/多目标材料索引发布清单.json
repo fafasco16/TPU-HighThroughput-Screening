@@ -2,13 +2,14 @@
   "counts": {
     "material_rows": 63,
     "two_objective_or_more": 56,
-    "three_objective": 30
+    "three_objective": 32
   },
   "inputs": {
     "drum_tensile": "0d9c116aefd50b01f472ec8b6f78dae76140947d7a795cc4d38ceb85ccb38c88",
     "drum_cycle": "20a1ee7988e86ad47a3f0b682bc81a37e69ea755738b49df476b9ab492f16c97",
     "drum_tga": "0614873006cb59981c889d623a18d6eb8be496e8ea2b2c5b67a56b7cf0a26f80",
     "std_tensile": "f55f41f48fefb700c71dad16c1587f08748b78482c5737b782e3d9c77bac938b",
+    "std_relaxation": "a5cfabf88b8d7be3d80694c91970f442ad61f801f0828c5128981d633e4e9f13",
     "std_tga": "f2c9c97304565320f68e4c1c28f852f36862c184b4f8a6009640aa58fe8f0a76",
     "phcu": "f8a2840bf35d996341fc098d9cf29aa7f76eb7d629a8dcab247e9c4b62cac5a7",
     "qub_tensile": "6400c038445d73700e0d01af1b8fd59d4b022548c7e810b0f760084393258bed",
@@ -27,5 +28,5 @@
     "tpu95a_relaxation": "b4d1c0e46e0786169dddb30ce766b10043ca6fb389032c82a95f1854c91594cb",
     "pcf20_foam": "e4537060c028923286d32c518c02388a0989557aec868e49fb68f9d19595c998"
   },
-  "output_sha256": "8ede5be57acdf282b5cd8c79fd7cd1c01c053e75708a47e9de3e980b8eae291d"
+  "output_sha256": "1424fd8adf957aefdc7964c98babbfa43a8c31f3315d0ada11aeefecaba5f002"
 }

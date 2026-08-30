@@ -1,0 +1,24 @@
+{
+  "release_id": "standard_elastomer_relaxation_v1",
+  "source": {
+    "title": "A standardized elastomer characterization framework for soft robotics - accompanying dataset",
+    "doi": "10.5281/zenodo.14983287",
+    "related_article_doi": "10.1002/aisy.202500699",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "79b9887b989bc8b420b53cd07b0ea9301b5f00def955febedf451932ee2fd3ed"
+  },
+  "counts": {
+    "material_grade_count": 2,
+    "relaxation_curve_count": 2,
+    "source_point_count": 1220406,
+    "published_compact_row_count": 2
+  },
+  "policy": {
+    "target_semantics": "stress_relaxation_proxy_not_direct_cycles",
+    "normalization_reference": "first_stable_25pct_hold_point_after_overshoot",
+    "raw_curves_republished": false,
+    "physical_specimen_count_known": false,
+    "sample_weight_ceiling": 0.35
+  },
+  "output_sha256": "a5cfabf88b8d7be3d80694c91970f442ad61f801f0828c5128981d633e4e9f13"
+}

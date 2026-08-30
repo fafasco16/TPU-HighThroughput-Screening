@@ -206,6 +206,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("Zenodo多孔TPU拉伸端点.csv", "Zenodo_多孔导电TPU纳米复合膜", "toughness"),
         ("Figshare强韧自愈端点.csv", "Figshare_碳酸酯TPU强韧自愈", "toughness"),
         ("标准化热塑性弹性体拉伸端点.csv", "Zenodo_标准化弹性体表征", "toughness"),
+        ("标准热塑性弹性体松弛端点.csv", "Zenodo_标准化弹性体表征", "cyclic_recovery"),
         ("标准化热塑性弹性体TGA端点.csv", "Zenodo_标准化弹性体表征", "thermal_stability"),
         ("PHCU双目标端点.csv", "第八批实验_非异氰酸酯PHCU热塑性聚氨酯", "toughness"),
         ("PHCU双目标端点.csv", "第八批实验_非异氰酸酯PHCU热塑性聚氨酯", "thermal_stability"),

@@ -17,6 +17,7 @@ INPUTS = {
     "drum_cycle": D / "DRUM机械回收循环端点.csv",
     "drum_tga": D / "DRUM机械回收TGA端点.csv",
     "std_tensile": D / "标准化热塑性弹性体拉伸端点.csv",
+    "std_relaxation": D / "标准热塑性弹性体松弛端点.csv",
     "std_tga": D / "标准化热塑性弹性体TGA端点.csv",
     "phcu": D / "PHCU双目标端点.csv",
     "qub_tensile": D / "QUB生物基自修复TPU拉伸端点.csv",
@@ -59,7 +60,7 @@ def build_release():
             "zenodo-14983287",
             "commercial_grade_identity_only",
             "std_tensile",
-            None,
+            "std_relaxation",
             "std_tga",
         ),
         (
@@ -103,6 +104,8 @@ def build_release():
                     if source == "QUB_生物基三重自修复TPU"
                     else "stress_retention_hysteresis_proxy_not_shape_recovery"
                     if source == "DataInBrief_交联形状记忆PU"
+                    else "stress_relaxation_proxy_not_direct_cycles"
+                    if source == "Zenodo_标准化弹性体表征"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -354,6 +357,12 @@ def build_release():
     frame.loc[phcu, "gap_evidence_status"] = "no_cyclic_modality_in_local_source"
     frame.loc[phcu, "gap_next_action"] = "targeted_external_search_for_same_PHCU_family_or_new_experiment"
     standard = frame["source_family"].eq("Zenodo_标准化弹性体表征")
+    frame.loc[standard, "multiobjective_status"] = (
+        "three_objectives_relaxation_proxy"
+    )
+    frame.loc[standard, "completion_priority"] = (
+        "complete_proxy_not_direct_cycle"
+    )
     frame.loc[standard, "gap_evidence_status"] = "stress_relaxation_proxy_available_no_direct_cycles"
     frame.loc[standard, "gap_next_action"] = "retain_relaxation_as_auxiliary_and_search_direct_cycles"
     recycled = frame["material_key"].isin(["P4MCL-1.6k-31HS", "P4PrCL-1.6k-31HS", "PCL-1.6k-31HS", "PMCL-1k-46HS"])

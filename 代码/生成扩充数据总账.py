@@ -78,6 +78,14 @@ SPECS = [
         "commercial_grade_only",
     ),
     (
+        "standard_relaxation_proxy",
+        "stress_relaxation_recovery_proxy",
+        "标准热塑性弹性体松弛端点.csv",
+        "标准热塑性弹性体松弛发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
+    (
         "phcu_dual",
         "toughness_and_thermal",
         "PHCU双目标端点.csv",
@@ -263,6 +271,7 @@ def build_release():
         "figshare_healing": "core_tpu_experimental",
         "standard_tensile": "commercial_elastomer_auxiliary",
         "standard_tga": "commercial_elastomer_auxiliary",
+        "standard_relaxation_proxy": "commercial_elastomer_auxiliary",
         "phcu_dual": "polyurethane_adjacent_experimental",
         "date_seed_tga": "pu_pir_transfer",
         "qub_self_healing_tensile": "core_tpu_experimental",
