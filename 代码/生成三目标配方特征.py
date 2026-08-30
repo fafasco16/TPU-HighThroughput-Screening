@@ -25,6 +25,8 @@ INPUTS = {
     "Figshare强韧自愈": DIRECTED / "Figshare强韧自愈端点.csv",
     "标准化弹性体TGA": DIRECTED / "标准化热塑性弹性体TGA端点.csv",
     "DRUM机械回收TGA": DIRECTED / "DRUM机械回收TGA端点.csv",
+    "标准化弹性体拉伸": DIRECTED / "标准化热塑性弹性体拉伸端点.csv",
+    "PHCU双目标": DIRECTED / "PHCU双目标端点.csv",
     "实验标签": DIRECTED / "三目标实验标签.csv.gz",
     "计算证据": DIRECTED / "三目标计算证据.csv.gz",
 }
@@ -135,6 +137,8 @@ def build_training_tasks(
     figshare_healing_tpu: pd.DataFrame | None = None,
     standardized_tga: pd.DataFrame | None = None,
     drum_tga: pd.DataFrame | None = None,
+    standardized_tensile: pd.DataFrame | None = None,
+    phcu: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     tasks = directed_tasks.copy()
     tasks["tga_endpoint_curve_count"] = 0
@@ -164,12 +168,21 @@ def build_training_tasks(
         if figshare_healing_tpu is not None:
             expansion_rows += len(figshare_healing_tpu)
             expansion_formulations += figshare_healing_tpu["formulation_id"].nunique()
+        if standardized_tensile is not None:
+            expansion_rows += len(standardized_tensile)
+            expansion_formulations += standardized_tensile["formulation_id"].nunique()
+        if phcu is not None:
+            expansion_rows += len(phcu)
+            expansion_formulations += phcu["formulation_id"].nunique()
         tasks.loc[toughness, "local_expansion_endpoint_rows"] = expansion_rows
         tasks.loc[toughness, "local_expansion_formulation_count"] = expansion_formulations
     if standardized_tga is not None:
         thermal = tasks["objective_id"].eq("thermal_stability")
         rows = len(standardized_tga) + (len(drum_tga) if drum_tga is not None else 0)
         forms = standardized_tga["formulation_id"].nunique() + (drum_tga["formulation_id"].nunique() if drum_tga is not None else 0)
+        if phcu is not None:
+            rows += len(phcu)
+            forms += phcu["formulation_id"].nunique()
         tasks.loc[thermal, "local_expansion_endpoint_rows"] = rows
         tasks.loc[thermal, "local_expansion_formulation_count"] = forms
     tasks["model_training_status"] = "not_started_by_user_instruction"
@@ -198,6 +211,8 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
     figshare_healing_tpu = pd.read_csv(INPUTS["Figshare强韧自愈"], low_memory=False)
     standardized_tga = pd.read_csv(INPUTS["标准化弹性体TGA"], low_memory=False)
     drum_tga = pd.read_csv(INPUTS["DRUM机械回收TGA"], low_memory=False)
+    standardized_tensile = pd.read_csv(INPUTS["标准化弹性体拉伸"], low_memory=False)
+    phcu = pd.read_csv(INPUTS["PHCU双目标"], low_memory=False)
     return (
         build_formulation_features(formulations, components),
         build_training_tasks(
@@ -210,6 +225,8 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
             figshare_healing_tpu,
             standardized_tga,
             drum_tga,
+            standardized_tensile,
+            phcu,
         ),
     )
 

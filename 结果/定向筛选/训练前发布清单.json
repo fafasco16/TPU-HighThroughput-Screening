@@ -63,6 +63,16 @@
       "bytes": 8797,
       "sha256": "77eddc7947bc6ace3eb6012a94ded67887ddb2937a2e55db013bcc5fbeddc5b1"
     },
+    "标准化弹性体拉伸": {
+      "path": "结果/定向筛选/标准化热塑性弹性体拉伸端点.csv",
+      "bytes": 5698,
+      "sha256": "e9bf0b6d1aa6cf54e9ea90af6dcf493e745d3ccf68ad55e2d40b72edaf5efd57"
+    },
+    "PHCU双目标": {
+      "path": "结果/定向筛选/PHCU双目标端点.csv",
+      "bytes": 4228,
+      "sha256": "4451843148b9f141513f4b6515f0669c9d82519b0802988654a3c80a2d586806"
+    },
     "实验标签": {
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
       "bytes": 3435920,
@@ -83,7 +93,7 @@
     "训练前任务": {
       "path": "结果/定向筛选/训练前任务清单.csv",
       "bytes": 2790,
-      "sha256": "8f3d5eb3c4f071c41e91bde2ddcb8848677849a1093dd6a36aeabfbaeedaa7ff"
+      "sha256": "124cf21bc713bef7b4599ba7263ff78e6894bb1f68c09d522119a48f084cc38b"
     }
   },
   "stop_gate": {
