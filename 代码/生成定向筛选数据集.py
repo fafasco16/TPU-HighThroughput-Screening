@@ -758,6 +758,8 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 新主线只训练三个清晰目标：韧性、循环恢复和热稳定。成本与环保保持透明规则约束，不制造虚假标签。昂贵DFT/MD在完成便宜的结构、配方、采购/EHS和模型预筛前保持后置。
 
+`TPUU_Reaction_Conditions_ExcessH2O_Solvent_SEC_DSC.xlsx`仅比较无溶剂、过量水、DMF和DMF/H2O四种反应介质，没有稳定映射到21个最终TPUU配方；它保留为工艺机理证据，不复制为配方性能监督记录。
+
 ## 当前任务门
 
 | 目标 | 类型 | 实验主目标闭合组 | 直接低保真计算组 | 机理代理组 | 状态 |
