@@ -126,6 +126,8 @@ def build_release():
         dp, mp = D / data, D / manifest
         f = pd.read_csv(dp)
         material_col = "formulation_id" if "formulation_id" in f else "material_code"
+        target_bonus = 0.10 if "and" in target else 0.05
+        priority_score = scores[mapping] + target_bonus + min(0.10, f[material_col].nunique(dropna=True) / 200)
         rows.append(
             {
                 "package_id": package,
@@ -137,12 +139,16 @@ def build_release():
                 "mapping_tier": mapping,
                 "mapping_completeness_score": scores[mapping],
                 "next_mapping_action": actions[mapping],
+                "expansion_priority_score": round(priority_score, 4),
                 "license": license_,
                 "data_sha256": sha(dp),
                 "manifest_sha256": sha(mp),
             }
         )
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows).sort_values(
+        ["expansion_priority_score", "material_count", "package_id"],
+        ascending=[False, False, True],
+    ).reset_index(drop=True)
 
 
 def write(f):

@@ -14,6 +14,7 @@ def test_release():
     assert f.data_sha256.str.len().eq(64).all()
     assert f.mapping_completeness_score.between(0, 1).all()
     assert f.next_mapping_action.str.len().gt(0).all()
+    assert f.expansion_priority_score.is_monotonic_decreasing
 
 
 def test_command():
