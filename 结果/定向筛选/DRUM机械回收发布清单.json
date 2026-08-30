@@ -49,8 +49,8 @@
   },
   "output_file": {
     "path": "结果/定向筛选/DRUM机械回收拉伸端点.csv",
-    "bytes": 94874,
-    "sha256": "6d8bf3d6b8643c93e007073d8f857ee596b122a6d420ee4c61699785e8381927"
+    "bytes": 104853,
+    "sha256": "0d9c116aefd50b01f472ec8b6f78dae76140947d7a795cc4d38ceb85ccb38c88"
   },
   "derivation": {
     "toughness": "trapezoid_integral_of_nonnegative_baseline_corrected_stress_vs_relative_strain",

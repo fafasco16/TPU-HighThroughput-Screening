@@ -19,7 +19,7 @@ SPECS = [
         "DRUM机械回收拉伸端点.csv",
         "DRUM机械回收发布清单.json",
         "CC0-1.0",
-        "family_mn_hard_segment_mapped",
+        "component_topology_mapped_partial",
     ),
     (
         "drum_cycle",
@@ -27,7 +27,7 @@ SPECS = [
         "DRUM机械回收循环端点.csv",
         "DRUM机械回收循环发布清单.json",
         "CC0-1.0",
-        "family_mn_hard_segment_mapped",
+        "component_topology_mapped_partial",
     ),
     (
         "drum_tga",
@@ -35,7 +35,7 @@ SPECS = [
         "DRUM机械回收TGA端点.csv",
         "DRUM机械回收TGA发布清单.json",
         "CC0-1.0",
-        "family_mn_hard_segment_mapped",
+        "component_topology_mapped_partial",
     ),
     (
         "low_ceiling_cycle",
@@ -105,7 +105,7 @@ def sha(p):
 def build_release():
     rows = []
     scores = {
-        "family_mn_hard_segment_mapped": 0.75,
+        "component_topology_mapped_partial": 0.85,
         "composition_series_mapped": 0.60,
         "commercial_grade_only": 0.35,
         "formulation_code_only": 0.30,
@@ -113,7 +113,7 @@ def build_release():
         "commercial_identity_unresolved": 0.15,
     }
     actions = {
-        "family_mn_hard_segment_mapped": "补精确软段重复单元与完整投料",
+        "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
         "composition_series_mapped": "补逐配方投料和唯一聚合物结构",
         "commercial_grade_only": "补商业牌号化学组成或TDS",
         "formulation_code_only": "从正文或SI恢复组分和比例",

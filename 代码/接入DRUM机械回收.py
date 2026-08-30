@@ -75,13 +75,32 @@ def parse_material_code(material: str) -> dict[str, object]:
         macrodiol = pd.NA
         mn = pd.NA
         hard_segment = pd.NA
+    repeat_units = {
+        "PCL": "[-O-(CH2)5-C(=O)-]n",
+        "P4MCL": "[-O-CH2-CH2-CH(CH3)-CH2-CH2-C(=O)-]n",
+        "P4PrCL": "[-O-CH2-CH2-CH(CH2CH2CH3)-CH2-CH2-C(=O)-]n",
+    }
+    repeat_unit = repeat_units.get(macrodiol, pd.NA)
+    structure_status = (
+        "repeat_topology_mapped"
+        if macrodiol in repeat_units
+        else "family_only_regioisomer_distribution_unresolved"
+        if macrodiol == "PMCL"
+        else "unresolved"
+    )
     return {
         "polymer_family": family,
         "macrodiol_family": macrodiol,
         "macrodiol_nominal_mn_g_mol": mn,
+        "macrodiol_repeat_unit_text": repeat_unit,
+        "macrodiol_structure_mapping_status": structure_status,
         "hard_segment_mass_fraction": hard_segment,
         "diisocyanate_family": diisocyanate,
+        "diisocyanate_smiles": (
+            "CC1(C)CC(CC(C)(CN=C=O)C1)N=C=O" if diisocyanate == "IPDI" else pd.NA
+        ),
         "chain_extension_route": route,
+        "chain_extension_reagent": "water" if route == "water_to_urea" else route,
     }
 
 

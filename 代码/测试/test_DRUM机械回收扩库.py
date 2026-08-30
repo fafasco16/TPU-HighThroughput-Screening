@@ -18,9 +18,13 @@ def test_parse_material_code():
         "polymer_family": "TPUU",
         "macrodiol_family": "P4MCL",
         "macrodiol_nominal_mn_g_mol": 1600.0,
+        "macrodiol_repeat_unit_text": "[-O-CH2-CH2-CH(CH3)-CH2-CH2-C(=O)-]n",
+        "macrodiol_structure_mapping_status": "repeat_topology_mapped",
         "hard_segment_mass_fraction": 0.31,
         "diisocyanate_family": "IPDI",
+        "diisocyanate_smiles": "CC1(C)CC(CC(C)(CN=C=O)C1)N=C=O",
         "chain_extension_route": "water_to_urea",
+        "chain_extension_reagent": "water",
     }
 
 
