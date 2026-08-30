@@ -165,6 +165,14 @@ SPECS = [
         "paper-license-unverified-facts-only",
         "commercial_grade_blend_fraction_mapped",
     ),
+    (
+        "tecoflex_nic_multiperformance",
+        "partial_toughness_and_thermal_stability",
+        "Tecoflex药物复合TPU多性能端点.csv",
+        "Tecoflex药物复合TPU发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_additive_fraction_mapped",
+    ),
 ]
 
 
@@ -187,6 +195,7 @@ def build_release():
         "monomer_set_hard_segment_mapped": 0.88,
         "monomer_set_molar_composition_mapped": 0.92,
         "commercial_grade_blend_fraction_mapped": 0.75,
+        "commercial_grade_additive_fraction_mapped": 0.78,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -199,6 +208,7 @@ def build_release():
         "monomer_set_hard_segment_mapped": "补Pripol 2033与HEDS逐配方精确摩尔投料和唯一结构",
         "monomer_set_molar_composition_mapped": "补物理试样跨工作簿身份；保持交联PU迁移层边界",
         "commercial_grade_blend_fraction_mapped": "补原始曲线、重复数、不确定性及同配方TGA",
+        "commercial_grade_additive_fraction_mapped": "补完整断裂曲线和同配方循环恢复数据",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -220,6 +230,7 @@ def build_release():
         "commercial_tpu_impact_fatigue": "core_tpu_application_experimental",
         "commercial_tpu_energy_recovery_pairs": "core_tpu_application_experimental",
         "elastollan_pcl_shape_memory_summary": "core_tpu_blend_published_summary",
+        "tecoflex_nic_multiperformance": "core_tpu_composite_experimental",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

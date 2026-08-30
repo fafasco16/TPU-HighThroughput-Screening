@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 19
+    assert len(f) == 20
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -43,6 +43,14 @@ def test_release():
     )
     assert shape_memory.iloc[0].license == (
         "paper-license-unverified-facts-only"
+    )
+    tecoflex = f.loc[f.package_id.eq("tecoflex_nic_multiperformance")]
+    assert len(tecoflex) == 1
+    assert tecoflex.iloc[0].model_admission_layer == (
+        "core_tpu_composite_experimental"
+    )
+    assert tecoflex.iloc[0].target_family == (
+        "partial_toughness_and_thermal_stability"
     )
 
 

@@ -63,6 +63,11 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(commercial.target_family) == {"toughness", "cyclic_recovery"}
     assert commercial["already_in_directed_target"].all()
+    tecoflex = queue.loc[
+        queue.source_directory.eq("Zenodo_Tecoflex药物复合TPU")
+    ]
+    assert set(tecoflex.target_family) == {"toughness", "thermal_stability"}
+    assert tecoflex["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

@@ -1,0 +1,56 @@
+{
+  "release_id": "tecoflex-eg60d-nic-multiperformance-2022-v1",
+  "counts": {
+    "formulation_count": 4,
+    "tga_curve_count": 4,
+    "tga_source_point_count": 22463,
+    "tensile_curve_count": 4,
+    "tensile_source_point_count": 1136,
+    "mechanical_direct_specimen_slot_count": 22,
+    "published_compact_row_count": 4
+  },
+  "source": {
+    "dataset_doi": "10.5281/zenodo.6128356",
+    "article_doi": "10.1038/s41598-022-16107-4",
+    "license": "CC-BY-4.0",
+    "inputs": [
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Zenodo_Tecoflex药物复合TPU/TGA thermal analysis.xlsx",
+        "bytes": 819167,
+        "sha256": "a536b40877642fefbc0ae8a476da53317d39696541d96733ba70ac40cfd75153"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Zenodo_Tecoflex药物复合TPU/mechanical testing sup fig 1.xlsx",
+        "bytes": 41340,
+        "sha256": "53cc6a8a94a4d873ba556b8a3f0a1fdcb8f9c7f6842b9d79bd59ddee785cc371"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Zenodo_Tecoflex药物复合TPU/mechanical testing.xlsx",
+        "bytes": 350279,
+        "sha256": "48961b352585271486cbb387fc8d94b65c58b8f2ab78cb552ec01607348ba5c4"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Zenodo_Tecoflex药物复合TPU/官方API元数据.json",
+        "bytes": 4995,
+        "sha256": "fba19d1a46b5caa611cd145034f697cbb294f7f5647528fe0f9777e28b91142b"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/Zenodo_Tecoflex药物复合TPU/内容审计摘要.json",
+        "bytes": 7977,
+        "sha256": "604bf2cb8a4430a5db425921fe088b52ac126c0451b02e0d414b13580156647d"
+      }
+    ]
+  },
+  "policy": {
+    "pure_niclosamide_tga_excluded": true,
+    "raw_curves_republished": false,
+    "raw_curve_reason": "以4条紧凑多性能记录替代22463个TGA点和1136个拉伸点",
+    "tensile_curve_is_partial_not_break_toughness": true,
+    "strain_header_conflict_resolved_from_article_and_100pct_scalars": true
+  },
+  "output": {
+    "path": "结果/定向筛选/Tecoflex药物复合TPU多性能端点.csv",
+    "bytes": 5079,
+    "sha256": "0fa9858bf742959410f08b2893967eff81ec5d251c7b739b53d22a61b83c2509"
+  }
+}

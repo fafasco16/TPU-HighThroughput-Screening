@@ -71,6 +71,21 @@ def test_release():
     assert blends["cyclic_evidence_level"].eq(
         "direct_shape_fixity_and_recovery_published_summary"
     ).all()
+    tecoflex = f.loc[f.source_family.eq("Zenodo_Tecoflex_EG60D_NIC")]
+    assert set(tecoflex.material_key) == {
+        "Tecoflex_EG60D",
+        "Tecoflex_EG60D_NIC2",
+        "Tecoflex_EG60D_NIC5",
+        "Tecoflex_EG60D_NIC10",
+    }
+    assert tecoflex["objective_coverage_count"].eq(2).all()
+    assert tecoflex["model_admission_layer"].eq(
+        "core_tpu_composite_experimental"
+    ).all()
+    assert tecoflex["toughness_evidence_level"].eq(
+        "partial_tensile_curve_area_lower_bound"
+    ).all()
+    assert tecoflex["thermal_evidence_level"].eq("direct_TGA_curve").all()
 
 
 def test_command():

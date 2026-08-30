@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 55,
-    "two_objective_or_more": 50,
+    "material_rows": 59,
+    "two_objective_or_more": 54,
     "three_objective": 30
   },
   "inputs": {
@@ -19,7 +19,8 @@
     "dib_tga": "731fbfc6e0d3fbd0592d1c6182dafabecd47f14f86b5ce54d629b7c49b2fffe1",
     "commercial_fatigue": "659a87d00b616db94dd8f873cc502e8d8efa26b2fe0fd267fa3dc412f9b0613c",
     "commercial_recovery": "60649846d14d83ace404a70c8af5140c832ce737fb5298149cf09977caf7e80b",
-    "elastollan_pcl_shape_memory": "118d99d0a956f05157a0e959ba8711c68efedae8712bcc8510ad04842dc95d91"
+    "elastollan_pcl_shape_memory": "118d99d0a956f05157a0e959ba8711c68efedae8712bcc8510ad04842dc95d91",
+    "tecoflex_nic": "0fa9858bf742959410f08b2893967eff81ec5d251c7b739b53d22a61b83c2509"
   },
-  "output_sha256": "84e2c94c2e542b3d7d0ec06fcf78749808e488ac4caebf973dd389ef01dacec9"
+  "output_sha256": "2a5394253c7eb3661e327db8f5b8ce88926358877c54f1d70312d09471e965fb"
 }

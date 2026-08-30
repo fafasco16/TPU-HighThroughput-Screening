@@ -28,6 +28,7 @@ INPUTS = {
     "commercial_fatigue": D / "商业TPU温度疲劳端点.csv",
     "commercial_recovery": D / "商业TPU恢复配对端点.csv",
     "elastollan_pcl_shape_memory": D / "ElastollanPCL形状记忆端点.csv",
+    "tecoflex_nic": D / "Tecoflex药物复合TPU多性能端点.csv",
 }
 
 
@@ -126,6 +127,13 @@ def build_release():
                         if source == "Zenodo_标准化弹性体表征"
                         else "direct_tensile_curve_area"
                     ),
+                    "thermal_evidence_level": (
+                        "not_available"
+                        if hc == 0
+                        else "direct_TGA_curve_transfer"
+                        if source == "DataInBrief_交联形状记忆PU"
+                        else "direct_TGA_curve"
+                    ),
                     "cyclic_evidence_level": cyclic_evidence,
                     "citation_keys": cites,
                 }
@@ -146,6 +154,7 @@ def build_release():
                 "multiobjective_status": "two_objectives",
                 "model_admission_layer": "polyurethane_adjacent_experimental",
                 "toughness_evidence_level": "published_tensile_summary",
+                "thermal_evidence_level": "published_TGA_summary",
                 "cyclic_evidence_level": "not_available",
                 "citation_keys": row.citation_keys,
             }
@@ -176,6 +185,7 @@ def build_release():
                 "toughness_evidence_level": (
                     "compression_energy_absorption_application_proxy"
                 ),
+                "thermal_evidence_level": "not_available",
                 "cyclic_evidence_level": (
                     "direct_impact_fatigue_and_same_specimen_energy_recovery"
                 ),
@@ -198,9 +208,31 @@ def build_release():
                 "multiobjective_status": "single_objective_direct_recovery",
                 "model_admission_layer": "core_tpu_blend_published_summary",
                 "toughness_evidence_level": "not_available",
+                "thermal_evidence_level": "not_available",
                 "cyclic_evidence_level": (
                     "direct_shape_fixity_and_recovery_published_summary"
                 ),
+                "citation_keys": row.citation_keys,
+            }
+        )
+    for row in frames["tecoflex_nic"].itertuples(index=False):
+        rows.append(
+            {
+                "source_family": "Zenodo_Tecoflex_EG60D_NIC",
+                "material_key": row.material_id,
+                "chemistry_mapping_status": row.chemistry_mapping_status,
+                "toughness_record_count": 1,
+                "cyclic_record_count": 0,
+                "thermal_record_count": 1,
+                "has_toughness": True,
+                "has_cyclic_recovery": False,
+                "has_thermal_stability": True,
+                "objective_coverage_count": 2,
+                "multiobjective_status": "two_objectives_partial_toughness",
+                "model_admission_layer": "core_tpu_composite_experimental",
+                "toughness_evidence_level": row.toughness_evidence_level,
+                "thermal_evidence_level": "direct_TGA_curve",
+                "cyclic_evidence_level": "not_available",
                 "citation_keys": row.citation_keys,
             }
         )
@@ -270,6 +302,13 @@ def build_release():
     )
     frame.loc[shape_memory_blends, "gap_next_action"] = (
         "search_same_blend_raw_tensile_and_TGA_or_measurement"
+    )
+    tecoflex = frame["source_family"].eq("Zenodo_Tecoflex_EG60D_NIC")
+    frame.loc[tecoflex, "gap_evidence_status"] = (
+        "direct_TGA_and_partial_tensile_no_cyclic_recovery"
+    )
+    frame.loc[tecoflex, "gap_next_action"] = (
+        "search_exact_formulation_cyclic_or_recovery_measurement"
     )
     return frame
 
