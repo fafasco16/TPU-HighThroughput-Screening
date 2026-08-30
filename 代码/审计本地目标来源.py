@@ -198,10 +198,15 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         coverage.setdefault(directory, {})[target] = (
             coverage.setdefault(directory, {}).get(target, 0) + 1
         )
-    expansion = DIRECTED / "DRUM机械回收拉伸端点.csv"
-    if expansion.is_file():
-        count = len(pd.read_csv(expansion, usecols=["observation_id"]))
-        coverage.setdefault("DRUM_TPUU_机械回收", {})["toughness"] = count
+    expansions = [
+        ("DRUM机械回收拉伸端点.csv", "DRUM_TPUU_机械回收", "toughness"),
+        ("Zenodo多孔TPU拉伸端点.csv", "Zenodo_多孔导电TPU纳米复合膜", "toughness"),
+    ]
+    for filename, directory, target in expansions:
+        expansion = DIRECTED / filename
+        if expansion.is_file():
+            count = len(pd.read_csv(expansion, usecols=["observation_id"]))
+            coverage.setdefault(directory, {})[target] = count
     return coverage
 
 

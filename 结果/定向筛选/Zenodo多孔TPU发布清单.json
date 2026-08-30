@@ -1,0 +1,29 @@
+{
+  "release_id": "tpu-zenodo-porous-conductive-2017-v1",
+  "counts": {
+    "tensile_curve_rows": 25,
+    "formulation_count": 5,
+    "replicates_per_formulation": 5
+  },
+  "source": {
+    "doi": "10.1038/s41598-017-17647-w",
+    "zenodo_record": "https://zenodo.org/records/1098206",
+    "license": "CC-BY-4.0",
+    "workbook": {
+      "path": "数据/原始/外部数据/新增开放数据/Zenodo_多孔导电TPU纳米复合膜/Supronics_Porous-TPU-Nanocomposites Dataset.xlsx",
+      "bytes": 750592,
+      "sha256": "11967acf1deec0ce05ad2d1e63b70738c4357345fae9dd708952a75630304bc8"
+    },
+    "source_manifest": {
+      "path": "数据/原始/外部数据/新增开放数据/Zenodo_多孔导电TPU纳米复合膜/来源清单.json",
+      "bytes": 1187,
+      "sha256": "c9d91f94dec923e7378fdf9b0af5ff05b72e0275cd5a712ad7abdb1d1bcb7972"
+    }
+  },
+  "output_file": {
+    "path": "结果/定向筛选/Zenodo多孔TPU拉伸端点.csv",
+    "bytes": 17764,
+    "sha256": "be72a3f8785e51f9bd3bb784054b6361640ad00b1cf3196433b57e0e5739f787"
+  },
+  "mapping_limit": "TPU/TPU10/TPU20/TPU30/TPU40 are preserved as source sample codes; the numeric suffix is not asserted as a weight fraction"
+}

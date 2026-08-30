@@ -20,6 +20,7 @@ INPUTS = {
     "TGA端点": DIRECTED / "TGA热稳定端点.csv",
     "循环端点": DIRECTED / "TPUU循环端点.csv",
     "DRUM机械回收": DIRECTED / "DRUM机械回收拉伸端点.csv",
+    "Zenodo多孔TPU": DIRECTED / "Zenodo多孔TPU拉伸端点.csv",
     "实验标签": DIRECTED / "三目标实验标签.csv.gz",
     "计算证据": DIRECTED / "三目标计算证据.csv.gz",
 }
@@ -125,6 +126,7 @@ def build_training_tasks(
     endpoints: pd.DataFrame,
     cyclic_endpoints: pd.DataFrame | None = None,
     drum_recycling: pd.DataFrame | None = None,
+    zenodo_porous_tpu: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     tasks = directed_tasks.copy()
     tasks["tga_endpoint_curve_count"] = 0
@@ -146,10 +148,13 @@ def build_training_tasks(
     tasks["local_expansion_formulation_count"] = 0
     if drum_recycling is not None:
         toughness = tasks["objective_id"].eq("toughness")
-        tasks.loc[toughness, "local_expansion_endpoint_rows"] = len(drum_recycling)
-        tasks.loc[toughness, "local_expansion_formulation_count"] = drum_recycling[
-            "formulation_id"
-        ].nunique()
+        expansion_rows = len(drum_recycling)
+        expansion_formulations = drum_recycling["formulation_id"].nunique()
+        if zenodo_porous_tpu is not None:
+            expansion_rows += len(zenodo_porous_tpu)
+            expansion_formulations += zenodo_porous_tpu["formulation_id"].nunique()
+        tasks.loc[toughness, "local_expansion_endpoint_rows"] = expansion_rows
+        tasks.loc[toughness, "local_expansion_formulation_count"] = expansion_formulations
     tasks["model_training_status"] = "not_started_by_user_instruction"
     tasks["new_calculation_status"] = "not_started_by_user_instruction"
     tasks["training_ready"] = False
@@ -171,6 +176,7 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
     endpoints = pd.read_csv(INPUTS["TGA端点"], low_memory=False)
     cyclic_endpoints = pd.read_csv(INPUTS["循环端点"], low_memory=False)
     drum_recycling = pd.read_csv(INPUTS["DRUM机械回收"], low_memory=False)
+    zenodo_porous_tpu = pd.read_csv(INPUTS["Zenodo多孔TPU"], low_memory=False)
     return (
         build_formulation_features(formulations, components),
         build_training_tasks(
@@ -178,6 +184,7 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
             endpoints,
             cyclic_endpoints,
             drum_recycling,
+            zenodo_porous_tpu,
         ),
     )
 

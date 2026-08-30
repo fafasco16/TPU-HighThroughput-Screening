@@ -38,6 +38,11 @@
       "bytes": 94874,
       "sha256": "6d8bf3d6b8643c93e007073d8f857ee596b122a6d420ee4c61699785e8381927"
     },
+    "Zenodo多孔TPU": {
+      "path": "结果/定向筛选/Zenodo多孔TPU拉伸端点.csv",
+      "bytes": 17764,
+      "sha256": "be72a3f8785e51f9bd3bb784054b6361640ad00b1cf3196433b57e0e5739f787"
+    },
     "实验标签": {
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
       "bytes": 3435920,
@@ -58,7 +63,7 @@
     "训练前任务": {
       "path": "结果/定向筛选/训练前任务清单.csv",
       "bytes": 2786,
-      "sha256": "fefe13820f73f3dd97c20fe24a04bc8d372c7924bf29a677ce41f593fc03e8f8"
+      "sha256": "2213476f99cf935247e6e6529de5409d21ba2b3e9515ae6481cc29b58b13de2b"
     }
   },
   "stop_gate": {
