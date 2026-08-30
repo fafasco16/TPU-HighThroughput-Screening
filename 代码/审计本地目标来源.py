@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = ROOT / "数据" / "原始" / "外部数据" / "新增开放数据"
 DIRECTED = ROOT / "结果" / "定向筛选"
 LABELS = DIRECTED / "三目标实验标签.csv.gz"
+COMPUTATIONAL = DIRECTED / "三目标计算证据.csv.gz"
 OUTPUTS = {
     "审计": DIRECTED / "本地来源审计.csv",
     "队列": DIRECTED / "本地扩库队列.csv",
@@ -180,24 +181,27 @@ def _inventory_fingerprint(source_dir: Path, files: list[Path]) -> str:
 
 
 def _directed_coverage() -> dict[str, dict[str, int]]:
-    if not LABELS.is_file():
+    if not LABELS.is_file() and not COMPUTATIONAL.is_file():
         return {}
-    labels = pd.read_csv(
-        LABELS,
-        usecols=["target_family", "source_locator"],
-        low_memory=False,
-    )
     coverage: dict[str, dict[str, int]] = {}
     pattern = re.compile(r"新增开放数据[/\\]([^/\\]+)")
-    for row in labels.itertuples(index=False):
-        match = pattern.search(str(row.source_locator))
-        if not match:
+    for evidence_path in (LABELS, COMPUTATIONAL):
+        if not evidence_path.is_file():
             continue
-        directory = match.group(1)
-        target = str(row.target_family)
-        coverage.setdefault(directory, {})[target] = (
-            coverage.setdefault(directory, {}).get(target, 0) + 1
+        evidence = pd.read_csv(
+            evidence_path,
+            usecols=["target_family", "source_locator"],
+            low_memory=False,
         )
+        for row in evidence.itertuples(index=False):
+            match = pattern.search(str(row.source_locator))
+            if not match:
+                continue
+            directory = match.group(1)
+            target = str(row.target_family)
+            coverage.setdefault(directory, {})[target] = (
+                coverage.setdefault(directory, {}).get(target, 0) + 1
+            )
     expansions = [
         ("DRUM机械回收拉伸端点.csv", "DRUM_TPUU_机械回收", "toughness"),
         ("DRUM机械回收循环端点.csv", "DRUM_TPUU_机械回收", "cyclic_recovery"),
@@ -230,6 +234,9 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("PCF20泡沫拉伸断裂端点.csv", "MaterialsCloud_商用PU泡沫多轴断裂力学", "toughness"),
         ("TPU1301拉伸端点.csv", "Zenodo_TPU1301热黏弹黏塑本构", "toughness"),
         ("TPU1301应力松弛端点.csv", "Zenodo_TPU1301热黏弹黏塑本构", "cyclic_recovery"),
+        ("生物基玻璃体拉伸端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "toughness"),
+        ("生物基玻璃体松弛端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "cyclic_recovery"),
+        ("生物基玻璃体TGA端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "thermal_stability"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

@@ -1,8 +1,8 @@
 {
   "counts": {
-    "material_rows": 68,
-    "two_objective_or_more": 61,
-    "three_objective": 36
+    "material_rows": 72,
+    "two_objective_or_more": 63,
+    "three_objective": 38
   },
   "inputs": {
     "drum_tensile": "0d9c116aefd50b01f472ec8b6f78dae76140947d7a795cc4d38ceb85ccb38c88",
@@ -31,7 +31,10 @@
     "tpu95a_relaxation": "b4d1c0e46e0786169dddb30ce766b10043ca6fb389032c82a95f1854c91594cb",
     "pcf20_foam": "e4537060c028923286d32c518c02388a0989557aec868e49fb68f9d19595c998",
     "tpu1301_tensile": "8f131b97bf2b5b8d5e40732b16f08537e9095a5dadbae8193c810409a022d986",
-    "tpu1301_relaxation": "1a85fb549c98d6e6f41f421605e8f68caecd0afd9d3a5e237a7b887615649dec"
+    "tpu1301_relaxation": "1a85fb549c98d6e6f41f421605e8f68caecd0afd9d3a5e237a7b887615649dec",
+    "vitrimer_tensile": "f8f76f6376fe3e78daf7995464e74ad32c342ce496534462c694d668287dfedc",
+    "vitrimer_relaxation": "c0173c563340f2d40be3d71b8b056212989ba4d016745195f9fcf4f62ada81b7",
+    "vitrimer_tga": "415b9fe41828ecdfeccb86289c086cb907168bfaa0277df56274365f65e34135"
   },
-  "output_sha256": "3f315d5dce56348601862715f9ec81234bc3b8f3700e2f45fc1220b2b77adcba"
+  "output_sha256": "41cb6e0433b8cfcf97ec52fadf1e2986e41c7bff958473e74e8868f003328ed7"
 }

@@ -1,0 +1,38 @@
+{
+  "release_id": "biobased_vitrimer_transfer_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.21096098",
+    "concept_doi": "10.5281/zenodo.21096097",
+    "article_doi": "10.1021/acspolymersau.6c00063",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "b44fdef4e8d50911f2876b9e38bf1f66414a9fcf24379c2fda8cc4d41eaf6f06"
+  },
+  "counts": {
+    "formulation_count_in_published_targets": 4,
+    "full_synthesized_formulation_count": 8,
+    "material_state_count_in_published_targets": 6,
+    "physical_tensile_specimen_count": 20,
+    "relaxation_curve_count": 16,
+    "relaxation_source_point_count": 38953,
+    "tga_curve_count": 4,
+    "tga_source_row_count": 18481,
+    "tga_processed_unique_temperature_point_count": 18436,
+    "published_compact_row_count": 40,
+    "simulation_record_count": 0
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "tpu_core_weight": 0.0,
+    "transfer_weight_ceiling": 0.2,
+    "reported_modulus_quarantined": true,
+    "reported_toughness_quarantined": true,
+    "arrhenius_tables_count_as_independent_data": false,
+    "relaxation_is_proxy_not_direct_cycles": true,
+    "split_group_rule": "dataset_doi|formulation"
+  },
+  "outputs": {
+    "生物基玻璃体拉伸端点.csv": "f8f76f6376fe3e78daf7995464e74ad32c342ce496534462c694d668287dfedc",
+    "生物基玻璃体松弛端点.csv": "c0173c563340f2d40be3d71b8b056212989ba4d016745195f9fcf4f62ada81b7",
+    "生物基玻璃体TGA端点.csv": "415b9fe41828ecdfeccb86289c086cb907168bfaa0277df56274365f65e34135"
+  }
+}

@@ -149,6 +149,24 @@ def test_release():
     assert tpu1301.iloc[0].cyclic_evidence_level == (
         "stress_relaxation_proxy_not_direct_cycles"
     )
+    vitrimer = f.loc[
+        f.source_family.eq("Zenodo_生物基共轭氨基甲酸酯玻璃体")
+    ]
+    assert set(vitrimer.material_key) == {"P1T", "P3T", "X1T", "X3T"}
+    assert vitrimer.loc[
+        vitrimer.material_key.isin(["P1T", "X1T"]),
+        "objective_coverage_count",
+    ].eq(3).all()
+    assert vitrimer.loc[
+        vitrimer.material_key.isin(["P3T", "X3T"]),
+        "objective_coverage_count",
+    ].eq(1).all()
+    assert vitrimer["model_admission_layer"].eq(
+        "dynamic_network_vitrimer_transfer"
+    ).all()
+    assert vitrimer["completion_priority"].eq(
+        "transfer_only_not_tpu_core"
+    ).all()
 
 
 def test_command():

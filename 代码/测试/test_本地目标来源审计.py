@@ -119,6 +119,24 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(tpu1301.target_family) == {"toughness", "cyclic_recovery"}
     assert tpu1301["already_in_directed_target"].all()
+    aged_foam = queue.loc[
+        queue.source_directory.eq("第十九批模拟_老化植物基PU泡沫")
+    ]
+    assert set(aged_foam.target_family) == {"toughness"}
+    assert aged_foam["already_in_directed_target"].all()
+    assert audit.loc[
+        audit.source_directory.eq("第十九批模拟_老化植物基PU泡沫"),
+        "existing_directed_row_count",
+    ].eq(19340).all()
+    vitrimer = queue.loc[
+        queue.source_directory.eq("Zenodo_生物基共轭氨基甲酸酯玻璃体")
+    ]
+    assert set(vitrimer.target_family) == {
+        "toughness",
+        "cyclic_recovery",
+        "thermal_stability",
+    }
+    assert vitrimer["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

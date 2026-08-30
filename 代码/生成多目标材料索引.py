@@ -40,6 +40,9 @@ INPUTS = {
     "pcf20_foam": D / "PCF20泡沫拉伸断裂端点.csv",
     "tpu1301_tensile": D / "TPU1301拉伸端点.csv",
     "tpu1301_relaxation": D / "TPU1301应力松弛端点.csv",
+    "vitrimer_tensile": D / "生物基玻璃体拉伸端点.csv",
+    "vitrimer_relaxation": D / "生物基玻璃体松弛端点.csv",
+    "vitrimer_tga": D / "生物基玻璃体TGA端点.csv",
 }
 
 
@@ -100,6 +103,14 @@ def build_release():
             "tpu1301_relaxation",
             None,
         ),
+        (
+            "Zenodo_生物基共轭氨基甲酸酯玻璃体",
+            "reference-195;reference-196",
+            "formulation_code_synthesis_family_mapped",
+            "vitrimer_tensile",
+            "vitrimer_relaxation",
+            "vitrimer_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -115,6 +126,9 @@ def build_release():
         "DataInBrief_交联形状记忆PU": "polyurethane_transfer",
         "Zenodo_TPU1301热黏弹黏塑本构": (
             "core_tpu_application_experimental"
+        ),
+        "Zenodo_生物基共轭氨基甲酸酯玻璃体": (
+            "dynamic_network_vitrimer_transfer"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -140,6 +154,8 @@ def build_release():
                         "Zenodo_标准化弹性体表征",
                         "Zenodo_TPU1301热黏弹黏塑本构",
                     }
+                    else "stress_relaxation_dynamic_network_proxy"
+                    if source == "Zenodo_生物基共轭氨基甲酸酯玻璃体"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -169,13 +185,19 @@ def build_release():
                         if source == "Zenodo_标准化弹性体表征"
                         else "direct_tensile_curve_area_application"
                         if source == "Zenodo_TPU1301热黏弹黏塑本构"
+                        else "break_strength_elongation_transfer_no_curve_toughness"
+                        if source == "Zenodo_生物基共轭氨基甲酸酯玻璃体"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
                         "not_available"
                         if hc == 0
                         else "direct_TGA_curve_transfer"
-                        if source == "DataInBrief_交联形状记忆PU"
+                        if source
+                        in {
+                            "DataInBrief_交联形状记忆PU",
+                            "Zenodo_生物基共轭氨基甲酸酯玻璃体",
+                        }
                         else "direct_TGA_curve"
                     ),
                     "cyclic_evidence_level": cyclic_evidence,
@@ -473,6 +495,26 @@ def build_release():
     )
     frame.loc[tpu1301, "gap_next_action"] = (
         "retain_application_proxy_and_search_exact_grade_TGA"
+    )
+    vitrimer = frame["source_family"].eq(
+        "Zenodo_生物基共轭氨基甲酸酯玻璃体"
+    )
+    frame.loc[vitrimer, "multiobjective_status"] = frame.loc[
+        vitrimer, "objective_coverage_count"
+    ].map(
+        {
+            3: "three_objectives_dynamic_network_transfer",
+            1: "single_objective_dynamic_network_transfer",
+        }
+    )
+    frame.loc[vitrimer, "completion_priority"] = (
+        "transfer_only_not_tpu_core"
+    )
+    frame.loc[vitrimer, "gap_evidence_status"] = (
+        "dynamic_network_transfer_not_thermoplastic_TPU"
+    )
+    frame.loc[vitrimer, "gap_next_action"] = (
+        "retain_weight_ceiling_0p2_and_never_count_as_TPU_core"
     )
     return frame
 
