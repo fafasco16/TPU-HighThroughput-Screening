@@ -91,7 +91,7 @@ SPECS = [
         "TGA热稳定端点.csv",
         "TGA端点发布清单.json",
         "CC-BY-4.0",
-        "formulation_id_only",
+        "composition_series_mapped",
     ),
 ]
 

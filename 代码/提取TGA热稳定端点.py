@@ -107,6 +107,7 @@ def build_endpoints(source: pd.DataFrame) -> pd.DataFrame:
     mass_rows = source[source["property_name"].eq("tga_mass_signal")].copy()
     dtg_rows = source[source["property_name"].eq("dtg_mass_rate")].copy()
     records: list[dict[str, object]] = []
+    dso_fraction_map = {"S1": 0.0, "S3": 0.5, "S4": 0.7, "S5": 1.0}
     for curve_id, group in mass_rows.groupby("curve_id", sort=True):
         first = group.iloc[0]
         curve = pd.DataFrame(
@@ -124,6 +125,9 @@ def build_endpoints(source: pd.DataFrame) -> pd.DataFrame:
             or "conflict" in str(first["mapping_status"]).lower()
         )
         mapping = str(first["chemistry_mapping_status"])
+        dso_fraction = dso_fraction_map.get(str(first["formulation_id"]))
+        if dso_fraction is not None:
+            mapping = "composition_series_mapped"
         if identity_conflict:
             quality = "identity_conflict_endpoints_reference_only"
             endpoint_use = "reference_only_identity_conflict"
@@ -146,6 +150,7 @@ def build_endpoints(source: pd.DataFrame) -> pd.DataFrame:
                 "sample_id": first["sample_id"],
                 "original_mass_unit": first["unit"],
                 "chemistry_mapping_status": mapping,
+                "dso_polyol_mass_fraction_source_label": dso_fraction,
                 "quality_status": quality,
                 "endpoint_use": endpoint_use,
                 **endpoints,

@@ -39,6 +39,9 @@ def test_real_release_keeps_identity_conflict_separate():
     assert endpoints["T10_degC"].notna().all()
     assert endpoints["T50_degC"].notna().all()
     assert endpoints["formulation_id"].notna().sum() == 4
+    mapped = endpoints.dropna(subset=["formulation_id"])
+    assert set(mapped["dso_polyol_mass_fraction_source_label"]) == {0.0, 0.5, 0.7, 1.0}
+    assert mapped["chemistry_mapping_status"].eq("composition_series_mapped").all()
     conflict = endpoints[endpoints["formulation_id"].isna()].iloc[0]
     assert conflict["endpoint_use"] == "reference_only_identity_conflict"
     assert "conflict" in conflict["quality_status"]
