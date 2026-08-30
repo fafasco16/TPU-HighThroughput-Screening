@@ -1,0 +1,60 @@
+{
+  "release_id": "tpu-directed-pretraining-inputs-2026-08-30-v1",
+  "counts": {
+    "formulation_feature_rows": 980,
+    "objective_rows": 5,
+    "precalculation_rule_ready_rows": 980,
+    "calculation_allowed_rows": 0,
+    "model_prediction_available_rows": 0
+  },
+  "input_files": {
+    "现实配方": {
+      "path": "结果/定向筛选/现实配方候选.csv",
+      "bytes": 1041456,
+      "sha256": "33da8e6d195b287beb6d3b6c69cab3f1d98da10b0c4f83599d14119308087663"
+    },
+    "现实构件": {
+      "path": "结果/定向筛选/现实构件约束.csv",
+      "bytes": 14059,
+      "sha256": "148b6a1e41f79ec8e03a8c21b798f77f605c0152a4b90910ff93b7a91e0978f1"
+    },
+    "筛选任务": {
+      "path": "结果/定向筛选/筛选任务清单.csv",
+      "bytes": 1808,
+      "sha256": "f8bba3370f197fdafcff3f657b224cd1442048b6765ce0ed162f650681c62b8d"
+    },
+    "TGA端点": {
+      "path": "结果/定向筛选/TGA热稳定端点.csv",
+      "bytes": 3883,
+      "sha256": "295b9247f92f28814d7582525b770272ca3cca95873bce436867c341a71d140c"
+    },
+    "实验标签": {
+      "path": "结果/定向筛选/三目标实验标签.csv.gz",
+      "bytes": 487789,
+      "sha256": "f0a7b0fc02447ac1944cc4cc187cba6a1a821773d520d487b7b6d629cb694289"
+    },
+    "计算证据": {
+      "path": "结果/定向筛选/三目标计算证据.csv.gz",
+      "bytes": 4191123,
+      "sha256": "8ca0ce709679a38a9141834b8c8806e0cd6f668ed307b8a6f283e36d57e61395"
+    }
+  },
+  "output_files": {
+    "配方特征": {
+      "path": "结果/定向筛选/三目标配方特征.csv.gz",
+      "bytes": 30740,
+      "sha256": "d8c6067c5a86258ca9be5e262527df5022d0602ef114ec82e92162ca57b29505"
+    },
+    "训练前任务": {
+      "path": "结果/定向筛选/训练前任务清单.csv",
+      "bytes": 2620,
+      "sha256": "38a5e927e61f229b34846785941217a8e947eb4f96dfa07ef5e745660dc983b8"
+    }
+  },
+  "stop_gate": {
+    "new_quantum_or_md_calculation": false,
+    "model_training": false,
+    "prediction": false,
+    "reason": "user_requested_stop_before_calculation"
+  }
+}

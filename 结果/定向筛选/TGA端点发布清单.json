@@ -1,0 +1,32 @@
+{
+  "release_id": "tpu-directed-tga-endpoints-2026-08-30-v1",
+  "algorithm": {
+    "baseline": "maximum_of_first_5_percent_minimum_3_points",
+    "normalization": "100*mass/baseline",
+    "noise_handling": "cumulative_minimum_envelope",
+    "thresholds_mass_percent": [
+      95,
+      90,
+      50
+    ],
+    "interpolation": "linear_between_bracketing_points",
+    "Td_onset": "not_derived_without_protocolized_tangent_method"
+  },
+  "counts": {
+    "curve_count": 5,
+    "identity_resolved_curve_count": 4,
+    "t5_count": 5,
+    "t10_count": 5,
+    "t50_count": 5
+  },
+  "input_file": {
+    "path": "结果/定向筛选/三目标实验标签.csv.gz",
+    "bytes": 487789,
+    "sha256": "f0a7b0fc02447ac1944cc4cc187cba6a1a821773d520d487b7b6d629cb694289"
+  },
+  "output_file": {
+    "path": "结果/定向筛选/TGA热稳定端点.csv",
+    "bytes": 3883,
+    "sha256": "295b9247f92f28814d7582525b770272ca3cca95873bce436867c341a71d140c"
+  }
+}

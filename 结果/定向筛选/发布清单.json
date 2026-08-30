@@ -24,9 +24,9 @@
       "sha256": "0c8f5888034ca2d746063539a8780df284d6697e44b0ba71c698eaecfbba6918"
     },
     "商用构件证据": {
-      "bytes": 11423,
+      "bytes": 11398,
       "path": "候选/商用构件证据.csv",
-      "sha256": "dffe2d99a0c279da974d061b49ce8a0a50a8a90e7bd4204caed60d5e8b17495f"
+      "sha256": "084a6d55a74b567f80c22beb7f369057b5925d1c66ff538f3aceafe52d01e46a"
     },
     "实验合理组合": {
       "bytes": 829542,
@@ -46,9 +46,9 @@
       "sha256": "8ca0ce709679a38a9141834b8c8806e0cd6f668ed307b8a6f283e36d57e61395"
     },
     "使用说明": {
-      "bytes": 3513,
+      "bytes": 3782,
       "path": "结果/定向筛选/README.md",
-      "sha256": "fbe9ad3d93a6467f91c771efb6129b943b626738f30c7789b006818b37ff949e"
+      "sha256": "af52a1d1b61d4ab5493008390fba350c58ad609ff0e01fa458e7efe35e8c1759"
     },
     "现实构件约束": {
       "bytes": 14059,
