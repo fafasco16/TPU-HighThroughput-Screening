@@ -20,13 +20,13 @@
 
 ## 当前任务门
 
-| 目标 | 类型 | 已闭合化学配方组 | 状态 |
-|---|---|---:|---|
-| 韧性 | single_task_model | 8 | insufficient_chemistry_closed_labels |
-| 循环恢复 | single_task_model | 5 | insufficient_chemistry_closed_labels |
-| 热稳定 | single_task_model | 0 | insufficient_chemistry_closed_labels |
-| 原料成本 | deterministic_constraint | 0 | rule_data_missing |
-| 环保约束 | deterministic_constraint | 0 | rule_data_missing |
+| 目标 | 类型 | 实验主目标闭合组 | 直接低保真计算组 | 机理代理组 | 状态 |
+|---|---|---:|---:|---:|---|
+| 韧性 | single_task_model | 8 | 1 | 7988 | insufficient_chemistry_closed_labels |
+| 循环恢复 | single_task_model | 5 | 0 | 7988 | insufficient_chemistry_closed_labels |
+| 热稳定 | single_task_model | 0 | 21 | 4 | insufficient_chemistry_closed_labels |
+| 原料成本 | deterministic_constraint | 0 | 0 | 0 | rule_data_missing |
+| 环保约束 | deterministic_constraint | 0 | 0 | 0 | rule_data_missing |
 
 `已闭合化学配方组`只统计主目标中同一来源内存在组分表的配方；辅助强度、伸长、Tg等不会抬高主目标就绪数，试样重复、曲线点和工况变化也不会扩大为新化学体系。
 
@@ -34,6 +34,8 @@
 
 - `三目标实验标签.csv.gz`：三目标直接值、曲线和辅助性质，保留原条件、来源、划分和权重。
 - `目标标签审计.csv`：逐性质的来源、配方、曲线、独立单元和映射缺口。
+- `三目标计算证据.csv.gz`：与三目标相关的直接低保真、迁移、工况代理和机理代理计算记录。
+- `计算证据审计.csv`：按硬分组审计计算证据，避免把同一配方的工况数当作材料数。
 - `现实构件约束.csv`：24种商用构件，价格和结构化EHS未知时明确留空。
 - `现实配方候选.csv`：980个TPU现实配方；当前没有胺类扩链剂，因此不得宣称覆盖TPUU空间。
 - `筛选任务清单.csv`：三个单任务模型和两个规则目标的最低数据门。
@@ -45,8 +47,9 @@
 2. 定向补齐韧性、循环恢复和热分解端点的组分—配方—工艺映射。
 3. 为24种商用构件录入同地区同日期报价和结构化SDS/GHS字段。
 4. 增加商业二胺/胺类扩链剂后，单独生成TPUU现实候选。
-5. 三个单任务模型通过来源族留出后，再给980个现实配方做Pareto排序。
-6. 只把前50–100个送低成本量化描述符，前10–20个送MD/高层复核。
+5. 用Gold-C先做结构表示预训练，再以直接低保真头和Gold-E实验残差校准三个任务。
+6. 三个单任务模型通过来源族留出后，再给980个现实配方做Pareto排序。
+7. 只把前50–100个送低成本量化描述符，前10–20个送MD/高层复核。
 
 ## 参考入口
 

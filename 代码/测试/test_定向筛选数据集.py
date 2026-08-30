@@ -28,10 +28,26 @@ def test_property_classification():
     assert directed.classify_property("shore_hardness") is None
 
 
+def test_computational_property_classification():
+    assert directed.classify_computational_property("Tg") == [
+        ("thermal_stability", "low_fidelity_target")
+    ]
+    assert directed.classify_computational_property(
+        "cohesive_energy_per_chain"
+    ) == [
+        ("toughness", "mechanistic_proxy"),
+        ("cyclic_recovery", "mechanistic_proxy"),
+        ("thermal_stability", "mechanistic_proxy"),
+    ]
+    assert directed.classify_computational_property("thermal_conductivity") == []
+
+
 def test_release_tables_preserve_evidence_and_missingness():
     release = directed.build_release()
     labels = release["labels"]
     audit = release["audit"]
+    computational = release["computational_evidence"]
+    computational_audit = release["computational_audit"]
     components = release["components"]
     formulations = release["formulations"]
 
@@ -44,6 +60,22 @@ def test_release_tables_preserve_evidence_and_missingness():
         "unmapped",
     }
     assert set(audit["property_name"]) == set(labels["property_name"])
+    assert "thermal_conductivity" not in set(computational["property_name"])
+    assert set(computational["evidence_role"]) <= {
+        "direct_low_fidelity_target",
+        "transfer_low_fidelity_target",
+        "process_response_proxy",
+        "mechanistic_proxy",
+    }
+    assert not computational["allowed_use"].eq("experimental_truth").any()
+    assert set(computational_audit["property_name"]) == set(
+        computational["property_name"]
+    )
+    cyclic_direct = computational[
+        computational["target_family"].eq("cyclic_recovery")
+        & computational["evidence_role"].eq("direct_low_fidelity_target")
+    ]
+    assert cyclic_direct.empty
     assert len(components) == 24
     assert len(formulations) == 980
     assert components["price_per_kg"].isna().all()
@@ -79,6 +111,8 @@ def test_generated_release_and_check_command():
     assert manifest["counts"]["commercial_component_rows"] == 24
     assert manifest["counts"]["realistic_formulation_rows"] == 980
     assert manifest["counts"]["target_family_count"] == 3
+    assert manifest["counts"]["computational_evidence_rows"] > 0
+    assert manifest["counts"]["computational_evidence_property_count"] >= 8
 
     tasks = pd.read_csv(OUTPUT / "筛选任务清单.csv")
     assert tasks["objective_id"].tolist() == [
