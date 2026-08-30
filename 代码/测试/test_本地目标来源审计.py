@@ -137,6 +137,11 @@ def test_local_audit_covers_all_source_directories():
         "thermal_stability",
     }
     assert vitrimer["already_in_directed_target"].all()
+    single_fiber = queue.loc[
+        queue.source_directory.eq("Texas_湿干单根电纺PU纤维力学")
+    ]
+    assert set(single_fiber.target_family) == {"cyclic_recovery"}
+    assert single_fiber["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

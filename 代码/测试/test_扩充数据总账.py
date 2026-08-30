@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 32
+    assert len(f) == 33
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -99,6 +99,14 @@ def test_release():
         "dynamic_network_vitrimer_transfer"
     ).all()
     assert vitrimer["mapping_completeness_score"].eq(0.20).all()
+    single_fiber = f.loc[
+        f.package_id.eq("pcu85_single_fiber_cyclic_transfer")
+    ]
+    assert len(single_fiber) == 1
+    assert single_fiber.iloc[0].row_count == 152
+    assert single_fiber.iloc[0].model_admission_layer == (
+        "single_fiber_polyurethane_auxiliary"
+    )
 
 
 def test_command():

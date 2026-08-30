@@ -237,6 +237,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("生物基玻璃体拉伸端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "toughness"),
         ("生物基玻璃体松弛端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "cyclic_recovery"),
         ("生物基玻璃体TGA端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "thermal_stability"),
+        ("PCU85单纤维循环端点.csv", "Texas_湿干单根电纺PU纤维力学", "cyclic_recovery"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename
@@ -294,6 +295,9 @@ def _audit_source(
     coverage = directed_coverage.get(source_dir.name, {})
     for target in ("toughness", "cyclic_recovery", "thermal_stability"):
         flags[target] = flags[target] or target in coverage
+    if source_dir.name == "Texas_湿干单根电纺PU纤维力学":
+        flags["toughness"] = False
+        flags["formulation"] = False
     target_names = [
         name
         for name in ("toughness", "cyclic_recovery", "thermal_stability")

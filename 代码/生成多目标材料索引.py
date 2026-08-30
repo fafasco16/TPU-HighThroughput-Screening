@@ -43,6 +43,7 @@ INPUTS = {
     "vitrimer_tensile": D / "生物基玻璃体拉伸端点.csv",
     "vitrimer_relaxation": D / "生物基玻璃体松弛端点.csv",
     "vitrimer_tga": D / "生物基玻璃体TGA端点.csv",
+    "pcu85_cycle": D / "PCU85单纤维循环端点.csv",
 }
 
 
@@ -111,6 +112,14 @@ def build_release():
             "vitrimer_relaxation",
             "vitrimer_tga",
         ),
+        (
+            "Texas_湿干单根电纺PU纤维力学",
+            "reference-197",
+            "material_code_only",
+            None,
+            "pcu85_cycle",
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -129,6 +138,9 @@ def build_release():
         ),
         "Zenodo_生物基共轭氨基甲酸酯玻璃体": (
             "dynamic_network_vitrimer_transfer"
+        ),
+        "Texas_湿干单根电纺PU纤维力学": (
+            "single_fiber_polyurethane_auxiliary"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -156,6 +168,8 @@ def build_release():
                     }
                     else "stress_relaxation_dynamic_network_proxy"
                     if source == "Zenodo_生物基共轭氨基甲酸酯玻璃体"
+                    else "direct_two_cycle_force_displacement_single_fiber"
+                    if source == "Texas_湿干单根电纺PU纤维力学"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -515,6 +529,21 @@ def build_release():
     )
     frame.loc[vitrimer, "gap_next_action"] = (
         "retain_weight_ceiling_0p2_and_never_count_as_TPU_core"
+    )
+    single_fiber = frame["source_family"].eq(
+        "Texas_湿干单根电纺PU纤维力学"
+    )
+    frame.loc[single_fiber, "multiobjective_status"] = (
+        "single_objective_single_fiber_transfer"
+    )
+    frame.loc[single_fiber, "completion_priority"] = (
+        "transfer_only_not_bulk_TPU"
+    )
+    frame.loc[single_fiber, "gap_evidence_status"] = (
+        "single_fiber_force_displacement_no_absolute_stress_or_TGA"
+    )
+    frame.loc[single_fiber, "gap_next_action"] = (
+        "resolve_PCU85_identity_and_keep_wet_conditions_external"
     )
     return frame
 

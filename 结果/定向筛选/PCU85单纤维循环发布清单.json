@@ -1,0 +1,30 @@
+{
+  "release_id": "pcu85_single_fiber_cyclic_v1",
+  "source": {
+    "dataset_doi": "10.18738/T8/ZYQ5Z1",
+    "license": "CC0-1.0",
+    "archive_sha256": "93477877a55c93b3266f5178986366ef31f2cd1375a4dc9f86f6c4e6fe078830"
+  },
+  "counts": {
+    "material_code_count": 1,
+    "physical_fiber_count": 38,
+    "condition_count": 3,
+    "test_date_batch_count": 13,
+    "nested_endpoint_row_count": 152,
+    "curve_segment_count": 646,
+    "machine_source_row_count": 53846,
+    "initialization_transient_row_count": 38,
+    "sem_image_count": 85,
+    "sem_images_mapped_to_mechanical_fibers": 83,
+    "sem_images_without_mechanical_csv": 2
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "bulk_TPU_toughness_available": false,
+    "absolute_stress_available": false,
+    "one_fiber_total_weight_ceiling": 0.25,
+    "one_nested_row_weight_ceiling": 0.0625,
+    "split_group_rule": "dataset_doi|material_code|hydration_condition|test_date_batch"
+  },
+  "output_sha256": "1bd4e07e5eba7ec6f5068c8fa177e879ce104db400412b555084b45eba7064ba"
+}

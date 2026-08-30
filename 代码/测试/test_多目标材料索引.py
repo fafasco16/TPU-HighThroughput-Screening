@@ -167,6 +167,18 @@ def test_release():
     assert vitrimer["completion_priority"].eq(
         "transfer_only_not_tpu_core"
     ).all()
+    single_fiber = f.loc[
+        f.source_family.eq("Texas_湿干单根电纺PU纤维力学")
+    ]
+    assert len(single_fiber) == 1
+    assert single_fiber.iloc[0].material_key == "PCU85"
+    assert single_fiber.iloc[0].objective_coverage_count == 1
+    assert single_fiber.iloc[0].model_admission_layer == (
+        "single_fiber_polyurethane_auxiliary"
+    )
+    assert single_fiber.iloc[0].cyclic_evidence_level == (
+        "direct_two_cycle_force_displacement_single_fiber"
+    )
 
 
 def test_command():

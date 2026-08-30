@@ -269,6 +269,14 @@ SPECS = [
         "CC-BY-4.0",
         "formulation_code_synthesis_family_mapped",
     ),
+    (
+        "pcu85_single_fiber_cyclic_transfer",
+        "cyclic_force_displacement_transfer",
+        "PCU85单纤维循环端点.csv",
+        "PCU85单纤维循环发布清单.json",
+        "CC0-1.0",
+        "material_code_only",
+    ),
 ]
 
 
@@ -345,6 +353,9 @@ def build_release():
         "biobased_vitrimer_tensile_transfer": "dynamic_network_vitrimer_transfer",
         "biobased_vitrimer_relaxation_transfer": "dynamic_network_vitrimer_transfer",
         "biobased_vitrimer_tga_transfer": "dynamic_network_vitrimer_transfer",
+        "pcu85_single_fiber_cyclic_transfer": (
+            "single_fiber_polyurethane_auxiliary"
+        ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
