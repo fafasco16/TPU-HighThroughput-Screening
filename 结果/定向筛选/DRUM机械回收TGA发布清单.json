@@ -1,0 +1,11 @@
+{
+  "counts": {
+    "material_count": 19,
+    "soft_segment_family_count": 4,
+    "t5_count": 19,
+    "t10_count": 19,
+    "t50_count": 19
+  },
+  "source_sha256": "b89aff36f7275f4ef605d229eba71f444fdcc73426416fa1160dac3428aaf8b2",
+  "output_sha256": "77eddc7947bc6ace3eb6012a94ded67887ddb2937a2e55db013bcc5fbeddc5b1"
+}

@@ -53,6 +53,11 @@
       "bytes": 1261,
       "sha256": "2ca08f3045e0ea7932c1f118e790be76266b62934d7eaab8feb7bc22c6f46166"
     },
+    "DRUM机械回收TGA": {
+      "path": "结果/定向筛选/DRUM机械回收TGA端点.csv",
+      "bytes": 8797,
+      "sha256": "77eddc7947bc6ace3eb6012a94ded67887ddb2937a2e55db013bcc5fbeddc5b1"
+    },
     "实验标签": {
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
       "bytes": 3435920,
@@ -72,8 +77,8 @@
     },
     "训练前任务": {
       "path": "结果/定向筛选/训练前任务清单.csv",
-      "bytes": 2786,
-      "sha256": "5e3d58ecef3cbfdf8a381d07abf83375141b030087f1294b3f9bd957ef19f0ee"
+      "bytes": 2788,
+      "sha256": "4c2d139bb2673ca35de23a0e05bb17faff11da967c0d5eae6b236172e6c08862"
     }
   },
   "stop_gate": {

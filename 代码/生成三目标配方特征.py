@@ -23,6 +23,7 @@ INPUTS = {
     "Zenodo多孔TPU": DIRECTED / "Zenodo多孔TPU拉伸端点.csv",
     "Figshare强韧自愈": DIRECTED / "Figshare强韧自愈端点.csv",
     "标准化弹性体TGA": DIRECTED / "标准化热塑性弹性体TGA端点.csv",
+    "DRUM机械回收TGA": DIRECTED / "DRUM机械回收TGA端点.csv",
     "实验标签": DIRECTED / "三目标实验标签.csv.gz",
     "计算证据": DIRECTED / "三目标计算证据.csv.gz",
 }
@@ -131,6 +132,7 @@ def build_training_tasks(
     zenodo_porous_tpu: pd.DataFrame | None = None,
     figshare_healing_tpu: pd.DataFrame | None = None,
     standardized_tga: pd.DataFrame | None = None,
+    drum_tga: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     tasks = directed_tasks.copy()
     tasks["tga_endpoint_curve_count"] = 0
@@ -164,10 +166,10 @@ def build_training_tasks(
         tasks.loc[toughness, "local_expansion_formulation_count"] = expansion_formulations
     if standardized_tga is not None:
         thermal = tasks["objective_id"].eq("thermal_stability")
-        tasks.loc[thermal, "local_expansion_endpoint_rows"] = len(standardized_tga)
-        tasks.loc[thermal, "local_expansion_formulation_count"] = standardized_tga[
-            "formulation_id"
-        ].nunique()
+        rows = len(standardized_tga) + (len(drum_tga) if drum_tga is not None else 0)
+        forms = standardized_tga["formulation_id"].nunique() + (drum_tga["formulation_id"].nunique() if drum_tga is not None else 0)
+        tasks.loc[thermal, "local_expansion_endpoint_rows"] = rows
+        tasks.loc[thermal, "local_expansion_formulation_count"] = forms
     tasks["model_training_status"] = "not_started_by_user_instruction"
     tasks["new_calculation_status"] = "not_started_by_user_instruction"
     tasks["training_ready"] = False
@@ -192,6 +194,7 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
     zenodo_porous_tpu = pd.read_csv(INPUTS["Zenodo多孔TPU"], low_memory=False)
     figshare_healing_tpu = pd.read_csv(INPUTS["Figshare强韧自愈"], low_memory=False)
     standardized_tga = pd.read_csv(INPUTS["标准化弹性体TGA"], low_memory=False)
+    drum_tga = pd.read_csv(INPUTS["DRUM机械回收TGA"], low_memory=False)
     return (
         build_formulation_features(formulations, components),
         build_training_tasks(
@@ -202,6 +205,7 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
             zenodo_porous_tpu,
             figshare_healing_tpu,
             standardized_tga,
+            drum_tga,
         ),
     )
 
