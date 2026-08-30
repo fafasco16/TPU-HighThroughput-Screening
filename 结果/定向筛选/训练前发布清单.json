@@ -33,6 +33,11 @@
       "bytes": 48814,
       "sha256": "96057cf29371371b9257b8f2fa886f5693fad54fb2703cabf010c942613e014f"
     },
+    "DRUM机械回收循环": {
+      "path": "结果/定向筛选/DRUM机械回收循环端点.csv",
+      "bytes": 120782,
+      "sha256": "ec0b9f1ed9828b96c0f9b61ee628321d3c9eb176991e7cdda5f2efe02ab62db0"
+    },
     "DRUM机械回收": {
       "path": "结果/定向筛选/DRUM机械回收拉伸端点.csv",
       "bytes": 94874,
@@ -77,8 +82,8 @@
     },
     "训练前任务": {
       "path": "结果/定向筛选/训练前任务清单.csv",
-      "bytes": 2788,
-      "sha256": "4c2d139bb2673ca35de23a0e05bb17faff11da967c0d5eae6b236172e6c08862"
+      "bytes": 2790,
+      "sha256": "8f3d5eb3c4f071c41e91bde2ddcb8848677849a1093dd6a36aeabfbaeedaa7ff"
     }
   },
   "stop_gate": {

@@ -32,6 +32,7 @@ def test_training_tasks_keep_fidelity_roles_separate():
     directed_tasks = pd.read_csv(OUTPUT / "筛选任务清单.csv")
     endpoints = pd.read_csv(OUTPUT / "TGA热稳定端点.csv")
     cyclic_endpoints = pd.read_csv(OUTPUT / "TPUU循环端点.csv")
+    drum_cyclic = pd.read_csv(OUTPUT / "DRUM机械回收循环端点.csv")
     drum_recycling = pd.read_csv(OUTPUT / "DRUM机械回收拉伸端点.csv")
     zenodo_porous_tpu = pd.read_csv(OUTPUT / "Zenodo多孔TPU拉伸端点.csv")
     figshare_healing_tpu = pd.read_csv(OUTPUT / "Figshare强韧自愈端点.csv")
@@ -39,6 +40,7 @@ def test_training_tasks_keep_fidelity_roles_separate():
         directed_tasks,
         endpoints,
         cyclic_endpoints,
+        drum_cyclic,
         drum_recycling,
         zenodo_porous_tpu,
         figshare_healing_tpu,
@@ -56,8 +58,8 @@ def test_training_tasks_keep_fidelity_roles_separate():
     assert thermal["tga_identity_resolved_curve_count"] == 4
     cyclic = tasks[tasks["objective_id"].eq("cyclic_recovery")].iloc[0]
     assert cyclic["direct_low_fidelity_hard_groups"] == 0
-    assert cyclic["cyclic_endpoint_rows"] == 80
-    assert cyclic["cyclic_endpoint_formulation_count"] == 4
+    assert cyclic["cyclic_endpoint_rows"] == 320
+    assert cyclic["cyclic_endpoint_formulation_count"] == 26
     toughness = tasks[tasks["objective_id"].eq("toughness")].iloc[0]
     assert toughness["local_expansion_endpoint_rows"] == 137
     assert toughness["local_expansion_formulation_count"] == 29

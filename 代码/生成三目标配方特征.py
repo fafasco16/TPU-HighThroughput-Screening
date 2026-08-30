@@ -19,6 +19,7 @@ INPUTS = {
     "筛选任务": DIRECTED / "筛选任务清单.csv",
     "TGA端点": DIRECTED / "TGA热稳定端点.csv",
     "循环端点": DIRECTED / "TPUU循环端点.csv",
+    "DRUM机械回收循环": DIRECTED / "DRUM机械回收循环端点.csv",
     "DRUM机械回收": DIRECTED / "DRUM机械回收拉伸端点.csv",
     "Zenodo多孔TPU": DIRECTED / "Zenodo多孔TPU拉伸端点.csv",
     "Figshare强韧自愈": DIRECTED / "Figshare强韧自愈端点.csv",
@@ -128,6 +129,7 @@ def build_training_tasks(
     directed_tasks: pd.DataFrame,
     endpoints: pd.DataFrame,
     cyclic_endpoints: pd.DataFrame | None = None,
+    drum_cyclic: pd.DataFrame | None = None,
     drum_recycling: pd.DataFrame | None = None,
     zenodo_porous_tpu: pd.DataFrame | None = None,
     figshare_healing_tpu: pd.DataFrame | None = None,
@@ -146,10 +148,10 @@ def build_training_tasks(
     tasks["cyclic_endpoint_formulation_count"] = 0
     if cyclic_endpoints is not None:
         cyclic = tasks["objective_id"].eq("cyclic_recovery")
-        tasks.loc[cyclic, "cyclic_endpoint_rows"] = len(cyclic_endpoints)
-        tasks.loc[cyclic, "cyclic_endpoint_formulation_count"] = cyclic_endpoints[
-            "formulation_id"
-        ].nunique()
+        rows = len(cyclic_endpoints) + (len(drum_cyclic) if drum_cyclic is not None else 0)
+        forms = cyclic_endpoints["formulation_id"].nunique() + (drum_cyclic["formulation_id"].nunique() if drum_cyclic is not None else 0)
+        tasks.loc[cyclic, "cyclic_endpoint_rows"] = rows
+        tasks.loc[cyclic, "cyclic_endpoint_formulation_count"] = forms
     tasks["local_expansion_endpoint_rows"] = 0
     tasks["local_expansion_formulation_count"] = 0
     if drum_recycling is not None:
@@ -190,6 +192,7 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
     directed_tasks = pd.read_csv(INPUTS["筛选任务"], low_memory=False)
     endpoints = pd.read_csv(INPUTS["TGA端点"], low_memory=False)
     cyclic_endpoints = pd.read_csv(INPUTS["循环端点"], low_memory=False)
+    drum_cyclic = pd.read_csv(INPUTS["DRUM机械回收循环"], low_memory=False)
     drum_recycling = pd.read_csv(INPUTS["DRUM机械回收"], low_memory=False)
     zenodo_porous_tpu = pd.read_csv(INPUTS["Zenodo多孔TPU"], low_memory=False)
     figshare_healing_tpu = pd.read_csv(INPUTS["Figshare强韧自愈"], low_memory=False)
@@ -201,6 +204,7 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
             directed_tasks,
             endpoints,
             cyclic_endpoints,
+            drum_cyclic,
             drum_recycling,
             zenodo_porous_tpu,
             figshare_healing_tpu,
