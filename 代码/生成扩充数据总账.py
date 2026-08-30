@@ -277,6 +277,22 @@ SPECS = [
         "CC0-1.0",
         "material_code_only",
     ),
+    (
+        "cast_pu_relaxation_curve_evidence",
+        "stress_relaxation_curve_evidence",
+        "PU高低速松弛曲线端点.csv",
+        "PU高低速松弛发布清单.json",
+        "CC-BY-4.0",
+        "commercial_task_code_only",
+    ),
+    (
+        "cast_pu_relaxation_condition_aggregate",
+        "stress_relaxation_recovery_proxy",
+        "PU高低速松弛工况端点.csv",
+        "PU高低速松弛发布清单.json",
+        "CC-BY-4.0",
+        "commercial_task_code_only",
+    ),
 ]
 
 
@@ -303,6 +319,7 @@ def build_release():
         "polymer_family_diisocyanate_code_mapped": 0.70,
         "commercial_foam_grade_density_mapped": 0.60,
         "formulation_code_synthesis_family_mapped": 0.20,
+        "commercial_task_code_only": 0.20,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -319,6 +336,7 @@ def build_release():
         "polymer_family_diisocyanate_code_mapped": "闭合数字配方代码语义与水解协议并补同配方TGA",
         "commercial_foam_grade_density_mapped": "仅作泡沫断裂迁移；补完整化学牌号而不并入TPU核心",
         "formulation_code_synthesis_family_mapped": "仅作动态网络迁移；补论文Table 1缩写映射且不并入TPU核心",
+        "commercial_task_code_only": "补Task 3/Task 11商业化学身份；仅作松弛条件迁移",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -355,6 +373,12 @@ def build_release():
         "biobased_vitrimer_tga_transfer": "dynamic_network_vitrimer_transfer",
         "pcu85_single_fiber_cyclic_transfer": (
             "single_fiber_polyurethane_auxiliary"
+        ),
+        "cast_pu_relaxation_curve_evidence": (
+            "unknown_chemistry_cast_PU_relaxation_auxiliary"
+        ),
+        "cast_pu_relaxation_condition_aggregate": (
+            "unknown_chemistry_cast_PU_relaxation_auxiliary"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

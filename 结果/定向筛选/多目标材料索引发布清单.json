@@ -1,6 +1,6 @@
 {
   "counts": {
-    "material_rows": 73,
+    "material_rows": 75,
     "two_objective_or_more": 63,
     "three_objective": 38
   },
@@ -35,7 +35,8 @@
     "vitrimer_tensile": "f8f76f6376fe3e78daf7995464e74ad32c342ce496534462c694d668287dfedc",
     "vitrimer_relaxation": "c0173c563340f2d40be3d71b8b056212989ba4d016745195f9fcf4f62ada81b7",
     "vitrimer_tga": "415b9fe41828ecdfeccb86289c086cb907168bfaa0277df56274365f65e34135",
-    "pcu85_cycle": "1bd4e07e5eba7ec6f5068c8fa177e879ce104db400412b555084b45eba7064ba"
+    "pcu85_cycle": "1bd4e07e5eba7ec6f5068c8fa177e879ce104db400412b555084b45eba7064ba",
+    "cast_pu_relaxation": "7ffc669b36d173d7355e0383fd415e36fce8132b0c92a785be0a1393e68713bc"
   },
-  "output_sha256": "2a04471e3d89d927256f80a171601d7498c1139bdf450c67482a54814d143a02"
+  "output_sha256": "186505f0a008f7d86de2771f1cd927d01b3914fafda7d4ce596272581e41ea75"
 }

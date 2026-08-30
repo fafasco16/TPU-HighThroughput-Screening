@@ -44,6 +44,7 @@ INPUTS = {
     "vitrimer_relaxation": D / "生物基玻璃体松弛端点.csv",
     "vitrimer_tga": D / "生物基玻璃体TGA端点.csv",
     "pcu85_cycle": D / "PCU85单纤维循环端点.csv",
+    "cast_pu_relaxation": D / "PU高低速松弛工况端点.csv",
 }
 
 
@@ -120,6 +121,14 @@ def build_release():
             "pcu85_cycle",
             None,
         ),
+        (
+            "Figshare_PU高低速变形后应力松弛",
+            "reference-47;reference-48",
+            "commercial_task_code_only",
+            None,
+            "cast_pu_relaxation",
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -141,6 +150,9 @@ def build_release():
         ),
         "Texas_湿干单根电纺PU纤维力学": (
             "single_fiber_polyurethane_auxiliary"
+        ),
+        "Figshare_PU高低速变形后应力松弛": (
+            "unknown_chemistry_cast_PU_relaxation_auxiliary"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -170,6 +182,8 @@ def build_release():
                     if source == "Zenodo_生物基共轭氨基甲酸酯玻璃体"
                     else "direct_two_cycle_force_displacement_single_fiber"
                     if source == "Texas_湿干单根电纺PU纤维力学"
+                    else "stress_relaxation_unknown_chemistry_cast_PU_proxy"
+                    if source == "Figshare_PU高低速变形后应力松弛"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -544,6 +558,21 @@ def build_release():
     )
     frame.loc[single_fiber, "gap_next_action"] = (
         "resolve_PCU85_identity_and_keep_wet_conditions_external"
+    )
+    cast_pu = frame["source_family"].eq(
+        "Figshare_PU高低速变形后应力松弛"
+    )
+    frame.loc[cast_pu, "multiobjective_status"] = (
+        "single_objective_relaxation_transfer"
+    )
+    frame.loc[cast_pu, "completion_priority"] = (
+        "transfer_only_unknown_chemistry"
+    )
+    frame.loc[cast_pu, "gap_evidence_status"] = (
+        "stress_relaxation_only_no_direct_cycles_or_TGA"
+    )
+    frame.loc[cast_pu, "gap_next_action"] = (
+        "resolve_Task3_Task11_chemistry_before_any_structure_model_use"
     )
     return frame
 

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 33
+    assert len(f) == 35
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -107,6 +107,13 @@ def test_release():
     assert single_fiber.iloc[0].model_admission_layer == (
         "single_fiber_polyurethane_auxiliary"
     )
+    cast_pu = f.loc[f.package_id.str.startswith("cast_pu_relaxation_")]
+    assert set(cast_pu.package_id) == {
+        "cast_pu_relaxation_curve_evidence",
+        "cast_pu_relaxation_condition_aggregate",
+    }
+    assert cast_pu["row_count"].sum() == 79
+    assert cast_pu["mapping_completeness_score"].eq(0.20).all()
 
 
 def test_command():

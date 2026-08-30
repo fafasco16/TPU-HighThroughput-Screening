@@ -1,0 +1,33 @@
+{
+  "release_id": "cast_pu_high_low_rate_relaxation_v1",
+  "source": {
+    "dataset_doi": "10.6084/m9.figshare.23635998.v1",
+    "article_doi": "10.1098/rspa.2022.0830",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "146bfae71237b203d34b1fa9db46ff07e711dfdff86265cee7a940dac79d1194"
+  },
+  "counts": {
+    "material_code_count": 2,
+    "curve_evidence_row_count": 59,
+    "condition_aggregate_row_count": 20,
+    "slow_temperature_curve_count": 30,
+    "slow_large_strain_curve_count": 18,
+    "SHPB_10mm_curve_count": 6,
+    "SHPB_6mm_curve_count": 5,
+    "processed_curve_point_count": 301778
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "physical_specimen_count_known": false,
+    "curve_rows_training_weight": 0.0,
+    "condition_aggregate_weight_ceiling": 0.2,
+    "direct_cyclic_recovery_available": false,
+    "duplicate_or_transformed_figures_used": false,
+    "Figure31_protocol_conflict_quarantined": true,
+    "split_group_rule": "dataset_doi|material"
+  },
+  "outputs": {
+    "PU高低速松弛曲线端点.csv": "c99eb0184c615a23dfed1ca4d2d7a19dedf8a7ef1592202c0173614865477d0b",
+    "PU高低速松弛工况端点.csv": "7ffc669b36d173d7355e0383fd415e36fce8132b0c92a785be0a1393e68713bc"
+  }
+}

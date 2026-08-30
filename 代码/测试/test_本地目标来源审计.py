@@ -142,6 +142,11 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(single_fiber.target_family) == {"cyclic_recovery"}
     assert single_fiber["already_in_directed_target"].all()
+    cast_pu = queue.loc[
+        queue.source_directory.eq("Figshare_PU高低速变形后应力松弛")
+    ]
+    assert set(cast_pu.target_family) == {"cyclic_recovery"}
+    assert cast_pu["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

@@ -179,6 +179,17 @@ def test_release():
     assert single_fiber.iloc[0].cyclic_evidence_level == (
         "direct_two_cycle_force_displacement_single_fiber"
     )
+    cast_pu = f.loc[
+        f.source_family.eq("Figshare_PU高低速变形后应力松弛")
+    ]
+    assert set(cast_pu.material_key) == {"Task 3", "Task 11"}
+    assert cast_pu["objective_coverage_count"].eq(1).all()
+    assert cast_pu["model_admission_layer"].eq(
+        "unknown_chemistry_cast_PU_relaxation_auxiliary"
+    ).all()
+    assert cast_pu["cyclic_evidence_level"].eq(
+        "stress_relaxation_unknown_chemistry_cast_PU_proxy"
+    ).all()
 
 
 def test_command():
