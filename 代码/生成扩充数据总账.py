@@ -157,6 +157,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_grade_only",
     ),
+    (
+        "elastollan_pcl_shape_memory_summary",
+        "direct_shape_fixity_and_recovery",
+        "ElastollanPCL形状记忆端点.csv",
+        "ElastollanPCL形状记忆发布清单.json",
+        "paper-license-unverified-facts-only",
+        "commercial_grade_blend_fraction_mapped",
+    ),
 ]
 
 
@@ -178,6 +186,7 @@ def build_release():
         "commercial_identity_unresolved": 0.15,
         "monomer_set_hard_segment_mapped": 0.88,
         "monomer_set_molar_composition_mapped": 0.92,
+        "commercial_grade_blend_fraction_mapped": 0.75,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -189,6 +198,7 @@ def build_release():
         "commercial_identity_unresolved": "确认商业TPU基体身份",
         "monomer_set_hard_segment_mapped": "补Pripol 2033与HEDS逐配方精确摩尔投料和唯一结构",
         "monomer_set_molar_composition_mapped": "补物理试样跨工作簿身份；保持交联PU迁移层边界",
+        "commercial_grade_blend_fraction_mapped": "补原始曲线、重复数、不确定性及同配方TGA",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -209,13 +219,19 @@ def build_release():
         "dib_shape_memory_thermal": "polyurethane_transfer",
         "commercial_tpu_impact_fatigue": "core_tpu_application_experimental",
         "commercial_tpu_energy_recovery_pairs": "core_tpu_application_experimental",
+        "elastollan_pcl_shape_memory_summary": "core_tpu_blend_published_summary",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
         f = pd.read_csv(dp)
         material_col = next(
             column
-            for column in ("formulation_id", "material_code", "material_grade")
+            for column in (
+                "formulation_id",
+                "material_code",
+                "material_grade",
+                "material_id",
+            )
             if column in f
         )
         target_bonus = 0.10 if "and" in target else 0.05

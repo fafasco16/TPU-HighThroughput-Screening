@@ -1,6 +1,6 @@
 {
   "counts": {
-    "material_rows": 52,
+    "material_rows": 55,
     "two_objective_or_more": 50,
     "three_objective": 30
   },
@@ -18,7 +18,8 @@
     "dib_cycle": "ede469794b571793ea7710dbfe7bbe318d20075a9bad7ad968f715aea2a41f6e",
     "dib_tga": "731fbfc6e0d3fbd0592d1c6182dafabecd47f14f86b5ce54d629b7c49b2fffe1",
     "commercial_fatigue": "659a87d00b616db94dd8f873cc502e8d8efa26b2fe0fd267fa3dc412f9b0613c",
-    "commercial_recovery": "60649846d14d83ace404a70c8af5140c832ce737fb5298149cf09977caf7e80b"
+    "commercial_recovery": "60649846d14d83ace404a70c8af5140c832ce737fb5298149cf09977caf7e80b",
+    "elastollan_pcl_shape_memory": "118d99d0a956f05157a0e959ba8711c68efedae8712bcc8510ad04842dc95d91"
   },
-  "output_sha256": "88beb2f41173ee470e37c8b48569fedac0180e346b7d8f809ca01b0e208d9e0c"
+  "output_sha256": "84e2c94c2e542b3d7d0ec06fcf78749808e488ac4caebf973dd389ef01dacec9"
 }

@@ -27,6 +27,7 @@ INPUTS = {
     "dib_tga": D / "DataInBrief形状记忆PU热稳定端点.csv",
     "commercial_fatigue": D / "商业TPU温度疲劳端点.csv",
     "commercial_recovery": D / "商业TPU恢复配对端点.csv",
+    "elastollan_pcl_shape_memory": D / "ElastollanPCL形状记忆端点.csv",
 }
 
 
@@ -181,6 +182,28 @@ def build_release():
                 "citation_keys": "reference-186",
             }
         )
+    for row in frames["elastollan_pcl_shape_memory"].itertuples(index=False):
+        rows.append(
+            {
+                "source_family": "JMERD_Elastollan1154D_PCL_shape_memory",
+                "material_key": row.material_id,
+                "chemistry_mapping_status": row.chemistry_mapping_status,
+                "toughness_record_count": 0,
+                "cyclic_record_count": 1,
+                "thermal_record_count": 0,
+                "has_toughness": False,
+                "has_cyclic_recovery": True,
+                "has_thermal_stability": False,
+                "objective_coverage_count": 1,
+                "multiobjective_status": "single_objective_direct_recovery",
+                "model_admission_layer": "core_tpu_blend_published_summary",
+                "toughness_evidence_level": "not_available",
+                "cyclic_evidence_level": (
+                    "direct_shape_fixity_and_recovery_published_summary"
+                ),
+                "citation_keys": row.citation_keys,
+            }
+        )
     frame = (
         pd.DataFrame(rows)
         .sort_values(
@@ -239,6 +262,15 @@ def build_release():
     commercial = frame["source_family"].eq("Mendeley_商业TPU温度疲劳")
     frame.loc[commercial, "gap_evidence_status"] = "no_thermal_degradation_for_exact_commercial_grade"
     frame.loc[commercial, "gap_next_action"] = "search_exact_grade_TGA_or_measurement"
+    shape_memory_blends = frame["source_family"].eq(
+        "JMERD_Elastollan1154D_PCL_shape_memory"
+    )
+    frame.loc[shape_memory_blends, "gap_evidence_status"] = (
+        "direct_shape_memory_only_no_curve_toughness_or_TGA"
+    )
+    frame.loc[shape_memory_blends, "gap_next_action"] = (
+        "search_same_blend_raw_tensile_and_TGA_or_measurement"
+    )
     return frame
 
 

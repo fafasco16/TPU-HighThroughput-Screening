@@ -742,8 +742,8 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 - 版本：`{RELEASE_ID}`
 - 三目标相关实验记录：{len(labels):,}行
-- 受治理扩充包：18个、1,043行端点/记录
-- 多目标材料索引：52个材料键，其中30个覆盖三类目标证据；12个为交联PU迁移层，5个为商业TPU应用实验层
+- 受治理扩充包：19个、1,046行端点/记录
+- 多目标材料索引：55个材料键，其中30个覆盖三类目标证据；12个为交联PU迁移层，5个为商业TPU应用实验层，3个为Elastollan/PCL直接形状记忆文献配方
 - 商用构件：{len(release['components']):,}种
 - 现实配方：{len(release['formulations']):,}个
 
@@ -794,6 +794,7 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 - `DataInBrief形状记忆PU热稳定端点.csv`：12个HDI/HPED/TEA交联PU配方的T5/T10/T50与DMA Tg；该来源不是热塑性TPU核心域。
 - `商业TPU温度疲劳端点.csv`：5个Elastollan/Texin商业TPU牌号、190个独立物理试样的196条−20/20/55 ℃压缩疲劳与恢复历史；75条来源能量汇总与196条独立复算值分列保存。
 - `商业TPU恢复配对端点.csv`：6个同试样100次冲击后46或49天环境恢复复测配对，监督50%压缩能量恢复；不是形状恢复率。
+- `ElastollanPCL形状记忆端点.csv`：Elastollan 1154D与CAPA 6500的30/45/60 wt% TPU共混配方，保存论文表格中的直接形状固定率与恢复率；原始重复数和不确定性未报告，保持文献汇总低权重。
 - `本地来源审计.csv`与`本地扩库队列.csv`：只读扫描本地原件元数据并按三目标排出增量接入顺序。
 - `外部来源候选.csv`：通过官方API新增的开放来源及本地原件清单、许可证和引用状态。
 - `三目标配方特征.csv.gz`：由独立脚本生成980个现实TPU配方的身份、结构上下文、计量和计算前门。
@@ -805,7 +806,7 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 ## 下一步顺序
 
-1. 已完成QUB、DataInBrief和商业TPU温度疲劳三批接入；下一批优先补Elastollan 1154D/1164D/1174D/1195A与Texin 245同牌号TGA，或寻找热塑性TPU/TPUU直接形状恢复率。
+1. 已完成QUB、DataInBrief、商业TPU温度疲劳及Elastollan/PCL直接形状记忆接入；同牌号开放TGA未检索到，下一批转向已有本地来源中可闭合配方的TGA或直接恢复原始数据。
 2. 定向补齐韧性、循环恢复和热分解端点的组分—配方—工艺映射；循环滞后代理与直接恢复率始终分层。
 3. 为24种商用构件录入同地区同日期报价和结构化SDS/GHS字段。
 4. 增加商业二胺/胺类扩链剂后，单独生成TPUU现实候选。

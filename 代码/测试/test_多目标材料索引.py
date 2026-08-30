@@ -55,6 +55,22 @@ def test_release():
     assert commercial["cyclic_evidence_level"].eq(
         "direct_impact_fatigue_and_same_specimen_energy_recovery"
     ).all()
+    blends = f.loc[
+        f.source_family.eq("JMERD_Elastollan1154D_PCL_shape_memory")
+    ]
+    assert len(blends) == 3
+    assert set(blends.material_key) == {
+        "Elastollan1154D_30wt_PCL_70wt",
+        "Elastollan1154D_45wt_PCL_55wt",
+        "Elastollan1154D_60wt_PCL_40wt",
+    }
+    assert blends["objective_coverage_count"].eq(1).all()
+    assert blends["model_admission_layer"].eq(
+        "core_tpu_blend_published_summary"
+    ).all()
+    assert blends["cyclic_evidence_level"].eq(
+        "direct_shape_fixity_and_recovery_published_summary"
+    ).all()
 
 
 def test_command():

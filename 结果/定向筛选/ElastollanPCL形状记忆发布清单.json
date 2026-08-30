@@ -1,0 +1,31 @@
+{
+  "release_id": "elastollan-1154d-pcl-shape-memory-2021-v1",
+  "counts": {
+    "blend_formulation_count": 3,
+    "direct_shape_fixity_rows": 3,
+    "direct_shape_recovery_rows": 3,
+    "published_compact_row_count": 3
+  },
+  "source": {
+    "source_id": "JMERD-2021-44-11-197-206",
+    "url": "https://www.researchgate.net/publication/357355659_Investigating_Mechanical_and_Shape_Memory_Properties_of_TPUPCL_Blends_For_Thermoplastic_Splinting_Applications",
+    "title": "Investigating Mechanical and Shape Memory Properties of TPU/PCL Blends for Thermoplastic Splinting Applications",
+    "table_locator": "Table 1, page 206",
+    "accessed_on": "2026-08-31",
+    "license_status": "paper_license_not_verified_numeric_facts_only",
+    "raw_paper_redistributed": false,
+    "evidence_sha256": "2edf095878d608264438bae95efa6a8bf758cc74e38f6772255f2e756adb448c"
+  },
+  "policy": {
+    "published_summary_not_raw_curve": true,
+    "replicate_count_known": false,
+    "uncertainty_known": false,
+    "exact_TPU_grade_known": true,
+    "exact_TPU_molecular_composition_known": false
+  },
+  "output": {
+    "path": "结果/定向筛选/ElastollanPCL形状记忆端点.csv",
+    "bytes": 2834,
+    "sha256": "118d99d0a956f05157a0e959ba8711c68efedae8712bcc8510ad04842dc95d91"
+  }
+}
