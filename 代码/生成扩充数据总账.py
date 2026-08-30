@@ -104,6 +104,22 @@ def sha(p):
 
 def build_release():
     rows = []
+    scores = {
+        "family_mn_hard_segment_mapped": 0.75,
+        "composition_series_mapped": 0.60,
+        "commercial_grade_only": 0.35,
+        "formulation_code_only": 0.30,
+        "material_code_only": 0.25,
+        "commercial_identity_unresolved": 0.15,
+    }
+    actions = {
+        "family_mn_hard_segment_mapped": "补精确软段重复单元与完整投料",
+        "composition_series_mapped": "补逐配方投料和唯一聚合物结构",
+        "commercial_grade_only": "补商业牌号化学组成或TDS",
+        "formulation_code_only": "从正文或SI恢复组分和比例",
+        "material_code_only": "恢复材料代码对应配方",
+        "commercial_identity_unresolved": "确认商业TPU基体身份",
+    }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
         f = pd.read_csv(dp)
@@ -117,6 +133,8 @@ def build_release():
                 "row_count": len(f),
                 "material_count": f[material_col].nunique(dropna=True),
                 "mapping_tier": mapping,
+                "mapping_completeness_score": scores[mapping],
+                "next_mapping_action": actions[mapping],
                 "license": license_,
                 "data_sha256": sha(dp),
                 "manifest_sha256": sha(mp),
