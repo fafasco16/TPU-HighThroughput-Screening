@@ -1,0 +1,60 @@
+{
+  "release_id": "sawbones-pcf20-foam-fracture-2026-v1",
+  "counts": {
+    "material_grade_count": 1,
+    "independent_physical_specimen_count": 18,
+    "tension_specimen_count": 12,
+    "fracture_specimen_count": 6,
+    "machine_source_point_count": 4270,
+    "DIC_source_point_count": 4839,
+    "published_compact_row_count": 18
+  },
+  "source": {
+    "dataset_doi": "10.24435/materialscloud:vf-ry",
+    "preprint_doi": "10.2139/ssrn.6755055",
+    "license": "CC-BY-4.0",
+    "archive": {
+      "path": "数据/原始/外部数据/新增开放数据/MaterialsCloud_商用PU泡沫多轴断裂力学/PUF.zip",
+      "bytes": 92570591,
+      "sha256": "2ed0e23ef1e4770bbf66ce02ebe40483e005cacecdf52c83ea89805c9450ce66"
+    },
+    "readme": {
+      "path": "数据/原始/外部数据/新增开放数据/MaterialsCloud_商用PU泡沫多轴断裂力学/README.txt",
+      "bytes": 4302,
+      "sha256": "035fa46e8c06b0a02fdad69a3433286f1114ec65088dc81ffe3d6fca8621d4c8"
+    },
+    "materialscloud_metadata": {
+      "path": "数据/原始/外部数据/新增开放数据/MaterialsCloud_商用PU泡沫多轴断裂力学/官方MaterialsCloud元数据.json",
+      "bytes": 11844,
+      "sha256": "8a14caffac786ea616dd5a40084a2306529516fb9dbd5de55d94845f6ff085d3"
+    },
+    "datacite_metadata": {
+      "path": "数据/原始/外部数据/新增开放数据/MaterialsCloud_商用PU泡沫多轴断裂力学/官方DataCite元数据.json",
+      "bytes": 19236,
+      "sha256": "4bef9c5f91057afecfa41989bc1174d74d073fd88d238379fdd7bad396176993"
+    },
+    "source_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/MaterialsCloud_商用PU泡沫多轴断裂力学/内容审计摘要.json",
+      "bytes": 4731,
+      "sha256": "66f1b935abc6da734fd81c97cf38a5fed805dd9451df5cadd3410c24efa23764"
+    },
+    "nominal_dimension_image": {
+      "path": "数据/原始/外部数据/新增开放数据/MaterialsCloud_商用PU泡沫多轴断裂力学/解压内容/PUF/Toughness/Nominal Dimensions.png",
+      "bytes": 13841,
+      "sha256": "f5c1748fdf88084eae873e5d3e64abefa41b4d1a632eec86e55a5ea74c4ae894"
+    }
+  },
+  "policy": {
+    "raw_curves_and_images_republished": false,
+    "compression_and_shear_deferred": true,
+    "deferred_reason": "not_primary_toughness_target; preserve for future FEA auxiliary package",
+    "DIC_missing_values_interpolated": false,
+    "nominal_K_not_claimed_as_validated_KIc": true,
+    "material_is_rigid_foam_not_TPU": true
+  },
+  "output": {
+    "path": "结果/定向筛选/PCF20泡沫拉伸断裂端点.csv",
+    "bytes": 20479,
+    "sha256": "e4537060c028923286d32c518c02388a0989557aec868e49fb68f9d19595c998"
+  }
+}

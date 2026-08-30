@@ -742,8 +742,8 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 - 版本：`{RELEASE_ID}`
 - 三目标相关实验记录：{len(labels):,}行
-- 受治理扩充包：24个、1,665行端点/记录
-- 多目标材料索引：62个材料键，其中30个覆盖三类目标证据；12个为交联PU迁移层，5个为商业TPU应用实验层，3个为Elastollan/PCL直接形状记忆文献配方，4个为Tecoflex药物复合实验配方，2个为IIR-OH相邻PU耐久配方，1个为TPU95A历史镜像重新物化
+- 受治理扩充包：25个、1,683行端点/记录
+- 多目标材料索引：63个材料键，其中30个覆盖三类目标证据；12个为交联PU迁移层，5个为商业TPU应用实验层，3个为Elastollan/PCL直接形状记忆文献配方，4个为Tecoflex药物复合实验配方，2个为IIR-OH相邻PU耐久配方，1个为TPU95A历史镜像重新物化，1个为PCF20硬质PU泡沫断裂迁移材料
 - 商用构件：{len(release['components']):,}种
 - 现实配方：{len(release['formulations']):,}个
 
@@ -800,6 +800,7 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 - `IIR-OH聚氨酯水解保持端点.csv`：HDI-4/HMDI-4各3组水解前后拉伸保持配对；来源水解时间和介质尚未闭合，保持相邻PU低权重。
 - `TPU95A载荷伸长端点.csv`：eSUN eTPU-95A三次拉伸运行的最大工程应变、最大载荷和载荷—伸长功；截面积缺失，不能生成MPa强度或韧性。
 - `TPU95A应力松弛端点.csv`：0.1/0.2名义应变各3次运行的1/10/50/100 s保持率和50%特征时间；与历史资产SHA相同，重新物化但新增科学来源贡献为0。
+- `PCF20泡沫拉伸断裂端点.csv`：Sawbones PCF20硬质PU泡沫12个ASTM D638拉伸和6个ASTM E399 SENB试样；发布DIC同步应力—应变面积及名义峰值载荷K，不宣称完整有效性判定后的K_IC。
 - `本地来源审计.csv`与`本地扩库队列.csv`：只读扫描本地原件元数据并按三目标排出增量接入顺序。
 - `外部来源候选.csv`：通过官方API新增的开放来源及本地原件清单、许可证和引用状态。
 - `三目标配方特征.csv.gz`：由独立脚本生成980个现实TPU配方的身份、结构上下文、计量和计算前门。
@@ -811,7 +812,7 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 
 ## 下一步顺序
 
-1. 已完成QUB、DataInBrief、商业TPU疲劳、Elastollan/PCL、Tecoflex、IIR-OH耐久及TPU95A镜像接入；下一批继续优先处理能让现有材料形成三目标闭合的TGA、循环或完整断裂数据。
+1. 已完成QUB、DataInBrief、商业TPU疲劳、Elastollan/PCL、Tecoflex、IIR-OH、TPU95A镜像及PCF20断裂接入；下一批继续优先处理能让现有材料形成三目标闭合的数据。
 2. 定向补齐韧性、循环恢复和热分解端点的组分—配方—工艺映射；循环滞后代理与直接恢复率始终分层。
 3. 为24种商用构件录入同地区同日期报价和结构化SDS/GHS字段。
 4. 增加商业二胺/胺类扩链剂后，单独生成TPUU现实候选。

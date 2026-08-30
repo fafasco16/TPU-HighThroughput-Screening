@@ -85,6 +85,17 @@ def test_local_audit_covers_all_source_directories():
         tpu95a.target_family.eq("toughness"),
         "already_in_directed_target",
     ].any()
+    foam = queue.loc[
+        queue.source_directory.eq("MaterialsCloud_商用PU泡沫多轴断裂力学")
+    ]
+    assert set(foam.target_family) == {"toughness", "cyclic_recovery"}
+    assert foam.loc[
+        foam.target_family.eq("toughness"), "already_in_directed_target"
+    ].all()
+    assert not foam.loc[
+        foam.target_family.eq("cyclic_recovery"),
+        "already_in_directed_target",
+    ].any()
 
 
 def test_release_and_check_command():

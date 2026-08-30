@@ -33,6 +33,7 @@ INPUTS = {
     "iir_aging": D / "IIR-OH聚氨酯水解保持端点.csv",
     "tpu95a_tensile": D / "TPU95A载荷伸长端点.csv",
     "tpu95a_relaxation": D / "TPU95A应力松弛端点.csv",
+    "pcf20_foam": D / "PCF20泡沫拉伸断裂端点.csv",
 }
 
 
@@ -301,6 +302,29 @@ def build_release():
             "citation_keys": "reference-192",
         }
     )
+    pcf20 = frames["pcf20_foam"]
+    rows.append(
+        {
+            "source_family": "MaterialsCloud_Sawbones_PCF20",
+            "material_key": "Sawbones PCF20",
+            "chemistry_mapping_status": "commercial_grade_density_only",
+            "toughness_record_count": len(pcf20),
+            "cyclic_record_count": 0,
+            "thermal_record_count": 0,
+            "has_toughness": True,
+            "has_cyclic_recovery": False,
+            "has_thermal_stability": False,
+            "objective_coverage_count": 1,
+            "multiobjective_status": "single_objective_foam_toughness_transfer",
+            "model_admission_layer": "polyurethane_foam_transfer",
+            "toughness_evidence_level": (
+                "direct_tensile_area_and_SENB_nominal_K_foam_transfer"
+            ),
+            "thermal_evidence_level": "not_available",
+            "cyclic_evidence_level": "not_available",
+            "citation_keys": "reference-193;reference-194",
+        }
+    )
     frame = (
         pd.DataFrame(rows)
         .sort_values(
@@ -388,6 +412,13 @@ def build_release():
     )
     frame.loc[tpu95a, "gap_next_action"] = (
         "resolve_cross_section_or_find_stress_curve_and_exact_grade_TGA"
+    )
+    foam = frame["source_family"].eq("MaterialsCloud_Sawbones_PCF20")
+    frame.loc[foam, "gap_evidence_status"] = (
+        "rigid_PU_foam_toughness_transfer_only_not_TPU"
+    )
+    frame.loc[foam, "gap_next_action"] = (
+        "retain_as_transfer_and_do_not_seek_TPU_core_completion"
     )
     return frame
 

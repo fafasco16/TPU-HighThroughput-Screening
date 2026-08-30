@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 24
+    assert len(f) == 25
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -67,6 +67,10 @@ def test_release():
     assert mirrors["source_independence_status"].eq(
         "historical_mirror_rematerialized_zero_new_source"
     ).all()
+    foam = f.loc[f.package_id.eq("pcf20_foam_tension_fracture")]
+    assert len(foam) == 1
+    assert foam.iloc[0].model_admission_layer == "polyurethane_foam_transfer"
+    assert foam.iloc[0].target_family == "toughness_transfer"
 
 
 def test_command():

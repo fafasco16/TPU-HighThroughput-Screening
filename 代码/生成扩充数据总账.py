@@ -205,6 +205,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_grade_only",
     ),
+    (
+        "pcf20_foam_tension_fracture",
+        "toughness_transfer",
+        "PCF20泡沫拉伸断裂端点.csv",
+        "PCF20泡沫断裂发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_grade_density_mapped",
+    ),
 ]
 
 
@@ -229,6 +237,7 @@ def build_release():
         "commercial_grade_blend_fraction_mapped": 0.75,
         "commercial_grade_additive_fraction_mapped": 0.78,
         "polymer_family_diisocyanate_code_mapped": 0.70,
+        "commercial_foam_grade_density_mapped": 0.60,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -243,6 +252,7 @@ def build_release():
         "commercial_grade_blend_fraction_mapped": "补原始曲线、重复数、不确定性及同配方TGA",
         "commercial_grade_additive_fraction_mapped": "补完整断裂曲线和同配方循环恢复数据",
         "polymer_family_diisocyanate_code_mapped": "闭合数字配方代码语义与水解协议并补同配方TGA",
+        "commercial_foam_grade_density_mapped": "仅作泡沫断裂迁移；补完整化学牌号而不并入TPU核心",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -269,6 +279,7 @@ def build_release():
         "iir_oh_hydrolytic_retention": "polyurethane_adjacent_experimental",
         "tpu95a_load_extension_auxiliary": "core_tpu_application_experimental",
         "tpu95a_relaxation_proxy": "core_tpu_application_experimental",
+        "pcf20_foam_tension_fracture": "polyurethane_foam_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

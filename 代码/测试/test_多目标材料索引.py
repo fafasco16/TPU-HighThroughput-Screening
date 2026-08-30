@@ -108,6 +108,14 @@ def test_release():
     assert tpu95a.iloc[0].model_admission_layer == (
         "core_tpu_application_experimental"
     )
+    foam = f.loc[f.source_family.eq("MaterialsCloud_Sawbones_PCF20")]
+    assert len(foam) == 1
+    assert foam.iloc[0].material_key == "Sawbones PCF20"
+    assert foam.iloc[0].objective_coverage_count == 1
+    assert foam.iloc[0].model_admission_layer == "polyurethane_foam_transfer"
+    assert foam.iloc[0].toughness_evidence_level == (
+        "direct_tensile_area_and_SENB_nominal_K_foam_transfer"
+    )
 
 
 def test_command():
