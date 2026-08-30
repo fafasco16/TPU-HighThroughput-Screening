@@ -25,6 +25,8 @@ INPUTS = {
     "dib_tensile": D / "DataInBrief形状记忆PU拉伸端点.csv",
     "dib_cycle": D / "DataInBrief形状记忆PU循环端点.csv",
     "dib_tga": D / "DataInBrief形状记忆PU热稳定端点.csv",
+    "commercial_fatigue": D / "商业TPU温度疲劳端点.csv",
+    "commercial_recovery": D / "商业TPU恢复配对端点.csv",
 }
 
 
@@ -114,6 +116,15 @@ def build_release():
                     if coverage == 2
                     else "single_objective",
                     "model_admission_layer": model_layers[source],
+                    "toughness_evidence_level": (
+                        "not_available"
+                        if tc == 0
+                        else "direct_tensile_curve_area_transfer"
+                        if source == "DataInBrief_交联形状记忆PU"
+                        else "direct_tensile_curve_area_auxiliary"
+                        if source == "Zenodo_标准化弹性体表征"
+                        else "direct_tensile_curve_area"
+                    ),
                     "cyclic_evidence_level": cyclic_evidence,
                     "citation_keys": cites,
                 }
@@ -133,8 +144,41 @@ def build_release():
                 "objective_coverage_count": 2,
                 "multiobjective_status": "two_objectives",
                 "model_admission_layer": "polyurethane_adjacent_experimental",
+                "toughness_evidence_level": "published_tensile_summary",
                 "cyclic_evidence_level": "not_available",
                 "citation_keys": row.citation_keys,
+            }
+        )
+    commercial_histories = frames["commercial_fatigue"]
+    commercial_recovery = frames["commercial_recovery"]
+    for material in sorted(commercial_histories["material_grade"].unique()):
+        history_count = int(
+            commercial_histories["material_grade"].eq(material).sum()
+        )
+        recovery_count = int(
+            commercial_recovery["material_grade"].eq(material).sum()
+        )
+        rows.append(
+            {
+                "source_family": "Mendeley_商业TPU温度疲劳",
+                "material_key": material,
+                "chemistry_mapping_status": "commercial_grade_identity_only",
+                "toughness_record_count": history_count,
+                "cyclic_record_count": history_count + recovery_count,
+                "thermal_record_count": 0,
+                "has_toughness": True,
+                "has_cyclic_recovery": True,
+                "has_thermal_stability": False,
+                "objective_coverage_count": 2,
+                "multiobjective_status": "two_objectives_application",
+                "model_admission_layer": "core_tpu_application_experimental",
+                "toughness_evidence_level": (
+                    "compression_energy_absorption_application_proxy"
+                ),
+                "cyclic_evidence_level": (
+                    "direct_impact_fatigue_and_same_specimen_energy_recovery"
+                ),
+                "citation_keys": "reference-186",
             }
         )
     frame = (
@@ -192,6 +236,9 @@ def build_release():
     frame.loc[dib, "completion_priority"] = "complete_transfer_not_core_tpu"
     frame.loc[dib, "gap_evidence_status"] = "three_targets_transfer_only_no_direct_shape_recovery"
     frame.loc[dib, "gap_next_action"] = "retain_low_transfer_weight_and_search_direct_TPU_recovery"
+    commercial = frame["source_family"].eq("Mendeley_商业TPU温度疲劳")
+    frame.loc[commercial, "gap_evidence_status"] = "no_thermal_degradation_for_exact_commercial_grade"
+    frame.loc[commercial, "gap_next_action"] = "search_exact_grade_TGA_or_measurement"
     return frame
 
 

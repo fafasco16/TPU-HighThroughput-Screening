@@ -216,12 +216,17 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("DataInBrief形状记忆PU拉伸端点.csv", "DataInBrief_聚氨酯形状记忆多模态原始数据", "toughness"),
         ("DataInBrief形状记忆PU循环端点.csv", "DataInBrief_聚氨酯形状记忆多模态原始数据", "cyclic_recovery"),
         ("DataInBrief形状记忆PU热稳定端点.csv", "DataInBrief_聚氨酯形状记忆多模态原始数据", "thermal_stability"),
+        ("商业TPU温度疲劳端点.csv", "Mendeley_商业TPU温度疲劳多工况", "toughness"),
+        ("商业TPU温度疲劳端点.csv", "Mendeley_商业TPU温度疲劳多工况", "cyclic_recovery"),
+        ("商业TPU恢复配对端点.csv", "Mendeley_商业TPU温度疲劳多工况", "cyclic_recovery"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename
         if expansion.is_file():
             count = len(pd.read_csv(expansion))
-            coverage.setdefault(directory, {})[target] = count
+            coverage.setdefault(directory, {})[target] = (
+                coverage.setdefault(directory, {}).get(target, 0) + count
+            )
     return coverage
 
 

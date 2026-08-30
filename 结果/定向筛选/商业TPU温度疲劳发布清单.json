@@ -1,0 +1,67 @@
+{
+  "release_id": "commercial-tpu-impact-fatigue-2024-v1",
+  "counts": {
+    "commercial_tpu_grade_count": 5,
+    "independent_physical_specimen_count": 190,
+    "curve_history_count": 196,
+    "on_axis_history_count": 169,
+    "off_axis_history_count": 21,
+    "recovery_retest_history_count": 6,
+    "recovery_pair_count": 6,
+    "raw_curve_point_count": 333492,
+    "source_energy_summary_row_count": 75,
+    "recomputed_energy_row_count": 196,
+    "source_recomputed_comparable_row_count": 75,
+    "published_compact_row_count": 202
+  },
+  "counting_note": "196条曲线历史属于190个独立TPU物理试样；6条恢复复测复用原试样ID。333492个曲线点不作为独立样本。",
+  "source": {
+    "dataset_doi": "10.17632/hc6npzvw3m.1",
+    "license": "CC-BY-4.0",
+    "archive": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_商业TPU温度疲劳多工况/hc6npzvw3m-1.zip",
+      "bytes": 41218060,
+      "sha256": "1a47a26b3c5ac93a7b56ef8e94c2e2b0308a5ceec34ed407435586e1744a65ab"
+    },
+    "metadata": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_商业TPU温度疲劳多工况/官方API元数据.json",
+      "bytes": 8906,
+      "sha256": "83f5f62eb5350e65f5f1ff96fd0a1b68290aea7f06db65813bf404b9f8ff7751"
+    },
+    "source_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_商业TPU温度疲劳多工况/内容审计摘要.json",
+      "bytes": 7362,
+      "sha256": "58b89621c495ae62ac75a92f8970da967ee5889cd19835b333bf5d6cfabc97bd"
+    },
+    "curve_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_商业TPU温度疲劳多工况/曲线审计清单.tsv",
+      "bytes": 61410,
+      "sha256": "0feed5a32b8606779b5cec030c93522942ea4d5ff7c1b197bef19a42c98b2c09"
+    },
+    "file_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_商业TPU温度疲劳多工况/文件校验清单.tsv",
+      "bytes": 66302,
+      "sha256": "9dae0a38ad092c1cbb80deb7769e726b92269a159bb64aee4d283734d964f839"
+    }
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "raw_curve_reason": "以196条紧凑历史和6条恢复配对替代333492行曲线点；归档由SHA256复现",
+    "commercial_grade_not_exact_chemistry": true,
+    "direct_shape_recovery_available": false,
+    "direct_energy_recovery_pair_available": true,
+    "santoprene_excluded_from_tpu_package": true
+  },
+  "outputs": {
+    "histories": {
+      "path": "结果/定向筛选/商业TPU温度疲劳端点.csv",
+      "bytes": 192227,
+      "sha256": "659a87d00b616db94dd8f873cc502e8d8efa26b2fe0fd267fa3dc412f9b0613c"
+    },
+    "recovery": {
+      "path": "结果/定向筛选/商业TPU恢复配对端点.csv",
+      "bytes": 4139,
+      "sha256": "60649846d14d83ace404a70c8af5140c832ce737fb5298149cf09977caf7e80b"
+    }
+  }
+}

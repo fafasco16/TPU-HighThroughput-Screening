@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 47,
-    "two_objective_or_more": 45,
+    "material_rows": 52,
+    "two_objective_or_more": 50,
     "three_objective": 30
   },
   "inputs": {
@@ -16,7 +16,9 @@
     "qub_tga": "6840806011c94596998c2defaf5a9847fca6dbdc6da8e17a5cda9d27982b79d0",
     "dib_tensile": "571d066efbb571ad54953d8987aaf01087861d260d2cb5c306062a108c83f98b",
     "dib_cycle": "ede469794b571793ea7710dbfe7bbe318d20075a9bad7ad968f715aea2a41f6e",
-    "dib_tga": "731fbfc6e0d3fbd0592d1c6182dafabecd47f14f86b5ce54d629b7c49b2fffe1"
+    "dib_tga": "731fbfc6e0d3fbd0592d1c6182dafabecd47f14f86b5ce54d629b7c49b2fffe1",
+    "commercial_fatigue": "659a87d00b616db94dd8f873cc502e8d8efa26b2fe0fd267fa3dc412f9b0613c",
+    "commercial_recovery": "60649846d14d83ace404a70c8af5140c832ce737fb5298149cf09977caf7e80b"
   },
-  "output_sha256": "fd60b8c53d740cd1ef1a3710a4fd1cf26c44006cf7d306dae8f0a214b01354a7"
+  "output_sha256": "88beb2f41173ee470e37c8b48569fedac0180e346b7d8f809ca01b0e208d9e0c"
 }

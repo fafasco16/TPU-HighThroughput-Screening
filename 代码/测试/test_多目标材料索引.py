@@ -37,6 +37,24 @@ def test_release():
     assert dib["chemistry_mapping_status"].eq(
         "monomer_set_molar_composition_mapped"
     ).all()
+    commercial = f.loc[f.source_family.eq("Mendeley_商业TPU温度疲劳")]
+    assert set(commercial.material_key) == {
+        "Elastollan 1154D",
+        "Elastollan 1164D",
+        "Elastollan 1174D",
+        "Elastollan 1195A",
+        "Texin 245",
+    }
+    assert commercial["objective_coverage_count"].eq(2).all()
+    assert commercial["model_admission_layer"].eq(
+        "core_tpu_application_experimental"
+    ).all()
+    assert commercial["toughness_evidence_level"].eq(
+        "compression_energy_absorption_application_proxy"
+    ).all()
+    assert commercial["cyclic_evidence_level"].eq(
+        "direct_impact_fatigue_and_same_specimen_energy_recovery"
+    ).all()
 
 
 def test_command():

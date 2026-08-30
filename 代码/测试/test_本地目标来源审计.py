@@ -58,6 +58,11 @@ def test_local_audit_covers_all_source_directories():
         "thermal_stability",
     }
     assert dib["already_in_directed_target"].all()
+    commercial = queue.loc[
+        queue.source_directory.eq("Mendeley_商业TPU温度疲劳多工况")
+    ]
+    assert set(commercial.target_family) == {"toughness", "cyclic_recovery"}
+    assert commercial["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

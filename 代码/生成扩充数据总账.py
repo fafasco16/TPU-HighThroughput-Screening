@@ -141,6 +141,22 @@ SPECS = [
         "CC-BY-4.0",
         "monomer_set_molar_composition_mapped",
     ),
+    (
+        "commercial_tpu_impact_fatigue",
+        "compression_energy_and_cyclic_fatigue",
+        "商业TPU温度疲劳端点.csv",
+        "商业TPU温度疲劳发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
+    (
+        "commercial_tpu_energy_recovery_pairs",
+        "ambient_energy_recovery",
+        "商业TPU恢复配对端点.csv",
+        "商业TPU温度疲劳发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
 ]
 
 
@@ -191,11 +207,17 @@ def build_release():
         "dib_shape_memory_tensile": "polyurethane_transfer",
         "dib_shape_memory_cycle_proxy": "polyurethane_transfer",
         "dib_shape_memory_thermal": "polyurethane_transfer",
+        "commercial_tpu_impact_fatigue": "core_tpu_application_experimental",
+        "commercial_tpu_energy_recovery_pairs": "core_tpu_application_experimental",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
         f = pd.read_csv(dp)
-        material_col = "formulation_id" if "formulation_id" in f else "material_code"
+        material_col = next(
+            column
+            for column in ("formulation_id", "material_code", "material_grade")
+            if column in f
+        )
         target_bonus = 0.10 if "and" in target else 0.05
         priority_score = scores[mapping] + target_bonus + min(0.10, f[material_col].nunique(dropna=True) / 200)
         rows.append(
