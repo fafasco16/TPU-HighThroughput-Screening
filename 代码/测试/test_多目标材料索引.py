@@ -190,6 +190,20 @@ def test_release():
     assert cast_pu["cyclic_evidence_level"].eq(
         "stress_relaxation_unknown_chemistry_cast_PU_proxy"
     ).all()
+    copper = f.loc[
+        f.source_family.eq("第八批混合_PU铜调控热解多尺度")
+    ]
+    assert set(copper.material_key) == {
+        "commercial_PU_enamelled_copper_wire",
+        "PU_enamel_Cu-free_reference",
+    }
+    assert copper["objective_coverage_count"].eq(1).all()
+    assert copper["model_admission_layer"].eq(
+        "pu_pyrolysis_thermal_transfer"
+    ).all()
+    assert copper["thermal_evidence_level"].eq(
+        "direct_TGA_multirate_pyrolysis_transfer"
+    ).all()
 
 
 def test_command():

@@ -1,0 +1,31 @@
+{
+  "release_id": "pu_copper_pyrolysis_tga_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.18414263",
+    "concept_doi": "10.5281/zenodo.18414262",
+    "article_doi": "10.1038/s43247-026-03339-9",
+    "license": "CC-BY-4.0",
+    "workbook_sha256": "7f63eba865fced2234dd073fad230936bb5159cd8e24bcf7ed8a63a700a8022f"
+  },
+  "counts": {
+    "material_state_count": 2,
+    "TGA_curve_count": 6,
+    "admitted_curve_count": 5,
+    "conditional_curve_count": 1,
+    "source_TG_point_count": 63140,
+    "source_DTG_point_count": 62621,
+    "published_compact_row_count": 6,
+    "T50_observed_count": 1,
+    "T50_right_censored_count": 5,
+    "computational_audit_record_count_not_republished": 14
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "computational_records_republished": false,
+    "reason_computational_not_republished": "audit_rows_lack_numeric_endpoint_values_and_remain_mechanistic_metadata",
+    "20cpm_protocol_conflict_retained_as_conditional": true,
+    "independent_specimen_count_known": false,
+    "TPU_core_weight": 0.0
+  },
+  "output_sha256": "2b650a36ba1e911e53bdc6cc03d9849869ff916251527669c48c67a3a159e6f0"
+}

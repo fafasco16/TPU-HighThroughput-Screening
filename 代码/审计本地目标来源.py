@@ -239,6 +239,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("生物基玻璃体TGA端点.csv", "Zenodo_生物基共轭氨基甲酸酯玻璃体", "thermal_stability"),
         ("PCU85单纤维循环端点.csv", "Texas_湿干单根电纺PU纤维力学", "cyclic_recovery"),
         ("PU高低速松弛工况端点.csv", "Figshare_PU高低速变形后应力松弛", "cyclic_recovery"),
+        ("PU铜热解TGA端点.csv", "第八批混合_PU铜调控热解多尺度", "thermal_stability"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

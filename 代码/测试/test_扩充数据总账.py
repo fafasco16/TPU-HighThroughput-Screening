@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 35
+    assert len(f) == 36
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -114,6 +114,14 @@ def test_release():
     }
     assert cast_pu["row_count"].sum() == 79
     assert cast_pu["mapping_completeness_score"].eq(0.20).all()
+    copper = f.loc[
+        f.package_id.eq("pu_copper_pyrolysis_tga_transfer")
+    ]
+    assert len(copper) == 1
+    assert copper.iloc[0].row_count == 6
+    assert copper.iloc[0].model_admission_layer == (
+        "pu_pyrolysis_thermal_transfer"
+    )
 
 
 def test_command():

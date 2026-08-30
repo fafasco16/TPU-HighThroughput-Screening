@@ -293,6 +293,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_task_code_only",
     ),
+    (
+        "pu_copper_pyrolysis_tga_transfer",
+        "thermal_stability_pyrolysis_transfer",
+        "PU铜热解TGA端点.csv",
+        "PU铜热解TGA发布清单.json",
+        "CC-BY-4.0",
+        "commercial_PU_enamel_identity_unresolved",
+    ),
 ]
 
 
@@ -320,6 +328,7 @@ def build_release():
         "commercial_foam_grade_density_mapped": 0.60,
         "formulation_code_synthesis_family_mapped": 0.20,
         "commercial_task_code_only": 0.20,
+        "commercial_PU_enamel_identity_unresolved": 0.15,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -337,6 +346,7 @@ def build_release():
         "commercial_foam_grade_density_mapped": "仅作泡沫断裂迁移；补完整化学牌号而不并入TPU核心",
         "formulation_code_synthesis_family_mapped": "仅作动态网络迁移；补论文Table 1缩写映射且不并入TPU核心",
         "commercial_task_code_only": "补Task 3/Task 11商业化学身份；仅作松弛条件迁移",
+        "commercial_PU_enamel_identity_unresolved": "补漆包线PU配方；仅作含铜热解迁移并保留T50右删失",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -379,6 +389,9 @@ def build_release():
         ),
         "cast_pu_relaxation_condition_aggregate": (
             "unknown_chemistry_cast_PU_relaxation_auxiliary"
+        ),
+        "pu_copper_pyrolysis_tga_transfer": (
+            "pu_pyrolysis_thermal_transfer"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

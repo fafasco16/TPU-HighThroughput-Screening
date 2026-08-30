@@ -45,6 +45,7 @@ INPUTS = {
     "vitrimer_tga": D / "生物基玻璃体TGA端点.csv",
     "pcu85_cycle": D / "PCU85单纤维循环端点.csv",
     "cast_pu_relaxation": D / "PU高低速松弛工况端点.csv",
+    "pu_copper_tga": D / "PU铜热解TGA端点.csv",
 }
 
 
@@ -129,6 +130,14 @@ def build_release():
             "cast_pu_relaxation",
             None,
         ),
+        (
+            "第八批混合_PU铜调控热解多尺度",
+            "reference-138;reference-139",
+            "commercial_PU_enamel_identity_unresolved",
+            None,
+            None,
+            "pu_copper_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -153,6 +162,9 @@ def build_release():
         ),
         "Figshare_PU高低速变形后应力松弛": (
             "unknown_chemistry_cast_PU_relaxation_auxiliary"
+        ),
+        "第八批混合_PU铜调控热解多尺度": (
+            "pu_pyrolysis_thermal_transfer"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -226,6 +238,8 @@ def build_release():
                             "DataInBrief_交联形状记忆PU",
                             "Zenodo_生物基共轭氨基甲酸酯玻璃体",
                         }
+                        else "direct_TGA_multirate_pyrolysis_transfer"
+                        if source == "第八批混合_PU铜调控热解多尺度"
                         else "direct_TGA_curve"
                     ),
                     "cyclic_evidence_level": cyclic_evidence,
@@ -573,6 +587,21 @@ def build_release():
     )
     frame.loc[cast_pu, "gap_next_action"] = (
         "resolve_Task3_Task11_chemistry_before_any_structure_model_use"
+    )
+    copper_pyrolysis = frame["source_family"].eq(
+        "第八批混合_PU铜调控热解多尺度"
+    )
+    frame.loc[copper_pyrolysis, "multiobjective_status"] = (
+        "single_objective_pyrolysis_transfer"
+    )
+    frame.loc[copper_pyrolysis, "completion_priority"] = (
+        "mechanism_transfer_only_not_TPU_core"
+    )
+    frame.loc[copper_pyrolysis, "gap_evidence_status"] = (
+        "unknown_commercial_enamel_with_copper_residual_mass"
+    )
+    frame.loc[copper_pyrolysis, "gap_next_action"] = (
+        "resolve_enamel_formulation_and_never_impute_censored_T50"
     )
     return frame
 

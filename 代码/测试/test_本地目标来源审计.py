@@ -147,6 +147,11 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(cast_pu.target_family) == {"cyclic_recovery"}
     assert cast_pu["already_in_directed_target"].all()
+    copper = queue.loc[
+        queue.source_directory.eq("第八批混合_PU铜调控热解多尺度")
+    ]
+    assert set(copper.target_family) == {"thermal_stability"}
+    assert copper["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():
