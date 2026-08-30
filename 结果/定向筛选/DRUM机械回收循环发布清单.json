@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "curve_count": 22,
+    "formulation_count": 22,
+    "cycle_rows": 240,
+    "valid_rows": 239
+  },
+  "audit_sha256": "19c1402bede14a71eceff1e9d1a2c8cfc5a6d68f1f2e3d542449ef27d4c64175",
+  "output_sha256": "ec0b9f1ed9828b96c0f9b61ee628321d3c9eb176991e7cdda5f2efe02ab62db0"
+}
