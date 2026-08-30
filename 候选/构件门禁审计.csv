@@ -1,4 +1,0 @@
-component_class,input_linear_building_blocks,passed_prototype_gate,selected_for_virtual_space,excluded_reason_counts
-diisocyanate,8237,3663,96,二异氰酸酯NCO连接位点不分离:535; 二异氰酸酯分子量超出原型范围:899; 二异氰酸酯含额外羰基:704; 含NCO以外脂肪族不饱和键:1601; 含原型路线未纳入的元素:825; 含同位素标记，非原型合成构件:10
-chain_extender_diol,78,61,24,含NCO以外脂肪族不饱和键:7; 含原型路线未纳入的元素:6; 扩链二醇含额外羰基:4
-macrodiol,50,38,16,含NCO以外脂肪族不饱和键:1; 含原型路线未纳入的元素:7; 宏二醇代理分子量超出原型范围:3; 宏二醇代理含额外羰基:1

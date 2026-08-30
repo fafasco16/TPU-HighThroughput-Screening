@@ -1,6 +1,0 @@
-# TPU 来源级审计脚本的独立 Python 依赖。
-# 版本范围只用于解析；可复现安装以 requirements.lock 中的精确版本和哈希为准。
-openpyxl>=3.1,<4
-pdfplumber>=0.11,<1
-Pillow>=10,<13
-pypdf>=5,<7

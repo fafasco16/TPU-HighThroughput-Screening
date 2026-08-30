@@ -1,33 +1,23 @@
 .venv/
 .agents/
 .codex/
+.cursor/
+.vibe-handoff/
+.pytest_cache/
+.ruff_cache/
 __pycache__/
 *.py[cod]
-.pytest_cache/
 .coverage
 htmlcov/
 node_modules/
 tmp/
-数据/临时/**
 
-# 服务器量化计算的大体积运行轨迹只保留远端；汇总结果按审计后单独回填。
-计算/结果/**
-计算/日志/**
+# 原始、临时、计算运行和模型权重只保存在本地或服务器。
+数据/
+计算/
+模型/
 
-# 原始与中间数据只保留本地；各层 README 仍可跟踪。
-数据/原始/**
-!数据/原始/README.md
-数据/暂存/**
-!数据/暂存/README.md
-数据/规范/**/*.parquet
-数据/派生/**/*.parquet
-数据/快照/**/*.parquet
-数据/快照/**/*.duckdb
-结果/*.xlsx
-结果/*.png
-结果/.*.tmp
-
-# 避免误提交出版商附件和大体积容器。
+# 出版商附件、办公附件和大型容器不得提交到公开仓库。
 *.xlsx
 *.xls
 *.xlsm
@@ -36,3 +26,12 @@ tmp/
 *.zip
 *.pdf
 *.docx
+*.tar
+*.tar.gz
+*.trr
+*.xtc
+
+# 生成过程临时文件。
+结果/*.xlsx
+结果/*.png
+结果/.*.tmp

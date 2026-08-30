@@ -13,11 +13,6 @@
     "target_source_count": 10
   },
   "input_files": {
-    "Gold-E参考表": {
-      "bytes": 9231215,
-      "path": "结果/Gold_E_实验表格.csv.gz",
-      "sha256": "0bf46480d6263d61c5630a854842929e7194f9cbe08159917e9b852ce280de3e"
-    },
     "可用实验观测": {
       "bytes": 9248584,
       "path": "结果/可用数据集/实验观测.csv.gz",
@@ -29,9 +24,9 @@
       "sha256": "0c8f5888034ca2d746063539a8780df284d6697e44b0ba71c698eaecfbba6918"
     },
     "商用构件证据": {
-      "bytes": 11398,
+      "bytes": 11423,
       "path": "候选/商用构件证据.csv",
-      "sha256": "084a6d55a74b567f80c22beb7f369057b5925d1c66ff538f3aceafe52d01e46a"
+      "sha256": "dffe2d99a0c279da974d061b49ce8a0a50a8a90e7bd4204caed60d5e8b17495f"
     },
     "实验合理组合": {
       "bytes": 829542,

@@ -10,13 +10,12 @@ import importlib.metadata
 import json
 import subprocess
 import sys
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Protocol
+from typing import Any, Mapping, Protocol
 
 import pandas as pd
 import yaml

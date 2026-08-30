@@ -9,12 +9,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
+import 查询构件采购 as runner
+import 采购接口 as api
+
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "代码"))
-
-import 采购接口 as api
-import 查询构件采购 as runner
 
 
 def _component(component_id: str = "bdo", smiles: str = "OCCCCO") -> api.ComponentQuery:
