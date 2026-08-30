@@ -86,6 +86,18 @@ def test_release():
         "partial_tensile_curve_area_lower_bound"
     ).all()
     assert tecoflex["thermal_evidence_level"].eq("direct_TGA_curve").all()
+    iir = f.loc[f.source_family.eq("Mendeley_IIROH_PU_durability")]
+    assert set(iir.material_key) == {"HDI-4", "HMDI-4"}
+    assert iir["objective_coverage_count"].eq(2).all()
+    assert iir["model_admission_layer"].eq(
+        "polyurethane_adjacent_experimental"
+    ).all()
+    assert iir["cyclic_evidence_level"].eq(
+        "direct_100_cycle_hysteresis_and_hydrolytic_retention"
+    ).all()
+    assert iir["toughness_evidence_level"].eq(
+        "hydrolytic_pair_before_curve_area"
+    ).all()
 
 
 def test_command():

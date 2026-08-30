@@ -29,6 +29,8 @@ INPUTS = {
     "commercial_recovery": D / "商业TPU恢复配对端点.csv",
     "elastollan_pcl_shape_memory": D / "ElastollanPCL形状记忆端点.csv",
     "tecoflex_nic": D / "Tecoflex药物复合TPU多性能端点.csv",
+    "iir_cyclic": D / "IIR-OH聚氨酯循环端点.csv",
+    "iir_aging": D / "IIR-OH聚氨酯水解保持端点.csv",
 }
 
 
@@ -236,6 +238,39 @@ def build_release():
                 "citation_keys": row.citation_keys,
             }
         )
+    iir_cyclic = frames["iir_cyclic"]
+    iir_aging = frames["iir_aging"]
+    for material in sorted(iir_cyclic["formulation_id"].unique()):
+        cyclic_count = int(iir_cyclic["formulation_id"].eq(material).sum())
+        aging_count = int(iir_aging["formulation_id"].eq(material).sum())
+        mapping = iir_cyclic.loc[
+            iir_cyclic["formulation_id"].eq(material),
+            "chemistry_mapping_status",
+        ].iloc[0]
+        rows.append(
+            {
+                "source_family": "Mendeley_IIROH_PU_durability",
+                "material_key": material,
+                "chemistry_mapping_status": mapping,
+                "toughness_record_count": aging_count,
+                "cyclic_record_count": cyclic_count + aging_count,
+                "thermal_record_count": 0,
+                "has_toughness": True,
+                "has_cyclic_recovery": True,
+                "has_thermal_stability": False,
+                "objective_coverage_count": 2,
+                "multiobjective_status": "two_objectives_durability_transfer",
+                "model_admission_layer": "polyurethane_adjacent_experimental",
+                "toughness_evidence_level": (
+                    "hydrolytic_pair_before_curve_area"
+                ),
+                "thermal_evidence_level": "not_available",
+                "cyclic_evidence_level": (
+                    "direct_100_cycle_hysteresis_and_hydrolytic_retention"
+                ),
+                "citation_keys": "reference-190;reference-191",
+            }
+        )
     frame = (
         pd.DataFrame(rows)
         .sort_values(
@@ -309,6 +344,13 @@ def build_release():
     )
     frame.loc[tecoflex, "gap_next_action"] = (
         "search_exact_formulation_cyclic_or_recovery_measurement"
+    )
+    iir = frame["source_family"].eq("Mendeley_IIROH_PU_durability")
+    frame.loc[iir, "gap_evidence_status"] = (
+        "cyclic_and_hydrolytic_durability_no_TGA"
+    )
+    frame.loc[iir, "gap_next_action"] = (
+        "search_exact_formulation_TGA_and_close_numeric_code_semantics"
     )
     return frame
 

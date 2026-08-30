@@ -1,0 +1,57 @@
+{
+  "release_id": "iir-oh-pu-cyclic-durability-2026-v1",
+  "counts": {
+    "formulation_count": 2,
+    "cyclic_run_count": 6,
+    "cycle_endpoint_count": 600,
+    "cyclic_source_point_count": 2062350,
+    "hydrolytic_aging_pair_count": 6,
+    "hydrolytic_source_point_count": 20523,
+    "published_compact_row_count": 606
+  },
+  "source": {
+    "dataset_doi": "10.17632/wg3znh66bv.1",
+    "inferred_preprint_doi": "10.2139/ssrn.6767133",
+    "license": "CC-BY-4.0",
+    "archive": {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/wg3znh66bv-1.zip",
+      "bytes": 38825776,
+      "sha256": "5224ae550be0c04022f0de02f03bd08f6ae39f2e6f84044fb8ec9e1cd5872e76"
+    },
+    "metadata": {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/来源元数据.json",
+      "bytes": 1044,
+      "sha256": "c2118ff409852a623a56ea16dd0ec0587eb607095ab2c2522c41cd449f056c8b"
+    },
+    "source_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/内容审计摘要.json",
+      "bytes": 9803,
+      "sha256": "a914774ce298dd0c864ed09cefee64273c2aa10131682fd5b09b0e622dc5d9e4"
+    },
+    "curve_audit": {
+      "path": "数据/原始/外部数据/新增开放数据/第十八批实验_IIR-OH聚氨酯/曲线审计清单.tsv",
+      "bytes": 47728,
+      "sha256": "a42cb36aa104193909b9ca5e2b960107d28af3c0d256d09b0bff0339b6df0d4e"
+    }
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "cyclic_filename_C0_50_means_strain_range": true,
+    "cycle_count_verified_from_raw_curves": 100,
+    "direct_shape_recovery_available": false,
+    "hydrolytic_protocol_resolved": false,
+    "preprint_relation": "inferred_not_repository_linked"
+  },
+  "outputs": {
+    "cyclic": {
+      "path": "结果/定向筛选/IIR-OH聚氨酯循环端点.csv",
+      "bytes": 487573,
+      "sha256": "cc759e16d700ef20797734e9f6a508408b7acc36a13675d72af7fa2de488b231"
+    },
+    "aging": {
+      "path": "结果/定向筛选/IIR-OH聚氨酯水解保持端点.csv",
+      "bytes": 7175,
+      "sha256": "a7493737c98531668fccf0d344f6e53536b8e6c33ed6bc124c9703518a74780e"
+    }
+  }
+}

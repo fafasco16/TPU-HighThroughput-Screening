@@ -57,6 +57,8 @@
 - [商业TPU同试样恢复配对](结果/定向筛选/商业TPU恢复配对端点.csv)
 - [Elastollan 1154D/PCL直接形状记忆端点](结果/定向筛选/ElastollanPCL形状记忆端点.csv)
 - [Tecoflex EG-60D/尼可刹米多性能端点](结果/定向筛选/Tecoflex药物复合TPU多性能端点.csv)
+- [IIR-OH聚氨酯100圈循环端点](结果/定向筛选/IIR-OH聚氨酯循环端点.csv)
+- [IIR-OH聚氨酯水解保持端点](结果/定向筛选/IIR-OH聚氨酯水解保持端点.csv)
 - [可用数据集说明](结果/可用数据集/README.md)
 - [数据来源与参考文献](文档/数据来源与参考文献.md)
 - [Gold 数据集定义](文档/Gold数据集定义.md)
