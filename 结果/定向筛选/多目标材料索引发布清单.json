@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 25,
-    "two_objective_or_more": 24,
+    "material_rows": 31,
+    "two_objective_or_more": 30,
     "three_objective": 17
   },
   "inputs": {
@@ -9,7 +9,8 @@
     "drum_cycle": "ec0b9f1ed9828b96c0f9b61ee628321d3c9eb176991e7cdda5f2efe02ab62db0",
     "drum_tga": "77eddc7947bc6ace3eb6012a94ded67887ddb2937a2e55db013bcc5fbeddc5b1",
     "std_tensile": "e9bf0b6d1aa6cf54e9ea90af6dcf493e745d3ccf68ad55e2d40b72edaf5efd57",
-    "std_tga": "2ca08f3045e0ea7932c1f118e790be76266b62934d7eaab8feb7bc22c6f46166"
+    "std_tga": "2ca08f3045e0ea7932c1f118e790be76266b62934d7eaab8feb7bc22c6f46166",
+    "phcu": "4451843148b9f141513f4b6515f0669c9d82519b0802988654a3c80a2d586806"
   },
-  "output_sha256": "2729cf8438eca86261e463e31b803b4fffe409b1e37fd45c81092750a7700bf9"
+  "output_sha256": "2243054c46bd1d0ee6683c6ccdc18f5cb0831518403316e62889d8cf6431615c"
 }

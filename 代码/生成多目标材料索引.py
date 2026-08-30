@@ -18,6 +18,7 @@ INPUTS = {
     "drum_tga": D / "DRUM机械回收TGA端点.csv",
     "std_tensile": D / "标准化热塑性弹性体拉伸端点.csv",
     "std_tga": D / "标准化热塑性弹性体TGA端点.csv",
+    "phcu": D / "PHCU双目标端点.csv",
 }
 
 
@@ -77,6 +78,23 @@ def build_release():
                     "citation_keys": cites,
                 }
             )
+    for row in frames["phcu"].itertuples(index=False):
+        rows.append(
+            {
+                "source_family": "Mendeley_PHCU_nonisocyanate",
+                "material_key": row.formulation_id,
+                "chemistry_mapping_status": row.chemistry_mapping_status,
+                "toughness_record_count": 1,
+                "cyclic_record_count": 0,
+                "thermal_record_count": 1,
+                "has_toughness": True,
+                "has_cyclic_recovery": False,
+                "has_thermal_stability": True,
+                "objective_coverage_count": 2,
+                "multiobjective_status": "two_objectives",
+                "citation_keys": row.citation_keys,
+            }
+        )
     return (
         pd.DataFrame(rows)
         .sort_values(

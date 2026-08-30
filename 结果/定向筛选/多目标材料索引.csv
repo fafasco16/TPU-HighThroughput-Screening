@@ -21,6 +21,12 @@ DRUM_TPUU_机械回收,P4PrCL-1.6k-31HS,family_mn_hard_segment_mapped,5,10,0,Tru
 DRUM_TPUU_机械回收,PCL-1.6k-31HS,family_mn_hard_segment_mapped,6,10,0,True,True,False,2,two_objectives,reference-53;reference-54
 DRUM_TPUU_机械回收,PMCL-1k-46HS,family_mn_hard_segment_mapped,5,20,0,True,True,False,2,two_objectives,reference-53;reference-54
 DRUM_TPUU_机械回收,PMCL-2k-18HS,family_mn_hard_segment_mapped,0,10,1,False,True,True,2,two_objectives,reference-53;reference-54
+Mendeley_PHCU_nonisocyanate,PHCU10,composition_series_mapped_exact_recipe_missing,1,0,1,True,False,True,2,two_objectives,reference-142;reference-143;reference-144
+Mendeley_PHCU_nonisocyanate,PHCU20,composition_series_mapped_exact_recipe_missing,1,0,1,True,False,True,2,two_objectives,reference-142;reference-143;reference-144
+Mendeley_PHCU_nonisocyanate,PHCU30,composition_series_mapped_exact_recipe_missing,1,0,1,True,False,True,2,two_objectives,reference-142;reference-143;reference-144
+Mendeley_PHCU_nonisocyanate,PHCU40,composition_series_mapped_exact_recipe_missing,1,0,1,True,False,True,2,two_objectives,reference-142;reference-143;reference-144
+Mendeley_PHCU_nonisocyanate,PHCU50,composition_series_mapped_exact_recipe_missing,1,0,1,True,False,True,2,two_objectives,reference-142;reference-143;reference-144
+Mendeley_PHCU_nonisocyanate,PHCU70,composition_series_mapped_exact_recipe_missing,1,0,1,True,False,True,2,two_objectives,reference-142;reference-143;reference-144
 Zenodo_标准化弹性体表征,Cheetah,commercial_grade_identity_only,6,0,1,True,False,True,2,two_objectives,zenodo-14983287
 Zenodo_标准化弹性体表征,Filaflex 60A,commercial_grade_identity_only,7,0,1,True,False,True,2,two_objectives,zenodo-14983287
 DRUM_TPUU_机械回收,PMCL-1k-44HS,family_mn_hard_segment_mapped,0,0,1,False,False,True,1,single_objective,reference-53;reference-54

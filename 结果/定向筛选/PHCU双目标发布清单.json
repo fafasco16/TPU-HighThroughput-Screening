@@ -1,0 +1,12 @@
+{
+  "counts": {
+    "formulations": 6,
+    "tensile_endpoints": 6,
+    "tga_endpoints": 6
+  },
+  "inputs": {
+    "tensile": "a5840660143f15dd0c0a3455b4d3612748aa9e3aca7833b0aae9a5fb0940c273",
+    "tga": "fc3555c9932e534e0b8571028672a049c64d4ac6a4bcf1da18702aa593f5779e"
+  },
+  "output_sha256": "4451843148b9f141513f4b6515f0669c9d82519b0802988654a3c80a2d586806"
+}
