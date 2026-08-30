@@ -20,7 +20,6 @@ SCHEMA_VERSION = "1.0.0"
 INPUT_PATHS = {
     "可用实验观测": ROOT / "结果" / "可用数据集" / "实验观测.csv.gz",
     "可用计算观测": ROOT / "结果" / "可用数据集" / "计算观测.csv.gz",
-    "Gold-E参考表": ROOT / "结果" / "Gold_E_实验表格.csv.gz",
     "商用构件证据": ROOT / "候选" / "商用构件证据.csv",
     "实验合理组合": ROOT / "候选" / "实验合理组合.csv",
 }
@@ -217,9 +216,10 @@ def _screening_use(row: pd.Series) -> str:
 
 def _build_labels(
     experiments: pd.DataFrame,
-    gold_e: pd.DataFrame,
 ) -> pd.DataFrame:
-    component_rows = gold_e[gold_e["record_kind"].eq("formulation_component")]
+    component_rows = experiments[
+        experiments["record_kind"].eq("formulation_component")
+    ]
     closed_pairs = set(
         _pair_key(component_rows["source_id"], component_rows["formulation_id"])
     )
@@ -700,15 +700,10 @@ def build_release() -> dict[str, pd.DataFrame]:
     """从冻结输入构建全部内存视图，不写文件。"""
 
     experiments = pd.read_csv(INPUT_PATHS["可用实验观测"], low_memory=False)
-    gold_e = pd.read_csv(
-        INPUT_PATHS["Gold-E参考表"],
-        usecols=["source_id", "formulation_id", "record_kind"],
-        low_memory=False,
-    )
     commercial = pd.read_csv(INPUT_PATHS["商用构件证据"], low_memory=False)
     formulations = pd.read_csv(INPUT_PATHS["实验合理组合"], low_memory=False)
 
-    labels = _build_labels(experiments, gold_e)
+    labels = _build_labels(experiments)
     computational = _build_computational_evidence(INPUT_PATHS["可用计算观测"])
     return {
         "labels": labels,

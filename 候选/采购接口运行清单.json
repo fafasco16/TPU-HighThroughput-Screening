@@ -1,0 +1,50 @@
+{
+  "cache_hits": 164,
+  "catalog_status_counts": {
+    "multiple_catalog_signals": 22,
+    "no_catalog_signal": 44,
+    "single_catalog_signal": 16
+  },
+  "configuration": {
+    "path": "E:\\数据\\TPU\\配置\\采购接口.yaml",
+    "sha256": "43d6605e94571479f1c0bd569ae62968f68ccbb0e8e5ef420bdc6aece2d04499"
+  },
+  "experiment_release_status": "blocked_pending_quote_sds_and_local_approval",
+  "input": {
+    "path": "候选\\当前82构件实验门审计.csv",
+    "rows": 82,
+    "sha256": "a7424439e2b9e428e5468ec748db3a5b391f4a092e8f138647ae94e87b213c1e"
+  },
+  "interfaces": [
+    "emolecules_link",
+    "molbloom",
+    "pubchem_vendor"
+  ],
+  "outputs": {
+    "evidence": {
+      "path": "E:\\数据\\TPU\\候选\\采购接口证据.csv",
+      "rows": 246,
+      "sha256": "66ba638d299d297013f6caa8b7baa18b7203868f12cea8265456bb488e0a625a"
+    },
+    "summary": {
+      "path": "E:\\数据\\TPU\\候选\\当前82构件采购查询.csv",
+      "rows": 82,
+      "sha256": "aab9a727e7504dffb369278c255e932fe76d427276e0b384f92c23affa969da3"
+    }
+  },
+  "package_versions": {
+    "molbloom": "3.2.0",
+    "pandas": "2.3.3",
+    "rdkit": "2026.3.4",
+    "smallworld-api": "1.1.4"
+  },
+  "query_status_counts": {
+    "emolecules_link::link_generated": 82,
+    "molbloom::completed": 82,
+    "pubchem_vendor::completed": 78,
+    "pubchem_vendor::pubchem_not_found": 4
+  },
+  "refresh": false,
+  "smallworld_enabled": false,
+  "status": "completed"
+}
