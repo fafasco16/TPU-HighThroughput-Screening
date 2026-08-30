@@ -42,6 +42,7 @@
 - [Zenodo多孔TPU拉伸端点](结果/定向筛选/Zenodo多孔TPU拉伸端点.csv)
 - [Figshare强韧自愈TPU端点](结果/定向筛选/Figshare强韧自愈端点.csv)
 - [标准化热塑性弹性体TGA端点](结果/定向筛选/标准化热塑性弹性体TGA端点.csv)
+- [标准化热塑性弹性体拉伸端点](结果/定向筛选/标准化热塑性弹性体拉伸端点.csv)
 - [DRUM机械回收TPUU TGA端点](结果/定向筛选/DRUM机械回收TGA端点.csv)
 - [DRUM机械回收TPUU循环端点](结果/定向筛选/DRUM机械回收循环端点.csv)
 - [可用数据集说明](结果/可用数据集/README.md)
