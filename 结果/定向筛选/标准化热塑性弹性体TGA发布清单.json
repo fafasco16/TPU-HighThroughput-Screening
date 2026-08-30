@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "material_count": 2,
+    "t5_count": 2,
+    "t10_count": 2,
+    "t50_count": 2
+  },
+  "source_sha256": "3a1c0b13d178db76bc6e1d2b600bcecd01b51a775673bc44f16e9b4674200c0d",
+  "output_sha256": "2ca08f3045e0ea7932c1f118e790be76266b62934d7eaab8feb7bc22c6f46166"
+}
