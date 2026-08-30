@@ -118,6 +118,20 @@ def build_release():
     frame["completion_priority"] = frame["objective_gap_count"].map(
         {0: "complete_three_objectives", 1: "high_complete_third_objective", 2: "medium_single_objective"}
     )
+    frame["gap_evidence_status"] = "not_applicable_complete"
+    frame["gap_next_action"] = "none"
+    phcu = frame["source_family"].eq("Mendeley_PHCU_nonisocyanate")
+    frame.loc[phcu, "gap_evidence_status"] = "no_cyclic_modality_in_local_source"
+    frame.loc[phcu, "gap_next_action"] = "targeted_external_search_for_same_PHCU_family_or_new_experiment"
+    standard = frame["source_family"].eq("Zenodo_标准化弹性体表征")
+    frame.loc[standard, "gap_evidence_status"] = "stress_relaxation_proxy_available_no_direct_cycles"
+    frame.loc[standard, "gap_next_action"] = "retain_relaxation_as_auxiliary_and_search_direct_cycles"
+    recycled = frame["material_key"].isin(["P4MCL-1.6k-31HS", "P4PrCL-1.6k-31HS", "PCL-1.6k-31HS", "PMCL-1k-46HS"])
+    frame.loc[recycled, "gap_evidence_status"] = "no_matching_tga_in_local_source"
+    frame.loc[recycled, "gap_next_action"] = "search_repolymerized_material_tga_or_measurement"
+    empty_tensile = frame["material_key"].eq("PMCL-2k-18HS")
+    frame.loc[empty_tensile, "gap_evidence_status"] = "source_tensile_sheet_empty"
+    frame.loc[empty_tensile, "gap_next_action"] = "do_not_impute_search_independent_tensile_source"
     return frame
 
 
