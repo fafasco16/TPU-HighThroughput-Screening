@@ -46,6 +46,14 @@ SPECS = [
         "formulation_code_only",
     ),
     (
+        "low_ceiling_tpuu_tga",
+        "thermal_stability",
+        "低天花板TPUU热稳定端点.csv",
+        "低天花板TPUU热稳定发布清单.json",
+        "CC0-1.0",
+        "formulation_code_only",
+    ),
+    (
         "zenodo_porous",
         "toughness",
         "Zenodo多孔TPU拉伸端点.csv",
@@ -267,6 +275,7 @@ def build_release():
         "drum_cycle": "core_tpuu_experimental",
         "drum_tga": "core_tpuu_experimental",
         "low_ceiling_cycle": "core_tpuu_experimental",
+        "low_ceiling_tpuu_tga": "core_tpuu_experimental",
         "zenodo_porous": "auxiliary_experimental",
         "figshare_healing": "core_tpu_experimental",
         "standard_tensile": "commercial_elastomer_auxiliary",

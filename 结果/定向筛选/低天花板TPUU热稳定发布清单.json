@@ -1,0 +1,50 @@
+{
+  "release_id": "low_ceiling_tpuu_tga_v1",
+  "source": {
+    "dataset_doi": "10.13020/zf53-w893",
+    "article_doi": "10.1021/acs.macromol.4c01431",
+    "license": "CC0-1.0"
+  },
+  "counts": {
+    "material_count": 4,
+    "curve_count": 4,
+    "source_point_count": 25216,
+    "published_compact_row_count": 4
+  },
+  "algorithm": {
+    "baseline": "maximum_of_first_5_percent_minimum_3_points",
+    "normalization": "100*mass/baseline",
+    "noise_handling": "cumulative_minimum_envelope",
+    "thresholds_mass_percent": [
+      95,
+      90,
+      50
+    ],
+    "interpolation": "linear_between_bracketing_points",
+    "Td_onset": "not_derived_without_protocolized_tangent_method"
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "material_identity": "four_formulation_codes_same_source_as_tensile_cycles",
+    "sample_weight_ceiling": 0.75
+  },
+  "inputs": [
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_TGA/TPUU_C.txt",
+      "sha256": "5ad9e236733134d4611038f8f23234ba45df8733e0b50db86ea64a0a64873269"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_TGA/TPUU_D.txt",
+      "sha256": "5784d0fb884b16e9767a53b68854c3983146569f2c4e6ee089047d801f366aa6"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_TGA/TPUU_R.txt",
+      "sha256": "829922dd684833ec83edd279367af8fd3cad436778f0aa1bf9f764accc2284e2"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_低天花板/解包内容/Raw_TGA/TPUU_S.txt",
+      "sha256": "71e0d7de5a13752f7933d83c04fefa4b9879d5a22ff33d6f5fc5c76639585efb"
+    }
+  ],
+  "output_sha256": "c870d9734964b3a3929915f650cb6a8d26e3b89009692b9c38fbae37c91946b8"
+}

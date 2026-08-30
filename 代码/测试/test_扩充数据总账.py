@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 26
+    assert len(f) == 27
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -21,6 +21,12 @@ def test_release():
         "commercial_elastomer_auxiliary"
     )
     assert relaxation.iloc[0].row_count == 2
+    low_ceiling_tga = f.loc[f.package_id.eq("low_ceiling_tpuu_tga")]
+    assert len(low_ceiling_tga) == 1
+    assert low_ceiling_tga.iloc[0].row_count == 4
+    assert low_ceiling_tga.iloc[0].model_admission_layer == (
+        "core_tpuu_experimental"
+    )
     assert {
         "qub_self_healing_tensile",
         "qub_self_healing_cycle_proxy",

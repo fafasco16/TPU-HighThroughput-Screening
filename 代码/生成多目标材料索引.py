@@ -16,6 +16,9 @@ INPUTS = {
     "drum_tensile": D / "DRUM机械回收拉伸端点.csv",
     "drum_cycle": D / "DRUM机械回收循环端点.csv",
     "drum_tga": D / "DRUM机械回收TGA端点.csv",
+    "low_tpuu_cycle": D / "TPUU循环端点.csv",
+    "low_tpuu_tga": D / "低天花板TPUU热稳定端点.csv",
+    "directed_labels": D / "三目标实验标签.csv.gz",
     "std_tensile": D / "标准化热塑性弹性体拉伸端点.csv",
     "std_relaxation": D / "标准热塑性弹性体松弛端点.csv",
     "std_tga": D / "标准化热塑性弹性体TGA端点.csv",
@@ -56,6 +59,14 @@ def build_release():
             "drum_tga",
         ),
         (
+            "DRUM_TPUU_低天花板",
+            "reference-55;reference-56",
+            "formulation_id_only",
+            "low_tpuu_tensile",
+            "low_tpuu_cycle",
+            "low_tpuu_tga",
+        ),
+        (
             "Zenodo_标准化弹性体表征",
             "zenodo-14983287",
             "commercial_grade_identity_only",
@@ -80,9 +91,15 @@ def build_release():
             "dib_tga",
         ),
     ]
-    frames = {k: pd.read_csv(v) for k, v in INPUTS.items()}
+    frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
+    labels = frames["directed_labels"]
+    frames["low_tpuu_tensile"] = labels.loc[
+        labels["source_id"].eq("source_drum_zf53w893")
+        & labels["property_name"].eq("tensile_toughness")
+    ].copy()
     model_layers = {
         "DRUM_TPUU_机械回收": "core_tpuu_experimental",
+        "DRUM_TPUU_低天花板": "core_tpuu_experimental",
         "Zenodo_标准化弹性体表征": "commercial_elastomer_auxiliary",
         "QUB_生物基三重自修复TPU": "core_tpu_experimental",
         "DataInBrief_交联形状记忆PU": "polyurethane_transfer",

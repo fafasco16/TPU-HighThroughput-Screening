@@ -21,6 +21,20 @@ def test_release():
     assert standard["completion_priority"].eq(
         "complete_proxy_not_direct_cycle"
     ).all()
+    low_ceiling = f.loc[f.source_family.eq("DRUM_TPUU_低天花板")]
+    assert set(low_ceiling.material_key) == {
+        "TPUU-C",
+        "TPUU-D",
+        "TPUU-R",
+        "TPUU-S",
+    }
+    assert low_ceiling["objective_coverage_count"].eq(3).all()
+    assert low_ceiling["model_admission_layer"].eq(
+        "core_tpuu_experimental"
+    ).all()
+    assert low_ceiling["thermal_evidence_level"].eq(
+        "direct_TGA_curve"
+    ).all()
     assert (f.objective_coverage_count == 3).sum() > 0
     assert f.loc[f.objective_coverage_count.eq(3), "missing_objectives"].eq("").all()
     assert f.loc[f.objective_coverage_count.eq(2), "objective_gap_count"].eq(1).all()

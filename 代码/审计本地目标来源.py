@@ -203,6 +203,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("DRUM机械回收循环端点.csv", "DRUM_TPUU_机械回收", "cyclic_recovery"),
         ("DRUM机械回收TGA端点.csv", "DRUM_TPUU_机械回收", "thermal_stability"),
         ("TPUU循环端点.csv", "DRUM_TPUU_低天花板", "cyclic_recovery"),
+        ("低天花板TPUU热稳定端点.csv", "DRUM_TPUU_低天花板", "thermal_stability"),
         ("Zenodo多孔TPU拉伸端点.csv", "Zenodo_多孔导电TPU纳米复合膜", "toughness"),
         ("Figshare强韧自愈端点.csv", "Figshare_碳酸酯TPU强韧自愈", "toughness"),
         ("标准化热塑性弹性体拉伸端点.csv", "Zenodo_标准化弹性体表征", "toughness"),

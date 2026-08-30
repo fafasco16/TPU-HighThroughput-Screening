@@ -49,6 +49,15 @@ def test_local_audit_covers_all_source_directories():
     assert audit.loc[
         audit.source_directory.eq("QUB_生物基三重自修复TPU"), "audit_status"
     ].eq("materialized_all_detected_targets").all()
+    low_ceiling = queue.loc[
+        queue.source_directory.eq("DRUM_TPUU_低天花板")
+    ]
+    assert set(low_ceiling.target_family) == {
+        "toughness",
+        "cyclic_recovery",
+        "thermal_stability",
+    }
+    assert low_ceiling["already_in_directed_target"].all()
     dib = queue.loc[
         queue.source_directory.eq("DataInBrief_聚氨酯形状记忆多模态原始数据")
     ]
