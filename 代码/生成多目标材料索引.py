@@ -132,6 +132,9 @@ def build_release():
     empty_tensile = frame["material_key"].eq("PMCL-2k-18HS")
     frame.loc[empty_tensile, "gap_evidence_status"] = "source_tensile_sheet_empty"
     frame.loc[empty_tensile, "gap_next_action"] = "do_not_impute_search_independent_tensile_source"
+    thermal_only = frame["material_key"].eq("PMCL-1k-44HS")
+    frame.loc[thermal_only, "gap_evidence_status"] = "no_exact_matching_mechanical_formulation"
+    frame.loc[thermal_only, "gap_next_action"] = "do_not_merge_with_PMCL_1k_46HS_search_exact_mechanical_match"
     return frame
 
 
