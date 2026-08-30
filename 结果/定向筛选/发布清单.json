@@ -1,0 +1,80 @@
+{
+  "counts": {
+    "commercial_component_rows": 24,
+    "objective_count": 5,
+    "realistic_formulation_rows": 980,
+    "target_family_count": 3,
+    "target_label_rows": 14638,
+    "target_property_count": 17,
+    "target_source_count": 10
+  },
+  "input_files": {
+    "Gold-E参考表": {
+      "bytes": 9231215,
+      "path": "结果/Gold_E_实验表格.csv.gz",
+      "sha256": "0bf46480d6263d61c5630a854842929e7194f9cbe08159917e9b852ce280de3e"
+    },
+    "可用实验观测": {
+      "bytes": 9248584,
+      "path": "结果/可用数据集/实验观测.csv.gz",
+      "sha256": "4c943e96c247276a6d00ecf007fc7bfd4e706698e5ca8db112b035921c06b3f3"
+    },
+    "商用构件证据": {
+      "bytes": 11398,
+      "path": "候选/商用构件证据.csv",
+      "sha256": "084a6d55a74b567f80c22beb7f369057b5925d1c66ff538f3aceafe52d01e46a"
+    },
+    "实验合理组合": {
+      "bytes": 829542,
+      "path": "候选/实验合理组合.csv",
+      "sha256": "b60025058f3835c0623e8b34713aae0882ca645c5b296f269a89e7a8450f0747"
+    }
+  },
+  "output_files": {
+    "三目标实验标签": {
+      "bytes": 487789,
+      "path": "结果/定向筛选/三目标实验标签.csv.gz",
+      "sha256": "f0a7b0fc02447ac1944cc4cc187cba6a1a821773d520d487b7b6d629cb694289"
+    },
+    "使用说明": {
+      "bytes": 3059,
+      "path": "结果/定向筛选/README.md",
+      "sha256": "02aa5d8808a28b49230e5619de74ea1f38f981d5c078e4c8fbb663db4fceb2b1"
+    },
+    "现实构件约束": {
+      "bytes": 14059,
+      "path": "结果/定向筛选/现实构件约束.csv",
+      "sha256": "148b6a1e41f79ec8e03a8c21b798f77f605c0152a4b90910ff93b7a91e0978f1"
+    },
+    "现实配方候选": {
+      "bytes": 1041456,
+      "path": "结果/定向筛选/现实配方候选.csv",
+      "sha256": "33da8e6d195b287beb6d3b6c69cab3f1d98da10b0c4f83599d14119308087663"
+    },
+    "目标标签审计": {
+      "bytes": 3315,
+      "path": "结果/定向筛选/目标标签审计.csv",
+      "sha256": "ba161480544a53accd3eef996cb7b0140b5a122fe055ad07df7079e548f4dc76"
+    },
+    "筛选任务清单": {
+      "bytes": 1592,
+      "path": "结果/定向筛选/筛选任务清单.csv",
+      "sha256": "73f65af50eaebd50aaa91764b2b20939e278e12df6f9304cab87d27eb4f4e294"
+    }
+  },
+  "policy": {
+    "deterministic_constraints": [
+      "cost",
+      "environment"
+    ],
+    "expensive_calculation_gate": "deferred_until_multitarget_prefilter",
+    "modeled_targets": [
+      "toughness",
+      "cyclic_recovery",
+      "thermal_stability"
+    ],
+    "tpuu_status": "blocked_until_commercial_amine_extenders_added"
+  },
+  "release_id": "tpu-directed-five-objective-2026-08-30-v1",
+  "schema_version": "1.0.0"
+}
