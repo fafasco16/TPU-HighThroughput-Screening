@@ -43,6 +43,11 @@
       "bytes": 17764,
       "sha256": "be72a3f8785e51f9bd3bb784054b6361640ad00b1cf3196433b57e0e5739f787"
     },
+    "Figshare强韧自愈": {
+      "path": "结果/定向筛选/Figshare强韧自愈端点.csv",
+      "bytes": 2038,
+      "sha256": "80fcbdb73e3fcc5621743fdfa72e370894f613408d844358aa1bdb17e49af035"
+    },
     "实验标签": {
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
       "bytes": 3435920,
@@ -63,7 +68,7 @@
     "训练前任务": {
       "path": "结果/定向筛选/训练前任务清单.csv",
       "bytes": 2786,
-      "sha256": "2213476f99cf935247e6e6529de5409d21ba2b3e9515ae6481cc29b58b13de2b"
+      "sha256": "c69dc2de64675bea318bcea74a5c58a52c4d5d21a72a7cadbcff8c85614e33a8"
     }
   },
   "stop_gate": {

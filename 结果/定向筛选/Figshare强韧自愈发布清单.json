@@ -1,0 +1,34 @@
+{
+  "release_id": "tpu-figshare-mechano-responsive-2021-v1",
+  "counts": {
+    "summary_rows": 5,
+    "stress_strain_curve_count": 7,
+    "curve_point_rows": 14637
+  },
+  "source": {
+    "doi": "10.6084/m9.figshare.12936989.v1",
+    "license": "CC-BY-4.0",
+    "workbook": {
+      "path": "数据/原始/外部数据/新增开放数据/Figshare_碳酸酯TPU强韧自愈/Source-data_Main Figures.xlsx",
+      "bytes": 1636536,
+      "sha256": "a71e665b656d471a59ea814d44c12d73a7f7e9c2d1e23044ffb6dc4b572bf8c4"
+    },
+    "source_manifest": {
+      "path": "数据/原始/外部数据/新增开放数据/Figshare_碳酸酯TPU强韧自愈/来源清单.json",
+      "bytes": 1446,
+      "sha256": "abacf764c8c29086bf9e425f95af5d558e0640d7d14ab3b6a14f9d7fad8f3c91"
+    }
+  },
+  "outputs": {
+    "summary": {
+      "path": "结果/定向筛选/Figshare强韧自愈端点.csv",
+      "bytes": 2038,
+      "sha256": "80fcbdb73e3fcc5621743fdfa72e370894f613408d844358aa1bdb17e49af035"
+    },
+    "curves": {
+      "path": "结果/定向筛选/Figshare强韧自愈曲线.csv.gz",
+      "bytes": 158477,
+      "sha256": "5b8e9edfa1c462092d15fde4be1d69a833592590c93ccbf497e9b17dc0588196"
+    }
+  }
+}

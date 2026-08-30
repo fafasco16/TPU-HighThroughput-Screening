@@ -34,12 +34,14 @@ def test_training_tasks_keep_fidelity_roles_separate():
     cyclic_endpoints = pd.read_csv(OUTPUT / "TPUU循环端点.csv")
     drum_recycling = pd.read_csv(OUTPUT / "DRUM机械回收拉伸端点.csv")
     zenodo_porous_tpu = pd.read_csv(OUTPUT / "Zenodo多孔TPU拉伸端点.csv")
+    figshare_healing_tpu = pd.read_csv(OUTPUT / "Figshare强韧自愈端点.csv")
     tasks = feature_builder.build_training_tasks(
         directed_tasks,
         endpoints,
         cyclic_endpoints,
         drum_recycling,
         zenodo_porous_tpu,
+        figshare_healing_tpu,
     )
     assert tasks["objective_id"].tolist() == [
         "toughness",
@@ -57,8 +59,8 @@ def test_training_tasks_keep_fidelity_roles_separate():
     assert cyclic["cyclic_endpoint_rows"] == 80
     assert cyclic["cyclic_endpoint_formulation_count"] == 4
     toughness = tasks[tasks["objective_id"].eq("toughness")].iloc[0]
-    assert toughness["local_expansion_endpoint_rows"] == 132
-    assert toughness["local_expansion_formulation_count"] == 26
+    assert toughness["local_expansion_endpoint_rows"] == 137
+    assert toughness["local_expansion_formulation_count"] == 29
 
 
 def test_release_and_check_command():
