@@ -83,7 +83,7 @@ SPECS = [
         "PHCU双目标端点.csv",
         "PHCU双目标发布清单.json",
         "CC-BY-4.0",
-        "composition_series_mapped",
+        "monomer_set_composition_mapped",
     ),
     (
         "date_seed_tga",
@@ -107,6 +107,7 @@ def build_release():
     scores = {
         "component_topology_mapped_partial": 0.85,
         "composition_series_mapped": 0.60,
+        "monomer_set_composition_mapped": 0.72,
         "commercial_grade_only": 0.35,
         "formulation_code_only": 0.30,
         "material_code_only": 0.25,
@@ -115,6 +116,7 @@ def build_release():
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
         "composition_series_mapped": "补逐配方投料和唯一聚合物结构",
+        "monomer_set_composition_mapped": "补逐配方投料、嵌段长度和端基",
         "commercial_grade_only": "补商业牌号化学组成或TDS",
         "formulation_code_only": "从正文或SI恢复组分和比例",
         "material_code_only": "恢复材料代码对应配方",

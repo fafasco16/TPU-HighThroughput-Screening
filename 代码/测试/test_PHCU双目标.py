@@ -12,6 +12,8 @@ def test_release():
     assert f.toughness_MJ_m3.gt(0).all()
     assert f.T5_degC.notna().all()
     assert f.hu_mol_percent.tolist() == [10, 20, 30, 40, 50, 70]
+    assert f.dimethyl_carbonate_smiles.eq("COC(=O)OC").all()
+    assert f.hexane_1_6_diamine_smiles.eq("NCCCCCCN").all()
 
 
 def test_command():
