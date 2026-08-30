@@ -8,8 +8,8 @@
     "objective_count": 5,
     "realistic_formulation_rows": 980,
     "target_family_count": 3,
-    "target_label_rows": 14638,
-    "target_property_count": 17,
+    "target_label_rows": 120550,
+    "target_property_count": 18,
     "target_source_count": 10
   },
   "input_files": {
@@ -36,9 +36,9 @@
   },
   "output_files": {
     "三目标实验标签": {
-      "bytes": 487789,
+      "bytes": 3435920,
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
-      "sha256": "f0a7b0fc02447ac1944cc4cc187cba6a1a821773d520d487b7b6d629cb694289"
+      "sha256": "e7fa82f78de83b695019df03284beb08fa7dc6c51ce4ca341bbc5ddafcae804b"
     },
     "三目标计算证据": {
       "bytes": 4191123,
@@ -46,9 +46,9 @@
       "sha256": "8ca0ce709679a38a9141834b8c8806e0cd6f668ed307b8a6f283e36d57e61395"
     },
     "使用说明": {
-      "bytes": 3782,
+      "bytes": 4341,
       "path": "结果/定向筛选/README.md",
-      "sha256": "af52a1d1b61d4ab5493008390fba350c58ad609ff0e01fa458e7efe35e8c1759"
+      "sha256": "68ca87df0701a3280661fe39ad76486be9c4f3dd8bbe9fd074435450eba19ab4"
     },
     "现实构件约束": {
       "bytes": 14059,
@@ -61,14 +61,14 @@
       "sha256": "33da8e6d195b287beb6d3b6c69cab3f1d98da10b0c4f83599d14119308087663"
     },
     "目标标签审计": {
-      "bytes": 3315,
+      "bytes": 3520,
       "path": "结果/定向筛选/目标标签审计.csv",
-      "sha256": "ba161480544a53accd3eef996cb7b0140b5a122fe055ad07df7079e548f4dc76"
+      "sha256": "f79a0bf3566cf619a994f794c4122e58f43ebb0d49dcf558b0b4a900f8052236"
     },
     "筛选任务清单": {
-      "bytes": 1808,
+      "bytes": 1811,
       "path": "结果/定向筛选/筛选任务清单.csv",
-      "sha256": "f8bba3370f197fdafcff3f657b224cd1442048b6765ce0ed162f650681c62b8d"
+      "sha256": "dff9429b85f5ebce30835465733e54bb7d375416d8899bbbdce39e7511567788"
     },
     "计算证据审计": {
       "bytes": 3300,

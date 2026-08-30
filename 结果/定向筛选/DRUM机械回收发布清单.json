@@ -1,0 +1,61 @@
+{
+  "release_id": "tpu-drum-mechanical-recycling-2026-08-30-v1",
+  "counts": {
+    "tensile_curve_rows": 107,
+    "formulation_count": 21,
+    "core_tpuu_curve_rows": 107,
+    "core_tpuu_formulation_count": 21
+  },
+  "source": {
+    "doi": "10.13020/05ek-6k60",
+    "license": "CC0-1.0",
+    "audit_file": {
+      "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/曲线审计清单.tsv",
+      "bytes": 129110,
+      "sha256": "19c1402bede14a71eceff1e9d1a2c8cfc5a6d68f1f2e3d542449ef27d4c64175"
+    },
+    "input_files": [
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/解包内容/RAW_Chemical_recycling/Repolymerized_TPUUs_tensile.xlsx",
+        "bytes": 146983,
+        "sha256": "95bd9f55b348aa2fb2c28640a93ca410e6dda21cf1e37f7f593bebd4ca072615"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/解包内容/RAW_TPUU_characterization/Polyol-1k-28HS_Tensile_Prop.xlsx",
+        "bytes": 183521,
+        "sha256": "0f1aa0dbff5937f2846c0ea0473afbf2b3a09737b7082fd28257d85bc4d8c718"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/解包内容/RAW_TPUU_characterization/Polyol-2k-18HS_Tensile_Prop.xlsx",
+        "bytes": 168048,
+        "sha256": "1ea43958ddb18c6bed9f52fed3e00ca3335d9248dabbca34f911f262a9843215"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/解包内容/RAW_TPUU_characterization/Polyol-2k-31HS_Tensile_Prop.xlsx",
+        "bytes": 213070,
+        "sha256": "8f89c6e6135d892d43401187948eb28d388ef5d8acfd35ab3e6137820cb8da16"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/解包内容/RAW_TPUU_characterization/Polyol-5k-29HS_Tensile_Prop.xlsx",
+        "bytes": 132011,
+        "sha256": "15778c9819d5518da2ad96618a0b3b4ef1618bcfabad6058fcd4efca0ceae85e"
+      },
+      {
+        "path": "数据/原始/外部数据/新增开放数据/DRUM_TPUU_机械回收/解包内容/RAW_TPUU_characterization/Polyol_1k-45HS_Tensile_Prop.xlsx",
+        "bytes": 87004,
+        "sha256": "b9cfc1217788a2bc2917c53da24b120524d14dc65cffda3121beeafa5c3593d1"
+      }
+    ]
+  },
+  "output_file": {
+    "path": "结果/定向筛选/DRUM机械回收拉伸端点.csv",
+    "bytes": 94874,
+    "sha256": "6d8bf3d6b8643c93e007073d8f857ee596b122a6d420ee4c61699785e8381927"
+  },
+  "derivation": {
+    "toughness": "trapezoid_integral_of_nonnegative_baseline_corrected_stress_vs_relative_strain",
+    "elongation_at_break": "maximum_reported_strain",
+    "tensile_strength": "maximum_reported_stress",
+    "young_modulus": "linear_fit_0_to_5_percent_strain"
+  }
+}

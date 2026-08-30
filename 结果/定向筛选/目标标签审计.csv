@@ -4,6 +4,7 @@ cyclic_recovery,hysteresis_loss_ratio,auxiliary_application_scalar,75,1,1,1,0,75
 cyclic_recovery,elastic_recovery,primary_conditioned_scalar,56,1,1,5,5,6,0,6,56,insufficient_for_new_chemistry_model,定向补充结构—配方—工艺闭合的独立文献体系
 cyclic_recovery,energy_dissipation_index,primary_conditioned_scalar,56,1,1,5,5,6,0,6,56,insufficient_for_new_chemistry_model,定向补充结构—配方—工艺闭合的独立文献体系
 cyclic_recovery,residual_strain,primary_conditioned_scalar,30,1,1,4,4,5,0,5,30,insufficient_for_new_chemistry_model,定向补充结构—配方—工艺闭合的独立文献体系
+cyclic_recovery,cyclic_tensile_stress,primary_cyclic_curve,105912,1,1,4,0,4,4,4,105912,cyclic_endpoint_extraction_required,按整条加载—卸载曲线提取逐循环恢复率、残余应变和滞后能
 thermal_stability,glass_transition_temperature_hard_segment,auxiliary_service_temperature,7,1,1,7,7,7,0,7,7,auxiliary_or_protocol_specific,只作辅助任务或来源内校准，不替代目标真值
 thermal_stability,glass_transition_temperature_soft_segment,auxiliary_service_temperature,5,1,1,5,5,5,0,5,5,auxiliary_or_protocol_specific,只作辅助任务或来源内校准，不替代目标真值
 thermal_stability,dsc_heat_flow,auxiliary_thermal_curve,4326,1,1,0,0,1,1,1,4326,auxiliary_or_protocol_specific,只作辅助任务或来源内校准，不替代目标真值

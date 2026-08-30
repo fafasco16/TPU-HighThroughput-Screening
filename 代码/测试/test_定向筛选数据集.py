@@ -25,6 +25,10 @@ def test_property_classification():
         "cyclic_recovery",
         "primary_conditioned_scalar",
     )
+    assert directed.classify_property("cyclic_tensile_stress") == (
+        "cyclic_recovery",
+        "primary_cyclic_curve",
+    )
     assert directed.classify_property("shore_hardness") is None
 
 

@@ -1,0 +1,24 @@
+{
+  "release_id": "tpu-external-targeted-sources-2026-08-30-v1",
+  "counts": {
+    "source_count": 2,
+    "downloaded_file_count": 3
+  },
+  "output_file": {
+    "path": "结果/定向筛选/外部来源候选.csv",
+    "bytes": 1639,
+    "sha256": "504bd5499f2c02d03fcec0d7463d86c596448bfc17ee72b51b3761089001ea11"
+  },
+  "sources": [
+    {
+      "source_id": "source_figshare_12936989_v1",
+      "local_directory": "数据/原始/外部数据/新增开放数据/Figshare_碳酸酯TPU强韧自愈",
+      "local_source_manifest_sha256": "abacf764c8c29086bf9e425f95af5d558e0640d7d14ab3b6a14f9d7fad8f3c91"
+    },
+    {
+      "source_id": "source_zenodo_1098206_v1",
+      "local_directory": "数据/原始/外部数据/新增开放数据/Zenodo_多孔导电TPU纳米复合膜",
+      "local_source_manifest_sha256": "c9d91f94dec923e7378fdf9b0af5ff05b72e0275cd5a712ad7abdb1d1bcb7972"
+    }
+  ]
+}

@@ -56,6 +56,10 @@ PROPERTY_RULES: dict[str, tuple[str, str]] = {
         "cyclic_recovery",
         "primary_conditioned_scalar",
     ),
+    "cyclic_tensile_stress": (
+        "cyclic_recovery",
+        "primary_cyclic_curve",
+    ),
     "hysteresis_loss": ("cyclic_recovery", "auxiliary_application_scalar"),
     "hysteresis_loss_ratio": (
         "cyclic_recovery",
@@ -125,6 +129,7 @@ PRIMARY_ROLES = {
     "primary_direct_scalar",
     "primary_conditioned_scalar",
     "primary_curve_for_endpoint",
+    "primary_cyclic_curve",
 }
 
 
@@ -179,6 +184,8 @@ def _standardization_requirement(target_family: str, role: str) -> str:
         return "统一MJ/m3、拉伸协议、试样和应变率"
     if target_family == "cyclic_recovery" and role == "primary_conditioned_scalar":
         return "固定最大应变、循环数、温度和恢复定义"
+    if role == "primary_cyclic_curve":
+        return "按整条曲线分组并提取逐循环残余应变、恢复率和滞后能"
     if role == "primary_curve_for_endpoint":
         return "曲线质控后统一提取T5/T10/Td_onset"
     if target_family == "thermal_stability":
@@ -205,6 +212,8 @@ def _screening_use(row: pd.Series) -> str:
     ready = bool(row["model_ready"])
     if role == "primary_curve_for_endpoint":
         return "endpoint_extraction_required"
+    if role == "primary_cyclic_curve":
+        return "cyclic_endpoint_extraction_required"
     if role in {"primary_direct_scalar", "primary_conditioned_scalar"}:
         if ready and mapping == "component_table_closed":
             return "eligible_after_feature_join"
@@ -301,6 +310,9 @@ def _build_audit(labels: pd.DataFrame) -> pd.DataFrame:
         if role == "primary_curve_for_endpoint":
             status = "endpoint_extraction_required"
             action = "先从TGA/DTG曲线提取T5、T10和Td_onset并核验样品身份"
+        elif role == "primary_cyclic_curve":
+            status = "cyclic_endpoint_extraction_required"
+            action = "按整条加载—卸载曲线提取逐循环恢复率、残余应变和滞后能"
         elif primary and closed_count < 50:
             status = "insufficient_for_new_chemistry_model"
             action = "定向补充结构—配方—工艺闭合的独立文献体系"
@@ -761,6 +773,10 @@ def _readme(release: dict[str, pd.DataFrame]) -> str:
 - `三目标计算证据.csv.gz`：与三目标相关的直接低保真、迁移、工况代理和机理代理计算记录。
 - `计算证据审计.csv`：按硬分组审计计算证据，避免把同一配方的工况数当作材料数。
 - `TGA热稳定端点.csv`：由独立脚本从TGA曲线提取T5/T10/T50；身份冲突单独阻断，Td,onset不在缺少统一切线协议时强行派生。
+- `TPUU循环端点.csv`：由独立脚本从4条加载—卸载曲线提取80个逐循环恢复、残余应变、滞后能和保持率端点。
+- `DRUM机械回收拉伸端点.csv`：从CC0来源物化107条核心TPUU独立拉伸曲线的强度、断裂伸长和韧性端点，覆盖21个配方代码。
+- `本地来源审计.csv`与`本地扩库队列.csv`：只读扫描本地原件元数据并按三目标排出增量接入顺序。
+- `外部来源候选.csv`：通过官方API新增的开放来源及本地原件清单、许可证和引用状态。
 - `三目标配方特征.csv.gz`：由独立脚本生成980个现实TPU配方的身份、结构上下文、计量和计算前门。
 - `训练前任务清单.csv`与`训练前发布清单.json`：明确记录尚未启动模型训练、预测或新量化计算。
 - `现实构件约束.csv`：24种商用构件，价格和结构化EHS未知时明确留空。

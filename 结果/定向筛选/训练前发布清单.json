@@ -20,18 +20,28 @@
     },
     "筛选任务": {
       "path": "结果/定向筛选/筛选任务清单.csv",
-      "bytes": 1808,
-      "sha256": "f8bba3370f197fdafcff3f657b224cd1442048b6765ce0ed162f650681c62b8d"
+      "bytes": 1811,
+      "sha256": "dff9429b85f5ebce30835465733e54bb7d375416d8899bbbdce39e7511567788"
     },
     "TGA端点": {
       "path": "结果/定向筛选/TGA热稳定端点.csv",
       "bytes": 3883,
       "sha256": "295b9247f92f28814d7582525b770272ca3cca95873bce436867c341a71d140c"
     },
+    "循环端点": {
+      "path": "结果/定向筛选/TPUU循环端点.csv",
+      "bytes": 48814,
+      "sha256": "96057cf29371371b9257b8f2fa886f5693fad54fb2703cabf010c942613e014f"
+    },
+    "DRUM机械回收": {
+      "path": "结果/定向筛选/DRUM机械回收拉伸端点.csv",
+      "bytes": 94874,
+      "sha256": "6d8bf3d6b8643c93e007073d8f857ee596b122a6d420ee4c61699785e8381927"
+    },
     "实验标签": {
       "path": "结果/定向筛选/三目标实验标签.csv.gz",
-      "bytes": 487789,
-      "sha256": "f0a7b0fc02447ac1944cc4cc187cba6a1a821773d520d487b7b6d629cb694289"
+      "bytes": 3435920,
+      "sha256": "e7fa82f78de83b695019df03284beb08fa7dc6c51ce4ca341bbc5ddafcae804b"
     },
     "计算证据": {
       "path": "结果/定向筛选/三目标计算证据.csv.gz",
@@ -47,8 +57,8 @@
     },
     "训练前任务": {
       "path": "结果/定向筛选/训练前任务清单.csv",
-      "bytes": 2620,
-      "sha256": "38a5e927e61f229b34846785941217a8e947eb4f96dfa07ef5e745660dc983b8"
+      "bytes": 2786,
+      "sha256": "fefe13820f73f3dd97c20fe24a04bc8d372c7924bf29a677ce41f593fc03e8f8"
     }
   },
   "stop_gate": {

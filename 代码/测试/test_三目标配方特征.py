@@ -31,7 +31,11 @@ def test_reality_features_stop_before_calculation():
 def test_training_tasks_keep_fidelity_roles_separate():
     directed_tasks = pd.read_csv(OUTPUT / "筛选任务清单.csv")
     endpoints = pd.read_csv(OUTPUT / "TGA热稳定端点.csv")
-    tasks = feature_builder.build_training_tasks(directed_tasks, endpoints)
+    cyclic_endpoints = pd.read_csv(OUTPUT / "TPUU循环端点.csv")
+    drum_recycling = pd.read_csv(OUTPUT / "DRUM机械回收拉伸端点.csv")
+    tasks = feature_builder.build_training_tasks(
+        directed_tasks, endpoints, cyclic_endpoints, drum_recycling
+    )
     assert tasks["objective_id"].tolist() == [
         "toughness",
         "cyclic_recovery",
@@ -45,6 +49,11 @@ def test_training_tasks_keep_fidelity_roles_separate():
     assert thermal["tga_identity_resolved_curve_count"] == 4
     cyclic = tasks[tasks["objective_id"].eq("cyclic_recovery")].iloc[0]
     assert cyclic["direct_low_fidelity_hard_groups"] == 0
+    assert cyclic["cyclic_endpoint_rows"] == 80
+    assert cyclic["cyclic_endpoint_formulation_count"] == 4
+    toughness = tasks[tasks["objective_id"].eq("toughness")].iloc[0]
+    assert toughness["local_expansion_endpoint_rows"] == 107
+    assert toughness["local_expansion_formulation_count"] == 21
 
 
 def test_release_and_check_command():

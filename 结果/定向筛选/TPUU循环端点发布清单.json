@@ -1,0 +1,28 @@
+{
+  "release_id": "tpuu-cyclic-endpoints-2026-08-30-v1",
+  "counts": {
+    "curve_count": 4,
+    "formulation_count": 4,
+    "cycle_endpoint_rows": 80,
+    "valid_energy_rows": 80
+  },
+  "algorithm": {
+    "peak_enter_fraction": 0.98,
+    "peak_exit_fraction": 0.95,
+    "valley_fraction": 0.02,
+    "stress_unit_input": "kPa",
+    "strain_unit_input": "percent",
+    "energy_unit_output": "MJ/m3",
+    "energy_baseline": "mean_cycle_endpoint_stress"
+  },
+  "input_file": {
+    "path": "结果/定向筛选/三目标实验标签.csv.gz",
+    "bytes": 3435920,
+    "sha256": "e7fa82f78de83b695019df03284beb08fa7dc6c51ce4ca341bbc5ddafcae804b"
+  },
+  "output_file": {
+    "path": "结果/定向筛选/TPUU循环端点.csv",
+    "bytes": 48814,
+    "sha256": "96057cf29371371b9257b8f2fa886f5693fad54fb2703cabf010c942613e014f"
+  }
+}

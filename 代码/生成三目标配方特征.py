@@ -18,6 +18,8 @@ INPUTS = {
     "现实构件": DIRECTED / "现实构件约束.csv",
     "筛选任务": DIRECTED / "筛选任务清单.csv",
     "TGA端点": DIRECTED / "TGA热稳定端点.csv",
+    "循环端点": DIRECTED / "TPUU循环端点.csv",
+    "DRUM机械回收": DIRECTED / "DRUM机械回收拉伸端点.csv",
     "实验标签": DIRECTED / "三目标实验标签.csv.gz",
     "计算证据": DIRECTED / "三目标计算证据.csv.gz",
 }
@@ -121,6 +123,8 @@ def build_formulation_features(
 def build_training_tasks(
     directed_tasks: pd.DataFrame,
     endpoints: pd.DataFrame,
+    cyclic_endpoints: pd.DataFrame | None = None,
+    drum_recycling: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     tasks = directed_tasks.copy()
     tasks["tga_endpoint_curve_count"] = 0
@@ -130,6 +134,22 @@ def build_training_tasks(
     tasks.loc[thermal, "tga_identity_resolved_curve_count"] = int(
         endpoints["formulation_id"].notna().sum()
     )
+    tasks["cyclic_endpoint_rows"] = 0
+    tasks["cyclic_endpoint_formulation_count"] = 0
+    if cyclic_endpoints is not None:
+        cyclic = tasks["objective_id"].eq("cyclic_recovery")
+        tasks.loc[cyclic, "cyclic_endpoint_rows"] = len(cyclic_endpoints)
+        tasks.loc[cyclic, "cyclic_endpoint_formulation_count"] = cyclic_endpoints[
+            "formulation_id"
+        ].nunique()
+    tasks["local_expansion_endpoint_rows"] = 0
+    tasks["local_expansion_formulation_count"] = 0
+    if drum_recycling is not None:
+        toughness = tasks["objective_id"].eq("toughness")
+        tasks.loc[toughness, "local_expansion_endpoint_rows"] = len(drum_recycling)
+        tasks.loc[toughness, "local_expansion_formulation_count"] = drum_recycling[
+            "formulation_id"
+        ].nunique()
     tasks["model_training_status"] = "not_started_by_user_instruction"
     tasks["new_calculation_status"] = "not_started_by_user_instruction"
     tasks["training_ready"] = False
@@ -149,9 +169,16 @@ def build_release() -> tuple[pd.DataFrame, pd.DataFrame]:
     components = pd.read_csv(INPUTS["现实构件"], low_memory=False)
     directed_tasks = pd.read_csv(INPUTS["筛选任务"], low_memory=False)
     endpoints = pd.read_csv(INPUTS["TGA端点"], low_memory=False)
+    cyclic_endpoints = pd.read_csv(INPUTS["循环端点"], low_memory=False)
+    drum_recycling = pd.read_csv(INPUTS["DRUM机械回收"], low_memory=False)
     return (
         build_formulation_features(formulations, components),
-        build_training_tasks(directed_tasks, endpoints),
+        build_training_tasks(
+            directed_tasks,
+            endpoints,
+            cyclic_endpoints,
+            drum_recycling,
+        ),
     )
 
 
