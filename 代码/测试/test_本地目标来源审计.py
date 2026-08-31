@@ -233,6 +233,15 @@ def test_local_audit_covers_all_source_directories():
     assert recycled["audit_status"].eq(
         "materialized_all_detected_targets"
     ).all()
+    aged = queue.loc[
+        queue.source_directory.eq("Mendeley_植物基PU泡沫温湿老化压缩")
+    ]
+    assert set(aged.target_family) == {"toughness"}
+    assert aged["already_in_directed_target"].all()
+    assert aged["raw_curve_signal"].all()
+    assert aged["audit_status"].eq(
+        "materialized_all_detected_targets"
+    ).all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 63
+    assert len(f) == 64
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -257,6 +257,12 @@ def test_release():
     assert len(fea) == 1
     assert fea.iloc[0].row_count == 9
     assert fea.iloc[0].model_admission_layer == "simulation_input_reference"
+    aged = f.loc[f.package_id.eq("aged_vegetable_pu_foam_compression")]
+    assert len(aged) == 1
+    assert aged.iloc[0].row_count == 90
+    assert aged.iloc[0].model_admission_layer == (
+        "plant_based_PU_foam_aging_transfer"
+    )
 
 
 def test_command():

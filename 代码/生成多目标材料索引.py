@@ -60,6 +60,7 @@ INPUTS = {
     "lignin_tpu_tga": D / "木质素TPU_TGA端点.csv",
     "tpu_compression_doe": D / "TPU压缩打印DOE端点.csv",
     "recycled_foam_compression": D / "再生PU泡沫压缩端点.csv",
+    "aged_foam_compression": D / "植物基PU泡沫温湿老化压缩端点.csv",
 }
 
 
@@ -240,6 +241,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "Mendeley_植物基PU泡沫温湿老化压缩",
+            "reference-84",
+            "plant_based_PU_foam_formula_unresolved",
+            "aged_foam_compression",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -295,6 +304,7 @@ def build_release():
         ),
         "Mendeley_TPU压缩打印DOE": "core_TPU_application_experimental",
         "第十六批实验_再生PU泡沫": "polyurethane_foam_transfer",
+        "Mendeley_植物基PU泡沫温湿老化压缩": "plant_based_PU_foam_aging_transfer",
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -380,6 +390,8 @@ def build_release():
                         if source == "Mendeley_TPU压缩打印DOE"
                         else "compression_endpoint_energy_absorption_transfer_not_fracture_toughness"
                         if source == "第十六批实验_再生PU泡沫"
+                        else "temperature_humidity_aging_compression_transfer_not_fracture_toughness"
+                        if source == "Mendeley_植物基PU泡沫温湿老化压缩"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -694,6 +706,21 @@ def build_release():
     )
     frame.loc[recycled_foam, "gap_next_action"] = (
         "retain_compression_viscosity_and_thermal_conductivity_as_transfer_and_do_not_count_as_TPU_core"
+    )
+    aged_foam = frame["source_family"].eq(
+        "Mendeley_植物基PU泡沫温湿老化压缩"
+    )
+    frame.loc[aged_foam, "multiobjective_status"] = (
+        "single_objective_aging_compression_transfer"
+    )
+    frame.loc[aged_foam, "completion_priority"] = (
+        "transfer_only_not_thermoplastic_TPU_core"
+    )
+    frame.loc[aged_foam, "gap_evidence_status"] = (
+        "plant_based_PU_foam_aging_compression_only_no_cycles_or_TGA"
+    )
+    frame.loc[aged_foam, "gap_next_action"] = (
+        "retain_temperature_humidity_transfer_and_do_not_count_as_TPU_core"
     )
     tpu1301 = frame["source_family"].eq(
         "Zenodo_TPU1301热黏弹黏塑本构"

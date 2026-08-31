@@ -1,0 +1,37 @@
+{
+  "release_id": "aged_vegetable_pu_foam_compression_transfer_v1",
+  "source": {
+    "source_id": "source_mendeley_2sp8fyvhfm_v3",
+    "dataset_doi": "10.17632/2sp8fyvhfm.3",
+    "license": "CC-BY-4.0",
+    "audit_summary_sha256": "f0244eff2dd3838a88e42a5a1f8d88cbac31db61d7e674fd7fd100d17f1dce1d",
+    "batch_stats_sha256": "a3ca2e4fb5b8965fd7996ce4cc866f5e292c1bd6f5755840da1a71cc1ec76982",
+    "selective_download_file_count": 138,
+    "selective_download_bytes": 8451417
+  },
+  "counts": {
+    "batch_count": 9,
+    "temperature_condition_count": 3,
+    "direction_count": 2,
+    "physical_curve_count": 90,
+    "default_trainable_curve_count": 88,
+    "isolated_duplicate_curve_count": 2,
+    "raw_point_count": 360176,
+    "published_compact_row_count": 90
+  },
+  "policy": {
+    "raw_curve_points_republished": false,
+    "curve_area_is_force_displacement_work_proxy": true,
+    "stress_or_energy_density_derived": false,
+    "tpu_core_supervision": false,
+    "exposure_duration_imputed": false,
+    "dimensions_attached_to_each_specimen": false,
+    "duplicate_curves_default_isolated": true,
+    "environment_is_thermal_decomposition": false,
+    "split_rule": "dataset|material_family|temperature_rh|batch"
+  },
+  "output": {
+    "path": "结果/定向筛选/植物基PU泡沫温湿老化压缩端点.csv",
+    "sha256": "aaaccf42ec8fe39f8358616f1ba6ca6513d16513e56afa6fdd8d5a9f7f20b514"
+  }
+}

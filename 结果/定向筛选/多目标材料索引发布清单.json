@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 119,
-    "unique_material_keys": 118,
+    "material_rows": 120,
+    "unique_material_keys": 119,
     "two_objective_or_more": 76,
     "three_objective": 38
   },
@@ -52,7 +52,8 @@
     "lignin_tpu_mechanical": "9deebba01f6bea720c9d60f7c125572b291d3283e4999bd8ab42d66bc232d8ca",
     "lignin_tpu_tga": "00c76faf4ea7beb9c886d549ef00ec6adcfe411912ac02616cbcd3527589d853",
     "tpu_compression_doe": "0d2e2aafe9aa5e6a8ca35fabadb0ee0d751741774ccaae40ea165eb894dd989a",
-    "recycled_foam_compression": "f025e3cd91f4b28389fb155815454b96c89dd1ef422733826886cfb8cdfdbb66"
+    "recycled_foam_compression": "f025e3cd91f4b28389fb155815454b96c89dd1ef422733826886cfb8cdfdbb66",
+    "aged_foam_compression": "aaaccf42ec8fe39f8358616f1ba6ca6513d16513e56afa6fdd8d5a9f7f20b514"
   },
-  "output_sha256": "2972e62b17989b25b80c731edbf65c485c22929a325f41d4e7be061783d1ba06"
+  "output_sha256": "e5c2f9a38ae7c329c4a74afd56f8e51b131bde458924bf65941108cc73ff8b28"
 }

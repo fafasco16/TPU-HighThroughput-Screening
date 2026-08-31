@@ -344,6 +344,18 @@ def test_release():
     assert recycled["toughness_evidence_level"].eq(
         "compression_endpoint_energy_absorption_transfer_not_fracture_toughness"
     ).all()
+    aged = f.loc[
+        f.source_family.eq("Mendeley_植物基PU泡沫温湿老化压缩")
+    ]
+    assert len(aged) == 1
+    assert aged.material_key.eq("plant_based_PUF_unknown_formula").all()
+    assert aged["objective_coverage_count"].eq(1).all()
+    assert aged["model_admission_layer"].eq(
+        "plant_based_PU_foam_aging_transfer"
+    ).all()
+    assert aged["toughness_evidence_level"].eq(
+        "temperature_humidity_aging_compression_transfer_not_fracture_toughness"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

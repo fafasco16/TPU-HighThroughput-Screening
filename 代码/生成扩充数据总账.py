@@ -517,6 +517,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_grade_only",
     ),
+    (
+        "aged_vegetable_pu_foam_compression",
+        "aging_compression_transfer",
+        "植物基PU泡沫温湿老化压缩端点.csv",
+        "植物基PU泡沫温湿老化发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
 ]
 
 
@@ -682,6 +690,7 @@ def build_release():
         "recycled_pu_foam_formulation_components": "polyurethane_foam_transfer",
         "recycled_pu_foam_aggregate_scalars": "polyurethane_foam_transfer",
         "tpms_fea_input_catalog": "simulation_input_reference",
+        "aged_vegetable_pu_foam_compression": "plant_based_PU_foam_aging_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
