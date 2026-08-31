@@ -173,6 +173,9 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(sls.target_family) == {"toughness"}
     assert sls["already_in_directed_target"].all()
+    assert queue.loc[
+        queue.source_directory.eq("第十批实验_无溶剂PU反应动力学")
+    ].empty
 
 
 def test_release_and_check_command():

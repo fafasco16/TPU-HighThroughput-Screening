@@ -1,0 +1,28 @@
+{
+  "release_id": "solvent_free_pu_reaction_kinetics_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.6406174",
+    "article_doi": "10.1039/D2RA08326D",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "dcf72184ff617b9ad42141628262d6ee57ad99171a635b05254bebd91a8e8e52"
+  },
+  "counts": {
+    "reaction_condition_count": 21,
+    "reaction_system_count": 5,
+    "macrodiol_identity_count": 4,
+    "diisocyanate_identity_count": 2,
+    "source_measurement_row_count": 171,
+    "admitted_measurement_count": 169,
+    "conditional_missing_time_count": 2,
+    "zero_NCO_measurement_count": 23,
+    "published_compact_row_count": 21
+  },
+  "policy": {
+    "raw_measurement_long_table_republished": false,
+    "missing_times_imputed": false,
+    "theoretical_t0_counted_as_measured": false,
+    "direct_toughness_or_cycle_label": false,
+    "condition_level_split_required": true
+  },
+  "output_sha256": "f96d618edd3823bc6064bf8a8b43fa9aa8668dba87d0c551c465ff4d66126aad"
+}

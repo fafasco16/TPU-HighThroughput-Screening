@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 39
+    assert len(f) == 40
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -146,6 +146,15 @@ def test_release():
     assert sls.iloc[0].model_admission_layer == (
         "core_tpu_application_experimental"
     )
+    kinetics = f.loc[
+        f.package_id.eq("solvent_free_pu_reaction_kinetics")
+    ]
+    assert len(kinetics) == 1
+    assert kinetics.iloc[0].row_count == 21
+    assert kinetics.iloc[0].model_admission_layer == (
+        "synthesis_kinetics_experimental"
+    )
+    assert kinetics.iloc[0].mapping_completeness_score == 0.90
 
 
 def test_command():

@@ -149,6 +149,9 @@ SIGNAL_OVERRIDES = {
     "Mendeley_热可逆超分子PU宽应变率": {
         "thermal_stability": False,
     },
+    "第十批实验_无溶剂PU反应动力学": {
+        "toughness": False,
+    },
 }
 
 

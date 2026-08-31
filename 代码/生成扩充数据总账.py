@@ -325,6 +325,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_grade_only",
     ),
+    (
+        "solvent_free_pu_reaction_kinetics",
+        "synthesis_feasibility_reaction_window",
+        "无溶剂PU反应动力学端点.csv",
+        "无溶剂PU反应动力学发布清单.json",
+        "CC-BY-4.0",
+        "monomer_pair_ratio_temperature_mapped",
+    ),
 ]
 
 
@@ -354,6 +362,7 @@ def build_release():
         "commercial_task_code_only": 0.20,
         "commercial_PU_enamel_identity_unresolved": 0.15,
         "microsphere_fraction_matrix_unresolved": 0.25,
+        "monomer_pair_ratio_temperature_mapped": 0.90,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -373,6 +382,7 @@ def build_release():
         "commercial_task_code_only": "补Task 3/Task 11商业化学身份；仅作松弛条件迁移",
         "commercial_PU_enamel_identity_unresolved": "补漆包线PU配方；仅作含铜热解迁移并保留T50右删失",
         "microsphere_fraction_matrix_unresolved": "补名义应力单位和PU基体化学身份；保留六级体积分数组成",
+        "monomer_pair_ratio_temperature_mapped": "补更密集滴定点和转化率复核；用于合成时间窗而非力学真值",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -428,6 +438,9 @@ def build_release():
         "sls_tpu1301_gold_process_tensile": (
             "core_tpu_application_experimental"
         ),
+        "solvent_free_pu_reaction_kinetics": (
+            "synthesis_kinetics_experimental"
+        ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
@@ -439,6 +452,7 @@ def build_release():
                 "material_code",
                 "material_grade",
                 "material_id",
+                "condition_id",
             )
             if column in f
         )
