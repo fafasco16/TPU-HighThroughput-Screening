@@ -349,6 +349,14 @@ SPECS = [
         "CC-BY-4.0",
         "density_grade_only",
     ),
+    (
+        "sls_tpu1301_silver_process_tensile",
+        "toughness_process_application_silver",
+        "SLS_TPU1301银层工艺拉伸端点.csv",
+        "SLS_TPU1301银层发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
 ]
 
 
@@ -461,6 +469,7 @@ def build_release():
         ),
         "microporous_pu_dma_transfer": "microporous_PU_dynamic_transfer",
         "microporous_pu_shpb_transfer": "microporous_PU_dynamic_transfer",
+        "sls_tpu1301_silver_process_tensile": "SLS_TPU_process_silver",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

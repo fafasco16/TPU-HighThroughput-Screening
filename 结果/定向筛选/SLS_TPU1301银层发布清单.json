@@ -1,0 +1,215 @@
+{
+  "release_id": "sls_tpu1301_process_tensile_silver_v1",
+  "source": {
+    "dataset_doi": "10.17632/wfsm6f9rbn.1",
+    "license": "CC-BY-4.0"
+  },
+  "counts": {
+    "material_grade_count": 1,
+    "silver_process_condition_count": 44,
+    "silver_physical_specimen_count": 210,
+    "silver_curve_point_count": 643157,
+    "direct_endpoint_scalar_count": 1050,
+    "canonical_legacy_xls_count": 38,
+    "canonical_direct_xlsx_count": 6,
+    "scientific_duplicate_sequence_count_excluded": 2,
+    "exact_duplicate_xlsx_group_count_excluded": 4,
+    "cross_gold_duplicate_curve_count": 4,
+    "unique_silver_curve_count": 210,
+    "new_unique_curve_count_beyond_gold": 206,
+    "combined_gold_silver_unique_curve_count": 346,
+    "negative_source_modulus_count": 2,
+    "zero_weight_row_count": 9,
+    "positive_weight_row_count": 201,
+    "published_compact_row_count": 210
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "gold_specimens_duplicated": false,
+    "individual_dot1_dot2_workbooks_count_as_new_sequences": false,
+    "random_suffix_exact_duplicates_count_as_new_sequences": false,
+    "process_conditions_increase_material_count": false,
+    "cross_source_canonical_material_key": "EOS TPU 1301",
+    "sample_weight_ceiling": 0.15,
+    "process_model_weight_ceiling_without_mapping": 0.0
+  },
+  "inputs": [
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1.xls",
+      "sha256": "ab96fc8717c545631d4ffb9dedb096f778620beab9141d49edfea7458c0870ad"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_10.xls",
+      "sha256": "b7bce671fce56e173064ade8e516c66d11f18b372ba0beb61f32aba1b5fa9194"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_1 (45°).xlsx",
+      "sha256": "f5008c1d81fb604cd089e10b2408b086bda370003109deb22a5ed8b69dc6b87a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_1 (on edge).xlsx",
+      "sha256": "db3baebd6aeefde16ede498ef417f0981c1165a6cf80b4866f3b8fec7fc38638"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_1 (upright).xlsx",
+      "sha256": "e3f7836331cf2242e5ccebb746061a045c4546acf0892792b8fda212f05f5fa7"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_1-zstLSy.xls",
+      "sha256": "a9702f61d3c1ac0cb611672b43fc57534db636a5a37ce7dcd43b49767145a56d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour.xls",
+      "sha256": "41369f90a0cd8441b2b56720709a9000dfe5c10cdf6aa0242c4f4ce93ee4addd"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour_45.xls",
+      "sha256": "2ebb091ed8d63f576147b0a3cd2fbb0c9aacc044d43ffc48f3e21786a55b6ca3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v2_45.xls",
+      "sha256": "b4f79a5c1de0812b22bf02c1f9f0982dff3b3594031b414ed388c7362fc7cfef"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v2_flat.xls",
+      "sha256": "2ba0d7ae0063c241663dc91ba356f34bf867f38bfb6852a2b25a21edcec6eb3c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v2_on-edge.xls",
+      "sha256": "adada552412b68274354043f299ba5af23c7499e4627d3b94d7617832c42f2e8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v2_upright.xls",
+      "sha256": "1cbe362e069362b98dbfd35f6bafce1756ef4a98aa35470295be014df8241e0d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v3_45.xls",
+      "sha256": "416efd90edc28b71f92a21ceff9d94762f8368ea63cd8aacbd700ecd263dbaea"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v3_flat.xls",
+      "sha256": "b9f08338d8a1c28a7351b3a2c4cc0ce20363b160ec21c40bf94a543d908ba90a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v3_on-edge.xls",
+      "sha256": "9e470e447d715c7b64542c418369d1372748f70e97ef4f42fbd11fbcb0301df3"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour__v3_upright.xls",
+      "sha256": "c8e590a880cc38566bceedd9fcd06b4aa8bcb121b5bc1b025cd11a22dae6610a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour_flat.xls",
+      "sha256": "ea141bc2a0f564f607de7af4f1399276f6ccdddcfa2a43d22197af2b54d72103"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour_on-edge.xls",
+      "sha256": "4ff99e5df5194e7c0b466806fccd2987b0262e7b4c548c615bb9011dd7460c41"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour_upright.xls",
+      "sha256": "442021120f0540d48b21232a3b2c5a452913f9437d3440b5dde9cc28bb5f00d7"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour_v2.xls",
+      "sha256": "85cbb81bec46b3867621ae576af43533ca6ccdb916cb71f3577d961561fabf3d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_double_contour_v3.xls",
+      "sha256": "36ccddb35696b0fa0a2101b1909e47f9f121c098224bf7d51767047d8df3570a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge_45.xls",
+      "sha256": "cd853eeba9642d3f9d1f36900f89a6225b4a771416fbbf51c23fb55d6dc834c0"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v2_45.xls",
+      "sha256": "713d75c381fcc166c8575be7d61c460d45b80e272a3138ebddb9e1a0d9353f47"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v2_flat.xls",
+      "sha256": "b6b9d231683f1212a1a05d465b44a90f7fb04764a84f68b67f23ab922658b5ff"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v2_on-edge.xls",
+      "sha256": "ba7a948b37bee55c1b0475ae621ce685f1746d913ffd891c8cd684e00cfec105"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v2_upright.xls",
+      "sha256": "e3b753bd196d20d2d13c491b9bc86e1c2ebcd8d2ab72276e1b36a2e973df51d9"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v3_45.xls",
+      "sha256": "cce92b12fc0e33df812028f5746f2f7f58b169b420bc81a8e493606b0c7ef638"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v3_flat.xls",
+      "sha256": "e16c43a08bbc9cb5abadba7b0be4f3a88850411e9aad19552103b3e3cc1400f8"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v3_on-edge.xls",
+      "sha256": "dc14b6e04a6419c7a8f1b97ce4a245b41a235c546ccde70d9c91cb85668bfc7e"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge__v3_upright.xls",
+      "sha256": "7bb65a77ef03cc9b9ae7d97c1b2bf797b3d7b41cab623c6a5c7c3cad42bb8c5d"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge_flat.xls",
+      "sha256": "4ee44fe9504894f7269407df0bf3547447c89917098dc09e8273465594ecaf58"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge_on-edge.xls",
+      "sha256": "f33e608deab46c1af4f0c083e39c30d3cc212445c101c3b00dbda74f6cd3566f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_1_edge_upright.xls",
+      "sha256": "fc8caa1a27ae8108f16ffd98184b373a76abebe3a99fca73f82c7731cdade16a"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_2 (45°).xlsx",
+      "sha256": "8870addb809ff22e15d402e267f71393adbdc48d97ef7f0e73c5de4c17569d84"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_2 (on edge).xlsx",
+      "sha256": "c9a2d8c69950d3d34eaedb1f5cc61abc2b10abdb317f80d73bd971d24eb29924"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_2 (upright).xlsx",
+      "sha256": "77fcb8f8ca95cb0576d20fa8de33cd6f31623ecdfd479362459722045a5c1d01"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_2-N5LUYA.xls",
+      "sha256": "7a71003da262ebb577c64be032bc58671935d8edeedbdfdff771447c72e68b0b"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_2.xls",
+      "sha256": "626a59857779d5a3b98aceca7c233930aca7c620b4a18dc25fdd352bfec8dd7c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_3-J2I0kh.xls",
+      "sha256": "d30afa9b33b630d821ae38f3bbd6c418994b829f462ccad88829957f89d3a59c"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_3.xls",
+      "sha256": "e14eb441dc36cf0d79ba86df9b09fd2912093d6bda121594b8366bd35bfafd70"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_4-XGnnvk.xls",
+      "sha256": "d223b55cf582a709b94c70edb1fa3dbc77b2a562a457cbd566ef0e2e1eb60837"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_4.xls",
+      "sha256": "aa75cf79f82695ea27ce48cf725e0f30579b4f2ee1cdccac7261c9e59b14e297"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_5-GO63nq.xls",
+      "sha256": "163117267ac56bc7fedf63a8185a8469e1d97d56d8c578d5cbf86ffd7b26520f"
+    },
+    {
+      "path": "数据/原始/外部数据/新增开放数据/Mendeley_SLS_TPU工艺力学/结构化表格/TPU_5.xls",
+      "sha256": "557883c5133e6bff80287a21b2445c05a52f2e592fc06401ffc973d80ccbb619"
+    }
+  ],
+  "output_sha256": "4d87add9b87ed167f406e4291bcfd4dac14bda27f3bc76ddcf7b6d0f1211d231"
+}

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 42
+    assert len(f) == 43
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -164,6 +164,14 @@ def test_release():
     assert microporous["model_admission_layer"].eq(
         "microporous_PU_dynamic_transfer"
     ).all()
+    sls_silver = f.loc[
+        f.package_id.eq("sls_tpu1301_silver_process_tensile")
+    ]
+    assert len(sls_silver) == 1
+    assert sls_silver.iloc[0].row_count == 210
+    assert sls_silver.iloc[0].model_admission_layer == (
+        "SLS_TPU_process_silver"
+    )
 
 
 def test_command():
