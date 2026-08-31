@@ -1,0 +1,49 @@
+{
+  "release_id": "tpu-proxy-training-entry-2026-08-31-v1",
+  "policy": {
+    "model_training_started": false,
+    "new_calculation_started": false,
+    "group_split_required": true,
+    "experimental_and_computational_targets_unconditionally_merged": false,
+    "transfer_layers_can_raise_core_tpu_count": false
+  },
+  "inputs": {
+    "labels": {
+      "path": "结果/定向筛选/三目标实验标签.csv.gz",
+      "sha256": "e7fa82f78de83b695019df03284beb08fa7dc6c51ce4ca341bbc5ddafcae804b"
+    },
+    "computed": {
+      "path": "结果/定向筛选/三目标计算证据.csv.gz",
+      "sha256": "8ca0ce709679a38a9141834b8c8806e0cd6f668ed307b8a6f283e36d57e61395"
+    },
+    "tasks": {
+      "path": "结果/定向筛选/训练前任务清单.csv",
+      "sha256": "124cf21bc713bef7b4599ba7263ff78e6894bb1f68c09d522119a48f084cc38b"
+    },
+    "ledger": {
+      "path": "结果/定向筛选/扩充数据总账.csv",
+      "sha256": "40604f48f9a05532a89eb5ddb3f112e60701679bae439fa3059581a4f176dac6"
+    }
+  },
+  "counts": {
+    "objective_count": 3,
+    "summary_row_count": 4,
+    "source_package_row_count": 67,
+    "proxy_ready_objective_count": 3,
+    "strict_core_structure_model_ready_objective_count": 0
+  },
+  "outputs": {
+    "summary": {
+      "path": "结果/定向筛选/代理训练任务统计.csv",
+      "sha256": "110e4d0368bbcfb703a7d1f15a87c867db5134bf984bc6d32d6806129dc973e8"
+    },
+    "source_map": {
+      "path": "结果/定向筛选/代理训练数据源清单.csv",
+      "sha256": "5753ca404270c10c45484c5416aba7ce014d1434731bea4d7822cbb94a78aaf0"
+    },
+    "readme": {
+      "path": "结果/定向筛选/代理模型训练说明.md",
+      "sha256": "48b04335671c595b2f01ddf82e6435940e8b245b9e442afd6a308b52d3b82565"
+    }
+  }
+}
