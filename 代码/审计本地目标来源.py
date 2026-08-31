@@ -276,6 +276,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("PU微球复合加载卸载端点.csv", "Zenodo_PU微球复合材料拉伸", "toughness"),
         ("PU微球复合加载卸载端点.csv", "Zenodo_PU微球复合材料拉伸", "cyclic_recovery"),
         ("SLS_TPU1301工艺拉伸端点.csv", "Mendeley_SLS_TPU工艺力学", "toughness"),
+        ("PU泡沫动态压缩端点.csv", "Mendeley_PU泡沫动态力学_精选表", "toughness"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename
@@ -380,10 +381,7 @@ def _audit_source(
     if source_dir.name == "第七批计算_异山梨醇动态聚氨酯多尺度力学":
         status = "blocked_data_rights"
         next_action = "等待上游仓库明确数据许可；仅保留本地Gold-C参考，禁止公开数值再分发"
-    if source_dir.name in {
-        "第十三批实验_日期籽油PU-PIR",
-        "Mendeley_PU泡沫动态力学_精选表",
-    }:
+    if source_dir.name == "第十三批实验_日期籽油PU-PIR":
         status = "blocked_units_protocol"
         next_action = "等待正文图轴/方法或作者补证单位与协议；禁止生成绝对韧性标签"
     return {

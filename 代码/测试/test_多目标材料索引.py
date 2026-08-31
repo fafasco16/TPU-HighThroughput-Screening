@@ -238,6 +238,18 @@ def test_release():
         "core_tpu_application_experimental"
     )
     assert len(f.loc[f.material_key.eq("EOS TPU 1301")]) == 2
+    dynamic_foam = f.loc[
+        f.source_family.eq("Mendeley_PU泡沫动态力学_精选表")
+    ]
+    assert set(dynamic_foam.material_key) == {"HDB_foam", "HA_foam"}
+    assert dynamic_foam["objective_coverage_count"].eq(1).all()
+    assert dynamic_foam["toughness_record_count"].eq(6).all()
+    assert dynamic_foam["model_admission_layer"].eq(
+        "dynamic_PU_foam_transfer"
+    ).all()
+    assert dynamic_foam["toughness_evidence_level"].eq(
+        "direct_dynamic_compression_energy_absorption_transfer"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 85,
-    "unique_material_keys": 84,
+    "material_rows": 87,
+    "unique_material_keys": 86,
     "two_objective_or_more": 69,
     "three_objective": 38
   },
@@ -41,7 +41,8 @@
     "pu_copper_tga": "2b650a36ba1e911e53bdc6cc03d9849869ff916251527669c48c67a3a159e6f0",
     "fdm_tpu_mechanics": "53cb498352f4d92dcc99b6e71b18107f1e4901892d7938524772bc6b76e2f014",
     "pu_microsphere": "013509e2302373715a44da974c4bdc56d48ae933f5fa7ef55569a85d33a41e07",
-    "sls_tpu1301": "e791e4856d9d4200f1897f7f4a6c25f84d4a6add43ffb6bb20b01816adff6050"
+    "sls_tpu1301": "e791e4856d9d4200f1897f7f4a6c25f84d4a6add43ffb6bb20b01816adff6050",
+    "dynamic_foam": "e3f472995206e6a0773ef53a1589e83f1e29d12f4c25df85df0f5f92a11cadf1"
   },
-  "output_sha256": "c62db5faed552cbaf69b6e9c0047a61f4c3d40be13a71ed863bd84182f658b12"
+  "output_sha256": "b51a08de33ae5a5223dbecce6e776f6cc2e8235e1afd624c016e9664120316ab"
 }

@@ -365,6 +365,14 @@ SPECS = [
         "CC-BY-4.0",
         "ratio_temperature_structure_unresolved",
     ),
+    (
+        "dynamic_pu_foam_compression_energy",
+        "dynamic_compression_energy_absorption_transfer",
+        "PU泡沫动态压缩端点.csv",
+        "PU泡沫动态压缩发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
 ]
 
 
@@ -397,6 +405,7 @@ def build_release():
         "monomer_pair_ratio_temperature_mapped": 0.90,
         "density_grade_only": 0.40,
         "ratio_temperature_structure_unresolved": 0.45,
+        "commercial_foam_code_only": 0.35,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -419,6 +428,7 @@ def build_release():
         "monomer_pair_ratio_temperature_mapped": "补更密集滴定点和转化率复核；用于合成时间窗而非力学真值",
         "density_grade_only": "补微孔PU化学配方与试样重复；保留DMA/SHPB动态迁移边界",
         "ratio_temperature_structure_unresolved": "补聚醚唯一结构、随机种子和轨迹收敛；映射前训练权重0",
+        "commercial_foam_code_only": "补HDB/HA商业泡沫精确化学组成；保持动态压缩迁移层边界",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -481,6 +491,7 @@ def build_release():
         "microporous_pu_shpb_transfer": "microporous_PU_dynamic_transfer",
         "sls_tpu1301_silver_process_tensile": "SLS_TPU_process_silver",
         "mdpi_pu_md_descriptors": "md_computed_descriptor_reference",
+        "dynamic_pu_foam_compression_energy": "dynamic_PU_foam_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

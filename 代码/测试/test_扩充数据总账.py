@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 44
+    assert len(f) == 45
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -177,6 +177,15 @@ def test_release():
     assert md.iloc[0].row_count == 79
     assert md.iloc[0].model_admission_layer == (
         "md_computed_descriptor_reference"
+    )
+    dynamic_foam = f.loc[
+        f.package_id.eq("dynamic_pu_foam_compression_energy")
+    ]
+    assert len(dynamic_foam) == 1
+    assert dynamic_foam.iloc[0].row_count == 12
+    assert dynamic_foam.iloc[0].material_count == 2
+    assert dynamic_foam.iloc[0].model_admission_layer == (
+        "dynamic_PU_foam_transfer"
     )
 
 

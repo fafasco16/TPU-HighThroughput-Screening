@@ -1,0 +1,37 @@
+{
+  "release_id": "temperature_dynamic_pu_foam_compression_v1",
+  "source": {
+    "dataset_doi": "10.17632/x6b72k59xn.1",
+    "article_doi": "10.1007/s11340-024-01054-0",
+    "dataset_license": "CC-BY-4.0",
+    "article_license": "CC-BY-4.0"
+  },
+  "counts": {
+    "material_code_count": 2,
+    "temperature_condition_count": 12,
+    "stress_strain_curve_count": 12,
+    "stress_strain_curve_point_count": 29707,
+    "source_energy_numeric_observation_count": 105,
+    "resolved_duplicate_temperature_header_count": 2,
+    "curve_energy_source_match_count": 12,
+    "curve_reaches_65pct_strain_count": 6,
+    "published_compact_row_count": 12
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "stress_source_unit": "Pa_converted_to_MPa",
+    "strain_source_unit": "dimensionless",
+    "energy_conversion": "Pa_times_strain_to_J_per_m3_then_divide_1e6",
+    "curve_to_energy_match_tolerance": "nearest_source_observation_relative_error_le_2pct",
+    "curve_65pct_extrapolation_allowed": false,
+    "quasistatic_TPU_toughness_claim": false,
+    "cross_source_alias_HDB_to_98A_or_HA_to_ZAP_asserted": false,
+    "local_subset_claimed_as_full_repository": false
+  },
+  "inputs": {
+    "HDB_StressStrain.xlsx": "0580ac0468dbefbd9e0ba88438d446d9ac67e980156f4ba9216760a5b441da68",
+    "HA_StressStrain.xlsx": "892341896c2f1acacdadc07c70c1071b15e740cd283afe41f7dec63257fd80d8",
+    "Energy_Absorption.xlsx": "631d3fbcaed1ecfdda598e30f4139c28251b7878c2f1797e753d4d71484337a1"
+  },
+  "output_sha256": "e3f472995206e6a0773ef53a1589e83f1e29d12f4c25df85df0f5f92a11cadf1"
+}

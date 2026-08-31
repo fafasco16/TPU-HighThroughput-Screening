@@ -49,6 +49,7 @@ INPUTS = {
     "fdm_tpu_mechanics": D / "FDM_TPU晶格基材力学端点.csv",
     "pu_microsphere": D / "PU微球复合加载卸载端点.csv",
     "sls_tpu1301": D / "SLS_TPU1301工艺拉伸端点.csv",
+    "dynamic_foam": D / "PU泡沫动态压缩端点.csv",
 }
 
 
@@ -165,6 +166,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "Mendeley_PU泡沫动态力学_精选表",
+            "reference-65;reference-198",
+            "commercial_foam_code_only",
+            "dynamic_foam",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -201,6 +210,9 @@ def build_release():
         ),
         "Mendeley_SLS_TPU工艺力学": (
             "core_tpu_application_experimental"
+        ),
+        "Mendeley_PU泡沫动态力学_精选表": (
+            "dynamic_PU_foam_transfer"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -271,6 +283,8 @@ def build_release():
                         if source == "Zenodo_PU微球复合材料拉伸"
                         else "direct_tensile_curve_area_SLS_process_application"
                         if source == "Mendeley_SLS_TPU工艺力学"
+                        else "direct_dynamic_compression_energy_absorption_transfer"
+                        if source == "Mendeley_PU泡沫动态力学_精选表"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -689,6 +703,21 @@ def build_release():
     )
     frame.loc[sls_tpu, "gap_next_action"] = (
         "keep_cross_source_EOS_TPU1301_same_fold_and_map_process_table"
+    )
+    dynamic_foam = frame["source_family"].eq(
+        "Mendeley_PU泡沫动态力学_精选表"
+    )
+    frame.loc[dynamic_foam, "multiobjective_status"] = (
+        "single_objective_dynamic_foam_transfer"
+    )
+    frame.loc[dynamic_foam, "completion_priority"] = (
+        "dynamic_compression_transfer_code_only"
+    )
+    frame.loc[dynamic_foam, "gap_evidence_status"] = (
+        "commercial_foam_code_only_no_exact_chemistry_or_TGA"
+    )
+    frame.loc[dynamic_foam, "gap_next_action"] = (
+        "resolve_HDB_HA_chemistry_and_keep_out_of_quasistatic_TPU_core"
     )
     return frame
 

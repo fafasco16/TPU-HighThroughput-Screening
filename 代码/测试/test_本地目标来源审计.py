@@ -182,16 +182,16 @@ def test_local_audit_covers_all_source_directories():
         "ScienceDB_微孔PU动态力学",
     ):
         assert queue.loc[queue.source_directory.eq(source_name)].empty
+    dynamic_foam = queue.loc[
+        queue.source_directory.eq("Mendeley_PU泡沫动态力学_精选表")
+    ]
+    assert set(dynamic_foam.target_family) == {"toughness"}
+    assert dynamic_foam["already_in_directed_target"].all()
     unit_blocked = queue.loc[
-        queue.source_directory.isin(
-            [
-                "第十三批实验_日期籽油PU-PIR",
-                "Mendeley_PU泡沫动态力学_精选表",
-            ]
-        )
+        queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]
     ]
-    assert len(unit_blocked) == 2
+    assert len(unit_blocked) == 1
     assert unit_blocked["audit_status"].eq("blocked_units_protocol").all()
 
 
