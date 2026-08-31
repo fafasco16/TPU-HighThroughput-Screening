@@ -1,0 +1,44 @@
+{
+  "release_id": "shpu_self_healing_iontronic_transfer_v1",
+  "source": {
+    "source_id": "source_figshare_21716516_v1",
+    "dataset_doi": "10.6084/m9.figshare.21716516.v1",
+    "article_doi": "10.1038/s41467-023-37535-4",
+    "license": "CC-BY-4.0",
+    "workbook_sha256": "dc4aa4e7648437e5194528a8237e4c0ac699c360eea5d38e9758eda4f50ccb5d",
+    "audit_summary_sha256": "f1bbddf957d3052ce784acca2c8c097997072ddaee67e57dae08491dda69ce95"
+  },
+  "counts": {
+    "tensile_endpoint_count": 7,
+    "tensile_curve_point_count": 9836,
+    "cyclic_endpoint_count": 2,
+    "cyclic_curve_point_count": 57192,
+    "interfacial_summary_count": 3,
+    "published_compact_row_count": 12
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "tpu_core_supervision": false,
+    "fig2e_pristine_not_merged_with_fig2a_codes": true,
+    "successive_loading_is_full_hysteresis": false,
+    "interfacial_toughness_is_bulk_toughness": false,
+    "chemistry_smiles_inferred": false
+  },
+  "outputs": {
+    "tensile": {
+      "path": "结果/定向筛选/SHPU自愈拉伸端点.csv",
+      "row_count": 7,
+      "sha256": "b27d6ecafa7d8abad57d244ef1fab3de4c1f1c0227e6290cde3d5b3fadd91d63"
+    },
+    "cyclic": {
+      "path": "结果/定向筛选/SHPU恢复加载端点.csv",
+      "row_count": 2,
+      "sha256": "d216bd90c4ed056be1aea9d0f535e1d073784c515bfb6f4b4ec67f67323649b0"
+    },
+    "interfacial": {
+      "path": "结果/定向筛选/SHPU界面韧性摘要.csv",
+      "row_count": 3,
+      "sha256": "627c568fd0d9c839b768c8d54c52bec2d9a18207dc92f48005a3ca8c3b0c985b"
+    }
+  }
+}

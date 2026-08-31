@@ -525,6 +525,30 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_foam_code_only",
     ),
+    (
+        "shpu_self_healing_tensile",
+        "toughness_and_self_healing_transfer",
+        "SHPU自愈拉伸端点.csv",
+        "SHPU自愈离子胶黏发布清单.json",
+        "CC-BY-4.0",
+        "material_code_only",
+    ),
+    (
+        "shpu_recovery_loading",
+        "cyclic_recovery_transfer_proxy",
+        "SHPU恢复加载端点.csv",
+        "SHPU自愈离子胶黏发布清单.json",
+        "CC-BY-4.0",
+        "material_code_only",
+    ),
+    (
+        "shpu_interfacial_toughness",
+        "interfacial_toughness_auxiliary",
+        "SHPU界面韧性摘要.csv",
+        "SHPU自愈离子胶黏发布清单.json",
+        "CC-BY-4.0",
+        "material_code_only",
+    ),
 ]
 
 
@@ -691,6 +715,9 @@ def build_release():
         "recycled_pu_foam_aggregate_scalars": "polyurethane_foam_transfer",
         "tpms_fea_input_catalog": "simulation_input_reference",
         "aged_vegetable_pu_foam_compression": "plant_based_PU_foam_aging_transfer",
+        "shpu_self_healing_tensile": "supramolecular_PU_transfer",
+        "shpu_recovery_loading": "supramolecular_PU_transfer",
+        "shpu_interfacial_toughness": "supramolecular_PU_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

@@ -356,6 +356,26 @@ def test_release():
     assert aged["toughness_evidence_level"].eq(
         "temperature_humidity_aging_compression_transfer_not_fracture_toughness"
     ).all()
+    shpu = f.loc[f.source_family.eq("Figshare_自愈离子胶黏PU源数据")]
+    assert set(shpu.material_key) == {
+        "PE10/GY3",
+        "PE10/GY5",
+        "PE10/GY7",
+        "SHPU_self_healing_optimized",
+    }
+    assert shpu.loc[
+        shpu.material_key.eq("SHPU_self_healing_optimized"),
+        "objective_coverage_count",
+    ].eq(2).all()
+    assert shpu["model_admission_layer"].eq(
+        "supramolecular_PU_transfer"
+    ).all()
+    assert shpu.loc[
+        shpu.material_key.eq("SHPU_self_healing_optimized"),
+        "cyclic_evidence_level",
+    ].eq(
+        "successive_loading_stress_energy_retention_proxy_not_full_hysteresis"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

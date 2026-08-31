@@ -61,6 +61,8 @@ INPUTS = {
     "tpu_compression_doe": D / "TPU压缩打印DOE端点.csv",
     "recycled_foam_compression": D / "再生PU泡沫压缩端点.csv",
     "aged_foam_compression": D / "植物基PU泡沫温湿老化压缩端点.csv",
+    "shpu_tensile": D / "SHPU自愈拉伸端点.csv",
+    "shpu_cyclic": D / "SHPU恢复加载端点.csv",
 }
 
 
@@ -249,6 +251,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "Figshare_自愈离子胶黏PU源数据",
+            "reference-71;reference-72",
+            "source_material_code_only",
+            "shpu_tensile",
+            "shpu_cyclic",
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -305,6 +315,7 @@ def build_release():
         "Mendeley_TPU压缩打印DOE": "core_TPU_application_experimental",
         "第十六批实验_再生PU泡沫": "polyurethane_foam_transfer",
         "Mendeley_植物基PU泡沫温湿老化压缩": "plant_based_PU_foam_aging_transfer",
+        "Figshare_自愈离子胶黏PU源数据": "supramolecular_PU_transfer",
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -341,6 +352,8 @@ def build_release():
                     if source == "4TU_室温自修复TPU_FDM"
                     else "direct_cut_stick_and_published_cyclic_energy_recovery_summary"
                     if source == "Zenodo_导电自修复可回收PU复合材料"
+                    else "successive_loading_stress_energy_retention_proxy_not_full_hysteresis"
+                    if source == "Figshare_自愈离子胶黏PU源数据"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -721,6 +734,24 @@ def build_release():
     )
     frame.loc[aged_foam, "gap_next_action"] = (
         "retain_temperature_humidity_transfer_and_do_not_count_as_TPU_core"
+    )
+    shpu = frame["source_family"].eq("Figshare_自愈离子胶黏PU源数据")
+    frame.loc[shpu, "multiobjective_status"] = frame.loc[
+        shpu, "objective_coverage_count"
+    ].map(
+        {
+            2: "two_objectives_supramolecular_PU_transfer",
+            1: "single_objective_supramolecular_PU_transfer",
+        }
+    )
+    frame.loc[shpu, "completion_priority"] = (
+        "transfer_only_not_thermoplastic_TPU_core"
+    )
+    frame.loc[shpu, "gap_evidence_status"] = (
+        "SHPU_tensile_healing_and_successive_loading_no_TGA_or_TPU_core"
+    )
+    frame.loc[shpu, "gap_next_action"] = (
+        "retain_low_transfer_weight_and_search_exact_TPU_healing_and_thermal_data"
     )
     tpu1301 = frame["source_family"].eq(
         "Zenodo_TPU1301热黏弹黏塑本构"

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 64
+    assert len(f) == 67
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -263,6 +263,10 @@ def test_release():
     assert aged.iloc[0].model_admission_layer == (
         "plant_based_PU_foam_aging_transfer"
     )
+    shpu = f.loc[f.package_id.str.startswith("shpu_")]
+    assert len(shpu) == 3
+    assert shpu.row_count.sum() == 12
+    assert shpu.model_admission_layer.eq("supramolecular_PU_transfer").all()
 
 
 def test_command():

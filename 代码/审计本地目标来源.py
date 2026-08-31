@@ -194,6 +194,11 @@ SIGNAL_OVERRIDES = {
         "toughness": True,
         "raw_curve": True,
     },
+    "Figshare_自愈离子胶黏PU源数据": {
+        "toughness": True,
+        "cyclic_recovery": True,
+        "raw_curve": True,
+    },
 }
 
 
@@ -322,6 +327,12 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
             "植物基PU泡沫温湿老化压缩端点.csv",
             "Mendeley_植物基PU泡沫温湿老化压缩",
             "toughness",
+        ),
+        ("SHPU自愈拉伸端点.csv", "Figshare_自愈离子胶黏PU源数据", "toughness"),
+        (
+            "SHPU恢复加载端点.csv",
+            "Figshare_自愈离子胶黏PU源数据",
+            "cyclic_recovery",
         ),
     ]
     for filename, directory, target in expansions:

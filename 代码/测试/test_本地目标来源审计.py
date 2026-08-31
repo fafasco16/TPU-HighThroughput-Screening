@@ -242,6 +242,15 @@ def test_local_audit_covers_all_source_directories():
     assert aged["audit_status"].eq(
         "materialized_all_detected_targets"
     ).all()
+    shpu = queue.loc[
+        queue.source_directory.eq("Figshare_自愈离子胶黏PU源数据")
+    ]
+    assert set(shpu.target_family) == {"toughness", "cyclic_recovery"}
+    assert shpu["already_in_directed_target"].all()
+    assert shpu["raw_curve_signal"].all()
+    assert shpu["audit_status"].eq(
+        "materialized_all_detected_targets"
+    ).all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]
