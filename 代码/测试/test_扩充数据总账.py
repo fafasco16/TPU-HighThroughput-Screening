@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 55
+    assert len(f) == 56
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -243,6 +243,12 @@ def test_release():
     assert lignin["model_admission_layer"].eq(
         "lignin_TPU_carbon_fiber_precursor_transfer"
     ).all()
+    doe = f.loc[f.package_id.eq("tpu_print_compression_doe")]
+    assert len(doe) == 1
+    assert doe.iloc[0].row_count == 344
+    assert doe.iloc[0].model_admission_layer == (
+        "core_TPU_application_experimental"
+    )
 
 
 def test_command():

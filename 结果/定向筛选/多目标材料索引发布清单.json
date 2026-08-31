@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 108,
-    "unique_material_keys": 107,
+    "material_rows": 110,
+    "unique_material_keys": 109,
     "two_objective_or_more": 76,
     "three_objective": 38
   },
@@ -50,7 +50,8 @@
     "footwear_tga": "e243727a3521e48dfc0f19f714e605332781863b41c14ccac2e3e287eb7d848c",
     "mendeley_tpu_partial_tensile": "8f93ba5d0fa3998b5b57edaa3f9d1ea34e57339c37107a0f5ee187afd597488e",
     "lignin_tpu_mechanical": "9deebba01f6bea720c9d60f7c125572b291d3283e4999bd8ab42d66bc232d8ca",
-    "lignin_tpu_tga": "00c76faf4ea7beb9c886d549ef00ec6adcfe411912ac02616cbcd3527589d853"
+    "lignin_tpu_tga": "00c76faf4ea7beb9c886d549ef00ec6adcfe411912ac02616cbcd3527589d853",
+    "tpu_compression_doe": "0d2e2aafe9aa5e6a8ca35fabadb0ee0d751741774ccaae40ea165eb894dd989a"
   },
-  "output_sha256": "fdea4b3db56e81cf8e4fe5e5c3855944c2ad452b698479c1494a36c8dc9abd1d"
+  "output_sha256": "fa70dcd056b039101af06f41d1596fcb820d70e426134f4eeaee27623b178594"
 }

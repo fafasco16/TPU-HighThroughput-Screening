@@ -323,6 +323,18 @@ def test_release():
         lignin.material_key.str.contains("-55-45|-65-35"),
         "has_thermal_stability",
     ].eq(False).all()
+    doe = f.loc[f.source_family.eq("Mendeley_TPU压缩打印DOE")]
+    assert set(doe.material_key) == {
+        "NinjaFlex_unknown_grade",
+        "PolyFlex_unknown_grade",
+    }
+    assert doe["objective_coverage_count"].eq(1).all()
+    assert doe["model_admission_layer"].eq(
+        "core_TPU_application_experimental"
+    ).all()
+    assert doe["toughness_evidence_level"].eq(
+        "discrete_compression_energy_absorption_application_proxy_not_fracture_toughness"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

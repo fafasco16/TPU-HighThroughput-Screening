@@ -182,6 +182,10 @@ SIGNAL_OVERRIDES = {
         "formulation": True,
         "raw_curve": True,
     },
+    "Mendeley_TPU压缩打印DOE": {
+        "toughness": True,
+        "raw_curve": True,
+    },
 }
 
 
@@ -304,6 +308,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("TPU实验100pct拉伸端点.csv", "Mendeley_TPU实验仿真曲线", "toughness"),
         ("木质素TPU前驱纤维力学.csv", "Zenodo_木质素_TPU多模态数据", "toughness"),
         ("木质素TPU_TGA端点.csv", "Zenodo_木质素_TPU多模态数据", "thermal_stability"),
+        ("TPU压缩打印DOE端点.csv", "Mendeley_TPU压缩打印DOE", "toughness"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

@@ -216,6 +216,14 @@ def test_local_audit_covers_all_source_directories():
     assert set(lignin.target_family) == {"toughness", "thermal_stability"}
     assert lignin["already_in_directed_target"].all()
     assert lignin["formulation_signal"].all()
+    doe = queue.loc[
+        queue.source_directory.eq("Mendeley_TPU压缩打印DOE")
+    ]
+    assert set(doe.target_family) == {"toughness"}
+    assert doe["already_in_directed_target"].all()
+    assert doe["audit_status"].eq(
+        "materialized_all_detected_targets"
+    ).all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

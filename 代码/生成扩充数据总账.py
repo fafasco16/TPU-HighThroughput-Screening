@@ -453,6 +453,14 @@ SPECS = [
         "CC-BY-4.0",
         "lignin_identity_commercial_tpu_grade_weight_fraction_mapped",
     ),
+    (
+        "tpu_print_compression_doe",
+        "discrete_compression_energy_absorption_application",
+        "TPU压缩打印DOE端点.csv",
+        "TPU压缩打印DOE发布清单.json",
+        "CC-BY-4.0",
+        "commercial_identity_unresolved",
+    ),
 ]
 
 
@@ -610,6 +618,7 @@ def build_release():
         "lignin_tpu_tga_transfer": (
             "lignin_TPU_carbon_fiber_precursor_transfer"
         ),
+        "tpu_print_compression_doe": "core_TPU_application_experimental",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

@@ -58,6 +58,7 @@ INPUTS = {
     "mendeley_tpu_partial_tensile": D / "TPU实验100pct拉伸端点.csv",
     "lignin_tpu_mechanical": D / "木质素TPU前驱纤维力学.csv",
     "lignin_tpu_tga": D / "木质素TPU_TGA端点.csv",
+    "tpu_compression_doe": D / "TPU压缩打印DOE端点.csv",
 }
 
 
@@ -222,6 +223,14 @@ def build_release():
             None,
             "lignin_tpu_tga",
         ),
+        (
+            "Mendeley_TPU压缩打印DOE",
+            "reference-103",
+            "commercial_grade_identity_unresolved",
+            "tpu_compression_doe",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -275,6 +284,7 @@ def build_release():
         "Zenodo_木质素_TPU多模态数据": (
             "lignin_TPU_carbon_fiber_precursor_transfer"
         ),
+        "Mendeley_TPU压缩打印DOE": "core_TPU_application_experimental",
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -356,6 +366,8 @@ def build_release():
                         if source == "Mendeley_TPU实验仿真曲线"
                         else "precursor_fiber_strength_modulus_elongation_no_curve_toughness"
                         if source == "Zenodo_木质素_TPU多模态数据"
+                        else "discrete_compression_energy_absorption_application_proxy_not_fracture_toughness"
+                        if source == "Mendeley_TPU压缩打印DOE"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -885,6 +897,21 @@ def build_release():
     )
     frame.loc[lignin_tpu, "gap_next_action"] = (
         "retain_weight_ceiling_and_never_merge_carbonized_fiber_properties"
+    )
+    compression_doe = frame["source_family"].eq(
+        "Mendeley_TPU压缩打印DOE"
+    )
+    frame.loc[compression_doe, "multiobjective_status"] = (
+        "single_objective_compression_application_proxy"
+    )
+    frame.loc[compression_doe, "completion_priority"] = (
+        "commercial_grade_identity_and_continuous_curve_required"
+    )
+    frame.loc[compression_doe, "gap_evidence_status"] = (
+        "discrete_5_10_15_20pct_compression_points_no_continuous_history"
+    )
+    frame.loc[compression_doe, "gap_next_action"] = (
+        "resolve_NinjaFlex_PolyFlex_grade_and_obtain_continuous_compression_curves"
     )
     return frame
 

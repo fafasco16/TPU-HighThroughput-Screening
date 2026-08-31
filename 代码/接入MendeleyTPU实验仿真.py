@@ -153,8 +153,8 @@ def _detect_simulation_curve(
             "stress_MPa": source.iloc[header_row + 1 :, stress_column],
         }
     )
-    source_point_count = int(len(frame.apply(pd.to_numeric, errors="coerce").dropna()))
-    return _canonical_curve(frame), source_point_count
+    numeric = frame.apply(pd.to_numeric, errors="coerce").dropna()
+    return _canonical_curve(frame), int(len(numeric))
 
 
 def _experimental_reference(curves: list[pd.DataFrame]) -> pd.DataFrame:

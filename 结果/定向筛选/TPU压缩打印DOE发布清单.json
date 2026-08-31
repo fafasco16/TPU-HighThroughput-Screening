@@ -1,0 +1,30 @@
+{
+  "release_id": "mendeley_tpu_compression_doe_v1",
+  "source": {
+    "dataset_doi": "10.17632/7zcd9bmmg5.1",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "0b26707846f5cd23d2f843eb30d90ad24e548fce277a2cbffa5555348d226397"
+  },
+  "counts": {
+    "published_directional_response_row_count": 344,
+    "physical_specimen_count": 184,
+    "configuration_family_count": 46,
+    "direct_stress_observation_count": 1372,
+    "complete_four_point_response_row_count": 343,
+    "partial_response_row_count": 1,
+    "derived_discrete_energy_row_count": 343,
+    "material_count": 2
+  },
+  "policy": {
+    "continuous_stress_strain_history_available": false,
+    "discrete_energy_claimed_as_fracture_toughness": false,
+    "directions_claimed_as_independent_physical_specimens": false,
+    "solid_control_infill_9999_treated_as_1pct": false,
+    "ambiguous_0p2_infill_silently_converted_to_20pct": false,
+    "missing_polyflex_values_imputed": false,
+    "proprietary_mpx_deserialized": false
+  },
+  "outputs": {
+    "TPU压缩打印DOE端点.csv": "0d2e2aafe9aa5e6a8ca35fabadb0ee0d751741774ccaae40ea165eb894dd989a"
+  }
+}
