@@ -216,6 +216,20 @@ def test_release():
     assert fdm.iloc[0].toughness_evidence_level == (
         "direct_stress_strain_area_application_not_fracture_toughness"
     )
+    microsphere = f.loc[
+        f.source_family.eq("Zenodo_PU微球复合材料拉伸")
+    ]
+    assert len(microsphere) == 6
+    assert microsphere["objective_coverage_count"].eq(2).all()
+    assert microsphere["model_admission_layer"].eq(
+        "PU_microsphere_composite_transfer"
+    ).all()
+    assert microsphere["toughness_evidence_level"].eq(
+        "source_native_loading_area_unit_unresolved_transfer"
+    ).all()
+    assert microsphere["cyclic_evidence_level"].eq(
+        "loading_unloading_hysteresis_same_curve_proxy"
+    ).all()
 
 
 def test_command():

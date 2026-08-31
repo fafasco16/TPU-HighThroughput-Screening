@@ -2,27 +2,27 @@
   "release_id": "tpu-local-source-audit-2026-08-30-v1",
   "counts": {
     "source_directory_count": 78,
-    "queued_source_target_rows": 69,
-    "high_priority_source_count": 30,
-    "medium_priority_source_count": 11
+    "queued_source_target_rows": 70,
+    "high_priority_source_count": 31,
+    "medium_priority_source_count": 10
   },
   "source_root": "数据/原始/外部数据/新增开放数据",
-  "source_root_inventory_fingerprint": "6bd95f4d7a6cc4a729e1ea7d1d85eeb1e98bb552b9c47b2fcc61dd47ba8bff13",
+  "source_root_inventory_fingerprint": "075867b5340fe7b623d9c44f97927a7ff32e2630519ad584bfe491cf4ac691f0",
   "outputs": {
     "审计": {
       "path": "结果/定向筛选/本地来源审计.csv",
-      "bytes": 60498,
-      "sha256": "32eba1f26bacbf5c8c3ef7c03849bc1ab0df77742e6d521114dcc1c79f88ad42"
+      "bytes": 60534,
+      "sha256": "da0d7731e821ddeb1a70f935f84b0285eb6d13d9f5153ca100a047d385e5f09f"
     },
     "队列": {
       "path": "结果/定向筛选/本地扩库队列.csv",
-      "bytes": 46795,
-      "sha256": "86783e9e591f89aaa57bf70835658e5d6b738e1d367d5686beb30f2376f9d1e3"
+      "bytes": 47169,
+      "sha256": "35ebd7edc21836f9e0a4008d6b0b4fa486fca0506fc74aee1df23035dd4cfd5e"
     },
     "说明": {
       "path": "结果/定向筛选/本地来源审计说明.md",
-      "bytes": 2726,
-      "sha256": "4a7f44bd1f78915955113e26a3071230432cae22f58240385c90285a9e98aa96"
+      "bytes": 2717,
+      "sha256": "0e4aaf41239e43c8cd107225f1de9bf10c1e8cf751291be2489530be06cbb231"
     }
   },
   "scan_policy": {

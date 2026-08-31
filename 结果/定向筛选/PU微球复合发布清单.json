@@ -1,0 +1,30 @@
+{
+  "release_id": "pu_microsphere_composite_loading_unloading_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.6390478",
+    "article_doi": "10.1007/s42558-022-00046-1",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "dfbc16ae5369eff16588fd8b2f45d47c4327c3a063aad4819e31eb61a572df92"
+  },
+  "counts": {
+    "composition_condition_count": 6,
+    "physical_specimen_count": 12,
+    "condition_mean_curve_count": 6,
+    "condition_mean_curve_point_count": 3000,
+    "machine_curve_count_not_republished": 12,
+    "DIC_curve_count_not_republished": 24,
+    "machine_point_count_not_republished": 7974,
+    "DIC_usable_point_count_not_republished": 15939,
+    "published_compact_row_count": 6
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "condition_mean_curves_are_new_specimens": false,
+    "stress_unit_closed": false,
+    "absolute_MPa_or_MJ_m3_values_published": false,
+    "MinMax_semantic_duplicate_quarantined": true,
+    "microsphere_fraction_increases_composition_count": true,
+    "two_specimens_per_condition": true
+  },
+  "output_sha256": "013509e2302373715a44da974c4bdc56d48ae933f5fa7ef55569a85d33a41e07"
+}

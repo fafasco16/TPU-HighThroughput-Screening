@@ -47,6 +47,7 @@ INPUTS = {
     "cast_pu_relaxation": D / "PU高低速松弛工况端点.csv",
     "pu_copper_tga": D / "PU铜热解TGA端点.csv",
     "fdm_tpu_mechanics": D / "FDM_TPU晶格基材力学端点.csv",
+    "pu_microsphere": D / "PU微球复合加载卸载端点.csv",
 }
 
 
@@ -147,6 +148,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "Zenodo_PU微球复合材料拉伸",
+            "reference-42;reference-43",
+            "microsphere_fraction_matrix_unresolved",
+            "pu_microsphere",
+            "pu_microsphere",
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -178,6 +187,9 @@ def build_release():
         "Mendeley_FDM_TPU晶格与基材力学": (
             "FDM_TPU_application_transfer"
         ),
+        "Zenodo_PU微球复合材料拉伸": (
+            "PU_microsphere_composite_transfer"
+        ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -208,6 +220,8 @@ def build_release():
                     if source == "Texas_湿干单根电纺PU纤维力学"
                     else "stress_relaxation_unknown_chemistry_cast_PU_proxy"
                     if source == "Figshare_PU高低速变形后应力松弛"
+                    else "loading_unloading_hysteresis_same_curve_proxy"
+                    if source == "Zenodo_PU微球复合材料拉伸"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -241,6 +255,8 @@ def build_release():
                         if source == "Zenodo_生物基共轭氨基甲酸酯玻璃体"
                         else "direct_stress_strain_area_application_not_fracture_toughness"
                         if source == "Mendeley_FDM_TPU晶格与基材力学"
+                        else "source_native_loading_area_unit_unresolved_transfer"
+                        if source == "Zenodo_PU微球复合材料拉伸"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -631,6 +647,21 @@ def build_release():
     )
     frame.loc[fdm_tpu, "gap_next_action"] = (
         "resolve_TPU_grade_and_never_count_geometry_as_new_chemistry"
+    )
+    microsphere = frame["source_family"].eq(
+        "Zenodo_PU微球复合材料拉伸"
+    )
+    frame.loc[microsphere, "multiobjective_status"] = (
+        "two_objectives_same_curve_transfer"
+    )
+    frame.loc[microsphere, "completion_priority"] = (
+        "unit_and_matrix_identity_resolution_before_training"
+    )
+    frame.loc[microsphere, "gap_evidence_status"] = (
+        "loading_hysteresis_same_curve_stress_unit_unresolved_no_TGA"
+    )
+    frame.loc[microsphere, "gap_next_action"] = (
+        "resolve_nominal_stress_unit_and_matrix_chemistry"
     )
     return frame
 

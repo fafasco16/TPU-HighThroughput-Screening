@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 78,
-    "two_objective_or_more": 63,
+    "material_rows": 84,
+    "two_objective_or_more": 69,
     "three_objective": 38
   },
   "inputs": {
@@ -38,7 +38,8 @@
     "pcu85_cycle": "1bd4e07e5eba7ec6f5068c8fa177e879ce104db400412b555084b45eba7064ba",
     "cast_pu_relaxation": "7ffc669b36d173d7355e0383fd415e36fce8132b0c92a785be0a1393e68713bc",
     "pu_copper_tga": "2b650a36ba1e911e53bdc6cc03d9849869ff916251527669c48c67a3a159e6f0",
-    "fdm_tpu_mechanics": "53cb498352f4d92dcc99b6e71b18107f1e4901892d7938524772bc6b76e2f014"
+    "fdm_tpu_mechanics": "53cb498352f4d92dcc99b6e71b18107f1e4901892d7938524772bc6b76e2f014",
+    "pu_microsphere": "013509e2302373715a44da974c4bdc56d48ae933f5fa7ef55569a85d33a41e07"
   },
-  "output_sha256": "19898d2adc4c8adf08942570b4ccdf5782e5e905fbfc440661cb82781fe4b464"
+  "output_sha256": "4ed35984d1b0ff7d54dac34be972a7405950933f760379ac62921940c0eef2c7"
 }

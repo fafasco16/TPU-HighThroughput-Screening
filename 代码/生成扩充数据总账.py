@@ -309,6 +309,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_identity_unresolved",
     ),
+    (
+        "pu_microsphere_loading_hysteresis_transfer",
+        "toughness_and_hysteresis_transfer",
+        "PU微球复合加载卸载端点.csv",
+        "PU微球复合发布清单.json",
+        "CC-BY-4.0",
+        "microsphere_fraction_matrix_unresolved",
+    ),
 ]
 
 
@@ -337,6 +345,7 @@ def build_release():
         "formulation_code_synthesis_family_mapped": 0.20,
         "commercial_task_code_only": 0.20,
         "commercial_PU_enamel_identity_unresolved": 0.15,
+        "microsphere_fraction_matrix_unresolved": 0.25,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -355,6 +364,7 @@ def build_release():
         "formulation_code_synthesis_family_mapped": "仅作动态网络迁移；补论文Table 1缩写映射且不并入TPU核心",
         "commercial_task_code_only": "补Task 3/Task 11商业化学身份；仅作松弛条件迁移",
         "commercial_PU_enamel_identity_unresolved": "补漆包线PU配方；仅作含铜热解迁移并保留T50右删失",
+        "microsphere_fraction_matrix_unresolved": "补名义应力单位和PU基体化学身份；保留六级体积分数组成",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -403,6 +413,9 @@ def build_release():
         ),
         "fdm_tpu_lattice_substrate_mechanics": (
             "FDM_TPU_application_transfer"
+        ),
+        "pu_microsphere_loading_hysteresis_transfer": (
+            "PU_microsphere_composite_transfer"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

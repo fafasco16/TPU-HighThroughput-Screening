@@ -163,6 +163,14 @@ def test_local_audit_covers_all_source_directories():
     assert set(rights_blocked.target_family) == {"toughness"}
     assert not rights_blocked["already_in_directed_target"].any()
     assert rights_blocked["audit_status"].eq("blocked_data_rights").all()
+    microsphere = queue.loc[
+        queue.source_directory.eq("Zenodo_PU微球复合材料拉伸")
+    ]
+    assert set(microsphere.target_family) == {
+        "toughness",
+        "cyclic_recovery",
+    }
+    assert microsphere["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():
