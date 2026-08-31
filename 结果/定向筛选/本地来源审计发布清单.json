@@ -7,17 +7,17 @@
     "medium_priority_source_count": 7
   },
   "source_root": "数据/原始/外部数据/新增开放数据",
-  "source_root_inventory_fingerprint": "49ae26018609ada23fedd08e563c64fe46b8f12eb78fd4d61a8118935b73a199",
+  "source_root_inventory_fingerprint": "0f82defbe155adfe07370608c8ea70dfa7642f13c01ecfb4814d18ccdaab116a",
   "outputs": {
     "审计": {
       "path": "结果/定向筛选/本地来源审计.csv",
-      "bytes": 61656,
-      "sha256": "86e5fc81d1f6f988cfd5b5349e38c3a18c5344c0e4cd4e0666bc9eb3123f2459"
+      "bytes": 61665,
+      "sha256": "5d56e7c1647ff58187c2d245c0a8c98e8e21f7ef4372ec34a7c6bebe9740dfb0"
     },
     "队列": {
       "path": "结果/定向筛选/本地扩库队列.csv",
       "bytes": 46267,
-      "sha256": "21b8281e6144bf8dcb01058d5107b5b907fe9a3681db06519fea0c455085c545"
+      "sha256": "a25c43b0dfc84f3824e8631cc6d69298972518a9e07d1b03e2cad28b09629326"
     },
     "说明": {
       "path": "结果/定向筛选/本地来源审计说明.md",

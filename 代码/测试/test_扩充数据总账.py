@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 62
+    assert len(f) == 63
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -253,6 +253,10 @@ def test_release():
     assert len(recycled) == 6
     assert recycled.row_count.sum() == 13931
     assert recycled.model_admission_layer.eq("polyurethane_foam_transfer").all()
+    fea = f.loc[f.package_id.eq("tpms_fea_input_catalog")]
+    assert len(fea) == 1
+    assert fea.iloc[0].row_count == 9
+    assert fea.iloc[0].model_admission_layer == "simulation_input_reference"
 
 
 def test_command():

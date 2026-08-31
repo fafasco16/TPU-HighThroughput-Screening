@@ -1,0 +1,33 @@
+{
+  "release_id": "mendeley_tpms_fea_input_catalog_v1",
+  "source": {
+    "source_id": "source_mendeley_mc6zh4cwhf_v2",
+    "dataset_doi": "10.17632/mc6zh4cwhf.2",
+    "article_doi": "10.1080/17452759.2026.2662048",
+    "license": "CC-BY-4.0",
+    "archive_bytes": 349175379,
+    "archive_sha256": "0ba8ceee0d88b2dbeb357a1c6c7bae3f15e6b45a59142edc5bccd7a3282c8f3b",
+    "official_fea_catalog_sha256": "e169b6be871f1e1bed5d5c79d7f6c97075582a41c89fbf4254a589346906d066",
+    "official_fea_file_count": 9
+  },
+  "counts": {
+    "input_file_count": 9,
+    "topology_count": 3,
+    "strain_rate_count": 3,
+    "simulation_output_available_count": 0,
+    "reported_response_count": 0,
+    "published_compact_row_count": 9
+  },
+  "policy": {
+    "input_decks_republished": false,
+    "simulation_outputs_present": false,
+    "input_count_is_material_count": false,
+    "simulation_input_is_performance_label": false,
+    "experimental_curves_from_same_dataset": "historical_mirror_already_materialized_elsewhere",
+    "future_use": "run_or_parse_FEA_only_after_user_releases_computation_gate"
+  },
+  "output": {
+    "path": "结果/定向筛选/TPMS_FEA输入清单.csv",
+    "sha256": "32091c44dbf3c1df6cfd38a03d5724db27891717719140343e7ad5706780585a"
+  }
+}
