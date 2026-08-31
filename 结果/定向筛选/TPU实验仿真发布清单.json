@@ -1,0 +1,30 @@
+{
+  "release_id": "mendeley_tpu_experiment_simulation_v1",
+  "source": {
+    "dataset_doi": "10.17632/kysnxmy7xw.1",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "3585c67dac25988b651999d4a9b25ca3fb55da1a25b05386fbbf8fa8a87cf55e"
+  },
+  "counts": {
+    "experimental_material_count": 1,
+    "experimental_specimen_count": 3,
+    "experimental_curve_point_count": 144009,
+    "simulation_family_count": 1,
+    "simulation_run_count": 13,
+    "simulation_source_curve_point_count": 6453,
+    "simulation_unique_strain_point_count": 5970,
+    "published_compact_row_count": 16
+  },
+  "policy": {
+    "average_columns_counted_as_independent_specimens": false,
+    "partial_100pct_energy_claimed_as_fracture_toughness": false,
+    "simulation_runs_counted_as_independent_materials": false,
+    "simulation_calibration_counted_as_external_validation": false,
+    "simulation_weight_positive_without_protocol": false,
+    "negative_stress_clipped_only_for_area": true
+  },
+  "outputs": {
+    "TPU实验100pct拉伸端点.csv": "8f93ba5d0fa3998b5b57edaa3f9d1ea34e57339c37107a0f5ee187afd597488e",
+    "TPU仿真应力应变参考.csv": "43d51b134b17c2c48c03f292cb01218a311100b34e2281f69ec2a63ed7e7caac"
+  }
+}

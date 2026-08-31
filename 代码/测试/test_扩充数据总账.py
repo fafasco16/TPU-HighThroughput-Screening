@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 51
+    assert len(f) == 53
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -218,6 +218,22 @@ def test_release():
     assert footwear["model_admission_layer"].eq(
         "commercial_footwear_elastomer_application"
     ).all()
+    mendeley_tpu = f.loc[
+        f.package_id.str.startswith("mendeley_tpu_")
+    ]
+    assert set(mendeley_tpu.package_id) == {
+        "mendeley_tpu_partial_tensile_experiment",
+        "mendeley_tpu_simulation_calibration_reference",
+    }
+    assert mendeley_tpu["row_count"].sum() == 16
+    simulation = mendeley_tpu.loc[
+        mendeley_tpu.package_id.eq(
+            "mendeley_tpu_simulation_calibration_reference"
+        )
+    ]
+    assert simulation.iloc[0].model_admission_layer == (
+        "simulation_calibration_reference"
+    )
 
 
 def test_command():

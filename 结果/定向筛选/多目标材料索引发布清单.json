@@ -1,7 +1,7 @@
 {
   "counts": {
-    "material_rows": 97,
-    "unique_material_keys": 96,
+    "material_rows": 98,
+    "unique_material_keys": 97,
     "two_objective_or_more": 72,
     "three_objective": 38
   },
@@ -47,7 +47,8 @@
     "self_healing_4tu_tga": "7618c8937246c9869208edd4f7f88595d67b79515885b5c09d586617359d5e3c",
     "conductive_healing_pu_mechanics": "d4cabfbab57e66a6e119b154a57c19e3c92ec0c4fe6dc8262a5b6810d55c5413",
     "conductive_healing_pu_recovery": "196376c5bedd355d34e827a8670ec828c4c2b4ce32f053f0fddb46a89ddec7e7",
-    "footwear_tga": "e243727a3521e48dfc0f19f714e605332781863b41c14ccac2e3e287eb7d848c"
+    "footwear_tga": "e243727a3521e48dfc0f19f714e605332781863b41c14ccac2e3e287eb7d848c",
+    "mendeley_tpu_partial_tensile": "8f93ba5d0fa3998b5b57edaa3f9d1ea34e57339c37107a0f5ee187afd597488e"
   },
-  "output_sha256": "a86df30d92c3eda93ba86e41e3034cb0bdd580b563b3115075313ff513a54c8e"
+  "output_sha256": "1c63bd749a33ee7f354982a5e86c37546712f03480cab6f1e4102d2b007c3ba6"
 }

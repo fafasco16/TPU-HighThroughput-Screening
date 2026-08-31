@@ -421,6 +421,22 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_grade_color_supplier_partial",
     ),
+    (
+        "mendeley_tpu_partial_tensile_experiment",
+        "partial_toughness_application",
+        "TPU实验100pct拉伸端点.csv",
+        "TPU实验仿真发布清单.json",
+        "CC-BY-4.0",
+        "TPU_grade_unreported",
+    ),
+    (
+        "mendeley_tpu_simulation_calibration_reference",
+        "computed_stress_strain_calibration_reference",
+        "TPU仿真应力应变参考.csv",
+        "TPU实验仿真发布清单.json",
+        "CC-BY-4.0",
+        "TPU_grade_model_protocol_unresolved",
+    ),
 ]
 
 
@@ -457,6 +473,8 @@ def build_release():
         "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade": 0.75,
         "base_PU_exact_composition_blend_solution_fraction_mapped": 0.80,
         "commercial_grade_color_supplier_partial": 0.45,
+        "TPU_grade_unreported": 0.15,
+        "TPU_grade_model_protocol_unresolved": 0.10,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -483,6 +501,8 @@ def build_release():
         "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade": "保留SH-TPU精确投料与Ninjaflex商业对照分层；补同体系拉伸韧性",
         "base_PU_exact_composition_blend_solution_fraction_mapped": "补PEDOT:PSS与PU溶液固含量以换算干基配比；保持交联PU迁移层边界",
         "commercial_grade_color_supplier_partial": "补eTPU/TPU/PEBA精确商品型号；保留颜色与供应商映射状态",
+        "TPU_grade_unreported": "补商业牌号、试样几何和断裂段；当前仅作100%应变部分能量",
+        "TPU_grade_model_protocol_unresolved": "补求解器、网格、材料参数和运行条件；闭合前权重0",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -559,6 +579,12 @@ def build_release():
         "tpu_footwear_tga": "commercial_footwear_elastomer_application",
         "tpu_footwear_wear_summary": (
             "commercial_footwear_elastomer_application"
+        ),
+        "mendeley_tpu_partial_tensile_experiment": (
+            "core_TPU_application_experimental"
+        ),
+        "mendeley_tpu_simulation_calibration_reference": (
+            "simulation_calibration_reference"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

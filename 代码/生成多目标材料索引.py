@@ -55,6 +55,7 @@ INPUTS = {
     "conductive_healing_pu_mechanics": D / "导电自修复PU拉伸与回收端点.csv",
     "conductive_healing_pu_recovery": D / "导电自修复PU恢复文献指标.csv",
     "footwear_tga": D / "TPU鞋材TGA端点.csv",
+    "mendeley_tpu_partial_tensile": D / "TPU实验100pct拉伸端点.csv",
 }
 
 
@@ -203,6 +204,14 @@ def build_release():
             None,
             "footwear_tga",
         ),
+        (
+            "Mendeley_TPU实验仿真曲线",
+            "reference-94",
+            "TPU_grade_unreported",
+            "mendeley_tpu_partial_tensile",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -249,6 +258,9 @@ def build_release():
         ),
         "Zenodo_TPU鞋材热稳定与耐磨": (
             "commercial_footwear_elastomer_application"
+        ),
+        "Mendeley_TPU实验仿真曲线": (
+            "core_TPU_application_experimental"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -327,6 +339,8 @@ def build_release():
                         if source == "Mendeley_PU泡沫动态力学_精选表"
                         else "direct_tensile_curve_area_crosslinked_PU_composite_transfer"
                         if source == "Zenodo_导电自修复可回收PU复合材料"
+                        else "partial_tensile_energy_to_100pct_not_break_toughness"
+                        if source == "Mendeley_TPU实验仿真曲线"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -823,6 +837,21 @@ def build_release():
     )
     frame.loc[footwear, "gap_next_action"] = (
         "resolve_exact_product_codes_and_request_raw_compression_curves"
+    )
+    mendeley_partial = frame["source_family"].eq(
+        "Mendeley_TPU实验仿真曲线"
+    )
+    frame.loc[mendeley_partial, "multiobjective_status"] = (
+        "single_objective_partial_tensile_application"
+    )
+    frame.loc[mendeley_partial, "completion_priority"] = (
+        "identity_and_fracture_extension_required"
+    )
+    frame.loc[mendeley_partial, "gap_evidence_status"] = (
+        "unknown_grade_curve_stops_at_100pct_without_fracture"
+    )
+    frame.loc[mendeley_partial, "gap_next_action"] = (
+        "resolve_TPU_grade_and_obtain_test_to_break_curve"
     )
     return frame
 

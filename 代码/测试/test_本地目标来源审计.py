@@ -204,6 +204,12 @@ def test_local_audit_covers_all_source_directories():
     assert footwear["already_in_directed_target"].all()
     assert footwear["formulation_signal"].all()
     assert footwear["raw_curve_signal"].all()
+    mendeley_tpu = queue.loc[
+        queue.source_directory.eq("Mendeley_TPU实验仿真曲线")
+    ]
+    assert set(mendeley_tpu.target_family) == {"toughness"}
+    assert mendeley_tpu["already_in_directed_target"].all()
+    assert mendeley_tpu["raw_curve_signal"].all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

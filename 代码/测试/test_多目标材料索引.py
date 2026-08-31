@@ -291,6 +291,17 @@ def test_release():
     assert footwear["has_cyclic_recovery"].eq(False).all()
     assert footwear["has_thermal_stability"].all()
     assert footwear["thermal_evidence_level"].eq("direct_TGA_curve").all()
+    mendeley_tpu = f.loc[
+        f.source_family.eq("Mendeley_TPU实验仿真曲线")
+    ]
+    assert len(mendeley_tpu) == 1
+    assert mendeley_tpu.iloc[0].material_key == (
+        "TPU_unknown_grade_kysnxmy7xw"
+    )
+    assert mendeley_tpu.iloc[0].toughness_record_count == 3
+    assert mendeley_tpu.iloc[0].toughness_evidence_level == (
+        "partial_tensile_energy_to_100pct_not_break_toughness"
+    )
     assert f["material_key"].nunique() == len(f) - 1
 
 
