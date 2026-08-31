@@ -46,6 +46,7 @@ INPUTS = {
     "pcu85_cycle": D / "PCU85单纤维循环端点.csv",
     "cast_pu_relaxation": D / "PU高低速松弛工况端点.csv",
     "pu_copper_tga": D / "PU铜热解TGA端点.csv",
+    "fdm_tpu_mechanics": D / "FDM_TPU晶格基材力学端点.csv",
 }
 
 
@@ -138,6 +139,14 @@ def build_release():
             None,
             "pu_copper_tga",
         ),
+        (
+            "Mendeley_FDM_TPU晶格与基材力学",
+            "reference-93",
+            "commercial_grade_unresolved",
+            "fdm_tpu_mechanics",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -165,6 +174,9 @@ def build_release():
         ),
         "第八批混合_PU铜调控热解多尺度": (
             "pu_pyrolysis_thermal_transfer"
+        ),
+        "Mendeley_FDM_TPU晶格与基材力学": (
+            "FDM_TPU_application_transfer"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -227,6 +239,8 @@ def build_release():
                         if source == "Zenodo_TPU1301热黏弹黏塑本构"
                         else "break_strength_elongation_transfer_no_curve_toughness"
                         if source == "Zenodo_生物基共轭氨基甲酸酯玻璃体"
+                        else "direct_stress_strain_area_application_not_fracture_toughness"
+                        if source == "Mendeley_FDM_TPU晶格与基材力学"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -602,6 +616,21 @@ def build_release():
     )
     frame.loc[copper_pyrolysis, "gap_next_action"] = (
         "resolve_enamel_formulation_and_never_impute_censored_T50"
+    )
+    fdm_tpu = frame["source_family"].eq(
+        "Mendeley_FDM_TPU晶格与基材力学"
+    )
+    frame.loc[fdm_tpu, "multiobjective_status"] = (
+        "single_objective_FDM_application_transfer"
+    )
+    frame.loc[fdm_tpu, "completion_priority"] = (
+        "application_transfer_unknown_grade"
+    )
+    frame.loc[fdm_tpu, "gap_evidence_status"] = (
+        "selected_mechanical_curves_no_exact_grade_or_TGA"
+    )
+    frame.loc[fdm_tpu, "gap_next_action"] = (
+        "resolve_TPU_grade_and_never_count_geometry_as_new_chemistry"
     )
     return frame
 

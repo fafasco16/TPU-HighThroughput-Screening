@@ -240,6 +240,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("PCU85单纤维循环端点.csv", "Texas_湿干单根电纺PU纤维力学", "cyclic_recovery"),
         ("PU高低速松弛工况端点.csv", "Figshare_PU高低速变形后应力松弛", "cyclic_recovery"),
         ("PU铜热解TGA端点.csv", "第八批混合_PU铜调控热解多尺度", "thermal_stability"),
+        ("FDM_TPU晶格基材力学端点.csv", "Mendeley_FDM_TPU晶格与基材力学", "toughness"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename
@@ -342,6 +343,9 @@ def _audit_source(
     elif coverage:
         status = "partially_materialized"
         next_action = "保留已接入目标，仅处理尚未物化的目标信号"
+    if source_dir.name == "第七批计算_异山梨醇动态聚氨酯多尺度力学":
+        status = "blocked_data_rights"
+        next_action = "等待上游仓库明确数据许可；仅保留本地Gold-C参考，禁止公开数值再分发"
     return {
         "release_id": RELEASE_ID,
         "source_directory": source_dir.name,

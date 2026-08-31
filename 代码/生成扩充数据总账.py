@@ -301,6 +301,14 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_PU_enamel_identity_unresolved",
     ),
+    (
+        "fdm_tpu_lattice_substrate_mechanics",
+        "stress_strain_energy_absorption_application_transfer",
+        "FDM_TPU晶格基材力学端点.csv",
+        "FDM_TPU晶格力学发布清单.json",
+        "CC-BY-4.0",
+        "commercial_identity_unresolved",
+    ),
 ]
 
 
@@ -392,6 +400,9 @@ def build_release():
         ),
         "pu_copper_pyrolysis_tga_transfer": (
             "pu_pyrolysis_thermal_transfer"
+        ),
+        "fdm_tpu_lattice_substrate_mechanics": (
+            "FDM_TPU_application_transfer"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

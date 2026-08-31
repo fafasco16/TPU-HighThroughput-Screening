@@ -204,6 +204,18 @@ def test_release():
     assert copper["thermal_evidence_level"].eq(
         "direct_TGA_multirate_pyrolysis_transfer"
     ).all()
+    fdm = f.loc[
+        f.source_family.eq("Mendeley_FDM_TPU晶格与基材力学")
+    ]
+    assert len(fdm) == 1
+    assert fdm.iloc[0].material_key == "FDM_printed_TPU_unknown_grade"
+    assert fdm.iloc[0].objective_coverage_count == 1
+    assert fdm.iloc[0].model_admission_layer == (
+        "FDM_TPU_application_transfer"
+    )
+    assert fdm.iloc[0].toughness_evidence_level == (
+        "direct_stress_strain_area_application_not_fracture_toughness"
+    )
 
 
 def test_command():

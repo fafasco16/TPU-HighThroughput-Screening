@@ -1,6 +1,6 @@
 {
   "counts": {
-    "material_rows": 77,
+    "material_rows": 78,
     "two_objective_or_more": 63,
     "three_objective": 38
   },
@@ -37,7 +37,8 @@
     "vitrimer_tga": "415b9fe41828ecdfeccb86289c086cb907168bfaa0277df56274365f65e34135",
     "pcu85_cycle": "1bd4e07e5eba7ec6f5068c8fa177e879ce104db400412b555084b45eba7064ba",
     "cast_pu_relaxation": "7ffc669b36d173d7355e0383fd415e36fce8132b0c92a785be0a1393e68713bc",
-    "pu_copper_tga": "2b650a36ba1e911e53bdc6cc03d9849869ff916251527669c48c67a3a159e6f0"
+    "pu_copper_tga": "2b650a36ba1e911e53bdc6cc03d9849869ff916251527669c48c67a3a159e6f0",
+    "fdm_tpu_mechanics": "53cb498352f4d92dcc99b6e71b18107f1e4901892d7938524772bc6b76e2f014"
   },
-  "output_sha256": "3afd604076396f3f0f5428d59b473f209b9052a451c71200c215b762632b6514"
+  "output_sha256": "19898d2adc4c8adf08942570b4ccdf5782e5e905fbfc440661cb82781fe4b464"
 }

@@ -1,0 +1,33 @@
+{
+  "release_id": "fdm_tpu_lattice_substrate_mechanics_v1",
+  "source": {
+    "dataset_doi": "10.17632/dbzdkz95f8.1",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "3cf82a71f83cfa46925556b5e0e9a901e5d184aeeb415ed2d823cca1d4674d3c"
+  },
+  "counts": {
+    "material_grade_count": 1,
+    "source_curve_count": 76,
+    "selected_curve_count": 57,
+    "conflict_curve_count": 10,
+    "not_selected_curve_count": 9,
+    "selected_curve_point_count": 544052,
+    "published_compact_row_count": 57,
+    "recognized_simulation_run_count": 0
+  },
+  "selected_by_test_type": {
+    "基材弯曲": 12,
+    "基材拉伸": 17,
+    "晶格压缩": 14,
+    "晶格弯曲": 14
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "conflict_curves_republished": false,
+    "source_not_selected_curves_republished": false,
+    "geometry_conditions_increase_material_count": false,
+    "curve_area_is_fracture_toughness": false,
+    "split_group_rule": "dataset_doi|material_grade"
+  },
+  "output_sha256": "53cb498352f4d92dcc99b6e71b18107f1e4901892d7938524772bc6b76e2f014"
+}

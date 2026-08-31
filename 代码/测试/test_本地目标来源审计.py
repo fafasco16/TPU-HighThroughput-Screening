@@ -152,6 +152,17 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(copper.target_family) == {"thermal_stability"}
     assert copper["already_in_directed_target"].all()
+    fdm = queue.loc[
+        queue.source_directory.eq("Mendeley_FDM_TPU晶格与基材力学")
+    ]
+    assert set(fdm.target_family) == {"toughness"}
+    assert fdm["already_in_directed_target"].all()
+    rights_blocked = queue.loc[
+        queue.source_directory.eq("第七批计算_异山梨醇动态聚氨酯多尺度力学")
+    ]
+    assert set(rights_blocked.target_family) == {"toughness"}
+    assert not rights_blocked["already_in_directed_target"].any()
+    assert rights_blocked["audit_status"].eq("blocked_data_rights").all()
 
 
 def test_release_and_check_command():
