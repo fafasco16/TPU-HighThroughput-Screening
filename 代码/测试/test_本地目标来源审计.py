@@ -224,6 +224,15 @@ def test_local_audit_covers_all_source_directories():
     assert doe["audit_status"].eq(
         "materialized_all_detected_targets"
     ).all()
+    recycled = queue.loc[
+        queue.source_directory.eq("第十六批实验_再生PU泡沫")
+    ]
+    assert set(recycled.target_family) == {"toughness"}
+    assert recycled["already_in_directed_target"].all()
+    assert recycled["raw_curve_signal"].all()
+    assert recycled["audit_status"].eq(
+        "materialized_all_detected_targets"
+    ).all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

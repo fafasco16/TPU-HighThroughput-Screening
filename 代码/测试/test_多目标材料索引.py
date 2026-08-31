@@ -335,6 +335,15 @@ def test_release():
     assert doe["toughness_evidence_level"].eq(
         "discrete_compression_energy_absorption_application_proxy_not_fracture_toughness"
     ).all()
+    recycled = f.loc[f.source_family.eq("第十六批实验_再生PU泡沫")]
+    assert len(recycled) == 9
+    assert recycled["objective_coverage_count"].eq(1).all()
+    assert recycled["model_admission_layer"].eq(
+        "polyurethane_foam_transfer"
+    ).all()
+    assert recycled["toughness_evidence_level"].eq(
+        "compression_endpoint_energy_absorption_transfer_not_fracture_toughness"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

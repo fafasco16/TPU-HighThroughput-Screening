@@ -461,6 +461,54 @@ SPECS = [
         "CC-BY-4.0",
         "commercial_identity_unresolved",
     ),
+    (
+        "recycled_pu_foam_compression_points",
+        "compression_curve_transfer",
+        "再生PU泡沫压缩曲线.csv",
+        "再生PU泡沫发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
+    (
+        "recycled_pu_foam_compression_endpoints",
+        "compression_energy_absorption_transfer",
+        "再生PU泡沫压缩端点.csv",
+        "再生PU泡沫发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
+    (
+        "recycled_pu_foam_viscosity",
+        "processability_viscosity_reference",
+        "再生PU泡沫黏度曲线.csv",
+        "再生PU泡沫发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
+    (
+        "recycled_pu_foam_thermal_conductivity",
+        "thermal_conductivity_auxiliary",
+        "再生PU泡沫热导端点.csv",
+        "再生PU泡沫发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
+    (
+        "recycled_pu_foam_formulation_components",
+        "formulation_sustainability_reference",
+        "再生PU泡沫配方组件.csv",
+        "再生PU泡沫发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
+    (
+        "recycled_pu_foam_aggregate_scalars",
+        "compression_density_reference",
+        "再生PU泡沫聚合标量.csv",
+        "再生PU泡沫发布清单.json",
+        "CC-BY-4.0",
+        "commercial_foam_code_only",
+    ),
 ]
 
 
@@ -619,6 +667,12 @@ def build_release():
             "lignin_TPU_carbon_fiber_precursor_transfer"
         ),
         "tpu_print_compression_doe": "core_TPU_application_experimental",
+        "recycled_pu_foam_compression_points": "polyurethane_foam_transfer",
+        "recycled_pu_foam_compression_endpoints": "polyurethane_foam_transfer",
+        "recycled_pu_foam_viscosity": "polyurethane_foam_transfer",
+        "recycled_pu_foam_thermal_conductivity": "polyurethane_foam_transfer",
+        "recycled_pu_foam_formulation_components": "polyurethane_foam_transfer",
+        "recycled_pu_foam_aggregate_scalars": "polyurethane_foam_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

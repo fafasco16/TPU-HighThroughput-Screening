@@ -59,6 +59,7 @@ INPUTS = {
     "lignin_tpu_mechanical": D / "木质素TPU前驱纤维力学.csv",
     "lignin_tpu_tga": D / "木质素TPU_TGA端点.csv",
     "tpu_compression_doe": D / "TPU压缩打印DOE端点.csv",
+    "recycled_foam_compression": D / "再生PU泡沫压缩端点.csv",
 }
 
 
@@ -231,6 +232,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "第十六批实验_再生PU泡沫",
+            "reference-170;reference-171",
+            "commercial_foam_code_only",
+            "recycled_foam_compression",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -285,6 +294,7 @@ def build_release():
             "lignin_TPU_carbon_fiber_precursor_transfer"
         ),
         "Mendeley_TPU压缩打印DOE": "core_TPU_application_experimental",
+        "第十六批实验_再生PU泡沫": "polyurethane_foam_transfer",
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -368,6 +378,8 @@ def build_release():
                         if source == "Zenodo_木质素_TPU多模态数据"
                         else "discrete_compression_energy_absorption_application_proxy_not_fracture_toughness"
                         if source == "Mendeley_TPU压缩打印DOE"
+                        else "compression_endpoint_energy_absorption_transfer_not_fracture_toughness"
+                        if source == "第十六批实验_再生PU泡沫"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -669,6 +681,19 @@ def build_release():
     )
     frame.loc[foam, "gap_next_action"] = (
         "retain_as_transfer_and_do_not_seek_TPU_core_completion"
+    )
+    recycled_foam = frame["source_family"].eq("第十六批实验_再生PU泡沫")
+    frame.loc[recycled_foam, "multiobjective_status"] = (
+        "single_objective_recycled_foam_transfer"
+    )
+    frame.loc[recycled_foam, "completion_priority"] = (
+        "transfer_only_not_thermoplastic_TPU_core"
+    )
+    frame.loc[recycled_foam, "gap_evidence_status"] = (
+        "recycled_and_soy_PU_foam_compression_only_no_cycles_or_TGA"
+    )
+    frame.loc[recycled_foam, "gap_next_action"] = (
+        "retain_compression_viscosity_and_thermal_conductivity_as_transfer_and_do_not_count_as_TPU_core"
     )
     tpu1301 = frame["source_family"].eq(
         "Zenodo_TPU1301热黏弹黏塑本构"

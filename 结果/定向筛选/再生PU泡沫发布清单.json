@@ -1,0 +1,71 @@
+{
+  "release_id": "recycled_pu_foam_gold_e_modal_v2",
+  "source": {
+    "source_id": "source_zenodo_5713819_v2",
+    "dataset_doi": "10.5281/zenodo.5713819",
+    "article_doi": "10.12688/openreseurope.13288.2",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "23d0c39729b2aabff631a64239ae0bda8377f2bfd47cce25b52dc96197204a78",
+    "archive_file": "row data for _Sustainable insulating foams_3.rar",
+    "gold_e_sha256": "3b5b75e40944989c573fc80490cf6aaf221ded9d62e77f79f51c57b50459e39f",
+    "audit_summary_sha256": "6f397685b7b0f139dde0da4cacd9b9aa9d5e4316102975fd7b821faf2b8d0509",
+    "peer_review_status": "two_approved_with_reservations_two_not_approved"
+  },
+  "counts": {
+    "gold_e_row_count": 13931,
+    "compression_curve_point_count": 13159,
+    "compression_curve_count": 59,
+    "compression_endpoint_row_count": 118,
+    "viscosity_curve_point_count": 581,
+    "viscosity_curve_count": 10,
+    "thermal_conductivity_row_count": 7,
+    "formulation_component_row_count": 39,
+    "aggregate_scalar_row_count": 27,
+    "published_output_count": 6,
+    "published_compact_row_count": 13931
+  },
+  "outputs": {
+    "compression_points": {
+      "path": "结果/定向筛选/再生PU泡沫压缩曲线.csv",
+      "row_count": 13159,
+      "sha256": "b67bedbcae916e7cb923c6907597f4504f6bbe2a773a13767cc67c0e4d4d69dc"
+    },
+    "compression_endpoints": {
+      "path": "结果/定向筛选/再生PU泡沫压缩端点.csv",
+      "row_count": 118,
+      "sha256": "f025e3cd91f4b28389fb155815454b96c89dd1ef422733826886cfb8cdfdbb66"
+    },
+    "viscosity_points": {
+      "path": "结果/定向筛选/再生PU泡沫黏度曲线.csv",
+      "row_count": 581,
+      "sha256": "6987aa5f47dc1ed7bcab0cb1cc783b120bee98979c03256da08dbdca1bb352f4"
+    },
+    "thermal_conductivity": {
+      "path": "结果/定向筛选/再生PU泡沫热导端点.csv",
+      "row_count": 7,
+      "sha256": "e679bd942771756984c221988def00a9c868f6a35a5a1d63648043384d4ee367"
+    },
+    "formulation_components": {
+      "path": "结果/定向筛选/再生PU泡沫配方组件.csv",
+      "row_count": 39,
+      "sha256": "89aa58745e7d6579bc76922e88a6db6c6206229a105f3c43b153d45f0def5351"
+    },
+    "aggregate_scalars": {
+      "path": "结果/定向筛选/再生PU泡沫聚合标量.csv",
+      "row_count": 27,
+      "sha256": "e718576d87dac9d75e70b247bc8ee071ee3fef3077f3b3a8d9cf69d6fc1ca4ca"
+    }
+  },
+  "policy": {
+    "material_class": "recycled_and_soy_polyurethane_foam",
+    "model_admission_layer": "polyurethane_foam_transfer",
+    "tpu_core_supervision": false,
+    "compression_energy_is_fracture_toughness": false,
+    "compression_curve_is_quasistatic_bulk_tpu": false,
+    "viscosity_is_reaction_kinetics": false,
+    "thermal_conductivity_is_thermal_decomposition": false,
+    "all_source_rows_share_split_group": true,
+    "conditional_reference_rows_keep_source_status": true,
+    "source_archive_not_republished": true
+  }
+}
