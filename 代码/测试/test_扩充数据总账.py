@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 43
+    assert len(f) == 44
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -171,6 +171,12 @@ def test_release():
     assert sls_silver.iloc[0].row_count == 210
     assert sls_silver.iloc[0].model_admission_layer == (
         "SLS_TPU_process_silver"
+    )
+    md = f.loc[f.package_id.eq("mdpi_pu_md_descriptors")]
+    assert len(md) == 1
+    assert md.iloc[0].row_count == 79
+    assert md.iloc[0].model_admission_layer == (
+        "md_computed_descriptor_reference"
     )
 
 

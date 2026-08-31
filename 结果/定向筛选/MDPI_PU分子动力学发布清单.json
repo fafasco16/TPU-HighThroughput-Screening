@@ -1,0 +1,37 @@
+{
+  "release_id": "mdpi_pu_md_descriptors_v1",
+  "source": {
+    "article_doi": "10.3390/ma16031006",
+    "license": "CC-BY-4.0",
+    "article_xml_sha256": "fcde14e4f5ad3fc05a28325e38cd1d2ab8f56e19d77e3d3d64304a39a9a9e45a"
+  },
+  "counts": {
+    "source_observation_count": 120,
+    "published_candidate_record_count": 79,
+    "mixture_formulation_count": 3,
+    "shared_polyol_reference_system_count": 1,
+    "temperature_condition_count": 4,
+    "property_count": 6,
+    "intermediate_energy_record_count_excluded": 28,
+    "definition_duplicate_record_count_excluded": 12,
+    "low_fit_quality_record_count_excluded": 1,
+    "published_compact_row_count": 79
+  },
+  "published_property_counts": {
+    "bulk_modulus": 12,
+    "diffusion_coefficient": 15,
+    "lame_lambda": 12,
+    "lame_mu": 12,
+    "solubility_parameter": 16,
+    "young_modulus": 12
+  },
+  "policy": {
+    "raw_trajectories_available": false,
+    "reported_independent_seed_count_known": false,
+    "model_ready_before_polyether_structure_mapping": false,
+    "training_weight_before_mapping": 0.0,
+    "direct_toughness_label": false,
+    "mu_and_G_double_supervision": false
+  },
+  "output_sha256": "669f836d42be1f2d91193b8efbf54e8559c155c1aed2dde2b8fc03f18f4e14ab"
+}
