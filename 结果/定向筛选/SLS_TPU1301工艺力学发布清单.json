@@ -1,0 +1,28 @@
+{
+  "release_id": "sls_tpu1301_process_tensile_gold_v1",
+  "source": {
+    "dataset_doi": "10.17632/wfsm6f9rbn.1",
+    "license": "CC-BY-4.0"
+  },
+  "counts": {
+    "material_grade_count": 1,
+    "gold_process_condition_count": 31,
+    "gold_physical_specimen_count": 140,
+    "gold_curve_point_count": 1144295,
+    "direct_endpoint_scalar_count": 700,
+    "published_compact_row_count": 140,
+    "all_deduplicated_curve_count_in_source": 350,
+    "silver_specimen_count_not_published": 210,
+    "recognized_simulation_run_count": 0
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "silver_curves_republished": false,
+    "negative_modulus_exploratory_series_republished": false,
+    "process_conditions_increase_material_count": false,
+    "cross_source_canonical_material_key": "EOS TPU 1301",
+    "split_group_rule": "dataset_doi|material_grade",
+    "sample_weight_ceiling": 0.35
+  },
+  "output_sha256": "e791e4856d9d4200f1897f7f4a6c25f84d4a6add43ffb6bb20b01816adff6050"
+}

@@ -94,26 +94,13 @@ def test_local_audit_covers_all_source_directories():
     tpu95a = queue.loc[
         queue.source_directory.eq("Mendeley_TPU95A_TPMS应变率力学")
     ]
-    assert set(tpu95a.target_family) == {"toughness", "cyclic_recovery"}
-    assert tpu95a.loc[
-        tpu95a.target_family.eq("cyclic_recovery"),
-        "already_in_directed_target",
-    ].all()
-    assert not tpu95a.loc[
-        tpu95a.target_family.eq("toughness"),
-        "already_in_directed_target",
-    ].any()
+    assert set(tpu95a.target_family) == {"cyclic_recovery"}
+    assert tpu95a["already_in_directed_target"].all()
     foam = queue.loc[
         queue.source_directory.eq("MaterialsCloud_商用PU泡沫多轴断裂力学")
     ]
-    assert set(foam.target_family) == {"toughness", "cyclic_recovery"}
-    assert foam.loc[
-        foam.target_family.eq("toughness"), "already_in_directed_target"
-    ].all()
-    assert not foam.loc[
-        foam.target_family.eq("cyclic_recovery"),
-        "already_in_directed_target",
-    ].any()
+    assert set(foam.target_family) == {"toughness"}
+    assert foam["already_in_directed_target"].all()
     tpu1301 = queue.loc[
         queue.source_directory.eq("Zenodo_TPU1301热黏弹黏塑本构")
     ]
@@ -171,6 +158,21 @@ def test_local_audit_covers_all_source_directories():
         "cyclic_recovery",
     }
     assert microsphere["already_in_directed_target"].all()
+    assert queue.loc[
+        queue.source_directory.eq("SND_TPU导电轨迹循环拉伸")
+    ].empty
+    assert audit.loc[
+        audit.source_directory.eq("SND_TPU导电轨迹循环拉伸"),
+        "audit_status",
+    ].eq("exclude_no_target_signal").all()
+    assert queue.loc[
+        queue.source_directory.eq("Mendeley_热可逆超分子PU宽应变率")
+    ].empty
+    sls = queue.loc[
+        queue.source_directory.eq("Mendeley_SLS_TPU工艺力学")
+    ]
+    assert set(sls.target_family) == {"toughness"}
+    assert sls["already_in_directed_target"].all()
 
 
 def test_release_and_check_command():

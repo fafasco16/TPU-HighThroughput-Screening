@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 38
+    assert len(f) == 39
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -137,6 +137,14 @@ def test_release():
     assert microsphere.iloc[0].row_count == 6
     assert microsphere.iloc[0].model_admission_layer == (
         "PU_microsphere_composite_transfer"
+    )
+    sls = f.loc[
+        f.package_id.eq("sls_tpu1301_gold_process_tensile")
+    ]
+    assert len(sls) == 1
+    assert sls.iloc[0].row_count == 140
+    assert sls.iloc[0].model_admission_layer == (
+        "core_tpu_application_experimental"
     )
 
 

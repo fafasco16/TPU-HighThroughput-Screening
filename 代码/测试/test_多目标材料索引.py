@@ -230,6 +230,15 @@ def test_release():
     assert microsphere["cyclic_evidence_level"].eq(
         "loading_unloading_hysteresis_same_curve_proxy"
     ).all()
+    sls = f.loc[f.source_family.eq("Mendeley_SLS_TPU工艺力学")]
+    assert len(sls) == 1
+    assert sls.iloc[0].material_key == "EOS TPU 1301"
+    assert sls.iloc[0].toughness_record_count == 140
+    assert sls.iloc[0].model_admission_layer == (
+        "core_tpu_application_experimental"
+    )
+    assert len(f.loc[f.material_key.eq("EOS TPU 1301")]) == 2
+    assert f["material_key"].nunique() == len(f) - 1
 
 
 def test_command():

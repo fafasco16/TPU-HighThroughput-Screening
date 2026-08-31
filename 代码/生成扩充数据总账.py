@@ -317,6 +317,14 @@ SPECS = [
         "CC-BY-4.0",
         "microsphere_fraction_matrix_unresolved",
     ),
+    (
+        "sls_tpu1301_gold_process_tensile",
+        "toughness_process_application",
+        "SLS_TPU1301工艺拉伸端点.csv",
+        "SLS_TPU1301工艺力学发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_only",
+    ),
 ]
 
 
@@ -416,6 +424,9 @@ def build_release():
         ),
         "pu_microsphere_loading_hysteresis_transfer": (
             "PU_microsphere_composite_transfer"
+        ),
+        "sls_tpu1301_gold_process_tensile": (
+            "core_tpu_application_experimental"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

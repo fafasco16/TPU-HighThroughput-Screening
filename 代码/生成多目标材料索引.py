@@ -48,6 +48,7 @@ INPUTS = {
     "pu_copper_tga": D / "PU铜热解TGA端点.csv",
     "fdm_tpu_mechanics": D / "FDM_TPU晶格基材力学端点.csv",
     "pu_microsphere": D / "PU微球复合加载卸载端点.csv",
+    "sls_tpu1301": D / "SLS_TPU1301工艺拉伸端点.csv",
 }
 
 
@@ -156,6 +157,14 @@ def build_release():
             "pu_microsphere",
             None,
         ),
+        (
+            "Mendeley_SLS_TPU工艺力学",
+            "reference-59",
+            "commercial_grade_process_condition_partial",
+            "sls_tpu1301",
+            None,
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -189,6 +198,9 @@ def build_release():
         ),
         "Zenodo_PU微球复合材料拉伸": (
             "PU_microsphere_composite_transfer"
+        ),
+        "Mendeley_SLS_TPU工艺力学": (
+            "core_tpu_application_experimental"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -257,6 +269,8 @@ def build_release():
                         if source == "Mendeley_FDM_TPU晶格与基材力学"
                         else "source_native_loading_area_unit_unresolved_transfer"
                         if source == "Zenodo_PU微球复合材料拉伸"
+                        else "direct_tensile_curve_area_SLS_process_application"
+                        if source == "Mendeley_SLS_TPU工艺力学"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -663,6 +677,19 @@ def build_release():
     frame.loc[microsphere, "gap_next_action"] = (
         "resolve_nominal_stress_unit_and_matrix_chemistry"
     )
+    sls_tpu = frame["source_family"].eq("Mendeley_SLS_TPU工艺力学")
+    frame.loc[sls_tpu, "multiobjective_status"] = (
+        "single_objective_SLS_process_application"
+    )
+    frame.loc[sls_tpu, "completion_priority"] = (
+        "same_grade_cross_source_process_evidence"
+    )
+    frame.loc[sls_tpu, "gap_evidence_status"] = (
+        "direct_tensile_process_curves_no_matching_TGA_or_cycles"
+    )
+    frame.loc[sls_tpu, "gap_next_action"] = (
+        "keep_cross_source_EOS_TPU1301_same_fold_and_map_process_table"
+    )
     return frame
 
 
@@ -673,6 +700,7 @@ def write(f):
             {
                 "counts": {
                     "material_rows": len(f),
+                    "unique_material_keys": int(f["material_key"].nunique()),
                     "two_objective_or_more": int(
                         (f.objective_coverage_count >= 2).sum()
                     ),
@@ -711,6 +739,7 @@ def main():
             json.dumps(
                 {
                     "materials": len(f),
+                    "unique_material_keys": int(f["material_key"].nunique()),
                     "triple": int((f.objective_coverage_count == 3).sum()),
                 },
                 ensure_ascii=False,

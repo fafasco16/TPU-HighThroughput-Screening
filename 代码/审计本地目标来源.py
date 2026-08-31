@@ -130,6 +130,26 @@ MACHINE_EXTENSIONS = {
 }
 ARCHIVE_EXTENSIONS = {".zip", ".7z", ".rar", ".tar", ".gz", ".bz2"}
 TEXT_EXTENSIONS = {".md", ".txt", ".json", ".yaml", ".yml", ".csv", ".tsv"}
+SIGNAL_OVERRIDES = {
+    "Texas_湿干单根电纺PU纤维力学": {
+        "toughness": False,
+        "formulation": False,
+    },
+    "MaterialsCloud_商用PU泡沫多轴断裂力学": {
+        "cyclic_recovery": False,
+    },
+    "Mendeley_TPU95A_TPMS应变率力学": {
+        "toughness": False,
+    },
+    "SND_TPU导电轨迹循环拉伸": {
+        "toughness": False,
+        "cyclic_recovery": False,
+        "raw_curve": False,
+    },
+    "Mendeley_热可逆超分子PU宽应变率": {
+        "thermal_stability": False,
+    },
+}
 
 
 def classify_text(text: str) -> dict[str, bool]:
@@ -243,6 +263,7 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("FDM_TPU晶格基材力学端点.csv", "Mendeley_FDM_TPU晶格与基材力学", "toughness"),
         ("PU微球复合加载卸载端点.csv", "Zenodo_PU微球复合材料拉伸", "toughness"),
         ("PU微球复合加载卸载端点.csv", "Zenodo_PU微球复合材料拉伸", "cyclic_recovery"),
+        ("SLS_TPU1301工艺拉伸端点.csv", "Mendeley_SLS_TPU工艺力学", "toughness"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename
@@ -300,9 +321,8 @@ def _audit_source(
     coverage = directed_coverage.get(source_dir.name, {})
     for target in ("toughness", "cyclic_recovery", "thermal_stability"):
         flags[target] = flags[target] or target in coverage
-    if source_dir.name == "Texas_湿干单根电纺PU纤维力学":
-        flags["toughness"] = False
-        flags["formulation"] = False
+    for signal, value in SIGNAL_OVERRIDES.get(source_dir.name, {}).items():
+        flags[signal] = value
     target_names = [
         name
         for name in ("toughness", "cyclic_recovery", "thermal_stability")
