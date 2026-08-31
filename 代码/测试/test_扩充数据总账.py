@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 45
+    assert len(f) == 47
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -187,6 +187,17 @@ def test_release():
     assert dynamic_foam.iloc[0].model_admission_layer == (
         "dynamic_PU_foam_transfer"
     )
+    healing = f.loc[f.package_id.str.startswith("self_healing_4tu_")]
+    assert set(healing.package_id) == {
+        "self_healing_4tu_cut_recovery_pairs",
+        "self_healing_4tu_tga",
+    }
+    assert healing["row_count"].sum() == 12
+    assert healing["license"].eq("CC-BY-4.0").all()
+    assert set(healing.model_admission_layer) == {
+        "core_TPU_healing_experimental",
+        "core_TPU_thermal_experimental",
+    }
 
 
 def test_command():

@@ -6,8 +6,8 @@
   },
   "output_file": {
     "path": "结果/定向筛选/外部来源候选.csv",
-    "bytes": 1639,
-    "sha256": "504bd5499f2c02d03fcec0d7463d86c596448bfc17ee72b51b3761089001ea11"
+    "bytes": 1611,
+    "sha256": "bfb083ae76f6b37e7182b3ac3d80002620fdb96d43de9d7bb0c419e237af4aa8"
   },
   "sources": [
     {

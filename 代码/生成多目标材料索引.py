@@ -50,6 +50,8 @@ INPUTS = {
     "pu_microsphere": D / "PU微球复合加载卸载端点.csv",
     "sls_tpu1301": D / "SLS_TPU1301工艺拉伸端点.csv",
     "dynamic_foam": D / "PU泡沫动态压缩端点.csv",
+    "self_healing_4tu_recovery": D / "4TU自修复TPU恢复配对.csv",
+    "self_healing_4tu_tga": D / "4TU自修复TPUTGA端点.csv",
 }
 
 
@@ -174,6 +176,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "4TU_室温自修复TPU_FDM",
+            "reference-21",
+            "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade",
+            None,
+            "self_healing_4tu_recovery",
+            "self_healing_4tu_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -214,6 +224,7 @@ def build_release():
         "Mendeley_PU泡沫动态力学_精选表": (
             "dynamic_PU_foam_transfer"
         ),
+        "4TU_室温自修复TPU_FDM": "core_TPU_healing_experimental",
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -246,6 +257,8 @@ def build_release():
                     if source == "Figshare_PU高低速变形后应力松弛"
                     else "loading_unloading_hysteresis_same_curve_proxy"
                     if source == "Zenodo_PU微球复合材料拉伸"
+                    else "direct_compression_cut_healing_recovery_pair"
+                    if source == "4TU_室温自修复TPU_FDM"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -718,6 +731,36 @@ def build_release():
     )
     frame.loc[dynamic_foam, "gap_next_action"] = (
         "resolve_HDB_HA_chemistry_and_keep_out_of_quasistatic_TPU_core"
+    )
+    self_healing_4tu = frame["source_family"].eq(
+        "4TU_室温自修复TPU_FDM"
+    )
+    frame.loc[self_healing_4tu, "multiobjective_status"] = frame.loc[
+        self_healing_4tu, "objective_coverage_count"
+    ].map(
+        {
+            2: "two_objectives_direct_healing_and_TGA",
+            1: "single_objective_healing_control",
+        }
+    )
+    frame.loc[self_healing_4tu, "completion_priority"] = (
+        "direct_healing_pair_high_value"
+    )
+    frame.loc[self_healing_4tu, "gap_evidence_status"] = frame.loc[
+        self_healing_4tu, "material_key"
+    ].map(
+        {
+            "SH-TPU": "direct_healing_and_TGA_no_tensile_toughness",
+            "Ninjaflex": "direct_healing_control_no_TGA_or_tensile_toughness",
+        }
+    )
+    frame.loc[self_healing_4tu, "gap_next_action"] = frame.loc[
+        self_healing_4tu, "material_key"
+    ].map(
+        {
+            "SH-TPU": "search_same_exact_CroHeal_EHD_MDI_tensile_curves",
+            "Ninjaflex": "search_exact_grade_tensile_and_TGA_or_measurement",
+        }
     )
     return frame
 

@@ -1,8 +1,8 @@
 {
   "counts": {
-    "material_rows": 87,
-    "unique_material_keys": 86,
-    "two_objective_or_more": 69,
+    "material_rows": 89,
+    "unique_material_keys": 88,
+    "two_objective_or_more": 70,
     "three_objective": 38
   },
   "inputs": {
@@ -42,7 +42,9 @@
     "fdm_tpu_mechanics": "53cb498352f4d92dcc99b6e71b18107f1e4901892d7938524772bc6b76e2f014",
     "pu_microsphere": "013509e2302373715a44da974c4bdc56d48ae933f5fa7ef55569a85d33a41e07",
     "sls_tpu1301": "e791e4856d9d4200f1897f7f4a6c25f84d4a6add43ffb6bb20b01816adff6050",
-    "dynamic_foam": "e3f472995206e6a0773ef53a1589e83f1e29d12f4c25df85df0f5f92a11cadf1"
+    "dynamic_foam": "e3f472995206e6a0773ef53a1589e83f1e29d12f4c25df85df0f5f92a11cadf1",
+    "self_healing_4tu_recovery": "614d5522aa647ae6a450b022cfbfe6b7fd050113ced6985aaa02c899739ef102",
+    "self_healing_4tu_tga": "7618c8937246c9869208edd4f7f88595d67b79515885b5c09d586617359d5e3c"
   },
-  "output_sha256": "b51a08de33ae5a5223dbecce6e776f6cc2e8235e1afd624c016e9664120316ab"
+  "output_sha256": "17395da3ffd9bbcb47dcbd127764ccd3c51baa191ac3f6519cc76d8eaed80c09"
 }

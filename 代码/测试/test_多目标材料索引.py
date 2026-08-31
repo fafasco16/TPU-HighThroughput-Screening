@@ -250,6 +250,22 @@ def test_release():
     assert dynamic_foam["toughness_evidence_level"].eq(
         "direct_dynamic_compression_energy_absorption_transfer"
     ).all()
+    healing = f.loc[f.source_family.eq("4TU_室温自修复TPU_FDM")]
+    assert set(healing.material_key) == {"SH-TPU", "Ninjaflex"}
+    assert healing["has_toughness"].eq(False).all()
+    assert healing["has_cyclic_recovery"].all()
+    assert healing.loc[
+        healing.material_key.eq("SH-TPU"), "has_thermal_stability"
+    ].all()
+    assert healing.loc[
+        healing.material_key.eq("Ninjaflex"), "has_thermal_stability"
+    ].eq(False).all()
+    assert healing["cyclic_evidence_level"].eq(
+        "direct_compression_cut_healing_recovery_pair"
+    ).all()
+    assert healing["model_admission_layer"].eq(
+        "core_TPU_healing_experimental"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

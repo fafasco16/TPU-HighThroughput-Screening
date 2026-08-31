@@ -25,7 +25,7 @@ def test_downloaded_candidate_release_is_complete():
     frame = pd.read_csv(OUTPUT / "外部来源候选.csv")
     assert len(frame) == 2
     assert frame["source_id"].is_unique
-    assert frame["acquisition_status"].eq("downloaded_pending_adapter").all()
+    assert frame["acquisition_status"].eq("materialized").all()
     assert frame["local_source_manifest_sha256"].str.len().eq(64).all()
     for relative in frame["local_directory"]:
         assert (ROOT / relative / "来源清单.json").is_file()

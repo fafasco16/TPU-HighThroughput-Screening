@@ -1,0 +1,34 @@
+{
+  "release_id": "4tu_self_healing_tpu_targeted_v1",
+  "source": {
+    "dataset_doi": "10.4121/13603775.v1",
+    "article_doi": "10.3390/polym13020305",
+    "license": "CC-BY-4.0",
+    "archive_sha256": "9d563b8389686530a1a73e62a0244c57a1c19b8a039b60ec63f0753b2ff034a8"
+  },
+  "counts": {
+    "archive_member_count": 91,
+    "archive_file_member_count": 71,
+    "mechanical_curve_count": 36,
+    "original_physical_specimen_key_count": 26,
+    "healing_pair_count": 10,
+    "healing_pair_curve_count": 20,
+    "unpaired_original_mechanical_curve_hold_count": 16,
+    "tga_curve_count": 2,
+    "tga_raw_point_count": 6584,
+    "tga_unique_temperature_point_count": 6538,
+    "published_compact_row_count": 12
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "unpaired_process_curves_used_as_recovery_labels": false,
+    "compression_cut_work_claimed_as_tensile_toughness": false,
+    "recovery_ratios_clipped_to_0_1": false,
+    "tga_baseline": "median_mass_between_80_and_120_degC",
+    "same_material_states_grouped_together": true
+  },
+  "outputs": {
+    "4TU自修复TPU恢复配对.csv": "614d5522aa647ae6a450b022cfbfe6b7fd050113ced6985aaa02c899739ef102",
+    "4TU自修复TPUTGA端点.csv": "7618c8937246c9869208edd4f7f88595d67b79515885b5c09d586617359d5e3c"
+  }
+}

@@ -31,6 +31,7 @@ SOURCE_SPECS = [
         "target_families": ["toughness", "cyclic_recovery"],
         "citation": "Oh, D. Mechano-responsive hydrogen-bonding array of thermoplastic polyurethane elastomer captures both strength and self-healing [Data set]. Figshare, 2021. https://doi.org/10.6084/m9.figshare.12936989.v1.",
         "citation_keys": "reference-180",
+        "acquisition_status": "materialized",
         "files": [
             {
                 "name": "Source-data_Main Figures.xlsx",
@@ -56,6 +57,7 @@ SOURCE_SPECS = [
         "target_families": ["toughness"],
         "citation": "Wu, T.; Chen, B. Facile Fabrication of Porous Conductive Thermoplastic Polyurethane Nanocomposite Films via Solution Casting [Data set]. Zenodo, 2017. https://zenodo.org/records/1098206; related article https://doi.org/10.1038/s41598-017-17647-w.",
         "citation_keys": "reference-181",
+        "acquisition_status": "materialized",
         "files": [
             {
                 "name": "Supronics_Porous-TPU-Nanocomposites Dataset.xlsx",
@@ -153,7 +155,7 @@ def acquire() -> pd.DataFrame:
                 "raw_total_bytes": sum(item["bytes"] for item in file_rows),
                 "local_directory": str(directory.relative_to(ROOT)).replace("\\", "/"),
                 "local_source_manifest_sha256": _sha256(source_manifest_path),
-                "acquisition_status": "downloaded_pending_adapter",
+                "acquisition_status": spec["acquisition_status"],
                 "citation": spec["citation"],
                 "citation_keys": spec["citation_keys"],
             }
