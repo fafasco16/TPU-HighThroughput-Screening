@@ -281,6 +281,16 @@ def test_release():
     assert conductive["toughness_evidence_level"].eq(
         "direct_tensile_curve_area_crosslinked_PU_composite_transfer"
     ).all()
+    footwear = f.loc[f.source_family.eq("Zenodo_TPU鞋材热稳定与耐磨")]
+    assert set(footwear.material_key) == {
+        "eTPU_eSUN_95A_orange",
+        "TPU_Rosh_95A_white",
+        "PEBA_XinboChuan_85A_yellow",
+    }
+    assert footwear["has_toughness"].eq(False).all()
+    assert footwear["has_cyclic_recovery"].eq(False).all()
+    assert footwear["has_thermal_stability"].all()
+    assert footwear["thermal_evidence_level"].eq("direct_TGA_curve").all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

@@ -54,6 +54,7 @@ INPUTS = {
     "self_healing_4tu_tga": D / "4TU自修复TPUTGA端点.csv",
     "conductive_healing_pu_mechanics": D / "导电自修复PU拉伸与回收端点.csv",
     "conductive_healing_pu_recovery": D / "导电自修复PU恢复文献指标.csv",
+    "footwear_tga": D / "TPU鞋材TGA端点.csv",
 }
 
 
@@ -194,6 +195,14 @@ def build_release():
             "conductive_healing_pu_recovery",
             None,
         ),
+        (
+            "Zenodo_TPU鞋材热稳定与耐磨",
+            "reference-201;reference-202",
+            "commercial_grade_color_supplier_partial",
+            None,
+            None,
+            "footwear_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -237,6 +246,9 @@ def build_release():
         "4TU_室温自修复TPU_FDM": "core_TPU_healing_experimental",
         "Zenodo_导电自修复可回收PU复合材料": (
             "conductive_crosslinked_PU_composite_transfer"
+        ),
+        "Zenodo_TPU鞋材热稳定与耐磨": (
+            "commercial_footwear_elastomer_application"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -798,6 +810,19 @@ def build_release():
     )
     frame.loc[conductive_healing, "gap_next_action"] = (
         "retain_grouped_transfer_weight_and_search_same_formulation_TGA"
+    )
+    footwear = frame["source_family"].eq("Zenodo_TPU鞋材热稳定与耐磨")
+    frame.loc[footwear, "multiobjective_status"] = (
+        "single_objective_footwear_TGA_application"
+    )
+    frame.loc[footwear, "completion_priority"] = (
+        "application_transfer_commercial_identity_partial"
+    )
+    frame.loc[footwear, "gap_evidence_status"] = (
+        "direct_TGA_no_numeric_compression_curve"
+    )
+    frame.loc[footwear, "gap_next_action"] = (
+        "resolve_exact_product_codes_and_request_raw_compression_curves"
     )
     return frame
 

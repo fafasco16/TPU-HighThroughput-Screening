@@ -91,6 +91,47 @@ SOURCE_SPECS = [
             }
         ],
     },
+    {
+        "source_id": "source_zenodo_18149651_v1",
+        "directory": "Zenodo_TPU鞋材热稳定与耐磨",
+        "repository": "Zenodo",
+        "title": "Effects of Gyroid Lattice Relative Density on Wear and Mechanical Performance of 3D Printed TPU and Flexible Nylon for Footwear",
+        "doi": "10.5281/zenodo.18149651",
+        "canonical_url": "https://zenodo.org/records/18149651",
+        "metadata_url": "https://zenodo.org/api/records/18149651",
+        "license": "CC-BY-4.0",
+        "target_families": ["thermal_stability", "environmental_wear"],
+        "citation": "Li, J. Effects of Gyroid Lattice Relative Density on Wear and Mechanical Performance of 3D Printed TPU and Flexible Nylon for Footwear [Data set]. Zenodo, 2026. https://doi.org/10.5281/zenodo.18149651.",
+        "citation_keys": "reference-201;reference-202",
+        "acquisition_status": "materialized",
+        "files": [
+            {
+                "name": "TPU_orange.xlsx",
+                "url": "https://zenodo.org/api/records/18149651/files/TPU_orange.xlsx/content",
+                "size": 287_796,
+            },
+            {
+                "name": "TPU_yellow.xlsx",
+                "url": "https://zenodo.org/api/records/18149651/files/TPU_yellow.xlsx/content",
+                "size": 287_596,
+            },
+            {
+                "name": "TPU 95A White.xlsx",
+                "url": "https://zenodo.org/api/records/18149651/files/TPU%2095A%20White.xlsx/content",
+                "size": 286_631,
+            },
+            {
+                "name": "DSC数据整理.xlsx",
+                "url": "https://zenodo.org/api/records/18149651/files/DSC%E6%95%B0%E6%8D%AE%E6%95%B4%E7%90%86.xlsx/content",
+                "size": 791_977,
+            },
+            {
+                "name": "Rheology.xlsx",
+                "url": "https://zenodo.org/api/records/18149651/files/Rheology.xlsx/content",
+                "size": 136_185,
+            },
+        ],
+    },
 ]
 
 

@@ -1,13 +1,13 @@
 {
   "release_id": "tpu-external-targeted-sources-2026-08-30-v1",
   "counts": {
-    "source_count": 3,
-    "downloaded_file_count": 4
+    "source_count": 4,
+    "downloaded_file_count": 9
   },
   "output_file": {
     "path": "结果/定向筛选/外部来源候选.csv",
-    "bytes": 2308,
-    "sha256": "6c459c59e059e992bf20f1101a6dc0e4f753375c0b48d47e97ca4fd3f5645770"
+    "bytes": 3021,
+    "sha256": "867bc3f06b6feafc8e740fbc4efb069cbf7b0cc1012ef068f1b1f4cd2c514fe3"
   },
   "sources": [
     {
@@ -19,6 +19,11 @@
       "source_id": "source_zenodo_1098206_v1",
       "local_directory": "数据/原始/外部数据/新增开放数据/Zenodo_多孔导电TPU纳米复合膜",
       "local_source_manifest_sha256": "c9d91f94dec923e7378fdf9b0af5ff05b72e0275cd5a712ad7abdb1d1bcb7972"
+    },
+    {
+      "source_id": "source_zenodo_18149651_v1",
+      "local_directory": "数据/原始/外部数据/新增开放数据/Zenodo_TPU鞋材热稳定与耐磨",
+      "local_source_manifest_sha256": "4f25e94f64b0b7f4b3d89ca8e5bf11e924be43a80d1f1f4f2acd86c5ec96f2ca"
     },
     {
       "source_id": "source_zenodo_19609901_v1",

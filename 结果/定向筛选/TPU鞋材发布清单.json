@@ -1,0 +1,30 @@
+{
+  "release_id": "zenodo_footwear_tpu_thermal_wear_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.18149651",
+    "article_doi": "10.1016/j.isci.2026.115868",
+    "dataset_license": "CC-BY-4.0",
+    "article_license": "CC-BY-4.0",
+    "source_manifest_sha256": "4f25e94f64b0b7f4b3d89ca8e5bf11e924be43a80d1f1f4f2acd86c5ec96f2ca"
+  },
+  "counts": {
+    "commercial_material_count": 3,
+    "tga_curve_count": 3,
+    "tga_curve_point_count": 13860,
+    "wear_condition_count": 12,
+    "published_compact_row_count": 15
+  },
+  "policy": {
+    "raw_tga_curves_republished": false,
+    "DSC_used_as_TGA_decomposition_target": false,
+    "PEBA_counted_as_TPU": false,
+    "compression_curve_claimed_without_numeric_source": false,
+    "abrasion_conditions_claimed_as_independent_chemistries": false,
+    "negative_terminal_balance_drift_used_as_residue": false,
+    "negative_600C_balance_drift_used_as_residue": false
+  },
+  "outputs": {
+    "TPU鞋材TGA端点.csv": "e243727a3521e48dfc0f19f714e605332781863b41c14ccac2e3e287eb7d848c",
+    "TPU鞋材耐磨摘要.csv": "4aa88c00e69868b1496cc1bb652e077e399c1a65f864862c36c20e9d938892a0"
+  }
+}

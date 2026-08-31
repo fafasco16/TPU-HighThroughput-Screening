@@ -197,6 +197,13 @@ def test_local_audit_covers_all_source_directories():
     ).all()
     assert conductive["formulation_signal"].all()
     assert conductive["raw_curve_signal"].all()
+    footwear = queue.loc[
+        queue.source_directory.eq("Zenodo_TPU鞋材热稳定与耐磨")
+    ]
+    assert set(footwear.target_family) == {"thermal_stability"}
+    assert footwear["already_in_directed_target"].all()
+    assert footwear["formulation_signal"].all()
+    assert footwear["raw_curve_signal"].all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

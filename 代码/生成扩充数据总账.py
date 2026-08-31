@@ -405,6 +405,22 @@ SPECS = [
         "CC-BY-4.0",
         "base_PU_exact_composition_blend_solution_fraction_mapped",
     ),
+    (
+        "tpu_footwear_tga",
+        "thermal_stability",
+        "TPU鞋材TGA端点.csv",
+        "TPU鞋材发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_color_supplier_partial",
+    ),
+    (
+        "tpu_footwear_wear_summary",
+        "environmental_wear_durability_application",
+        "TPU鞋材耐磨摘要.csv",
+        "TPU鞋材发布清单.json",
+        "CC-BY-4.0",
+        "commercial_grade_color_supplier_partial",
+    ),
 ]
 
 
@@ -440,6 +456,7 @@ def build_release():
         "commercial_foam_code_only": 0.35,
         "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade": 0.75,
         "base_PU_exact_composition_blend_solution_fraction_mapped": 0.80,
+        "commercial_grade_color_supplier_partial": 0.45,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -465,6 +482,7 @@ def build_release():
         "commercial_foam_code_only": "补HDB/HA商业泡沫精确化学组成；保持动态压缩迁移层边界",
         "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade": "保留SH-TPU精确投料与Ninjaflex商业对照分层；补同体系拉伸韧性",
         "base_PU_exact_composition_blend_solution_fraction_mapped": "补PEDOT:PSS与PU溶液固含量以换算干基配比；保持交联PU迁移层边界",
+        "commercial_grade_color_supplier_partial": "补eTPU/TPU/PEBA精确商品型号；保留颜色与供应商映射状态",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -537,6 +555,10 @@ def build_release():
         ),
         "conductive_self_healing_pu_recovery_summary": (
             "conductive_crosslinked_PU_composite_transfer"
+        ),
+        "tpu_footwear_tga": "commercial_footwear_elastomer_application",
+        "tpu_footwear_wear_summary": (
+            "commercial_footwear_elastomer_application"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:
