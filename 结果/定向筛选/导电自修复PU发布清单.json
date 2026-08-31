@@ -1,0 +1,34 @@
+{
+  "release_id": "zenodo_conductive_self_healing_pu_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.19609901",
+    "article_doi": "10.1039/d6mh00177g",
+    "dataset_license": "CC-BY-4.0",
+    "article_license": "CC-BY-NC-3.0",
+    "archive_sha256": "f7a0705d67e80f91bff482f8af6f768f2e7bb2357b483e2f999a7fd6da650e29",
+    "source_manifest_sha256": "7c29539ab23d8554d1a25cc6e19464bd4655e94cce47e3171fff6320a7bce7d4"
+  },
+  "counts": {
+    "archive_member_count": 68,
+    "substantive_file_count": 27,
+    "formulation_screening_curve_count": 5,
+    "recycling_state_curve_count": 3,
+    "tensile_curve_point_count": 108820,
+    "published_recovery_summary_count": 3,
+    "published_compact_row_count": 11
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "figure_pair_order_crosschecked_with_article_table": true,
+    "negative_stress_clipped_only_for_area": true,
+    "solution_fraction_claimed_as_dry_solid_fraction": false,
+    "crosslinked_PU_claimed_as_thermoplastic_TPU_core": false,
+    "electrical_cycles_claimed_as_mechanical_cycles": false,
+    "raw_mechanical_cycle_curve_present_in_local_zip": false,
+    "published_summary_used_when_raw_cycle_curve_absent": true
+  },
+  "outputs": {
+    "导电自修复PU拉伸与回收端点.csv": "d4cabfbab57e66a6e119b154a57c19e3c92ec0c4fe6dc8262a5b6810d55c5413",
+    "导电自修复PU恢复文献指标.csv": "196376c5bedd355d34e827a8670ec828c4c2b4ce32f053f0fddb46a89ddec7e7"
+  }
+}

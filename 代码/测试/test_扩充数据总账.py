@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 47
+    assert len(f) == 49
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -198,6 +198,17 @@ def test_release():
         "core_TPU_healing_experimental",
         "core_TPU_thermal_experimental",
     }
+    conductive = f.loc[
+        f.package_id.str.startswith("conductive_self_healing_pu_")
+    ]
+    assert set(conductive.package_id) == {
+        "conductive_self_healing_pu_tensile_recycling",
+        "conductive_self_healing_pu_recovery_summary",
+    }
+    assert conductive["row_count"].sum() == 11
+    assert conductive["model_admission_layer"].eq(
+        "conductive_crosslinked_PU_composite_transfer"
+    ).all()
 
 
 def test_command():

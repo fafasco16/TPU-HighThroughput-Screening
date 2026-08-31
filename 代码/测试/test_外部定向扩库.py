@@ -13,8 +13,8 @@ OUTPUT = ROOT / "结果" / "定向筛选"
 
 
 def test_source_specs_are_open_and_targeted():
-    assert len(acquisition.SOURCE_SPECS) == 2
-    assert len({spec["source_id"] for spec in acquisition.SOURCE_SPECS}) == 2
+    assert len(acquisition.SOURCE_SPECS) == 3
+    assert len({spec["source_id"] for spec in acquisition.SOURCE_SPECS}) == 3
     for spec in acquisition.SOURCE_SPECS:
         assert spec["license"] == "CC-BY-4.0"
         assert "toughness" in spec["target_families"]
@@ -23,7 +23,7 @@ def test_source_specs_are_open_and_targeted():
 
 def test_downloaded_candidate_release_is_complete():
     frame = pd.read_csv(OUTPUT / "外部来源候选.csv")
-    assert len(frame) == 2
+    assert len(frame) == 3
     assert frame["source_id"].is_unique
     assert frame["acquisition_status"].eq("materialized").all()
     assert frame["local_source_manifest_sha256"].str.len().eq(64).all()
@@ -38,6 +38,6 @@ def test_check_command():
         (OUTPUT / "外部来源候选发布清单.json").read_text(encoding="utf-8")
     )
     assert manifest["counts"] == {
-        "source_count": 2,
-        "downloaded_file_count": 3,
+        "source_count": 3,
+        "downloaded_file_count": 4,
     }

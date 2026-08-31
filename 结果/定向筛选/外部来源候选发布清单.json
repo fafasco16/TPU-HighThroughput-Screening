@@ -1,13 +1,13 @@
 {
   "release_id": "tpu-external-targeted-sources-2026-08-30-v1",
   "counts": {
-    "source_count": 2,
-    "downloaded_file_count": 3
+    "source_count": 3,
+    "downloaded_file_count": 4
   },
   "output_file": {
     "path": "结果/定向筛选/外部来源候选.csv",
-    "bytes": 1611,
-    "sha256": "bfb083ae76f6b37e7182b3ac3d80002620fdb96d43de9d7bb0c419e237af4aa8"
+    "bytes": 2308,
+    "sha256": "6c459c59e059e992bf20f1101a6dc0e4f753375c0b48d47e97ca4fd3f5645770"
   },
   "sources": [
     {
@@ -19,6 +19,11 @@
       "source_id": "source_zenodo_1098206_v1",
       "local_directory": "数据/原始/外部数据/新增开放数据/Zenodo_多孔导电TPU纳米复合膜",
       "local_source_manifest_sha256": "c9d91f94dec923e7378fdf9b0af5ff05b72e0275cd5a712ad7abdb1d1bcb7972"
+    },
+    {
+      "source_id": "source_zenodo_19609901_v1",
+      "local_directory": "数据/原始/外部数据/新增开放数据/Zenodo_导电自修复可回收PU复合材料",
+      "local_source_manifest_sha256": "7c29539ab23d8554d1a25cc6e19464bd4655e94cce47e3171fff6320a7bce7d4"
     }
   ]
 }

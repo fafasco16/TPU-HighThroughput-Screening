@@ -66,6 +66,31 @@ SOURCE_SPECS = [
             }
         ],
     },
+    {
+        "source_id": "source_zenodo_19609901_v1",
+        "directory": "Zenodo_导电自修复可回收PU复合材料",
+        "repository": "Zenodo",
+        "title": "Printable, Self-Healing and Recyclable PEDOT:PSS/Polyurethane Composites for Durable Bioelectronics",
+        "doi": "10.5281/zenodo.19609901",
+        "canonical_url": "https://zenodo.org/records/19609901",
+        "metadata_url": "https://zenodo.org/api/records/19609901",
+        "license": "CC-BY-4.0",
+        "target_families": [
+            "toughness",
+            "cyclic_recovery",
+            "environmental_recycling",
+        ],
+        "citation": "Cicoira, F.; Kim, J. Printable, Self-Healing and Recyclable PEDOT:PSS/Polyurethane Composites for Durable Bioelectronics [Data set]. Zenodo, 2026. https://doi.org/10.5281/zenodo.19609901.",
+        "citation_keys": "reference-199;reference-200",
+        "acquisition_status": "materialized",
+        "files": [
+            {
+                "name": "Dataset Cicoira Materials Horizons 2026.zip",
+                "url": "https://zenodo.org/api/records/19609901/files/Dataset%20Cicoira%20Materials%20Horizons%202026.zip/content",
+                "size": 6_763_468,
+            }
+        ],
+    },
 ]
 
 

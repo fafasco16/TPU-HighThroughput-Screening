@@ -266,6 +266,21 @@ def test_release():
     assert healing["model_admission_layer"].eq(
         "core_TPU_healing_experimental"
     ).all()
+    conductive = f.loc[
+        f.source_family.eq("Zenodo_导电自修复可回收PU复合材料")
+    ]
+    assert len(conductive) == 5
+    assert conductive["has_toughness"].all()
+    assert conductive["has_thermal_stability"].eq(False).all()
+    assert set(
+        conductive.loc[conductive["has_cyclic_recovery"], "material_key"]
+    ) == {"PEDOT:PSS/PU-13", "PEDOT:PSS/PU-18/Gly-2.2"}
+    assert conductive["model_admission_layer"].eq(
+        "conductive_crosslinked_PU_composite_transfer"
+    ).all()
+    assert conductive["toughness_evidence_level"].eq(
+        "direct_tensile_curve_area_crosslinked_PU_composite_transfer"
+    ).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

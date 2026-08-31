@@ -161,6 +161,10 @@ SIGNAL_OVERRIDES = {
     "ScienceDB_微孔PU动态力学": {
         "toughness": False,
     },
+    "Zenodo_导电自修复可回收PU复合材料": {
+        "formulation": True,
+        "raw_curve": True,
+    },
 }
 
 
@@ -277,6 +281,8 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("PU微球复合加载卸载端点.csv", "Zenodo_PU微球复合材料拉伸", "cyclic_recovery"),
         ("SLS_TPU1301工艺拉伸端点.csv", "Mendeley_SLS_TPU工艺力学", "toughness"),
         ("PU泡沫动态压缩端点.csv", "Mendeley_PU泡沫动态力学_精选表", "toughness"),
+        ("导电自修复PU拉伸与回收端点.csv", "Zenodo_导电自修复可回收PU复合材料", "toughness"),
+        ("导电自修复PU恢复文献指标.csv", "Zenodo_导电自修复可回收PU复合材料", "cyclic_recovery"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

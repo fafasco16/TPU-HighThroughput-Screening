@@ -1,8 +1,8 @@
 {
   "counts": {
-    "material_rows": 89,
-    "unique_material_keys": 88,
-    "two_objective_or_more": 70,
+    "material_rows": 94,
+    "unique_material_keys": 93,
+    "two_objective_or_more": 72,
     "three_objective": 38
   },
   "inputs": {
@@ -44,7 +44,9 @@
     "sls_tpu1301": "e791e4856d9d4200f1897f7f4a6c25f84d4a6add43ffb6bb20b01816adff6050",
     "dynamic_foam": "e3f472995206e6a0773ef53a1589e83f1e29d12f4c25df85df0f5f92a11cadf1",
     "self_healing_4tu_recovery": "614d5522aa647ae6a450b022cfbfe6b7fd050113ced6985aaa02c899739ef102",
-    "self_healing_4tu_tga": "7618c8937246c9869208edd4f7f88595d67b79515885b5c09d586617359d5e3c"
+    "self_healing_4tu_tga": "7618c8937246c9869208edd4f7f88595d67b79515885b5c09d586617359d5e3c",
+    "conductive_healing_pu_mechanics": "d4cabfbab57e66a6e119b154a57c19e3c92ec0c4fe6dc8262a5b6810d55c5413",
+    "conductive_healing_pu_recovery": "196376c5bedd355d34e827a8670ec828c4c2b4ce32f053f0fddb46a89ddec7e7"
   },
-  "output_sha256": "17395da3ffd9bbcb47dcbd127764ccd3c51baa191ac3f6519cc76d8eaed80c09"
+  "output_sha256": "f089299e3b3be0ae0ed4826add9ec83323d0f8fe4ad045f573d8db0156591a7f"
 }

@@ -187,6 +187,16 @@ def test_local_audit_covers_all_source_directories():
     ]
     assert set(dynamic_foam.target_family) == {"toughness"}
     assert dynamic_foam["already_in_directed_target"].all()
+    conductive = queue.loc[
+        queue.source_directory.eq("Zenodo_导电自修复可回收PU复合材料")
+    ]
+    assert set(conductive.target_family) == {"toughness", "cyclic_recovery"}
+    assert conductive["already_in_directed_target"].all()
+    assert conductive["audit_status"].eq(
+        "materialized_all_detected_targets"
+    ).all()
+    assert conductive["formulation_signal"].all()
+    assert conductive["raw_curve_signal"].all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

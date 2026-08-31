@@ -389,6 +389,22 @@ SPECS = [
         "CC-BY-4.0",
         "monomer_set_molar_composition_mapped",
     ),
+    (
+        "conductive_self_healing_pu_tensile_recycling",
+        "toughness_and_recycling_transfer",
+        "导电自修复PU拉伸与回收端点.csv",
+        "导电自修复PU发布清单.json",
+        "CC-BY-4.0",
+        "base_PU_exact_composition_blend_solution_fraction_mapped",
+    ),
+    (
+        "conductive_self_healing_pu_recovery_summary",
+        "cut_stick_and_cyclic_recovery_summary",
+        "导电自修复PU恢复文献指标.csv",
+        "导电自修复PU发布清单.json",
+        "CC-BY-4.0",
+        "base_PU_exact_composition_blend_solution_fraction_mapped",
+    ),
 ]
 
 
@@ -423,6 +439,7 @@ def build_release():
         "ratio_temperature_structure_unresolved": 0.45,
         "commercial_foam_code_only": 0.35,
         "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade": 0.75,
+        "base_PU_exact_composition_blend_solution_fraction_mapped": 0.80,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -447,6 +464,7 @@ def build_release():
         "ratio_temperature_structure_unresolved": "补聚醚唯一结构、随机种子和轨迹收敛；映射前训练权重0",
         "commercial_foam_code_only": "补HDB/HA商业泡沫精确化学组成；保持动态压缩迁移层边界",
         "source_specific_SH_TPU_exact_ratio_and_Ninjaflex_grade": "保留SH-TPU精确投料与Ninjaflex商业对照分层；补同体系拉伸韧性",
+        "base_PU_exact_composition_blend_solution_fraction_mapped": "补PEDOT:PSS与PU溶液固含量以换算干基配比；保持交联PU迁移层边界",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -514,6 +532,12 @@ def build_release():
             "core_TPU_healing_experimental"
         ),
         "self_healing_4tu_tga": "core_TPU_thermal_experimental",
+        "conductive_self_healing_pu_tensile_recycling": (
+            "conductive_crosslinked_PU_composite_transfer"
+        ),
+        "conductive_self_healing_pu_recovery_summary": (
+            "conductive_crosslinked_PU_composite_transfer"
+        ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest

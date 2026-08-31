@@ -52,6 +52,8 @@ INPUTS = {
     "dynamic_foam": D / "PU泡沫动态压缩端点.csv",
     "self_healing_4tu_recovery": D / "4TU自修复TPU恢复配对.csv",
     "self_healing_4tu_tga": D / "4TU自修复TPUTGA端点.csv",
+    "conductive_healing_pu_mechanics": D / "导电自修复PU拉伸与回收端点.csv",
+    "conductive_healing_pu_recovery": D / "导电自修复PU恢复文献指标.csv",
 }
 
 
@@ -184,6 +186,14 @@ def build_release():
             "self_healing_4tu_recovery",
             "self_healing_4tu_tga",
         ),
+        (
+            "Zenodo_导电自修复可回收PU复合材料",
+            "reference-199;reference-200",
+            "base_PU_exact_composition_blend_solution_fraction_mapped",
+            "conductive_healing_pu_mechanics",
+            "conductive_healing_pu_recovery",
+            None,
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -225,6 +235,9 @@ def build_release():
             "dynamic_PU_foam_transfer"
         ),
         "4TU_室温自修复TPU_FDM": "core_TPU_healing_experimental",
+        "Zenodo_导电自修复可回收PU复合材料": (
+            "conductive_crosslinked_PU_composite_transfer"
+        ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
         materials = set()
@@ -259,6 +272,8 @@ def build_release():
                     if source == "Zenodo_PU微球复合材料拉伸"
                     else "direct_compression_cut_healing_recovery_pair"
                     if source == "4TU_室温自修复TPU_FDM"
+                    else "direct_cut_stick_and_published_cyclic_energy_recovery_summary"
+                    if source == "Zenodo_导电自修复可回收PU复合材料"
                     else "direct_cycle_endpoint"
                 )
             rows.append(
@@ -298,6 +313,8 @@ def build_release():
                         if source == "Mendeley_SLS_TPU工艺力学"
                         else "direct_dynamic_compression_energy_absorption_transfer"
                         if source == "Mendeley_PU泡沫动态力学_精选表"
+                        else "direct_tensile_curve_area_crosslinked_PU_composite_transfer"
+                        if source == "Zenodo_导电自修复可回收PU复合材料"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -761,6 +778,26 @@ def build_release():
             "SH-TPU": "search_same_exact_CroHeal_EHD_MDI_tensile_curves",
             "Ninjaflex": "search_exact_grade_tensile_and_TGA_or_measurement",
         }
+    )
+    conductive_healing = frame["source_family"].eq(
+        "Zenodo_导电自修复可回收PU复合材料"
+    )
+    frame.loc[conductive_healing, "multiobjective_status"] = frame.loc[
+        conductive_healing, "objective_coverage_count"
+    ].map(
+        {
+            2: "two_objectives_crosslinked_conductive_PU_transfer",
+            1: "single_objective_crosslinked_conductive_PU_transfer",
+        }
+    )
+    frame.loc[conductive_healing, "completion_priority"] = (
+        "transfer_only_not_thermoplastic_TPU_core"
+    )
+    frame.loc[conductive_healing, "gap_evidence_status"] = (
+        "crosslinked_conductive_PU_no_TGA_and_not_TPU_core"
+    )
+    frame.loc[conductive_healing, "gap_next_action"] = (
+        "retain_grouped_transfer_weight_and_search_same_formulation_TGA"
     )
     return frame
 
