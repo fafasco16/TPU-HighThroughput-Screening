@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 53
+    assert len(f) == 55
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -234,6 +234,15 @@ def test_release():
     assert simulation.iloc[0].model_admission_layer == (
         "simulation_calibration_reference"
     )
+    lignin = f.loc[f.package_id.str.startswith("lignin_tpu_")]
+    assert set(lignin.package_id) == {
+        "lignin_tpu_precursor_fiber_mechanical",
+        "lignin_tpu_tga_transfer",
+    }
+    assert lignin["row_count"].sum() == 14
+    assert lignin["model_admission_layer"].eq(
+        "lignin_TPU_carbon_fiber_precursor_transfer"
+    ).all()
 
 
 def test_command():

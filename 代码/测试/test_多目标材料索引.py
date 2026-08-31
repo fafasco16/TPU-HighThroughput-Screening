@@ -302,6 +302,27 @@ def test_release():
     assert mendeley_tpu.iloc[0].toughness_evidence_level == (
         "partial_tensile_energy_to_100pct_not_break_toughness"
     )
+    lignin = f.loc[f.source_family.eq("Zenodo_木质素_TPU多模态数据")]
+    assert len(lignin) == 10
+    assert set(lignin["material_key"]) == {
+        "TcA-TPU-50-50",
+        "TcA-TPU-55-45",
+        "TcA-TPU-60-40",
+        "TcA-TPU-65-35",
+        "TcA-TPU-70-30",
+        "TcC-TPU-50-50",
+        "TcC-TPU-55-45",
+        "TcC-TPU-60-40",
+        "TcC-TPU-65-35",
+        "TcC-TPU-70-30",
+    }
+    assert lignin["model_admission_layer"].eq(
+        "lignin_TPU_carbon_fiber_precursor_transfer"
+    ).all()
+    assert lignin.loc[
+        lignin.material_key.str.contains("-55-45|-65-35"),
+        "has_thermal_stability",
+    ].eq(False).all()
     assert f["material_key"].nunique() == len(f) - 1
 
 

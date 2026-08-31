@@ -210,6 +210,12 @@ def test_local_audit_covers_all_source_directories():
     assert set(mendeley_tpu.target_family) == {"toughness"}
     assert mendeley_tpu["already_in_directed_target"].all()
     assert mendeley_tpu["raw_curve_signal"].all()
+    lignin = queue.loc[
+        queue.source_directory.eq("Zenodo_木质素_TPU多模态数据")
+    ]
+    assert set(lignin.target_family) == {"toughness", "thermal_stability"}
+    assert lignin["already_in_directed_target"].all()
+    assert lignin["formulation_signal"].all()
     unit_blocked = queue.loc[
         queue.source_directory.eq("第十三批实验_日期籽油PU-PIR")
         & ~queue["already_in_directed_target"]

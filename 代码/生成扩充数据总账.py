@@ -437,6 +437,22 @@ SPECS = [
         "CC-BY-4.0",
         "TPU_grade_model_protocol_unresolved",
     ),
+    (
+        "lignin_tpu_precursor_fiber_mechanical",
+        "toughness_transfer_summary",
+        "木质素TPU前驱纤维力学.csv",
+        "木质素TPU发布清单.json",
+        "CC-BY-4.0",
+        "lignin_identity_commercial_tpu_grade_weight_fraction_mapped",
+    ),
+    (
+        "lignin_tpu_tga_transfer",
+        "thermal_stability_transfer",
+        "木质素TPU_TGA端点.csv",
+        "木质素TPU发布清单.json",
+        "CC-BY-4.0",
+        "lignin_identity_commercial_tpu_grade_weight_fraction_mapped",
+    ),
 ]
 
 
@@ -475,6 +491,7 @@ def build_release():
         "commercial_grade_color_supplier_partial": 0.45,
         "TPU_grade_unreported": 0.15,
         "TPU_grade_model_protocol_unresolved": 0.10,
+        "lignin_identity_commercial_tpu_grade_weight_fraction_mapped": 0.85,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -503,6 +520,7 @@ def build_release():
         "commercial_grade_color_supplier_partial": "补eTPU/TPU/PEBA精确商品型号；保留颜色与供应商映射状态",
         "TPU_grade_unreported": "补商业牌号、试样几何和断裂段；当前仅作100%应变部分能量",
         "TPU_grade_model_protocol_unresolved": "补求解器、网格、材料参数和运行条件；闭合前权重0",
+        "lignin_identity_commercial_tpu_grade_weight_fraction_mapped": "补前驱纤维重复数与完整拉伸曲线；保持碳化后纤维和TPU前驱体分层",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -585,6 +603,12 @@ def build_release():
         ),
         "mendeley_tpu_simulation_calibration_reference": (
             "simulation_calibration_reference"
+        ),
+        "lignin_tpu_precursor_fiber_mechanical": (
+            "lignin_TPU_carbon_fiber_precursor_transfer"
+        ),
+        "lignin_tpu_tga_transfer": (
+            "lignin_TPU_carbon_fiber_precursor_transfer"
         ),
     }
     for package, target, data, manifest, license_, mapping in SPECS:

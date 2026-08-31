@@ -176,6 +176,12 @@ SIGNAL_OVERRIDES = {
         "formulation": False,
         "raw_curve": True,
     },
+    "Zenodo_木质素_TPU多模态数据": {
+        "toughness": True,
+        "thermal_stability": True,
+        "formulation": True,
+        "raw_curve": True,
+    },
 }
 
 
@@ -296,6 +302,8 @@ def _directed_coverage() -> dict[str, dict[str, int]]:
         ("导电自修复PU恢复文献指标.csv", "Zenodo_导电自修复可回收PU复合材料", "cyclic_recovery"),
         ("TPU鞋材TGA端点.csv", "Zenodo_TPU鞋材热稳定与耐磨", "thermal_stability"),
         ("TPU实验100pct拉伸端点.csv", "Mendeley_TPU实验仿真曲线", "toughness"),
+        ("木质素TPU前驱纤维力学.csv", "Zenodo_木质素_TPU多模态数据", "toughness"),
+        ("木质素TPU_TGA端点.csv", "Zenodo_木质素_TPU多模态数据", "thermal_stability"),
     ]
     for filename, directory, target in expansions:
         expansion = DIRECTED / filename

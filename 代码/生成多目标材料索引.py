@@ -56,6 +56,8 @@ INPUTS = {
     "conductive_healing_pu_recovery": D / "导电自修复PU恢复文献指标.csv",
     "footwear_tga": D / "TPU鞋材TGA端点.csv",
     "mendeley_tpu_partial_tensile": D / "TPU实验100pct拉伸端点.csv",
+    "lignin_tpu_mechanical": D / "木质素TPU前驱纤维力学.csv",
+    "lignin_tpu_tga": D / "木质素TPU_TGA端点.csv",
 }
 
 
@@ -212,6 +214,14 @@ def build_release():
             None,
             None,
         ),
+        (
+            "Zenodo_木质素_TPU多模态数据",
+            "reference-122;reference-123",
+            "lignin_identity_commercial_tpu_grade_weight_fraction_mapped",
+            "lignin_tpu_mechanical",
+            None,
+            "lignin_tpu_tga",
+        ),
     ]
     frames = {k: pd.read_csv(v, low_memory=False) for k, v in INPUTS.items()}
     labels = frames["directed_labels"]
@@ -261,6 +271,9 @@ def build_release():
         ),
         "Mendeley_TPU实验仿真曲线": (
             "core_TPU_application_experimental"
+        ),
+        "Zenodo_木质素_TPU多模态数据": (
+            "lignin_TPU_carbon_fiber_precursor_transfer"
         ),
     }
     for source, cites, mapping, tkey, ckey, hkey in specs:
@@ -341,6 +354,8 @@ def build_release():
                         if source == "Zenodo_导电自修复可回收PU复合材料"
                         else "partial_tensile_energy_to_100pct_not_break_toughness"
                         if source == "Mendeley_TPU实验仿真曲线"
+                        else "precursor_fiber_strength_modulus_elongation_no_curve_toughness"
+                        if source == "Zenodo_木质素_TPU多模态数据"
                         else "direct_tensile_curve_area"
                     ),
                     "thermal_evidence_level": (
@@ -852,6 +867,24 @@ def build_release():
     )
     frame.loc[mendeley_partial, "gap_next_action"] = (
         "resolve_TPU_grade_and_obtain_test_to_break_curve"
+    )
+    lignin_tpu = frame["source_family"].eq("Zenodo_木质素_TPU多模态数据")
+    frame.loc[lignin_tpu, "multiobjective_status"] = frame.loc[
+        lignin_tpu, "objective_coverage_count"
+    ].map(
+        {
+            2: "two_objectives_lignin_TPU_precursor_transfer",
+            1: "single_objective_lignin_TPU_precursor_transfer",
+        }
+    )
+    frame.loc[lignin_tpu, "completion_priority"] = (
+        "sustainable_precursor_transfer_not_bulk_TPU"
+    )
+    frame.loc[lignin_tpu, "gap_evidence_status"] = (
+        "precursor_fiber_summary_and_subset_TGA_no_cycles"
+    )
+    frame.loc[lignin_tpu, "gap_next_action"] = (
+        "retain_weight_ceiling_and_never_merge_carbonized_fiber_properties"
     )
     return frame
 

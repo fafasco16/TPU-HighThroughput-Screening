@@ -1,0 +1,30 @@
+{
+  "release_id": "zenodo_lignin_tpu_multimodal_v1",
+  "source": {
+    "dataset_doi": "10.5281/zenodo.3631551",
+    "article_doi": "10.1021/acssuschemeng.8b01170",
+    "license": "CC-BY-4.0",
+    "workbook_sha256": "5dd712d854f56a50946e195039d875e1dc22fb755b309f99e9516789d120c6d4"
+  },
+  "counts": {
+    "mechanical_formulation_count": 8,
+    "mechanical_summary_row_count": 8,
+    "right_censored_elongation_count": 2,
+    "tga_formulation_count": 6,
+    "tga_curve_count": 6,
+    "tga_curve_point_count": 8130,
+    "published_compact_row_count": 14
+  },
+  "policy": {
+    "precursor_fibers_claimed_as_bulk_TPU": false,
+    "right_censored_elongation_imputed_as_200": false,
+    "mechanical_summary_claimed_as_complete_curve": false,
+    "TGA_temperature_unit_silently_assumed_from_workbook": false,
+    "lignin_content_conditions_counted_as_new_TPU_chemistries": false,
+    "carbonized_fiber_properties_included": false
+  },
+  "outputs": {
+    "木质素TPU前驱纤维力学.csv": "9deebba01f6bea720c9d60f7c125572b291d3283e4999bd8ab42d66bc232d8ca",
+    "木质素TPU_TGA端点.csv": "00c76faf4ea7beb9c886d549ef00ec6adcfe411912ac02616cbcd3527589d853"
+  }
+}
