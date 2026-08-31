@@ -176,6 +176,23 @@ def test_local_audit_covers_all_source_directories():
     assert queue.loc[
         queue.source_directory.eq("第十批实验_无溶剂PU反应动力学")
     ].empty
+    for source_name in (
+        "Figshare_商用PUR形状记忆本构FEA",
+        "MDPI_MDI聚醚双组分PU分子动力学",
+        "ScienceDB_微孔PU动态力学",
+    ):
+        assert queue.loc[queue.source_directory.eq(source_name)].empty
+    unit_blocked = queue.loc[
+        queue.source_directory.isin(
+            [
+                "第十三批实验_日期籽油PU-PIR",
+                "Mendeley_PU泡沫动态力学_精选表",
+            ]
+        )
+        & ~queue["already_in_directed_target"]
+    ]
+    assert len(unit_blocked) == 2
+    assert unit_blocked["audit_status"].eq("blocked_units_protocol").all()
 
 
 def test_release_and_check_command():

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_release():
     f = source.build_release()
-    assert len(f) == 40
+    assert len(f) == 42
     assert f.package_id.is_unique
     assert f.row_count.gt(0).all()
     assert f.data_sha256.str.len().eq(64).all()
@@ -155,6 +155,15 @@ def test_release():
         "synthesis_kinetics_experimental"
     )
     assert kinetics.iloc[0].mapping_completeness_score == 0.90
+    microporous = f.loc[f.package_id.str.startswith("microporous_pu_")]
+    assert set(microporous.package_id) == {
+        "microporous_pu_dma_transfer",
+        "microporous_pu_shpb_transfer",
+    }
+    assert microporous["row_count"].sum() == 12
+    assert microporous["model_admission_layer"].eq(
+        "microporous_PU_dynamic_transfer"
+    ).all()
 
 
 def test_command():

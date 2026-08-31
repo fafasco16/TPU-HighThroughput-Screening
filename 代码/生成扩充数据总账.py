@@ -333,6 +333,22 @@ SPECS = [
         "CC-BY-4.0",
         "monomer_pair_ratio_temperature_mapped",
     ),
+    (
+        "microporous_pu_dma_transfer",
+        "thermomechanical_transition_auxiliary",
+        "微孔PU_DMA端点.csv",
+        "微孔PU动态力学发布清单.json",
+        "CC-BY-4.0",
+        "density_grade_only",
+    ),
+    (
+        "microporous_pu_shpb_transfer",
+        "dynamic_impact_peak_stress_transfer",
+        "微孔PU_SHPB端点.csv",
+        "微孔PU动态力学发布清单.json",
+        "CC-BY-4.0",
+        "density_grade_only",
+    ),
 ]
 
 
@@ -363,6 +379,7 @@ def build_release():
         "commercial_PU_enamel_identity_unresolved": 0.15,
         "microsphere_fraction_matrix_unresolved": 0.25,
         "monomer_pair_ratio_temperature_mapped": 0.90,
+        "density_grade_only": 0.40,
     }
     actions = {
         "component_topology_mapped_partial": "补PMCL区域异构分布与逐配方完整投料",
@@ -383,6 +400,7 @@ def build_release():
         "commercial_PU_enamel_identity_unresolved": "补漆包线PU配方；仅作含铜热解迁移并保留T50右删失",
         "microsphere_fraction_matrix_unresolved": "补名义应力单位和PU基体化学身份；保留六级体积分数组成",
         "monomer_pair_ratio_temperature_mapped": "补更密集滴定点和转化率复核；用于合成时间窗而非力学真值",
+        "density_grade_only": "补微孔PU化学配方与试样重复；保留DMA/SHPB动态迁移边界",
     }
     layers = {
         "drum_tensile": "core_tpuu_experimental",
@@ -441,6 +459,8 @@ def build_release():
         "solvent_free_pu_reaction_kinetics": (
             "synthesis_kinetics_experimental"
         ),
+        "microporous_pu_dma_transfer": "microporous_PU_dynamic_transfer",
+        "microporous_pu_shpb_transfer": "microporous_PU_dynamic_transfer",
     }
     for package, target, data, manifest, license_, mapping in SPECS:
         dp, mp = D / data, D / manifest
@@ -453,6 +473,7 @@ def build_release():
                 "material_grade",
                 "material_id",
                 "condition_id",
+                "density_grade",
             )
             if column in f
         )

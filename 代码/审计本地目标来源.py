@@ -152,6 +152,15 @@ SIGNAL_OVERRIDES = {
     "第十批实验_无溶剂PU反应动力学": {
         "toughness": False,
     },
+    "Figshare_商用PUR形状记忆本构FEA": {
+        "cyclic_recovery": False,
+    },
+    "MDPI_MDI聚醚双组分PU分子动力学": {
+        "toughness": False,
+    },
+    "ScienceDB_微孔PU动态力学": {
+        "toughness": False,
+    },
 }
 
 
@@ -371,6 +380,12 @@ def _audit_source(
     if source_dir.name == "第七批计算_异山梨醇动态聚氨酯多尺度力学":
         status = "blocked_data_rights"
         next_action = "等待上游仓库明确数据许可；仅保留本地Gold-C参考，禁止公开数值再分发"
+    if source_dir.name in {
+        "第十三批实验_日期籽油PU-PIR",
+        "Mendeley_PU泡沫动态力学_精选表",
+    }:
+        status = "blocked_units_protocol"
+        next_action = "等待正文图轴/方法或作者补证单位与协议；禁止生成绝对韧性标签"
     return {
         "release_id": RELEASE_ID,
         "source_directory": source_dir.name,

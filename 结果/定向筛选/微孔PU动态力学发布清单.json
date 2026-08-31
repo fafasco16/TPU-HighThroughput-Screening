@@ -1,0 +1,28 @@
+{
+  "release_id": "microporous_pu_dynamic_transfer_v1",
+  "source": {
+    "dataset_doi": "10.57760/sciencedb.j00189.00045",
+    "article_doi": "10.1007/s10118-024-3134-4",
+    "license": "CC-BY-4.0"
+  },
+  "counts": {
+    "density_grade_count": 3,
+    "DMA_endpoint_row_count": 3,
+    "DMA_response_curve_count": 9,
+    "SHPB_physical_condition_count": 9,
+    "SHPB_sensor_curve_count": 18,
+    "published_compact_row_count": 12
+  },
+  "policy": {
+    "raw_curves_republished": false,
+    "sensor_channels_increase_physical_condition_count": false,
+    "DMA_response_channels_increase_material_count": false,
+    "direct_toughness_available": false,
+    "direct_decomposition_stability_available": false,
+    "drop_test_simulation_republished": false
+  },
+  "outputs": {
+    "微孔PU_DMA端点.csv": "37e81f2dbd01ed50ff478f87fe7ae3589ff49eb31c0aefbd924e10271356bdb6",
+    "微孔PU_SHPB端点.csv": "6fa420405578450c0315f1d6315e38bccb7e5fba240b5c6bf9b5a746fe776961"
+  }
+}
